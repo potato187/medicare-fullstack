@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 require('@/dbs').mongodInit;
 
 // config routes
-/* app.use('/v1/api', require('./routes')); */
+app.use('/v1/api', require('@/routes'));
 
 app.get('/', (req, res, next) => {
 	return res.status(200).json({ message: 'ok.' });
