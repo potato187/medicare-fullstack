@@ -15,7 +15,12 @@ const loginSchema = Joi.object({
 	password: passwordValidator,
 });
 
+const refreshTokenSchema = Joi.object({
+	refreshToken: textValidator,
+});
+
 module.exports = {
 	signUpSchema,
 	loginSchema,
+	refreshTokenSchema,
 };

@@ -2,5 +2,5 @@
 const { NotFoundRequestError } = require('@/core');
 
 module.exports = (req, res, next) => {
-	return next(NotFoundRequestError(`Not found:: ${req.originalUrl}`));
+	return next(new NotFoundRequestError(`Not found:: ${req.originalUrl}`));
 };

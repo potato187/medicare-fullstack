@@ -1,7 +1,7 @@
 'use strict';
 const { handlerValidateRequest, tryCatch } = require('@/middleware');
 const express = require('express');
-const { signUpSchema, loginSchema } = require('./schema.validation');
+const { signUpSchema, loginSchema, refreshTokenSchema } = require('./schema.validation');
 const { AccessController } = require('@/controllers');
 const { authMiddleware } = require('@/auth');
 
@@ -12,7 +12,10 @@ router.post('/login', handlerValidateRequest(loginSchema), tryCatch(AccessContro
 
 router.use(tryCatch(authMiddleware.authorization));
 router.post('/logout', tryCatch(AccessController.logout));
-
-router.use(tryCatch(authMiddleware.permission(['read'])));
+router.post(
+	'/refresh-token',
+	handlerValidateRequest(refreshTokenSchema),
+	tryCatch(AccessController.handleRefreshToken),
+);
 
 module.exports = router;

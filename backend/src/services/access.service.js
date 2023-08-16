@@ -1,13 +1,18 @@
 'use strict';
 const { authUtils } = require('@/auth');
-const { ConflictRequestError, NotFoundRequestError, UnauthorizedRequestError, BadRequestError } = require('@/core');
+const {
+	ConflictRequestError,
+	NotFoundRequestError,
+	UnauthorizedRequestError,
+	ForbiddenRequestError,
+} = require('@/core');
 const { AdminModel } = require('@/models');
 const { convertToObjectIdMongodb, generateToken, getInfoData } = require('@/utils');
 const bcrypt = require('bcrypt');
 const KeyTokenService = require('./keyToken.service');
 const AdminService = require('./admin.service');
-const { getPermissionsById } = require('@/models/repository/role.repo');
 const { RoleRepo } = require('@/models/repository');
+const { verifyToken } = require('@/auth/auth.utils');
 
 class AccessService {
 	static async singUp({ firstName, lastName, email, password, roleId }) {
@@ -17,7 +22,7 @@ class AccessService {
 			throw new ConflictRequestError();
 		}
 
-		return await AdminModel.create({ firstName, lastName, email, password, roleId: convertToObjectIdMongodb(roleId) });
+		return await AdminModel.create({ firstName, lastName, email, password, roleId });
 	}
 
 	static async login({ email, password }) {
@@ -40,18 +45,17 @@ class AccessService {
 			throw new UnauthorizedRequestError();
 		}
 
-		const { permissions } = await RoleRepo.getPermissionsById(foundAdmin.roleId);
-
 		const [publicKey, privateKey] = [generateToken(), generateToken()];
 		const tokens = await authUtils.createTokenPair(
-			{ userId: foundAdmin._id, email: foundAdmin.email, permissions },
+			{ userId: foundAdmin._id, roleId: foundAdmin.roleId },
 			publicKey,
 			privateKey,
 		);
-		await KeyTokenService.createPairToken(foundAdmin._id, publicKey, privateKey, tokens.refreshToken);
+
+		await KeyTokenService.createPairToken(foundAdmin._id, publicKey, privateKey);
 
 		return {
-			admin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName'], object: foundAdmin }),
+			admin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'roleId'], object: foundAdmin }),
 			tokens,
 		};
 	}
@@ -60,7 +64,23 @@ class AccessService {
 		return await KeyTokenService.removeById(keyStore._id);
 	}
 
-	static async handleRefreshToken() {}
+	static async handleRefreshToken({ user, keyStore, refreshToken }) {
+		if (!keyStore || keyStore.refreshTokenUsed.includes(refreshToken)) {
+			throw new ForbiddenRequestError('Something is wrong, pls login again');
+		}
+
+		await verifyToken(refreshToken, keyStore.privateKey);
+
+		const [publicKey, privateKey] = [generateToken(), generateToken()];
+		const tokens = await authUtils.createTokenPair(user, publicKey, privateKey);
+
+		await KeyTokenService.markRefreshTokenUsed(keyStore._id, tokens.refreshToken, refreshToken);
+
+		return {
+			user,
+			tokens,
+		};
+	}
 }
 
 module.exports = AccessService;

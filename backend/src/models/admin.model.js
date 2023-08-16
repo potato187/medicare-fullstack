@@ -1,6 +1,7 @@
 'use strict';
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
+const { ROLES } = require('@/constant');
 const DOCUMENT_NAME = 'Admin';
 
 const adminSchema = new Schema(
@@ -23,8 +24,8 @@ const adminSchema = new Schema(
 			type: String,
 		},
 		roleId: {
-			type: Schema.Types.ObjectId,
-			ref: 'Role',
+			type: String,
+			enum: ROLES,
 		},
 	},
 	{
