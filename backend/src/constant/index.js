@@ -1,3 +1,3 @@
 module.exports = {
-	...require('./permissions.constant'),
+	...require('./header.constant'),
 };

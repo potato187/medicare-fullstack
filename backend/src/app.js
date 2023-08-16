@@ -4,7 +4,7 @@ const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
-const { handlerErrors, exceptionRoute } = require('@/middleware');
+const { handlerErrors, exceptionRoute, handlerRouteException } = require('@/middleware');
 
 const app = express();
 
@@ -20,12 +20,8 @@ require('@/dbs').mongodInit;
 // config routes
 app.use('/v1/api', require('@/routes'));
 
-app.get('/', (req, res, next) => {
-	return res.status(200).json({ message: 'ok.' });
-});
-
 // handling errors
-app.use('*', exceptionRoute);
+app.use('*', handlerRouteException);
 
 app.use(handlerErrors);
 

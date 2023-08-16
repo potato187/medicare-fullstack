@@ -1,7 +1,7 @@
 'use strict';
 const { BadRequestError } = require('@/core');
 
-const validateRequest = ({ requestType = 'body', schema }) => {
+const validateRequest = (schema, requestType = 'body') => {
 	return async (req, res, next) => {
 		const { error } = await schema.validate(req[requestType], { errors: { label: 'key', wrap: { label: false } } });
 		if (error) {

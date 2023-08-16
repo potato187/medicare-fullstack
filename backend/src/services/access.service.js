@@ -1,15 +1,17 @@
 'use strict';
 const { authUtils } = require('@/auth');
-const { ConflictRequestError, NotFoundRequestError, UnauthorizedRequestError } = require('@/core');
+const { ConflictRequestError, NotFoundRequestError, UnauthorizedRequestError, BadRequestError } = require('@/core');
 const { AdminModel } = require('@/models');
-const { findByFilter } = require('@/models/repository/admin.repo');
-const { convertToObjectIdMongodb, generateToken } = require('@/utils');
+const { convertToObjectIdMongodb, generateToken, getInfoData } = require('@/utils');
 const bcrypt = require('bcrypt');
 const KeyTokenService = require('./keyToken.service');
+const AdminService = require('./admin.service');
+const { getPermissionsById } = require('@/models/repository/role.repo');
+const { RoleRepo } = require('@/models/repository');
 
 class AccessService {
 	static async singUp({ firstName, lastName, email, password, roleId }) {
-		const foundAdmin = await findByFilter({ filter: { email } });
+		const foundAdmin = await AdminService.findByFilter({ email });
 
 		if (foundAdmin) {
 			throw new ConflictRequestError();
@@ -19,7 +21,14 @@ class AccessService {
 	}
 
 	static async login({ email, password }) {
-		const foundAdmin = await findByFilter({ filter: { email }, select: ['_id', 'firstName', 'lastName', 'password'] });
+		const foundAdmin = await AdminService.findByFilter({ email }, [
+			'_id',
+			'email',
+			'password',
+			'roleId',
+			'firstName',
+			'lastName',
+		]);
 
 		if (!foundAdmin) {
 			throw new NotFoundRequestError();
@@ -31,16 +40,26 @@ class AccessService {
 			throw new UnauthorizedRequestError();
 		}
 
+		const { permissions } = await RoleRepo.getPermissionsById(foundAdmin.roleId);
+
 		const [publicKey, privateKey] = [generateToken(), generateToken()];
-		const tokens = await authUtils.createTokenPair({ email }, publicKey, privateKey);
-		await KeyTokenService.createPairToken(foundAdmin.id, publicKey, privateKey, tokens.refreshToken);
+		const tokens = await authUtils.createTokenPair(
+			{ userId: foundAdmin._id, email: foundAdmin.email, permissions },
+			publicKey,
+			privateKey,
+		);
+		await KeyTokenService.createPairToken(foundAdmin._id, publicKey, privateKey, tokens.refreshToken);
 
 		return {
-			admin: foundAdmin,
+			admin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName'], object: foundAdmin }),
 			tokens,
 		};
 	}
-	static async logout() {}
+
+	static async logout(keyStore) {
+		return await KeyTokenService.removeById(keyStore._id);
+	}
+
 	static async handleRefreshToken() {}
 }
 

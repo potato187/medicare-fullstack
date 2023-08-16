@@ -14,8 +14,7 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
 };
 
 const verifyToken = async (token, secretKey) => {
-	const decode = await JWT.verify(token, secretKey);
-	return decode;
+	return await JWT.verify(token, secretKey);
 };
 
 module.exports = {

@@ -1,6 +1,11 @@
 'use strict';
 const { Types } = require('mongoose');
 const crypto = require('node:crypto');
+const _ = require('lodash');
+
+const getInfoData = ({ fields = [], object = {} }) => {
+	return _.pick(object, fields);
+};
 
 const typeOf = (value) => {
 	return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
@@ -28,4 +33,5 @@ module.exports = {
 	convertToObjectIdMongodb,
 	createSelectData,
 	getUnSelectData,
+	getInfoData,
 };
