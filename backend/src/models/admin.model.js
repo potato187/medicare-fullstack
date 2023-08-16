@@ -23,7 +23,7 @@ const adminSchema = new Schema(
 		password: {
 			type: String,
 		},
-		roleId: {
+		role_key: {
 			type: String,
 			enum: ROLES,
 		},

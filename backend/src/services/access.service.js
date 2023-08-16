@@ -6,23 +6,22 @@ const {
 	UnauthorizedRequestError,
 	ForbiddenRequestError,
 } = require('@/core');
-const { AdminModel } = require('@/models');
-const { convertToObjectIdMongodb, generateToken, getInfoData } = require('@/utils');
+const { AdminModel, RoleModel } = require('@/models');
+const { generateToken, getInfoData } = require('@/utils');
 const bcrypt = require('bcrypt');
 const KeyTokenService = require('./keyToken.service');
 const AdminService = require('./admin.service');
-const { RoleRepo } = require('@/models/repository');
 const { verifyToken } = require('@/auth/auth.utils');
 
 class AccessService {
-	static async singUp({ firstName, lastName, email, password, roleId }) {
+	static async singUp({ firstName, lastName, email, password, role_key }) {
 		const foundAdmin = await AdminService.findByFilter({ email });
 
 		if (foundAdmin) {
 			throw new ConflictRequestError();
 		}
 
-		return await AdminModel.create({ firstName, lastName, email, password, roleId });
+		return await AdminModel.create({ firstName, lastName, email, password, role_key });
 	}
 
 	static async login({ email, password }) {
@@ -30,7 +29,7 @@ class AccessService {
 			'_id',
 			'email',
 			'password',
-			'roleId',
+			'role_key',
 			'firstName',
 			'lastName',
 		]);
@@ -47,7 +46,7 @@ class AccessService {
 
 		const [publicKey, privateKey] = [generateToken(), generateToken()];
 		const tokens = await authUtils.createTokenPair(
-			{ userId: foundAdmin._id, roleId: foundAdmin.roleId },
+			{ userId: foundAdmin._id, role: foundAdmin.role_key },
 			publicKey,
 			privateKey,
 		);
@@ -55,7 +54,7 @@ class AccessService {
 		await KeyTokenService.createPairToken(foundAdmin._id, publicKey, privateKey);
 
 		return {
-			admin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'roleId'], object: foundAdmin }),
+			admin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'role_key'], object: foundAdmin }),
 			tokens,
 		};
 	}
@@ -71,8 +70,7 @@ class AccessService {
 
 		await verifyToken(refreshToken, keyStore.privateKey);
 
-		const [publicKey, privateKey] = [generateToken(), generateToken()];
-		const tokens = await authUtils.createTokenPair(user, publicKey, privateKey);
+		const tokens = await authUtils.createTokenPair(user, keyStore.publicKey, keyStore.privateKey);
 
 		await KeyTokenService.markRefreshTokenUsed(keyStore._id, tokens.refreshToken, refreshToken);
 

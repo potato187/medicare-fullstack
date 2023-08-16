@@ -7,8 +7,8 @@ const { KeyTokenRepo } = require('@/models/repository');
 
 const checkRoles = (roles = []) => {
 	return async (req, res, next) => {
-		const { roleId } = req.user;
-		if (!roleId || !roles.includes(roleId)) {
+		const { role } = req.user;
+		if (!roleId || !roles.includes(role)) {
 			return next(new UnauthorizedRequestError('Permission denied.'));
 		}
 
@@ -32,17 +32,19 @@ const authorization = async (req, res, next) => {
 
 	const accessToken = req.headers[HEADERS.AUTHORIZATION];
 
+	console.log(accessToken);
+
 	if (!accessToken) {
 		return next(new UnauthorizedRequestError());
 	}
 
-	const { userId, roleId } = await verifyToken(accessToken, keyStore.publicKey);
+	const { userId, role } = await verifyToken(accessToken, keyStore.publicKey);
 
 	if (userId !== clientId) {
 		return next(new UnauthorizedRequestError());
 	}
 
-	req.user = { userId, roleId };
+	req.user = { userId, role };
 	req.keyStore = keyStore;
 
 	return next();

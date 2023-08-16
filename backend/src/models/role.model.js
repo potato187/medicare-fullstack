@@ -5,13 +5,20 @@ const DOCUMENT_NAME = 'Role';
 
 const roleSchema = new Schema(
 	{
-		roleId: {
+		role_key: {
 			type: String,
 			enum: ROLES,
+			required: true,
 		},
-		name: {
-			type: String,
-			require: true,
+		role_name: {
+			vi: {
+				type: String,
+				required: true,
+			},
+			en: {
+				type: String,
+				required: true,
+			},
 		},
 	},
 	{

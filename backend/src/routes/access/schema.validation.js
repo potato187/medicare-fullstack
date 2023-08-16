@@ -7,7 +7,7 @@ const signUpSchema = Joi.object({
 	lastName: textAlphaValidator.label('Last Name'),
 	email: emailValidator,
 	password: passwordValidator,
-	roleId: textValidator,
+	role: textValidator,
 });
 
 const loginSchema = Joi.object({
