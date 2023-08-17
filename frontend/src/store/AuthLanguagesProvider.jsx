@@ -47,14 +47,14 @@ export function AuthLanguagesProvider({ children }) {
 
 	useEffect(() => {
 		const fetchAllLanguages = async () => {
-			const { elements } = await languageApi.getLanguages();
-			const response = Object.keys(elements).reduce((obj, languageId) => {
-				obj[languageId] = flattenMessages(elements[languageId]);
+			const metadata = await languageApi.getLanguages();
+			const response = Object.keys(metadata).reduce((obj, languageId) => {
+				obj[languageId] = flattenMessages(metadata[languageId]);
 				return obj;
 			}, {});
 
 			setLanguages(response);
-			setValidationForm(buildValidationForm(elements[LANGUAGE_DEFAULT]));
+			setValidationForm(buildValidationForm(metadata[LANGUAGE_DEFAULT]));
 		};
 
 		tryCatch(fetchAllLanguages)();

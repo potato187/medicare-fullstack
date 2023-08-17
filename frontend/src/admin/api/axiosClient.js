@@ -22,7 +22,7 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
 	function (response) {
-		return response.data ? Promise.resolve(response.data) : Promise.resolve(response);
+		return response.data?.metadata ? Promise.resolve(response.data.metadata) : Promise.resolve(response);
 	},
 	function (error) {
 		if (error?.response.status === 401) {
