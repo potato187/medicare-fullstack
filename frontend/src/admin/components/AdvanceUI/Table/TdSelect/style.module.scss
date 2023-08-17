@@ -1,0 +1,27 @@
+.td-select {
+	height: 100%;
+	position: relative;
+	border: 1px solid transparent;
+	transition: var(--transition-colors);
+
+	&.focus {
+		border-color: var(--bs-info);
+	}
+
+	input.invalid {
+		border-color: var(--bs-danger);
+	}
+
+	&__header {
+		height: 100%;
+		display: flex;
+		justify-content: space-between;
+		gap: var(--spacing-xs);
+		padding: var(--table-padding);
+		font-size: var(--theme-text-xs);
+	}
+
+	&__list {
+		box-shadow: var(--bs-shadow);
+	}
+}

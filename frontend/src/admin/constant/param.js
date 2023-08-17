@@ -1,0 +1,15 @@
+export const PARAMS_OPTIONS_ORDER = [
+	'search_by',
+	'search',
+	'specialtyId',
+	'doctorId',
+	'bookingId',
+	'statusId',
+	'workingHourId',
+	'startDate',
+	'endDate',
+	'order',
+	'page',
+	'per_page',
+	'totalPages',
+];

@@ -1,0 +1,114 @@
+.sidebar-navigator {
+	--navigator-bg: var(--bs-primary);
+	--navigator-header-height: 65px;
+	--nav-item-color: #abb9e8;
+	--nav-item-color-active: var(--bs-white);
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: auto 1fr;
+	width: 100%;
+	height: 100%;
+	background-color: var(--navigator-bg);
+
+	&__header {
+		height: var(--navigator-header-height);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__main {
+		visibility: visible;
+		overflow: hidden;
+	}
+
+	.nav-item,
+	.nav-item__group {
+		display: flex;
+		flex-flow: column nowrap;
+	}
+
+	.nav-item__group.show {
+		> .item-title {
+			color: var(--nav-item-color-active);
+			.icon > svg {
+				transform: rotate(0);
+			}
+		}
+	}
+
+	.nav-item__group .nav-item__list {
+		padding-left: var(--spacing-lg);
+		transition: 0.35s ease-in-out;
+		overflow: hidden;
+
+		&,
+		&[class*='collapse-exit-done'] {
+			height: 0;
+		}
+
+		&[class*='collapse-appear-done'],
+		&[class*='collapse-enter-done'] {
+			height: var(--height);
+		}
+	}
+
+	.item-title,
+	.item {
+		display: flex;
+		align-items: center;
+		grid-gap: var(--spacing-sm);
+		padding: var(--spacing-md) var(--spacing-md);
+		font-size: var(--theme-text-sm);
+		color: var(--nav-item-color);
+		white-space: normal;
+		text-overflow: ellipsis;
+		transition: var(--transition-color);
+		position: relative;
+		cursor: pointer;
+
+		> i {
+			flex-shrink: 0;
+		}
+
+		> span {
+			flex-grow: 1;
+		}
+
+		svg {
+			font-size: 1.5em;
+			color: inherit;
+		}
+
+		.icon {
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			width: var(--spacing-lg);
+
+			> svg {
+				font-size: 1.5em;
+				transform-origin: 50% 50%;
+				transform: rotate(-0.25turn);
+				transition: var(--transition-transform);
+			}
+		}
+
+		&:hover,
+		&[class*='active'],
+		&[aria-current='page'] {
+			color: var(--nav-item-color-active);
+		}
+
+		&[class*='active'],
+		&[aria-current='page'] {
+			.icon > svg {
+				transform: rotate(-90deg);
+			}
+		}
+	}
+}

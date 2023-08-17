@@ -1,0 +1,46 @@
+.page-login {
+	min-height: 100vh;
+	position: relative;
+
+	&__layout {
+		height: 380px;
+		background-image: url(var(--bgURL));
+		z-index: 1;
+
+		&,
+		.shape,
+		.background {
+			position: absolute;
+			left: 0;
+			right: 0;
+		}
+
+		&,
+		.background {
+			top: 0;
+		}
+
+		.shape,
+		.background {
+			bottom: 0;
+		}
+
+		.background {
+			background-image: linear-gradient(to right, #364574, #405189);
+			opacity: 0.9;
+		}
+
+		.shape {
+			svg {
+				width: 100%;
+				height: auto;
+				fill: var(--theme-body-bg);
+			}
+		}
+	}
+
+	&__main {
+		position: relative;
+		z-index: 2;
+	}
+}

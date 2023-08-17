@@ -1,0 +1,26 @@
+.date-picker {
+	height: 100%;
+	min-width: 190px;
+
+	.date-picker__input {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		min-width: 120px;
+		height: 100%;
+		border: 1px solid var(--bs-gray-400);
+		padding: var(--spacing-xs) var(--spacing-md);
+		font-size: var(--theme-text-xs);
+		color: var(--bs-gray-900);
+		border-radius: var(--spacing-xxs);
+		transition: var(--transition-color);
+		overflow: hidden;
+		&.focus {
+			border-color: var(--bs-primary);
+		}
+	}
+}
+
+.date-picker__calendar {
+	padding-top: var(--spacing-xs);
+}

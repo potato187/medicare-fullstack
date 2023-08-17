@@ -1,0 +1,124 @@
+:root {
+	--theme-text-ratio: 1rem;
+	--theme-text-xxs: calc(var(--theme-text-ratio) * 0.625);
+	--theme-text-xs: calc(var(--theme-text-ratio) * 0.75);
+	--theme-text-sm: calc(var(--theme-text-ratio) * 0.8125);
+	--theme-text-md: calc(var(--theme-text-ratio) * 0.875);
+	--theme-text-lg: calc(var(--theme-text-ratio) * 1);
+	--theme-text-xl: calc(var(--theme-text-ratio) * 1.125);
+	--theme-text-2xl: calc(var(--theme-text-ratio) * 1.25);
+	--theme-text-3xl: calc(var(--theme-text-ratio) * 1.5);
+	--theme-text-4xl: calc(var(--theme-text-ratio) * 1.75);
+	--theme-text-5xl: calc(var(--theme-text-ratio) * 2);
+
+	--spacing-xxs: 0.125rem;
+	--spacing-xs: 0.25rem;
+	--spacing-sm: 0.5rem;
+	--spacing-md: 0.75rem;
+	--spacing-lg: 1.25rem;
+	--spacing-xl: 2rem;
+
+	--transition-fnc: cubic-bezier(0.8, 0.5, 0.2, 1.4);
+	--transition-default: 0.25s var(--transition-fnc);
+	--transition-color: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+		fill 0.15s ease-in-out;
+	--transition-transform: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+
+	--leading-body: 1.5;
+	--leading-heading: 1.1;
+
+	--select-color: var(--bs-gray-900);
+	--select-border: 1px solid var(--bs-gray-400);
+	--select-border-radius: 0.125rem;
+
+	--table-text-color: var(--bs-gray-900);
+	--table-border-color: var(--bs-gray-300);
+	--table-padding: 0.5rem 0.5rem;
+	--table-header-padding: 0.75rem 0.5rem;
+	--table-bg: var(--bs-white);
+	--table-bg-hover: var(--bs-gray-100);
+	--table-striped-bg: #eef1f4;
+}
+
+body {
+	font: 400 0.875rem/1.5 var(--bs-body-font-family);
+	-webkit-text-size-adjust: 100%;
+	-webkit-tap-highlight-color: transparent;
+}
+
+button {
+	border: 1px solid transparent;
+	outline: transparent;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+input,
+select {
+	outline: none;
+	appearance: none;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+textarea {
+	resize: none;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	color: var(--bs-secondary);
+	text-decoration: none;
+	transition: color 0.15s ease-in-out;
+	&:hover {
+		color: var(--bs-primary);
+	}
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	line-height: 1.2;
+	color: var(--bs-gray-900);
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin-top: 0;
+	margin-bottom: 0.75rem;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	transition: background-color 5000s ease-in-out 0s;
+}
+
+small {
+	font-size: 0.75em;
+}
+
+img,
+svg {
+	vertical-align: middle;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	object-fit: cover;
+}

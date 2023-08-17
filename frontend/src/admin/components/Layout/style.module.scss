@@ -1,0 +1,23 @@
+.admin {
+	display: grid;
+	grid-template-columns: var(--sidebar-width) 1fr;
+	grid-gap: 0;
+	height: 100vh;
+	max-height: 100vh;
+	position: relative;
+	background-color: var(--bs-gray-100);
+	transition: var(--transition-default);
+
+	&-sidebar,
+	&-main {
+		position: relative;
+	}
+
+	&-wrapper {
+		padding: calc(110px + 1.25rem) 0.75rem 1.5rem;
+		max-height: 100vh;
+		height: 100vh;
+		overflow: hidden;
+		overflow-y: auto;
+	}
+}

@@ -1,0 +1,26 @@
+.container {
+	border-radius: var(--spacing-xxs);
+	background-color: var(--bs-white);
+	box-shadow: var(--bs-box-shadow);
+
+	&.transparent {
+		background-color: transparent;
+		box-shadow: none;
+	}
+
+	&.padding-none {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	&-main,
+	&-title {
+		padding: var(--spacing-md);
+		border-bottom: 1px solid var(--bs-gray-300);
+	}
+
+	&-title {
+		color: var(--bs-gray-700);
+		font-size: var(--theme-text-sm);
+	}
+}

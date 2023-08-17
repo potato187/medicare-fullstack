@@ -1,0 +1,89 @@
+.quill {
+	border: 1px solid var(--bs-gray-300);
+	border-radius: var(--spacing-xs);
+	overflow: hidden;
+}
+
+.quill .ql-container {
+	border-bottom-left-radius: var(--spacing-xs);
+	border-bottom-right-radius: var(--spacing-xs);
+	background: #fefcfc;
+}
+
+.quill .ql-toolbar.ql-snow,
+.quill .ql-container.ql-snow {
+	border-color: transparent;
+}
+
+.quill .ql-toolbar.ql-snow {
+	border-bottom: 1px solid;
+	border-bottom-color: #dee1e3;
+	background-color: #fff;
+	z-index: 2;
+}
+
+.ql-snow.ql-toolbar {
+	display: block;
+	background: #eaecec;
+}
+
+.ql-bubble .ql-editor {
+	border: 1px solid var(--bs-gray-200);
+	border-radius: var(--spacing-xs);
+}
+
+.ql-editor {
+	min-height: 18em;
+	max-height: 50vh;
+}
+
+.themeSwitcher {
+	margin-top: var(--spacing-xs);
+	font-size: small;
+}
+
+.ql-editor,
+.scrollbar {
+	&::-webkit-scrollbar {
+		-webkit-appearance: none;
+	}
+
+	&::-webkit-scrollbar:vertical {
+		width: 8px;
+	}
+
+	&::-webkit-scrollbar:horizontal {
+		height: 10px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba(33, 37, 41, 0.15);
+		border-radius: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		border-radius: 8px;
+	}
+
+	&--sm {
+		&::-webkit-scrollbar-track {
+			border-radius: 4px;
+		}
+
+		&::-webkit-scrollbar:vertical {
+			width: 4px;
+		}
+
+		&::-webkit-scrollbar:horizontal {
+			height: 4px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			border-radius: 4px;
+		}
+
+		&::-webkit-scrollbar-track {
+			border-radius: 4px;
+		}
+	}
+}

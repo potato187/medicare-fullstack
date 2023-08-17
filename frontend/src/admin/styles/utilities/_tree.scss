@@ -1,0 +1,15 @@
+.tree {
+	--tree-spacing-left: 1.25rem;
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 0.25rem;
+
+	li {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	ul ul {
+		padding-left: var(--tree-spacing-left);
+	}
+}

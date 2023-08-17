@@ -1,0 +1,133 @@
+.modal {
+	--modal-border-color: var(--bs-gray-300);
+	--modal-shadow: var(--bs-box-shadow);
+	--modal-bg: var(--bs-white);
+	--modal-max-width: 768px;
+	--modal-min-width: 480px;
+
+	position: fixed;
+	inset: 0 0;
+	z-index: 1031;
+
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0 0;
+		background-color: rgba(#000000, 0.5);
+		z-index: -1;
+		transition: 0.2s ease-in-out;
+	}
+
+	&[class*='modal-enter-done'].modal-static &-dialog {
+		transform: scale(1.01);
+	}
+
+	&-dialog {
+		display: flex;
+		flex-flow: column nowrap;
+		max-width: var(--modal-max-width);
+		min-width: var(--modal-min-width);
+		max-height: 80vh;
+		margin: 1.5rem auto auto auto;
+		background-color: var(--modal-bg);
+		border-radius: 0.25rem;
+		border: 1px solid var(--modal-border-color);
+		opacity: 0;
+		transition: 0.2s ease-in-out;
+		box-shadow: var(--modal-shadow);
+	}
+
+	&[class*='modal-exit'] &-dialog,
+	&[class*='modal-enter'] &-dialog {
+		opacity: 0;
+		transform: translate3d(0, -50px, 0);
+	}
+
+	&[class*='modal-exit-enter'] &-dialog,
+	&[class*='modal-enter-done'] &-dialog {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+
+	&.modal--sm {
+		--modal-max-width: 576px;
+	}
+
+	&.modal--md {
+		--modal-max-width: 768px;
+		--modal-min-width: 768px;
+	}
+
+	&.modal--lg {
+		--modal-max-width: 992px;
+		--modal-min-width: 992px;
+	}
+
+	&.modal--xl {
+		--modal-max-width: 1200px;
+		--modal-min-width: 1200px;
+	}
+
+	&-header,
+	&-body,
+	&-footer {
+		position: relative;
+	}
+
+	&-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		z-index: 1;
+	}
+
+	&-header,
+	&-footer {
+		padding: var(--spacing-md) var(--spacing-lg) var(--spacing-sm);
+	}
+
+	&-body {
+		flex: 1 1 auto;
+		font-size: var(--theme-text-sm);
+		padding: var(--spacing-md) var(--spacing-lg);
+		z-index: 2;
+	}
+
+	&-header + form > &-body,
+	&-header + &-body {
+		border-top: 1px solid var(--modal-border-color);
+	}
+
+	&-header__title {
+		font-size: var(--theme-text-md);
+		color: var(--bs-gray-700);
+		font-weight: 600;
+		margin-bottom: 0;
+	}
+
+	&-footer {
+		padding-top: 0.625rem;
+		border-top: 1px solid var(--modal-border-color);
+		z-index: 1;
+		&.disabled {
+			opacity: 0.75;
+			pointer-events: none;
+			user-select: none;
+		}
+	}
+
+	&-btn--close {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		width: 2rem;
+		height: 2rem;
+		color: var(--bs-gray-500);
+		cursor: pointer;
+		transition: color 300ms ease-in-out;
+
+		&:hover {
+			color: var(--bs-gray-700);
+		}
+	}
+}

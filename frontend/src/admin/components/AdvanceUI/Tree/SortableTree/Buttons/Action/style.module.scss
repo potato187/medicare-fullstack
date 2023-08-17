@@ -1,0 +1,53 @@
+.Action {
+	--fill-color: var(--bs-gray-500);
+	--file-active-color: var(--bs-gray-700);
+	--background: transparent;
+	--background-active: rgba(64, 81, 137, 0.1);
+	--focused-outline-color: var(--bs-secondary);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	width: 2rem;
+	height: 2rem;
+	touch-action: none;
+	cursor: pointer;
+	border-radius: var(--spacing-xs);
+	border: none;
+	outline: none;
+	appearance: none;
+	background-color: var(--background);
+	-webkit-tap-highlight-color: transparent;
+
+	@media (hover: hover) {
+		&:hover {
+			background-color: var(--background-active);
+
+			svg {
+				fill: var(--file-active-color);
+			}
+		}
+	}
+
+	svg {
+		flex: 0 0 auto;
+		margin: auto;
+		height: 100%;
+		overflow: visible;
+		fill: var(--fill-color);
+	}
+
+	&:active {
+		background-color: var(--background-active);
+
+		svg {
+			fill: var(--fill-color);
+		}
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 2px rgba(255, 255, 255, 0), 0 0px 0px 2px var(--focused-outline-color);
+	}
+}

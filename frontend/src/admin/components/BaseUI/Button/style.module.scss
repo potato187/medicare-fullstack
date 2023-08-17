@@ -1,0 +1,221 @@
+.button {
+	--btn-spacing: var(--spacing-sm) var(--spacing-lg);
+	--btn-text-color: var(--bs-white);
+	--btn-text-hover: var(--bs-white);
+
+	--btn-background: var(--bs-primary);
+	--btn-background-fade: rgba(var(--bs-primary-rgb), 0.1);
+	--btn-background-hover: #364574;
+
+	--btn-opacity: 0.65;
+	--btn-border: 1px solid transparent;
+	--btn-border-color: transparent;
+	--btn-border-hover: transparent;
+	--btn-font-size: var(--theme-text-xs);
+	--btn-font-weight: 400;
+	--btn-rounded: var(--spacing-xxs);
+
+	display: inline-block;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	padding: var(--btn-spacing);
+	background-color: var(--btn-background);
+	font-size: var(--btn-font-size);
+	font-weight: var(--btn-font-weight);
+	line-height: 1.1;
+	color: var(--btn-text-color);
+	border-radius: var(--btn-rounded);
+	border: var(--btn-border);
+	border-color: var(--btn-border-color);
+	transition: var(--transition-color);
+	position: relative;
+
+	&-info {
+		--btn-background: #3577f1;
+		--btn-background-fade: rgba(var(--bs-info-rgb, 0.1));
+		--btn-background-hover: #2d65cd;
+	}
+
+	&-success {
+		--btn-background: var(--bs-success);
+		--btn-background-fade: rgba(var(--bs-success-rgb), 0.1);
+		--btn-background-hover: #088f7d;
+	}
+
+	&-warning {
+		--btn-background: #f7b84b;
+		--btn-background-fade: rgba(var(--bs-warning-rgb), 0.1);
+		--btn-background-hover: #d29c40;
+	}
+
+	&-danger {
+		--btn-background: #f06548;
+		--btn-background-fade: rgba(var(--bs-danger-rgb), 0.1);
+		--btn-background-hover: #d85b41;
+	}
+
+	&-dark {
+		--btn-background: #212529;
+		--btn-background-fade: rgba(var(--bs-dark-rgb), 0.1);
+		--btn-background-hover: #424649;
+	}
+
+	&-secondary {
+		--btn-background: #6c757d;
+		--btn-background-fade: rgba(var(--bs-secondary-rgb), 0.1);
+		--btn-background-hover: #5c636a;
+	}
+
+	&-fade {
+		--btn-background-hover: var(--btn-background-fade);
+		--btn-text-color: var(--theme-gray-700);
+		--btn-text-hover: var(--btn-background);
+		background: transparent;
+
+		&:hover {
+			color: var(--btn-text-hover);
+		}
+	}
+
+	&-soft {
+		--btn-text-hover: var(--bs-white);
+		--btn-text-color: var(--btn-background);
+		background: var(--btn-background-fade);
+	}
+
+	&-square {
+		--button-square-width: 2.75rem;
+		--button-square-height: 2.75rem;
+		--btn-spacing: 0 0;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0;
+		width: var(--button-square-width);
+		height: var(--button-square-height);
+	}
+
+	&-square--sm {
+		--button-square-width: 2rem;
+		--button-square-height: 2rem;
+	}
+
+	&-rounded {
+		border-radius: 50%;
+	}
+
+	&-md {
+		font-size: var(--theme-text-default);
+	}
+
+	&-sm {
+		--btn-spacing: var(--spacing-sm) var(--spacing-md);
+	}
+
+	&-xs {
+		--btn-spacing: 0.375rem var(--spacing-md);
+		--btn-rounded: 0.125rem;
+		--btn-font-size: var(--theme-text-xxs);
+	}
+
+	&-switched {
+		position: relative;
+
+		&[data-switch='off'] > svg,
+		> svg {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+
+			&:first-child {
+				opacity: 1;
+				visibility: visible;
+			}
+
+			&:last-child {
+				opacity: 0;
+				visibility: hidden;
+			}
+		}
+
+		&[data-switch='on'] {
+			color: var(--btn-text-hover);
+
+			> svg {
+				&:first-child {
+					opacity: 0;
+					visibility: hidden;
+				}
+
+				&:last-child {
+					opacity: 1;
+					visibility: visible;
+				}
+			}
+		}
+	}
+
+	&:hover {
+		background-color: var(--btn-background-hover);
+		border-color: var(--btn-border-hover);
+		color: var(--btn-text-hover);
+	}
+
+	&.loading,
+	&[disabled],
+	&.disabled {
+		opacity: 0.75;
+		user-select: none;
+		pointer-events: none;
+	}
+
+	.loading {
+		min-width: 2rem;
+		background-color: var(--btn-background-hover);
+	}
+
+	svg {
+		vertical-align: middle;
+	}
+
+	svg + span {
+		margin-left: var(--spacing-sm);
+	}
+
+	&-loading {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		gap: var(--spacing-sm);
+	}
+
+	&-full {
+		width: 100%;
+	}
+}
+
+.spinner {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+
+	&::before {
+		content: '';
+		display: inline-block;
+		width: 0.875rem;
+		height: 0.875rem;
+		border: 2px solid var(--bs-white);
+		border-right-color: transparent;
+		border-radius: 50%;
+		background-color: transparent;
+		animation: 0.75s linear infinite spinner-border;
+	}
+}
+
+@keyframes spinner-border {
+	to {
+		transform: rotate(1turn);
+	}
+}

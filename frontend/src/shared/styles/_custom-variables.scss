@@ -1,0 +1,42 @@
+$primary: #405189;
+$secondary: #3577f1;
+$success: #0ab39c;
+$info: #299cdb;
+$warning: #f7b84b;
+$danger: #f06548;
+$light: #f3f6f9;
+$dark: #212529;
+$white: #ffffff;
+
+$gray-100: #f3f6f9;
+$gray-200: #eff2f7;
+$gray-300: #e9ebec;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #878a99;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+
+$box-shadow: 0 1px 2px rgb(56 65 74 / abs(#{15%}));
+$box-shadow-sm: 0 5px 10px rgba(30, 32, 37, 0.12);
+
+$font-family-base: Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans',
+	Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+	'Noto Color Emoji';
+$sizes: 'xxs', 'xs', 'sm', 'md', 'xl', 'lg';
+
+$spacer: 1rem;
+$spacers: (
+	0: 0,
+	1: $spacer * 0.125,
+	2: $spacer * 0.25,
+	3: $spacer * 0.5,
+	4: $spacer * 0.75,
+	5: $spacer * 1,
+	6: $spacer * 1.25,
+	7: $spacer * 1.5,
+	8: $spacer * 2,
+	9: $spacer * 2.5,
+	10: $spacer * 3,
+) !default;

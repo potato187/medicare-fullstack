@@ -1,0 +1,27 @@
+.sort-column {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-sm);
+
+	cursor: pointer;
+	background-color: transparent;
+
+	&.active &__icon > svg {
+		fill: var(--bs-gray-900);
+	}
+
+	&__title {
+		flex-grow: 1;
+	}
+
+	&__icon {
+		transition: 0.15s ease-in-out;
+		background-color: transparent;
+		margin-left: auto;
+
+		> svg {
+			fill: var(--bs-gray-600);
+		}
+	}
+}

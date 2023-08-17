@@ -1,0 +1,35 @@
+.tabs-nav {
+	width: 100%;
+	border-bottom: 1px solid var(--bs-gray-300);
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: var(--spacing-md);
+
+	.nav-item {
+		display: block;
+		font-weight: 500;
+		font-size: var(--theme-text-xs);
+		color: var(--bs-gray-700);
+		line-height: 1.5;
+		padding: var(--spacing-sm) var(--spacing-md);
+		border: 1px solid transparent;
+		border-color: transparent transparent var(--bs-gray-300) transparent;
+		margin-bottom: -1px;
+		border-radius: var(--spacing-xs) var(--spacing-xs) 0 0;
+		background-color: var(--bs-white);
+		transition: var(--transition-color);
+
+		& + & {
+			margin-left: 1px;
+		}
+
+		&:hover {
+			border-color: var(--bs-gray-300);
+		}
+
+		&.active {
+			background-color: #f3f3f9;
+			border-color: var(--bs-gray-300) var(--bs-gray-300) transparent var(--bs-gray-300);
+		}
+	}
+}

@@ -1,0 +1,51 @@
+.field-input-check {
+	--field-input-color: var(--bs-gray-900);
+	--field-input-border: var(--bs-gray-400);
+	--field-input-border-active: var(--bs-primary);
+	--field-input-bg: var(--bs-white);
+	--field-input-bg-active: var(--bs-primary);
+
+	display: grid;
+	width: 100%;
+	grid-template-columns: 16px 1fr;
+	justify-items: flex-start;
+	align-items: center;
+	gap: var(--spacing-sm);
+
+	&.none-label {
+		grid-template-columns: 16px 0;
+		grid-gap: 0;
+		justify-content: center;
+	}
+
+	input {
+		width: 0.9125rem;
+		height: 0.9125rem;
+		border: 1px solid var(--field-input-border);
+
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: contain;
+		background-color: var(--bs-white);
+		transition: var(--transition-color);
+
+		&:checked {
+			background-color: var(--field-input-bg-active);
+			border-color: var(--field-input-border-active);
+		}
+
+		&[type='checkbox'] {
+			border-radius: var(--spacing-xxs);
+			background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+		}
+
+		&[type='radio'] {
+			border-radius: 50%;
+			background-image: none;
+
+			&:checked {
+				background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+			}
+		}
+	}
+}
