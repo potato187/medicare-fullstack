@@ -1,6 +1,6 @@
 module.exports = {
 	tryCatch: require('./tryCatch'),
 	handlerErrors: require('./handlerErrors'),
-	handlerValidateRequest: require('./validateRequest'),
+	handlerValidateRequest: require('./handlerValidateRequest'),
 	handlerRouteException: require('./handlerRouteException'),
 };

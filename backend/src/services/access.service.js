@@ -6,12 +6,13 @@ const {
 	UnauthorizedRequestError,
 	ForbiddenRequestError,
 } = require('@/core');
-const { AdminModel, RoleModel } = require('@/models');
+const { AdminModel } = require('@/models');
 const { generateToken, getInfoData } = require('@/utils');
 const bcrypt = require('bcrypt');
 const KeyTokenService = require('./keyToken.service');
 const AdminService = require('./admin.service');
 const { verifyToken } = require('@/auth/auth.utils');
+const workingHourModel = require('@/models/workingHour.model');
 
 class AccessService {
 	static async singUp({ firstName, lastName, email, password, role_key }) {

@@ -17,17 +17,15 @@ const doctorSchema = new Schema(
 			require: true,
 			enum: ['GF', 'GM', 'GO'],
 		},
-		contact: {
-			email: {
-				type: String,
-				required: true,
-			},
-			phone: {
-				type: String,
-				required: true,
-			},
-			address: String,
+		email: {
+			type: String,
+			required: true,
 		},
+		phone: {
+			type: String,
+			required: true,
+		},
+		address: String,
 		specialization: {
 			type: String,
 			required: true,

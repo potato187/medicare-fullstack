@@ -4,11 +4,12 @@ const { BadRequestError, UnauthorizedRequestError } = require('@/core');
 const { convertToObjectIdMongodb } = require('@/utils');
 const { verifyToken } = require('./auth.utils');
 const { KeyTokenRepo } = require('@/models/repository');
+const { tryCatch } = require('@/middleware');
 
 const checkRoles = (roles = []) => {
 	return async (req, res, next) => {
 		const { role } = req.user;
-		if (!roleId || !roles.includes(role)) {
+		if (!role || !roles.includes(role)) {
 			return next(new UnauthorizedRequestError('Permission denied.'));
 		}
 
@@ -16,7 +17,7 @@ const checkRoles = (roles = []) => {
 	};
 };
 
-const authorization = async (req, res, next) => {
+const authorization = tryCatch(async (req, res, next) => {
 	const clientId = req.headers[HEADERS.CLIENT_ID];
 	if (!clientId) {
 		return next(new BadRequestError());
@@ -48,7 +49,7 @@ const authorization = async (req, res, next) => {
 	req.keyStore = keyStore;
 
 	return next();
-};
+});
 
 module.exports = {
 	checkRoles,

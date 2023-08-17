@@ -10,8 +10,9 @@ const router = express.Router();
 router.post('/sign-up', handlerValidateRequest(signUpSchema), tryCatch(AccessController.signUp));
 router.post('/login', handlerValidateRequest(loginSchema), tryCatch(AccessController.login));
 
-router.use(tryCatch(authMiddleware.authorization));
+router.use(authMiddleware.authorization);
 router.post('/logout', tryCatch(AccessController.logout));
+
 router.post(
 	'/refresh-token',
 	handlerValidateRequest(refreshTokenSchema),
