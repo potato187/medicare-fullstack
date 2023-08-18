@@ -1,18 +1,30 @@
 'use strict';
 const Joi = require('joi');
 
-const textAlphaValidator = Joi.string().alphanum().required();
-const textValidator = Joi.string().required();
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+const phoneRegex = /^(84|0)[3|5|7|8|9]+([0-9]{8})\b/;
+const adminRoleRegex = /(admin|mod)/;
 
 const emailValidator = Joi.string().email({ minDomainSegments: 1, tlds: { allow: ['com'] } });
 
-const passwordValidator = Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).message({
+const passwordValidator = Joi.string().pattern(passwordRegex).message({
 	'string.pattern.base': 'Password must be a strong password.',
 });
 
+const phoneValidator = Joi.string().pattern(phoneRegex).message({
+	'string.pattern.base': 'Phone is invalid.',
+});
+
+const adminRoleValidator = Joi.string().pattern(adminRoleRegex).message({
+	'string.pattern.base': 'Role is invalid',
+});
+
+const nameValidator = Joi.string().alphanum().min(3).max(50).required();
+
 module.exports = {
-	textAlphaValidator,
-	textValidator,
+	phoneValidator,
 	emailValidator,
 	passwordValidator,
+	adminRoleValidator,
+	nameValidator,
 };

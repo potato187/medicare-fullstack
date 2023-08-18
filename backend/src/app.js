@@ -5,7 +5,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const cors = require('cors');
-const { handlerErrors, exceptionRoute, handlerRouteException } = require('@/middleware');
+const path = require('path');
+const { handlerErrors, handlerRouteException } = require('@/middleware');
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.use(
 		credentials: true,
 	}),
 );
+
+app.use('/public', express.static(path.join(__dirname, '../public')));
 
 // config database
 require('@/dbs').mongodInit;

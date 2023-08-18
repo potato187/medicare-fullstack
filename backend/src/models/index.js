@@ -1,5 +1,5 @@
 module.exports = {
-	AdminModel: require('./admin.model'),
-	RoleModel: require('./role.model'),
-	KeyTokenModel: require('./keyToken.model'),
+	_AdminModel: require('./admin.model'),
+	_RoleModel: require('./role.model'),
+	_KeyTokenModel: require('./keyToken.model'),
 };

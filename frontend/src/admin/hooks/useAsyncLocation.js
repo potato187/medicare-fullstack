@@ -67,10 +67,9 @@ export const useAsyncLocation = ({ fetchFnc = () => null }) => {
 
 	useEffect(() => {
 		tryCatch(async () => {
-			const { elements } = await fetchFnc(queryParams);
-			setData(elements.data);
-			setTotalPages(elements.meta.totalPages);
-			console.log('change');
+			const metadata = await fetchFnc(queryParams);
+			setData(metadata.data);
+			setTotalPages(metadata.meta.totalPages);
 		})();
 	}, [queryParams]);
 

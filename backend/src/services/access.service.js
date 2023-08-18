@@ -6,23 +6,22 @@ const {
 	UnauthorizedRequestError,
 	ForbiddenRequestError,
 } = require('@/core');
-const { AdminModel } = require('@/models');
+const { _AdminModel } = require('@/models');
 const { generateToken, getInfoData } = require('@/utils');
 const bcrypt = require('bcrypt');
 const KeyTokenService = require('./keyToken.service');
 const AdminService = require('./admin.service');
 const { verifyToken } = require('@/auth/auth.utils');
-const workingHourModel = require('@/models/workingHour.model');
 
 class AccessService {
-	static async singUp({ firstName, lastName, email, password, role_key }) {
+	static async singUp({ firstName, lastName, email, password, role, phone }) {
 		const foundAdmin = await AdminService.findByFilter({ email });
 
 		if (foundAdmin) {
 			throw new ConflictRequestError();
 		}
 
-		return await AdminModel.create({ firstName, lastName, email, password, role_key });
+		return await _AdminModel.create({ firstName, lastName, email, password, role, phone });
 	}
 
 	static async login({ email, password }) {
@@ -30,7 +29,7 @@ class AccessService {
 			'_id',
 			'email',
 			'password',
-			'role_key',
+			'role',
 			'firstName',
 			'lastName',
 		]);
@@ -47,7 +46,7 @@ class AccessService {
 
 		const [publicKey, privateKey] = [generateToken(), generateToken()];
 		const tokens = await authUtils.createTokenPair(
-			{ userId: foundAdmin._id, role: foundAdmin.role_key },
+			{ userId: foundAdmin._id, role: foundAdmin.role },
 			publicKey,
 			privateKey,
 		);
@@ -55,7 +54,7 @@ class AccessService {
 		await KeyTokenService.createPairToken(foundAdmin._id, publicKey, privateKey);
 
 		return {
-			admin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'role_key'], object: foundAdmin }),
+			admin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'role'], object: foundAdmin }),
 			tokens,
 		};
 	}

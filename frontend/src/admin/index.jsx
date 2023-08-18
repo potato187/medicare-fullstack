@@ -8,18 +8,8 @@ import { Provider } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import { withAuth } from './hocs';
-
 import { Layout } from './components';
-import {
-	AdminManager,
-	BookingManager,
-	CategoryManager,
-	HtmlContentManager,
-	LanguageManager,
-	LoginPage,
-	PostManager,
-	SpecialtyManager,
-} from './features';
+import { AdminManager, LanguageManager, LoginPage } from './features';
 import { persistor, store } from './redux/store/configureStore';
 
 export default function Admin() {
@@ -37,7 +27,6 @@ export default function Admin() {
 										<Route path=':languageId' element={<LanguageManager />} />
 										<Route path='*' element={<Navigate to='en' replace />} />
 									</Route>
-
 									<Route path='admin/*'>
 										<Route path='manage' element={<AdminManager />} />
 										<Route path='*' element={<Navigate to='manage' replace />} />

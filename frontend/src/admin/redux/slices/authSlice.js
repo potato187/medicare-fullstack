@@ -6,12 +6,12 @@ const initialState = {
 	payload: {
 		id: '',
 		email: '',
-		roleId: '',
-		positionId: '',
+		role_key: '',
+		firstName: '',
+		lastName: '',
 		image: '',
-		first_name: '',
-		last_name: '',
-		access_token: null,
+		accessToken: null,
+		refreshToken: null,
 	},
 	isLoading: false,
 	isSuccess: false,
@@ -48,11 +48,17 @@ const authSlice = createSlice({
 				state.isLoading = true;
 			})
 			.addMatcher(isAnyOf(authLogin.fulfilled, authLoginStatus.fulfilled), (state, meta) => {
-				const { elements } = meta.payload;
+				const { admin, tokens } = meta.payload;
 				state.isLoading = false;
 				state.isLogin = true;
 				state.isSuccess = true;
-				state.payload = { ...elements };
+				state.payload.id = admin._id;
+				state.payload.email = admin.email;
+				state.payload.firstName = admin.firstName;
+				state.payload.lastName = admin.lastName;
+				state.payload.role = admin.role_key;
+				state.payload.accessToken = tokens.accessToken;
+				state.payload.refreshToken = tokens.refreshToken;
 			})
 			.addMatcher(isAnyOf(authLogin.rejected, authLoginStatus.rejected), (state, meta) => {
 				state.isLoading = false;

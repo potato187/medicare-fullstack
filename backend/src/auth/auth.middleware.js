@@ -31,9 +31,7 @@ const authorization = tryCatch(async (req, res, next) => {
 		return next(new BadRequestError());
 	}
 
-	const accessToken = req.headers[HEADERS.AUTHORIZATION];
-
-	console.log(accessToken);
+	const accessToken = req.headers[HEADERS.AUTHORIZATION].split(' ')[1];
 
 	if (!accessToken) {
 		return next(new UnauthorizedRequestError());

@@ -23,6 +23,14 @@ const createSelectData = (select) => {
 	return Object.fromEntries(select.map((key) => [key, 1]));
 };
 
+const createSortData = (sort = []) => {
+	return sort.reduce((hash, sortItem) => {
+		const [key, value] = sortItem;
+		hash[key] = value;
+		return hash;
+	}, {});
+};
+
 const getUnSelectData = (select = []) => {
 	return Object.fromEntries(select.map((key) => [key, 0]));
 };
@@ -33,5 +41,6 @@ module.exports = {
 	convertToObjectIdMongodb,
 	createSelectData,
 	getUnSelectData,
+	createSortData,
 	getInfoData,
 };

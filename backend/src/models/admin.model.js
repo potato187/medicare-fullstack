@@ -8,22 +8,27 @@ const adminSchema = new Schema(
 	{
 		firstName: {
 			type: String,
-			require: true,
+			required: true,
 		},
 
 		lastName: {
 			type: String,
-			require: true,
+			required: true,
+		},
+		phone: {
+			type: String,
+			required: true,
+			unique: true,
 		},
 		email: {
 			type: String,
-			require: true,
+			required: true,
 			unique: true,
 		},
 		password: {
 			type: String,
 		},
-		role_key: {
+		role: {
 			type: String,
 			enum: ROLES,
 		},
@@ -32,6 +37,8 @@ const adminSchema = new Schema(
 		timestamps: true,
 	},
 );
+
+adminSchema.index({ firstName: 'text', lastName: 'text', email: 'text', phone: 'text' });
 
 adminSchema.pre('save', function (next) {
 	this.password = bcrypt.hashSync(this.password, 10);

@@ -28,6 +28,8 @@ export function AdminManager() {
 	const { languageId } = useAuth();
 	const { currentIndexRef: adminIndexRef, setCurrentIndex: updateAdminIndex } = useCurrentIndex(0);
 
+	console.log(languageId);
+
 	const {
 		data: Admins,
 		setData: setAdmins,
@@ -41,8 +43,9 @@ export function AdminManager() {
 		fetchFnc: adminApi.getAll,
 	});
 
-	const Genders = useGenders(languageId);
+	/* 	const Genders = useGenders(languageId);
 	const Positions = usePositions(languageId);
+ */
 
 	const [statusCreateModal, toggleCreateModal] = useToggle();
 	const [statusProfileModal, toggleProfile] = useToggle();
@@ -79,122 +82,5 @@ export function AdminManager() {
 		);
 	}, languageId);
 
-	return (
-		<React.Fragment>
-			<Container id='page-main'>
-				<div className='d-flex flex-column h-100 py-5'>
-					<div className='d-flex pb-4'>
-						<div className='d-flex'>
-							<UnFieldDebounce
-								delay={500}
-								onChange={handleOnChangeSearch}
-								initialValue={queryParams.search}
-								type='text'
-								placeholderIntl='form.search_placeholder'
-								ariallabel='search field'
-								id='search-field'
-							/>
-						</div>
-						<div className='px-5 d-flex gap-2 ms-auto'>
-							<Button size='sm' onClick={toggleCreateModal}>
-								<span>
-									<FormattedMessage id='button.create_user' />
-								</span>
-								<MdAdd size='1.25em' className='ms-2' />
-							</Button>
-						</div>
-					</div>
-					<TableGrid className='scrollbar'>
-						<Table hover striped auto>
-							<TableHeader>
-								<th className='text-center'>
-									<FormattedMessage id='table.no' />
-								</th>
-								<SortableTableHeader
-									orders={queryParams.order}
-									name='first_name'
-									intl='form.first_name'
-									onChange={handleOnOrder}
-								/>
-								<SortableTableHeader
-									orders={queryParams.order}
-									name='last_name'
-									intl='form.last_name'
-									onChange={handleOnOrder}
-								/>
-								<SortableTableHeader
-									orders={queryParams.order}
-									name='email'
-									intl='form.email'
-									onChange={handleOnOrder}
-								/>
-								<th className='text-start'>
-									<FormattedMessage id='form.phone' />
-								</th>
-								<th className='text-center'>
-									<FormattedMessage id='table.actions' />
-								</th>
-							</TableHeader>
-							<TableBody>
-								{Admins.map(({ id, first_name, last_name, email, phone }, index) => (
-									<tr key={id}>
-										<td className='text-center'>{index + 1}</td>
-										<td className='text-start'>{first_name}</td>
-										<td className='text-start'>{last_name}</td>
-										<td className='text-start'>{email}</td>
-										<td className='text-start'>{phone}</td>
-										<td>
-											<div className='d-flex justify-content-center gap-2'>
-												<Button size='xs' success onClick={() => openProfileModal(index)}>
-													<FormattedMessage id='button.update' />
-												</Button>
-												<Button size='xs' danger onClick={() => openConfirmModal(index)}>
-													<FormattedMessage id='button.delete' />
-												</Button>
-											</div>
-										</td>
-									</tr>
-								))}
-							</TableBody>
-						</Table>
-					</TableGrid>
-
-					<FooterContainer
-						per_page={queryParams.per_page}
-						totalPages={totalPages}
-						handleOnSelect={handleOnSelect}
-						handleOnPageChange={handleOnPageChange}
-					/>
-				</div>
-			</Container>
-
-			<AdminCreateModal
-				isOpen={statusCreateModal}
-				genders={Genders}
-				positions={Positions}
-				onClose={toggleCreateModal}
-				onSubmit={handleCreateAdmin}
-			/>
-
-			<AdminEditModal
-				isOpen={statusProfileModal}
-				defaultValues={Admins[adminIndexRef.current]}
-				genders={Genders}
-				positions={Positions}
-				onSubmit={handleUpdateAdmin}
-				onClose={toggleProfile}
-			/>
-
-			<ConfirmModal
-				idTitleIntl='dashboard.admin.modal.confirm_deletion_admin.title'
-				isOpen={statusConfirmModal}
-				onClose={toggleConfirmDeletionModal}
-				onSubmit={handleConfirmDeletion}>
-				<FormattedDescription
-					id='dashboard.admin.modal.confirm_deletion_admin.description'
-					values={{ email: Admins[adminIndexRef.current]?.email ?? '' }}
-				/>
-			</ConfirmModal>
-		</React.Fragment>
-	);
+	return <React.Fragment></React.Fragment>;
 }
