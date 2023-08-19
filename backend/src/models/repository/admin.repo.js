@@ -15,6 +15,10 @@ class AdminRepo {
 	static async createAdmin(body) {
 		return await _AdminModel.create(body);
 	}
+
+	static async updateAdminById(id, updateBody) {
+		return await _AdminModel.findByIdAndUpdate(id, updateBody);
+	}
 }
 
 module.exports = AdminRepo;

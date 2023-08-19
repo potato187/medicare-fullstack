@@ -17,5 +17,7 @@ router.get(
 );
 
 router.get('/get-total-pages', tryCatch(AdminController.getTotalPages));
+router.post('/delete/:id', tryCatch(AdminController.deleteAdminById));
+router.patch('/update/:id', tryCatch(AdminController.updateAdminById));
 
 module.exports = router;

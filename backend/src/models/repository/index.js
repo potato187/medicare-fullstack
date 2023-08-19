@@ -3,4 +3,5 @@ module.exports = {
 	GenderRepo: require('./gender.repo'),
 	KeyTokenRepo: require('./keyToken.repo'),
 	RoleRepo: require('./role.repo'),
+	UtilsRepo: require('./utils.repo'),
 };

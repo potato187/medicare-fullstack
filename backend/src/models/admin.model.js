@@ -32,10 +32,21 @@ const adminSchema = new Schema(
 		role: {
 			type: String,
 			enum: ROLES,
+			default: ROLES[1],
 		},
 		gender: {
 			type: String,
 			enum: GENDERS,
+			default: GENDERS[0],
+		},
+		isDeleted: {
+			type: Boolean,
+			default: false,
+		},
+		isActive: {
+			type: String,
+			enum: ['active', 'inactive'],
+			default: 'active',
 		},
 	},
 	{
@@ -43,10 +54,15 @@ const adminSchema = new Schema(
 	},
 );
 
-adminSchema.index({ firstName: 'text', lastName: 'text', email: 'text', phone: 'text' });
-
 adminSchema.pre('save', function (next) {
 	this.password = bcrypt.hashSync(this.password, 10);
+	next();
+});
+
+adminSchema.pre('findOneAndUpdate', function (next) {
+	if (this._update.password) {
+		this._update.password = bcrypt.hashSync(this._update.password, 10);
+	}
 	next();
 });
 

@@ -3,14 +3,14 @@ const { authUtils } = require('@/auth');
 const { verifyToken } = require('@/auth/auth.utils');
 const { generateToken, getInfoData } = require('@/utils');
 const bcrypt = require('bcrypt');
-const KeyTokenService = require('./keyToken.service');
+const { AdminRepo, KeyTokenRepo } = require('@/models/repository');
+
 const {
 	ConflictRequestError,
 	NotFoundRequestError,
 	UnauthorizedRequestError,
 	ForbiddenRequestError,
 } = require('@/core');
-const { AdminRepo } = require('@/models/repository');
 
 class AccessService {
 	static async singUp({ firstName, lastName, email, phone, password, role, gender }) {
@@ -25,33 +25,23 @@ class AccessService {
 	}
 
 	static async login({ email, password }) {
-		const foundAdmin = await AdminRepo.findByFilter({ email }, [
-			'_id',
-			'email',
-			'password',
-			'role',
-			'firstName',
-			'lastName',
-		]);
+		const filter = { email };
+		const select = ['_id', 'email', 'password', 'role', 'firstName', 'lastName'];
+		const foundAdmin = await AdminRepo.findByFilter(filter, select);
 
 		if (!foundAdmin) {
 			throw new NotFoundRequestError();
 		}
 
-		const match = bcrypt.compareSync(password, foundAdmin.password);
-
-		if (!match) {
+		if (!bcrypt.compareSync(password, foundAdmin.password)) {
 			throw new UnauthorizedRequestError();
 		}
 
 		const [publicKey, privateKey] = [generateToken(), generateToken()];
-		const tokens = await authUtils.createTokenPair(
-			{ userId: foundAdmin._id, role: foundAdmin.role },
-			publicKey,
-			privateKey,
-		);
+		const payload = { userId: foundAdmin._id, role: foundAdmin.role };
+		const tokens = await authUtils.createTokenPair(payload, publicKey, privateKey);
 
-		await KeyTokenService.createPairToken(foundAdmin._id, publicKey, privateKey);
+		await KeyTokenRepo.createPairToken(foundAdmin._id, publicKey, privateKey);
 
 		return {
 			admin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'role'], object: foundAdmin }),
@@ -60,7 +50,7 @@ class AccessService {
 	}
 
 	static async logout(keyStore) {
-		return await KeyTokenService.removeById(keyStore._id);
+		return await KeyTokenRepo.removeById(keyStore._id);
 	}
 
 	static async handleRefreshToken({ user, keyStore, refreshToken }) {
@@ -72,7 +62,7 @@ class AccessService {
 
 		const tokens = await authUtils.createTokenPair(user, keyStore.publicKey, keyStore.privateKey);
 
-		await KeyTokenService.markRefreshTokenUsed(keyStore._id, tokens.refreshToken, refreshToken);
+		await KeyTokenRepo.markRefreshTokenUsed(keyStore._id, tokens.refreshToken, refreshToken);
 
 		return {
 			user,

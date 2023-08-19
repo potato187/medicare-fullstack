@@ -16,6 +16,20 @@ class AdminController {
 			metadata: await AdminService.getTotalPages(),
 		}).send(res);
 	};
+
+	updateAdminById = async (req, res, next) => {
+		new SuccessResponse({
+			message: 'Update admin  successfully!',
+			metadata: await AdminService.updateAdminById({ id: req.params.id, updateBody: req.body }),
+		}).send(res);
+	};
+
+	deleteAdminById = async (req, res, next) => {
+		new SuccessResponse({
+			message: 'Delete admin  successfully!',
+			metadata: await AdminService.deleteAdminById(req.params.id),
+		}).send(res);
+	};
 }
 
 module.exports = new AdminController();
