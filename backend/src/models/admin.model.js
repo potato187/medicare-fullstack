@@ -1,5 +1,5 @@
 'use strict';
-const { ROLES } = require('@/constant');
+const { ROLES, GENDERS } = require('@/constant');
 const bcrypt = require('bcrypt');
 const { Schema, model } = require('mongoose');
 
@@ -32,6 +32,10 @@ const adminSchema = new Schema(
 		role: {
 			type: String,
 			enum: ROLES,
+		},
+		gender: {
+			type: String,
+			enum: GENDERS,
 		},
 	},
 	{

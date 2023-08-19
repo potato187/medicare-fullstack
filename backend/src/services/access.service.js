@@ -1,10 +1,8 @@
 'use strict';
 const { authUtils } = require('@/auth');
 const { verifyToken } = require('@/auth/auth.utils');
-const { _AdminModel } = require('@/models');
 const { generateToken, getInfoData } = require('@/utils');
 const bcrypt = require('bcrypt');
-const AdminService = require('./admin.service');
 const KeyTokenService = require('./keyToken.service');
 const {
 	ConflictRequestError,
@@ -12,20 +10,22 @@ const {
 	UnauthorizedRequestError,
 	ForbiddenRequestError,
 } = require('@/core');
+const { AdminRepo } = require('@/models/repository');
 
 class AccessService {
-	static async singUp({ firstName, lastName, email, password, role, phone }) {
-		const foundAdmin = await AdminService.findByFilter({ email });
+	static async singUp({ firstName, lastName, email, phone, password, role, gender }) {
+		const filter = { $or: [{ email }, { phone }] };
+		const foundAdmin = await AdminRepo.findByFilter(filter);
 
 		if (foundAdmin) {
-			throw new ConflictRequestError();
+			throw new ConflictRequestError('Phone or email already is use.');
 		}
 
-		return await _AdminModel.create({ firstName, lastName, email, password, role, phone });
+		return await AdminRepo.createAdmin({ firstName, lastName, email, phone, password, role, gender });
 	}
 
 	static async login({ email, password }) {
-		const foundAdmin = await AdminService.findByFilter({ email }, [
+		const foundAdmin = await AdminRepo.findByFilter({ email }, [
 			'_id',
 			'email',
 			'password',

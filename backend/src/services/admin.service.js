@@ -1,12 +1,15 @@
 'use strict';
+const { ConflictRequestError } = require('@/core');
 const { _AdminModel } = require('@/models');
-const { createSelectData, createSortData, createSearchData } = require('@/utils');
+const { AdminRepo } = require('@/models/repository');
+const { createSelectData, createSortData, createSearchData, getInfoData } = require('@/utils');
+
+/* 
+	Admin Service
+	1 - Query list Admin [admin]
+*/
 
 class AdminService {
-	static async findByFilter(filter, select = ['_id']) {
-		return await _AdminModel.findOne(filter).select(createSelectData(select)).lean().exec();
-	}
-
 	static async query({ key_search = '', select = ['_id'], sort = { updateAt: 'asc' }, page = 1, pagesize = 25 }) {
 		let filter = {};
 		const validPage = Math.max(1, page);

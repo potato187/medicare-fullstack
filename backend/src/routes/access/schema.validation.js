@@ -1,11 +1,12 @@
 'use strict';
 
 const {
+	adminRoleValidator,
 	emailValidator,
+	genderValidator,
+	nameValidator,
 	passwordValidator,
 	phoneValidator,
-	adminRoleValidator,
-	nameValidator,
 } = require('@/validations');
 const Joi = require('joi');
 
@@ -16,6 +17,7 @@ const signUpSchema = Joi.object({
 	phone: phoneValidator,
 	password: passwordValidator,
 	role: adminRoleValidator,
+	gender: genderValidator,
 });
 
 const loginSchema = Joi.object({
@@ -28,7 +30,7 @@ const refreshTokenSchema = Joi.object({
 });
 
 module.exports = {
-	signUpSchema,
 	loginSchema,
 	refreshTokenSchema,
+	signUpSchema,
 };

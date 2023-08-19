@@ -7,11 +7,11 @@ const { signUpSchema, loginSchema, refreshTokenSchema } = require('./schema.vali
 
 const router = express.Router();
 
-router.post('/sign-up', handlerValidateRequest(signUpSchema), tryCatch(AccessController.signUp));
 router.post('/login', handlerValidateRequest(loginSchema), tryCatch(AccessController.login));
 
 router.use(authMiddleware.authorization);
 router.post('/logout', tryCatch(AccessController.logout));
+router.post('/sign-up', handlerValidateRequest(signUpSchema), tryCatch(AccessController.signUp));
 
 router.post(
 	'/refresh-token',
