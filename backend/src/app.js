@@ -1,13 +1,13 @@
 'use strict';
-require('dotenv').config();
+const { handlerErrors, handlerRouteException } = require('@/middleware');
+const compression = require('compression');
+const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const compression = require('compression');
-const cors = require('cors');
 const path = require('path');
-const { handlerErrors, handlerRouteException } = require('@/middleware');
 
+require('dotenv').config();
 const app = express();
 
 app.use(helmet());

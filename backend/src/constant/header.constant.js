@@ -1,3 +1,5 @@
+'use strict';
+
 const HEADERS = {
 	CLIENT_ID: 'x-client-id',
 	AUTHORIZATION: 'authorization',

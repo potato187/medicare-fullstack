@@ -1,4 +1,5 @@
 'use strict';
+
 const {
 	emailValidator,
 	passwordValidator,

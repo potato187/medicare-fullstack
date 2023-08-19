@@ -1,10 +1,10 @@
 'use strict';
 const { HEADERS } = require('@/constant');
 const { BadRequestError, UnauthorizedRequestError } = require('@/core');
+const { tryCatch } = require('@/middleware');
+const { KeyTokenRepo } = require('@/models/repository');
 const { convertToObjectIdMongodb } = require('@/utils');
 const { verifyToken } = require('./auth.utils');
-const { KeyTokenRepo } = require('@/models/repository');
-const { tryCatch } = require('@/middleware');
 
 const checkRoles = (roles = []) => {
 	return async (req, res, next) => {
@@ -20,7 +20,7 @@ const checkRoles = (roles = []) => {
 const authorization = tryCatch(async (req, res, next) => {
 	const clientId = req.headers[HEADERS.CLIENT_ID];
 	if (!clientId) {
-		return next(new BadRequestError());
+		return next(new BadRequestError('Missing Client Id'));
 	}
 
 	const filter = { userId: convertToObjectIdMongodb(clientId) };

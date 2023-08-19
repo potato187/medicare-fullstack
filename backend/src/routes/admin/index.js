@@ -16,4 +16,6 @@ router.get(
 	tryCatch(AdminController.query),
 );
 
+router.get('/get-total-pages', tryCatch(AdminController.getTotalPages));
+
 module.exports = router;

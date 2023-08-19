@@ -1,7 +1,7 @@
 'use strict';
+const { NotFoundRequestError } = require('@/core');
 const fs = require('fs');
 const path = require('path');
-const { NotFoundRequestError } = require('@/core');
 
 const LANGUAGE_PATH = '../json/languages/dashboard';
 const ACCEPTED_LANGUAGES = ['en', 'vi'];

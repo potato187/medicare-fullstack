@@ -18,7 +18,6 @@ class AdminService {
 			filter.$or = createSearchData(['firstName', 'lastName', 'email', 'phone'], key_search);
 		}
 
-		const totalPage = await _AdminModel.count();
 		const documents = await _AdminModel
 			.find(filter)
 			.sort(_sort)
@@ -33,10 +32,14 @@ class AdminService {
 			meta: {
 				page: validPage,
 				pagesize: validPage,
-				totalPage,
 				keywords: key_search,
 			},
 		};
+	}
+
+	static async getTotalPages() {
+		const totalPages = await _AdminModel.count();
+		return { totalPages };
 	}
 }
 

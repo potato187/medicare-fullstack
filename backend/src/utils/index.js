@@ -31,7 +31,7 @@ const createSortData = (sort = []) => {
 	}, {});
 };
 
-const getUnSelectData = (select = []) => {
+const createUnSelectData = (select = ['_id', '__v', 'createdAt', 'updatedAt']) => {
 	return Object.fromEntries(select.map((key) => [key, 0]));
 };
 
@@ -43,12 +43,12 @@ const createSearchData = (fields = [], key_search, regexOptions = 'i') => {
 };
 
 module.exports = {
-	typeOf,
-	generateToken,
 	convertToObjectIdMongodb,
+	createSearchData,
 	createSelectData,
 	createSortData,
-	createSearchData,
-	getUnSelectData,
+	createUnSelectData,
+	generateToken,
 	getInfoData,
+	typeOf,
 };

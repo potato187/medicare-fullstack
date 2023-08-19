@@ -1,3 +1,4 @@
+'use strict';
 const { Schema, model } = require('mongoose');
 
 const DOCUMENT_NAME = 'Specialization';

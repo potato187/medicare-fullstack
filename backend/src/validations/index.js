@@ -22,9 +22,9 @@ const adminRoleValidator = Joi.string().pattern(adminRoleRegex).message({
 const nameValidator = Joi.string().alphanum().min(3).max(50).required();
 
 module.exports = {
-	phoneValidator,
-	emailValidator,
-	passwordValidator,
 	adminRoleValidator,
+	emailValidator,
 	nameValidator,
+	passwordValidator,
+	phoneValidator,
 };

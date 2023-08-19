@@ -1,9 +1,9 @@
 'use strict';
+const { authMiddleware } = require('@/auth');
+const { AccessController } = require('@/controllers');
 const { handlerValidateRequest, tryCatch } = require('@/middleware');
 const express = require('express');
 const { signUpSchema, loginSchema, refreshTokenSchema } = require('./schema.validation');
-const { AccessController } = require('@/controllers');
-const { authMiddleware } = require('@/auth');
 
 const router = express.Router();
 

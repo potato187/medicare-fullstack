@@ -3,4 +3,5 @@ module.exports = {
 	AdminService: require('./admin.service'),
 	KeyTokenService: require('./keyToken.service'),
 	LanguageService: require('./language.service'),
+	ResourceService: require('./resource.service'),
 };

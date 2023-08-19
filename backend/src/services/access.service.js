@@ -1,17 +1,17 @@
 'use strict';
 const { authUtils } = require('@/auth');
+const { verifyToken } = require('@/auth/auth.utils');
+const { _AdminModel } = require('@/models');
+const { generateToken, getInfoData } = require('@/utils');
+const bcrypt = require('bcrypt');
+const AdminService = require('./admin.service');
+const KeyTokenService = require('./keyToken.service');
 const {
 	ConflictRequestError,
 	NotFoundRequestError,
 	UnauthorizedRequestError,
 	ForbiddenRequestError,
 } = require('@/core');
-const { _AdminModel } = require('@/models');
-const { generateToken, getInfoData } = require('@/utils');
-const bcrypt = require('bcrypt');
-const KeyTokenService = require('./keyToken.service');
-const AdminService = require('./admin.service');
-const { verifyToken } = require('@/auth/auth.utils');
 
 class AccessService {
 	static async singUp({ firstName, lastName, email, password, role, phone }) {

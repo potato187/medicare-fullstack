@@ -1,7 +1,8 @@
 'use strict';
-const { Schema, model } = require('mongoose');
-const bcrypt = require('bcrypt');
 const { ROLES } = require('@/constant');
+const bcrypt = require('bcrypt');
+const { Schema, model } = require('mongoose');
+
 const DOCUMENT_NAME = 'Admin';
 
 const adminSchema = new Schema(
