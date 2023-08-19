@@ -10,7 +10,7 @@ const handlerValidateRequest = (schema, requestType = 'body') => {
 		if (error) {
 			return next(new BadRequestError(error.details[0].message));
 		} else {
-			req.query = value;
+			req[requestType] = value;
 		}
 
 		return next();

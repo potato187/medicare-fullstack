@@ -35,12 +35,20 @@ const getUnSelectData = (select = []) => {
 	return Object.fromEntries(select.map((key) => [key, 0]));
 };
 
+const createSearchData = (fields = [], key_search, regexOptions = 'i') => {
+	const searchRegex = new RegExp(key_search, regexOptions);
+	return fields.map((field) => {
+		return { [field]: { $regex: searchRegex } };
+	});
+};
+
 module.exports = {
 	typeOf,
 	generateToken,
 	convertToObjectIdMongodb,
 	createSelectData,
-	getUnSelectData,
 	createSortData,
+	createSearchData,
+	getUnSelectData,
 	getInfoData,
 };

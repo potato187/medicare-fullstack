@@ -8,12 +8,14 @@ const querySchema = Joi.object({
 	sort: Joi.array()
 		.items(
 			Joi.array().ordered(
-				Joi.string().valid('createdAt', 'updatedAt').default('updatedAt'),
-				Joi.string().valid('asc', 'asc').default('asc'),
+				Joi.string().valid('createdAt', 'updatedAt', 'firstName', 'lastName', 'email').default('updatedAt'),
+				Joi.string().valid('asc', 'desc').default('asc'),
 			),
 		)
 		.default([['updatedAt', 'asc']]),
-	select: Joi.array().items(Joi.string().valid('_id', 'firstName')).default(['_id', 'firstName', 'lastName', 'email']),
+	select: Joi.array()
+		.items(Joi.string().valid('_id', 'firstName', 'lastName', 'email', 'phone'))
+		.default(['_id', 'firstName', 'lastName', 'email', 'phone']),
 });
 
 module.exports = {

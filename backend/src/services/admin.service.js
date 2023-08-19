@@ -1,6 +1,6 @@
 'use strict';
 const { _AdminModel } = require('@/models');
-const { createSelectData, createSortData } = require('@/utils');
+const { createSelectData, createSortData, createSearchData } = require('@/utils');
 
 class AdminService {
 	static async findByFilter(filter, select = ['_id']) {
@@ -8,26 +8,25 @@ class AdminService {
 	}
 
 	static async query({ key_search = '', select = ['_id'], sort = { updateAt: 'asc' }, page = 1, pagesize = 25 }) {
-		const filter = {};
-		const options = {};
+		let filter = {};
 		const validPage = Math.max(1, page);
 		const validPageSize = pagesize > 0 && pagesize < 100 ? pagesize : 25;
 		const skip = (validPage - 1) * validPageSize;
+		let _sort = createSortData(sort);
 
 		if (key_search.length) {
-			const regexSearch = new RegExp(key_search);
-			filter[`$text`] = { $search: regexSearch };
-			options['score'] = { $meta: 'textScore' };
+			filter.$or = createSearchData(['firstName', 'lastName', 'email', 'phone'], key_search);
 		}
 
 		const totalPage = await _AdminModel.count();
 		const documents = await _AdminModel
 			.find(filter)
-			.sort(createSortData(sort))
+			.sort(_sort)
 			.skip(skip)
 			.limit(validPageSize)
 			.select(createSelectData(select))
-			.lean();
+			.lean()
+			.exec();
 
 		return {
 			data: documents,
@@ -35,6 +34,7 @@ class AdminService {
 				page: validPage,
 				pagesize: validPage,
 				totalPage,
+				keywords: key_search,
 			},
 		};
 	}
