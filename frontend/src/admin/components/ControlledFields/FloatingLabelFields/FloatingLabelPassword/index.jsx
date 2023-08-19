@@ -8,13 +8,14 @@ import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 import { FormattedMessage, useIntl } from 'react-intl';
 import module from '../style.module.scss';
 
-export function FloatingLabelPassword({ name, labelIntl, value = null, rules = null, ...props }) {
+export function FloatingLabelPassword({ name, labelIntl, ...props }) {
 	const id = useId();
 	const intl = useIntl();
 	const labelText = intl.formatMessage({ id: labelIntl });
 	const { isOpen, toggle } = useSwitchState(false);
-	const { control, errors, setValue } = useFormContext();
+	const { control, errors } = useFormContext();
 	const type = isOpen ? 'text' : 'password';
+
 	const {
 		'form-group': formGroupCln,
 		'form-password': passwordCln,
@@ -22,18 +23,11 @@ export function FloatingLabelPassword({ name, labelIntl, value = null, rules = n
 		'form-control': inputCln,
 	} = module;
 
-	useEffect(() => {
-		if (value) {
-			setValue(name, value);
-		}
-	}, [value]);
-
 	return (
 		<div className={cn(formGroupCln, passwordCln)}>
 			<Controller
 				control={control}
 				name={name}
-				rules={rules}
 				defaultValue=''
 				render={({ field }) => (
 					<input type={type} id={id} className={inputCln} {...field} {...props} placeholder=' ' autoComplete='nope' />

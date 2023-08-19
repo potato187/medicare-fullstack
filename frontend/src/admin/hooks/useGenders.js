@@ -1,16 +1,20 @@
-import { formatDataForSelect } from '../utilities';
-import { useQuery } from './useQuery';
+import { tryCatch } from '@/shared/utils';
+import { useEffect, useMemo, useState } from 'react';
+import { resourceApi } from '../api';
 
-export const useGenders = ({ languageId }) => {
-	const { Genders } = useQuery(
-		'Genders',
-		{
-			from: 'Gender',
-			attributes: [['genderId', 'id'], 'value_vi', 'value_en'],
-			order: [['genderId', 'asc']],
-		},
-		formatDataForSelect(languageId),
-	);
+export const useGenders = (languageId = 'en') => {
+	const [genders, setGenders] = useState([]);
+
+	const Genders = useMemo(() => {
+		return genders.map(({ gender_key, gender_name }) => ({ label: gender_name[languageId], value: gender_key }));
+	}, [genders, languageId]);
+
+	useEffect(() => {
+		tryCatch(async () => {
+			const metadata = await resourceApi.getAllGender();
+			setGenders(metadata);
+		})();
+	}, []);
 
 	return Genders;
 };

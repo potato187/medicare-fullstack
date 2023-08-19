@@ -22,7 +22,7 @@ import {
 	STATUS_ID_DEFAULT,
 	WORKING_HOUR_ID_DEFAULT,
 } from '@/admin/constant';
-import { useAsyncLocation, useFetchSpecialty, useQuery, useToggle } from '@/admin/hooks';
+import { useAsyncLocation, useFetchSpecialty, useToggle } from '@/admin/hooks';
 import { compose } from '@/admin/utilities';
 import { useAuth } from '@/hooks';
 import { FormattedDescription } from '@/shared/components';
@@ -61,25 +61,9 @@ export function BookingManager() {
 	const convertToOptions = (response) =>
 		response.map((response) => ({ value: response.statusId, label: response[`value_${languageId}`] }));
 
-	const { Statuses } = useQuery(
-		'Statuses',
-		{
-			from: 'status',
-			attributes: ['statusId', 'value_vi', 'value_en'],
-		},
-		convertToOptions,
-		[languageId],
-	);
+	const { Statuses } = {};
 
-	const { WorkingHours } = useQuery(
-		'WorkingHours',
-		{
-			from: 'workingHour',
-			attributes: ['workingHourId', 'value_vi', 'value_en'],
-		},
-		convertToOptions,
-		[languageId],
-	);
+	const { WorkingHours } = {};
 
 	const { memorizedOptions: Specialties, updateSpecialties } = useFetchSpecialty({ language: languageId });
 

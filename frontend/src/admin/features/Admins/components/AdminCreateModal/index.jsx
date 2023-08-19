@@ -5,6 +5,7 @@ import {
 	BaseModalHeader,
 	Button,
 	FloatingLabelInput,
+	FloatingLabelPassword,
 	FloatingLabelSelect,
 } from '@/admin/components';
 
@@ -39,10 +40,10 @@ export function AdminCreateModal({
 					<BaseModalBody>
 						<div className='row'>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='first_name' labelIntl='form.first_name' />
+								<FloatingLabelInput name='firstName' labelIntl='form.first_name' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='last_name' labelIntl='form.last_name' />
+								<FloatingLabelInput name='lastName' labelIntl='form.last_name' />
 							</div>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='email' labelIntl='form.email' />
@@ -50,20 +51,17 @@ export function AdminCreateModal({
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='phone' labelIntl='form.phone' />
 							</div>
-							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='address' labelIntl='form.address' />
-							</div>
+
 							<div className='col-6 mb-6 z-index-4'>
-								<FloatingLabelSelect name='genderId' labelIntl='common.gender' options={genders} />
+								<FloatingLabelSelect name='gender' labelIntl='common.gender' options={genders} />
 							</div>
 
 							<div className='col-6 mb-6 z-index-2'>
-								<FloatingLabelSelect
-									name='positionId'
-									labelIntl='common.position'
-									options={positions}
-									autoComplete='positionId'
-								/>
+								<FloatingLabelSelect name='role' labelIntl='common.position' options={positions} />
+							</div>
+
+							<div className='col-6 mb-6'>
+								<FloatingLabelPassword name='password' labelIntl='form.password' />
 							</div>
 						</div>
 					</BaseModalBody>

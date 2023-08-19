@@ -56,7 +56,7 @@ const authSlice = createSlice({
 				state.payload.email = admin.email;
 				state.payload.firstName = admin.firstName;
 				state.payload.lastName = admin.lastName;
-				state.payload.role = admin.role_key;
+				state.payload.role = admin.role;
 				state.payload.accessToken = tokens.accessToken;
 				state.payload.refreshToken = tokens.refreshToken;
 			})

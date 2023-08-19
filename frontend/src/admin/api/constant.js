@@ -1,4 +1,4 @@
-export const ADMINS_PATH = 'admin';
+export const ADMIN_PATH = 'admin';
 export const AUTH_PATH = 'auth';
 export const PROFILE_PATH = 'profile';
 export const UNIVERSAL_PATH = 'universal';
@@ -10,4 +10,4 @@ export const BOOKINGS_PATH = 'bookings';
 export const POST_CATEGORIES_PATH = 'post-categories';
 export const POST_PATH = 'post';
 export const HTML_CONTENT_PATH = 'modules/html-content';
-export const QUERY_PATH = 'query';
+export const RESOURCE_PATH = 'resource';

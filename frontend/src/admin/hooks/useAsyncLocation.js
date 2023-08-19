@@ -6,51 +6,50 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { createURL } from '../utilities';
 
-export const useAsyncLocation = ({ fetchFnc = () => null }) => {
+export const useAsyncLocation = ({ getData = () => null, getTotalPages = () => null }) => {
 	const { pathname: locationPathName, search: locationSearch } = useLocation();
 	const navigate = useNavigate();
 	const [data, setData] = useState([]);
 	const [totalPages, setTotalPages] = useState(1);
 
 	const queryParams = useMemo(() => {
-		const { order = [], ...params } = queryString.parse(locationSearch);
+		const { sort, page = 1, pagesize = PAGINATION_NUMBER_DEFAULT, ...params } = queryString.parse(locationSearch);
 
 		return {
 			...params,
-			order: order.length ? order : [],
-			page: +params.page || 1,
-			per_page: +params.per_page || PAGINATION_NUMBER_DEFAULT,
-			totalPages: totalPages,
+			sort: sort ? sort : [],
+			page,
+			pagesize,
 		};
 	}, [locationSearch]);
 
 	const setQueryParams = (newParams) => {
 		const newQueryParams = { ...queryParams, ...newParams };
 
-		if (!newQueryParams.search) {
-			delete newQueryParams.search;
-			delete newQueryParams.search_by;
+		if (!newQueryParams.key_search) {
+			delete newQueryParams.key_search;
 		}
-		navigate(createURL({ url: locationPathName, query: newQueryParams }));
+
+		const newUrl = createURL({ url: locationPathName, query: newQueryParams });
+		navigate(newUrl);
 	};
 
 	const handleOnChangeSearch = (str) => {
-		setQueryParams({ search: str });
+		setQueryParams({ key_search: str });
 	};
 
-	const handleOnOrder = (key, direction) => {
-		const orderItem = `${key},${direction}`;
-		const orderList = typeOf(queryParams.order) === 'string' ? [queryParams.order] : queryParams.order;
+	const handleOnChangeSort = (key, direction) => {
+		const sortItem = `${key},${direction}`;
+		const sortList = typeOf(queryParams.sort) === 'string' ? [queryParams.sort] : queryParams.sort;
+		const sortItemIndex = sortList.findIndex((item) => item.includes(key));
 
-		const orderItemIndex = orderList.findIndex((item) => item.includes(key));
-
-		if (orderItemIndex > -1) {
-			direction !== ORDER_NONE ? orderList.splice(orderItemIndex, 1, orderItem) : orderList.splice(orderItemIndex, 1);
+		if (sortItemIndex > -1) {
+			direction !== ORDER_NONE ? sortList.splice(sortItemIndex, 1, sortItem) : sortList.splice(sortItemIndex, 1);
 		} else {
-			orderList.push(orderItem);
+			sortList.push(sortItem);
 		}
 
-		setQueryParams({ order: orderList });
+		setQueryParams({ sort: sortList });
 	};
 
 	const handleOnPageChange = ({ selected }) => {
@@ -67,11 +66,17 @@ export const useAsyncLocation = ({ fetchFnc = () => null }) => {
 
 	useEffect(() => {
 		tryCatch(async () => {
-			const metadata = await fetchFnc(queryParams);
+			const metadata = await getData(queryParams);
 			setData(metadata.data);
-			setTotalPages(metadata.meta.totalPages);
 		})();
 	}, [queryParams]);
+
+	useEffect(() => {
+		tryCatch(async () => {
+			const { totalPages } = await getTotalPages();
+			setTotalPages(totalPages);
+		})();
+	}, []);
 
 	return {
 		data,
@@ -81,7 +86,7 @@ export const useAsyncLocation = ({ fetchFnc = () => null }) => {
 		setQueryParams,
 		handleOnSelect,
 		handleOnChangeSearch,
-		handleOnOrder,
+		handleOnChangeSort,
 		handleOnPageChange,
 	};
 };

@@ -4,7 +4,7 @@ import { PAGINATION_OPTIONS } from '@/admin/constant';
 import { BasePagination } from '@/shared/components';
 
 export function FooterContainer({
-	per_page = 25,
+	pagesize = 25,
 	totalPages = 1,
 	handleOnSelect = () => null,
 	handleOnPageChange = () => null,
@@ -16,11 +16,11 @@ export function FooterContainer({
 					<FormattedMessage id='table.show' />
 				</span>
 				<PaginationSelector
-					name='per_page'
+					name='pagesize'
 					data-parent='page-main'
 					size='sm'
 					paginationNumbers={PAGINATION_OPTIONS}
-					perPage={+per_page || 25}
+					perPage={+pagesize || 25}
 					onSelect={handleOnSelect}
 				/>
 				<span className='text-size-xs'>

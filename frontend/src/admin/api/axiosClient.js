@@ -9,10 +9,14 @@ export const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
 	function (config) {
-		const accessToken = store.getState()?.auth?.payload?.access_token;
+		const { accessToken = '', id: clientId = '' } = store.getState()?.auth?.payload;
 		if (accessToken) {
 			config.headers['Authorization'] = `Bearer ${accessToken}`;
 		}
+		if (clientId) {
+			config.headers['X-Client-Id'] = clientId;
+		}
+
 		return config;
 	},
 	function (error) {
