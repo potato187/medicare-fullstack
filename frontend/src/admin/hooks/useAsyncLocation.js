@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { createURL } from '../utilities';
 
-export const useAsyncLocation = ({ getData = () => null, getTotalPages = () => null }) => {
+export const useAsyncLocation = ({ getData = () => null }) => {
 	const { pathname: locationPathName, search: locationSearch } = useLocation();
 	const navigate = useNavigate();
 	const [data, setData] = useState([]);
@@ -66,17 +66,11 @@ export const useAsyncLocation = ({ getData = () => null, getTotalPages = () => n
 
 	useEffect(() => {
 		tryCatch(async () => {
-			const metadata = await getData(queryParams);
+			const { metadata } = await getData(queryParams);
 			setData(metadata.data);
+			setTotalPages(metadata.meta.totalPages);
 		})();
 	}, [queryParams]);
-
-	useEffect(() => {
-		tryCatch(async () => {
-			const { totalPages } = await getTotalPages();
-			setTotalPages(totalPages);
-		})();
-	}, []);
 
 	return {
 		data,

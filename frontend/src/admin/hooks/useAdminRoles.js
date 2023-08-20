@@ -11,7 +11,7 @@ export const useAdminRoles = (languageId = 'en') => {
 
 	useEffect(() => {
 		tryCatch(async () => {
-			const metadata = await resourceApi.getAllAdminRole();
+			const { metadata } = await resourceApi.getAllAdminRole();
 			setAdminRoles(metadata);
 		})();
 	}, []);

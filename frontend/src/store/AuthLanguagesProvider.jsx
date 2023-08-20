@@ -47,7 +47,7 @@ export function AuthLanguagesProvider({ children }) {
 
 	useEffect(() => {
 		const fetchAllLanguages = async () => {
-			const metadata = await languageApi.getLanguages();
+			const { metadata } = await languageApi.getLanguages();
 			const response = Object.keys(metadata).reduce((obj, languageId) => {
 				obj[languageId] = flattenMessages(metadata[languageId]);
 				return obj;

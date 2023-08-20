@@ -28,7 +28,14 @@ class AdminService {
 					{ $skip: _skip },
 					{ $limit: _limit },
 					{
-						$project: {},
+						$project: {
+							firstName: 1,
+							lastName: 1,
+							email: 1,
+							phone: 1,
+							gender: 1,
+							role: 1,
+						},
 					},
 				],
 				totalCount: [{ $count: 'count' }],
@@ -48,7 +55,7 @@ class AdminService {
 			meta: {
 				page: _page,
 				pagesize: _limit,
-				totalPages: Math.ceil(total / _limit),
+				totalPages: Math.ceil(total / _limit) || 1,
 				key_search,
 			},
 		};

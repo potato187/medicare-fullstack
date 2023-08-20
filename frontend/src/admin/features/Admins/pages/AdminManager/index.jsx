@@ -37,8 +37,9 @@ export function AdminManager() {
 		handleOnSelect,
 	} = useAsyncLocation({
 		getData: adminApi.getAll,
-		getTotalPages: adminApi.getTotalPages,
 	});
+
+	const { page = 1, pagesize = 25 } = queryParams;
 
 	const Genders = useGenders(languageId);
 	const AdminRoles = useAdminRoles(languageId);
@@ -51,7 +52,16 @@ export function AdminManager() {
 	const openConfirmModal = compose(updateAdminIndex, toggleConfirmDeletionModal);
 
 	const handleCreateAdmin = tryCatch(async (newAdmin) => {
-		const metadata = await authApi.signUp(newAdmin);
+		const { message, metadata } = await authApi.signUp(newAdmin);
+		if (totalPages === +page && +pagesize > Admins.length) {
+			setAdmins(
+				produce((draft) => {
+					draft.push(metadata);
+				}),
+			);
+		}
+		toast.success(message);
+		toggleCreateModal();
 	}, languageId);
 
 	const handleConfirmDeletion = tryCatch(async () => {

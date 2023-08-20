@@ -21,7 +21,12 @@ class AccessService {
 			throw new ConflictRequestError('Phone or email already is use.');
 		}
 
-		return await AdminRepo.createAdmin({ firstName, lastName, email, phone, password, role, gender });
+		const newAdmin = await AdminRepo.createAdmin({ firstName, lastName, email, phone, password, role, gender });
+
+		return getInfoData({
+			fields: ['_id', 'firstName', 'lastName', 'email', 'phone', 'role', 'gender'],
+			object: newAdmin,
+		});
 	}
 
 	static async login({ email, password }) {

@@ -11,7 +11,7 @@ export const useGenders = (languageId = 'en') => {
 
 	useEffect(() => {
 		tryCatch(async () => {
-			const metadata = await resourceApi.getAllGender();
+			const { metadata } = await resourceApi.getAllGender();
 			setGenders(metadata);
 		})();
 	}, []);

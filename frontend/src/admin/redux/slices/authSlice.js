@@ -48,7 +48,7 @@ const authSlice = createSlice({
 				state.isLoading = true;
 			})
 			.addMatcher(isAnyOf(authLogin.fulfilled, authLoginStatus.fulfilled), (state, meta) => {
-				const { admin, tokens } = meta.payload;
+				const { admin, tokens } = meta.payload.metadata;
 				state.isLoading = false;
 				state.isLogin = true;
 				state.isSuccess = true;
