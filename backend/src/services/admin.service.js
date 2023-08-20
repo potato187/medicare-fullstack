@@ -72,6 +72,7 @@ class AdminService {
 	}
 
 	static async deleteAdminById(id) {
+		console.log(id);
 		await AdminRepo.updateAdminById(id, { isDeleted: true });
 		return { deletedAdminId: id };
 	}

@@ -16,7 +16,7 @@ router.get(
 	tryCatch(AdminController.query),
 );
 
-router.post('/delete/:id', handlerValidateRequest(deleteSchema, 'params'), tryCatch(AdminController.deleteAdminById));
+router.delete('/delete/:id', handlerValidateRequest(deleteSchema, 'params'), tryCatch(AdminController.deleteAdminById));
 
 router.patch('/update/:id', handlerValidateRequest(updateSchema), tryCatch(AdminController.updateAdminById));
 

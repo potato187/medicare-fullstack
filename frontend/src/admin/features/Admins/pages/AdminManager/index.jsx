@@ -1,5 +1,6 @@
 import {
 	Button,
+	ConfirmModal,
 	Container,
 	FooterContainer,
 	SortableTableHeader,
@@ -10,9 +11,11 @@ import {
 	UnFieldDebounce,
 } from '@/admin/components';
 
-import { useAsyncLocation, useCurrentIndex, useGenders, useToggle, useAdminRoles } from '@/admin/hooks';
+import { adminApi, authApi } from '@/admin/api';
+import { useAdminRoles, useAsyncLocation, useCurrentIndex, useGenders, useToggle } from '@/admin/hooks';
 import { compose } from '@/admin/utilities';
 import { useAuth } from '@/hooks';
+import { FormattedDescription } from '@/shared/components';
 import { tryCatch } from '@/shared/utils';
 import produce from 'immer';
 import React from 'react';
@@ -20,7 +23,6 @@ import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 import { AdminCreateModal } from '../../components';
-import { adminApi, authApi } from '@/admin/api';
 
 export function AdminManager() {
 	const { languageId } = useAuth();
@@ -65,14 +67,14 @@ export function AdminManager() {
 	}, languageId);
 
 	const handleConfirmDeletion = tryCatch(async () => {
-		const { message } = await adminApi.deleteOne(Admins[adminIndexRef.current].id);
-		toast.success(message[languageId]);
-		toggleConfirmDeletionModal();
+		const { message } = await adminApi.deleteOne(Admins[adminIndexRef.current]._id);
 		setAdmins(
 			produce((draft) => {
 				draft.splice(adminIndexRef.current, 1);
 			}),
 		);
+		toast.success(message);
+		toggleConfirmDeletionModal();
 	}, languageId);
 
 	const handleUpdateAdmin = tryCatch(async (admin) => {
@@ -166,6 +168,17 @@ export function AdminManager() {
 				genders={Genders}
 				positions={AdminRoles}
 			/>
+
+			<ConfirmModal
+				idTitleIntl='dashboard.admin.modal.confirm_deletion_admin.title'
+				isOpen={statusConfirmModal}
+				onClose={toggleConfirmDeletionModal}
+				onSubmit={handleConfirmDeletion}>
+				<FormattedDescription
+					id='dashboard.admin.modal.confirm_deletion_admin.description'
+					values={{ email: Admins[adminIndexRef.current]?.email ?? '' }}
+				/>
+			</ConfirmModal>
 		</React.Fragment>
 	);
 }

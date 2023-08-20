@@ -39,7 +39,7 @@ const updateSchema = Joi.object({
 
 const deleteSchema = Joi.object({
 	id: Joi.string().custom((value, helper) => {
-		return Types.ObjectId.isValid(value) ? true : helper.message('Invalid Id');
+		return Types.ObjectId.isValid(value) ? value : helper.message('Invalid Id');
 	}),
 });
 
