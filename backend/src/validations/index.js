@@ -24,7 +24,7 @@ const genderValidator = Joi.string().pattern(genderRegex).message({
 	'string.pattern.base': 'Gender is invalid',
 });
 
-const nameValidator = Joi.string().alphanum().min(3).max(50).required();
+const nameValidator = Joi.string().alphanum().min(3).max(50);
 
 module.exports = {
 	adminRoleValidator,

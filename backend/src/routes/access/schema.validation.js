@@ -11,8 +11,8 @@ const {
 const Joi = require('joi');
 
 const signUpSchema = Joi.object({
-	firstName: nameValidator,
-	lastName: nameValidator,
+	firstName: nameValidator.required(),
+	lastName: nameValidator.required(),
 	email: emailValidator,
 	phone: phoneValidator,
 	password: passwordValidator,

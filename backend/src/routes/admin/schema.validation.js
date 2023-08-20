@@ -1,5 +1,14 @@
 'use strict';
+const {
+	nameValidator,
+	emailValidator,
+	phoneValidator,
+	passwordValidator,
+	adminRoleValidator,
+	genderValidator,
+} = require('@/validations');
 const Joi = require('joi');
+const { Types } = require('mongoose');
 
 const querySchema = Joi.object({
 	key_search: Joi.string().allow('').default(''),
@@ -18,6 +27,24 @@ const querySchema = Joi.object({
 		.default(['_id', 'firstName', 'lastName', 'email', 'phone']),
 });
 
+const updateSchema = Joi.object({
+	firstName: nameValidator,
+	lastName: nameValidator,
+	email: emailValidator,
+	phone: phoneValidator,
+	password: passwordValidator,
+	role: adminRoleValidator,
+	gender: genderValidator,
+});
+
+const deleteSchema = Joi.object({
+	id: Joi.string().custom((value, helper) => {
+		return Types.ObjectId.isValid(value) ? true : helper.message('Invalid Id');
+	}),
+});
+
 module.exports = {
+	deleteSchema,
 	querySchema,
+	updateSchema,
 };

@@ -10,8 +10,7 @@ import {
 	UnFieldDebounce,
 } from '@/admin/components';
 
-import { useAsyncLocation, useCurrentIndex, useGenders, useToggle } from '@/admin/hooks';
-import { useAdminRoles } from '@/admin/hooks/useAdminRole';
+import { useAsyncLocation, useCurrentIndex, useGenders, useToggle, useAdminRoles } from '@/admin/hooks';
 import { compose } from '@/admin/utilities';
 import { useAuth } from '@/hooks';
 import { tryCatch } from '@/shared/utils';
@@ -52,9 +51,7 @@ export function AdminManager() {
 	const openConfirmModal = compose(updateAdminIndex, toggleConfirmDeletionModal);
 
 	const handleCreateAdmin = tryCatch(async (newAdmin) => {
-		console.log(newAdmin);
 		const metadata = await authApi.signUp(newAdmin);
-		console.log(metadata);
 	}, languageId);
 
 	const handleConfirmDeletion = tryCatch(async () => {

@@ -10,13 +10,6 @@ class AdminController {
 		}).send(res);
 	};
 
-	getTotalPages = async (req, res, next) => {
-		new SuccessResponse({
-			message: 'Get total page successfully!',
-			metadata: await AdminService.getTotalPages(),
-		}).send(res);
-	};
-
 	updateAdminById = async (req, res, next) => {
 		new SuccessResponse({
 			message: 'Update admin  successfully!',

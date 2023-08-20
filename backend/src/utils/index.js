@@ -26,7 +26,7 @@ const createSelectData = (select) => {
 const createSortData = (sort = []) => {
 	return sort.reduce((hash, sortItem) => {
 		const [key, value] = sortItem;
-		hash[key] = value;
+		hash[key] = value === 'asc' ? 1 : -1;
 		return hash;
 	}, {});
 };

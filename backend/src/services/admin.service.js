@@ -1,42 +1,57 @@
 'use strict';
 const { _AdminModel } = require('@/models');
 const { UtilsRepo, AdminRepo } = require('@/models/repository');
-const { createSelectData, createSortData, createSearchData, getInfoData } = require('@/utils');
+const { createSortData, createSearchData, getInfoData } = require('@/utils');
 
 class AdminService {
 	static async query({ key_search = '', select = ['_id'], sort = { updateAt: 'asc' }, page = 1, pagesize = 25 }) {
-		let filter = { isActive: 'active', isDeleted: false };
-		const validPage = Math.max(1, page);
-		const validPageSize = pagesize > 0 && pagesize < 100 ? pagesize : 25;
-		const skip = (validPage - 1) * validPageSize;
+		const searchClause = {};
+		const _page = Math.max(1, page);
+		const _limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
+		const _skip = (_page - 1) * _limit;
 		let _sort = createSortData(sort);
 
-		if (key_search.length) {
-			filter.$or = createSearchData(['firstName', 'lastName', 'email', 'phone'], key_search);
+		if (key_search) {
+			searchClause.$or = createSearchData(['firstName', 'lastName', 'email', 'phone'], key_search);
 		}
 
-		const documents = await _AdminModel
-			.find(filter)
-			.sort(_sort)
-			.skip(skip)
-			.limit(validPageSize)
-			.select(createSelectData(select))
-			.lean()
-			.exec();
+		const [{ results, total }] = await _AdminModel
+			.aggregate()
+			.match({
+				isActive: 'active',
+				isDeleted: false,
+				...searchClause,
+			})
+			.facet({
+				results: [
+					{ $sort: _sort },
+					{ $skip: _skip },
+					{ $limit: _limit },
+					{
+						$project: {},
+					},
+				],
+				totalCount: [{ $count: 'count' }],
+			})
+			.addFields({
+				total: {
+					$ifNull: [{ $arrayElemAt: ['$totalCount.count', 0] }, 0],
+				},
+			})
+			.project({
+				results: 1,
+				total: 1,
+			});
 
 		return {
-			data: documents,
+			data: results,
 			meta: {
-				page: validPage,
-				pagesize: validPage,
-				keywords: key_search,
+				page: _page,
+				pagesize: _limit,
+				totalPages: Math.ceil(total / _limit),
+				key_search,
 			},
 		};
-	}
-
-	static async getTotalPages() {
-		const totalPages = await UtilsRepo.getTotalPages(_AdminModel);
-		return { totalPages };
 	}
 
 	static async updateAdminById(body) {
