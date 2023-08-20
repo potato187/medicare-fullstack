@@ -1,4 +1,4 @@
-import { ADMIN_ROLE, GENDER_DEFAULT, POSITION_ADMIN_DEFAULT } from '@/admin/constant';
+import { ADMIN_ROLE, GENDER_DEFAULT } from '@/admin/constant';
 import { emailValidation, phoneValidation, requiredValidation } from '@/admin/validation';
 import * as yup from 'yup';
 

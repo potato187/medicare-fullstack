@@ -22,7 +22,7 @@ import React from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
-import { AdminCreateModal } from '../../components';
+import { AdminCreateModal, AdminEditModal } from '../../components';
 
 export function AdminManager() {
 	const { languageId } = useAuth();
@@ -38,11 +38,10 @@ export function AdminManager() {
 		handleOnPageChange,
 		handleOnSelect,
 	} = useAsyncLocation({
-		getData: adminApi.getAll,
+		getData: adminApi.queryAdminByParams,
 	});
 
 	const { page = 1, pagesize = 25 } = queryParams;
-
 	const Genders = useGenders(languageId);
 	const AdminRoles = useAdminRoles(languageId);
 
@@ -67,7 +66,7 @@ export function AdminManager() {
 	}, languageId);
 
 	const handleConfirmDeletion = tryCatch(async () => {
-		const { message } = await adminApi.deleteOne(Admins[adminIndexRef.current]._id);
+		const { message } = await adminApi.deleteById(Admins[adminIndexRef.current]._id);
 		setAdmins(
 			produce((draft) => {
 				draft.splice(adminIndexRef.current, 1);
@@ -77,15 +76,19 @@ export function AdminManager() {
 		toggleConfirmDeletionModal();
 	}, languageId);
 
-	const handleUpdateAdmin = tryCatch(async (admin) => {
-		const { message } = await adminApi.updateOne(admin);
-		toast.success(message[languageId]);
-		toggleProfile();
+	const handleUpdateAdmin = tryCatch(async (updateBody) => {
+		const index = adminIndexRef.current;
+		const id = Admins[index]._id;
+		const { message, metadata } = await adminApi.updateById(id, updateBody);
+
 		setAdmins(
 			produce((draft) => {
-				draft[adminIndexRef.current] = { ...admin };
+				draft[index] = { ...draft[index], ...metadata };
 			}),
 		);
+
+		toast.success(message);
+		toggleProfile();
 	}, languageId);
 
 	return (
@@ -167,6 +170,15 @@ export function AdminManager() {
 				onSubmit={handleCreateAdmin}
 				genders={Genders}
 				positions={AdminRoles}
+			/>
+
+			<AdminEditModal
+				isOpen={statusProfileModal}
+				defaultValues={Admins[adminIndexRef.current]}
+				genders={Genders}
+				positions={AdminRoles}
+				onSubmit={handleUpdateAdmin}
+				onClose={toggleProfile}
 			/>
 
 			<ConfirmModal

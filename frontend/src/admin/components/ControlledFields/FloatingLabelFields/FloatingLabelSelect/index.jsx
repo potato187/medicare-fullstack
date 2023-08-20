@@ -39,7 +39,7 @@ export function FloatingLabelSelect({
 	const option = options.find((option) => option.value === value) || options[0];
 
 	const handleOnSelect = (option) => {
-		setValue(name, option.value);
+		setValue(name, option.value, { shouldDirty: true });
 		toggleDropdown(false);
 	};
 

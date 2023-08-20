@@ -1,7 +1,7 @@
 'use strict';
 const { _AdminModel } = require('@/models');
-const { UtilsRepo, AdminRepo } = require('@/models/repository');
-const { createSortData, createSearchData, getInfoData } = require('@/utils');
+const { AdminRepo } = require('@/models/repository');
+const { createSortData, createSearchData, getInfoData, createSelectData } = require('@/utils');
 
 class AdminService {
 	static async query({ key_search = '', select = ['_id'], sort = { updateAt: 'asc' }, page = 1, pagesize = 25 }) {
@@ -61,18 +61,18 @@ class AdminService {
 		};
 	}
 
-	static async updateAdminById(body) {
-		const { id, updateBody } = body;
+	static async updateAdminById({ id, updateBody }) {
+		if (!Object.keys(updateBody).length) {
+			return {};
+		}
 
 		const updatedAdmin = await AdminRepo.updateAdminById(id, updateBody);
+		const fields = Object.keys(updateBody);
 
-		return {
-			admin: getInfoData({ fields: ['_id', 'firstName', 'lastName', 'email', 'phone', 'role'], object: updatedAdmin }),
-		};
+		return getInfoData({ fields, object: updatedAdmin });
 	}
 
 	static async deleteAdminById(id) {
-		console.log(id);
 		await AdminRepo.updateAdminById(id, { isDeleted: true });
 		return { deletedAdminId: id };
 	}

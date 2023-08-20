@@ -24,12 +24,23 @@ export function AdminEditModal({
 }) {
 	const methods = useForm({
 		mode: 'onChange',
+		defaultValues,
 		resolver: yupResolver(adminValidation),
 	});
 
 	const handleOnClose = () => {
 		methods.clearErrors();
 		onClose();
+	};
+
+	const handleOnSubmit = (data) => {
+		const { dirtyFields } = methods.formState;
+		const updateBody = Object.keys(dirtyFields).reduce((hash, key) => {
+			hash[key] = data[key];
+			return hash;
+		}, {});
+
+		onSubmit(updateBody);
 	};
 
 	useEffect(() => {
@@ -41,13 +52,13 @@ export function AdminEditModal({
 			<BaseModal isOpen={isOpen} onClose={handleOnClose}>
 				<BaseModalHeader idIntl='dashboard.admin.modal.update_admin.title' onClose={handleOnClose} />
 				<BaseModalBody>
-					<form onSubmit={methods.handleSubmit(onSubmit)}>
+					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='first_name' labelIntl='form.first_name' />
+								<FloatingLabelInput name='firstName' labelIntl='form.first_name' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='last_name' labelIntl='form.last_name' />
+								<FloatingLabelInput name='lastName' labelIntl='form.last_name' />
 							</div>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='email' labelIntl='form.email' />
@@ -55,15 +66,11 @@ export function AdminEditModal({
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='phone' labelIntl='form.phone' />
 							</div>
-							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='address' labelIntl='form.address' />
-							</div>
-
 							<div className='col-6 mb-6 z-index-2'>
-								<FloatingLabelSelect name='genderId' labelIntl='common.gender' options={genders} />
+								<FloatingLabelSelect name='gender' labelIntl='common.gender' options={genders} />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelSelect name='positionId' labelIntl='common.position' options={positions} />
+								<FloatingLabelSelect name='role' labelIntl='common.position' options={positions} />
 							</div>
 						</div>
 					</form>
@@ -72,7 +79,7 @@ export function AdminEditModal({
 					<Button size='sm' type='button' secondary onClick={handleOnClose}>
 						<FormattedMessage id='button.cancel' />
 					</Button>
-					<Button size='sm' info onClick={methods.handleSubmit(onSubmit)}>
+					<Button size='sm' info onClick={methods.handleSubmit(handleOnSubmit)}>
 						<FormattedMessage id='button.update' />
 					</Button>
 				</BaseModalFooter>

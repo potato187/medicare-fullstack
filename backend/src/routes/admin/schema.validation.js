@@ -6,9 +6,9 @@ const {
 	passwordValidator,
 	adminRoleValidator,
 	genderValidator,
+	ObjectIdMongodbValidator,
 } = require('@/validations');
 const Joi = require('joi');
-const { Types } = require('mongoose');
 
 const querySchema = Joi.object({
 	key_search: Joi.string().allow('').default(''),
@@ -37,14 +37,12 @@ const updateSchema = Joi.object({
 	gender: genderValidator,
 });
 
-const deleteSchema = Joi.object({
-	id: Joi.string().custom((value, helper) => {
-		return Types.ObjectId.isValid(value) ? value : helper.message('Invalid Id');
-	}),
+const paramsSchema = Joi.object({
+	id: ObjectIdMongodbValidator,
 });
 
 module.exports = {
-	deleteSchema,
+	paramsSchema,
 	querySchema,
 	updateSchema,
 };

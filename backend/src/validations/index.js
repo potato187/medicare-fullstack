@@ -1,5 +1,6 @@
 'use strict';
 const Joi = require('joi');
+const { Types } = require('mongoose');
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const phoneRegex = /^(84|0)[3|5|7|8|9]+([0-9]{8})\b/;
@@ -24,6 +25,10 @@ const genderValidator = Joi.string().pattern(genderRegex).message({
 	'string.pattern.base': 'Gender is invalid',
 });
 
+const ObjectIdMongodbValidator = Joi.string().custom((value, helper) => {
+	return Types.ObjectId.isValid(value) ? value : helper.message('Invalid Id');
+});
+
 const nameValidator = Joi.string().alphanum().min(3).max(50);
 
 module.exports = {
@@ -33,4 +38,5 @@ module.exports = {
 	passwordValidator,
 	phoneValidator,
 	genderValidator,
+	ObjectIdMongodbValidator,
 };
