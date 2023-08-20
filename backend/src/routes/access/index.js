@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/login', handlerValidateRequest(loginSchema), tryCatch(AccessController.login));
 
 router.use(authMiddleware.authorization);
-router.post('/logout', tryCatch(AccessController.logout));
+router.get('/logout', tryCatch(AccessController.logout));
 router.post('/sign-up', handlerValidateRequest(signUpSchema), tryCatch(AccessController.signUp));
 
 router.post(

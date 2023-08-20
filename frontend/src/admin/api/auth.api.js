@@ -8,10 +8,7 @@ export const authApi = {
 	async login(body) {
 		return await axiosClient.post(`${AUTH_PATH}/login`, body);
 	},
-	async loginStatus() {
-		return await axiosClient.get(`${AUTH_PATH}/checkLoginStatus`);
-	},
-	async logout(body) {
-		return await axiosClient.post(body);
+	async logout() {
+		return await axiosClient.get(`${AUTH_PATH}/logout`);
 	},
 };

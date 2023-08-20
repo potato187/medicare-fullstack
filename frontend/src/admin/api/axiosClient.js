@@ -1,4 +1,4 @@
-import { logout } from '@/admin/redux/slices/authSlice';
+import { authLogout } from '@/admin/redux/slices/authSlice';
 import { store } from '@/admin/redux/store/configureStore';
 import axios from 'axios';
 
@@ -30,7 +30,7 @@ axiosClient.interceptors.response.use(
 	},
 	function (error) {
 		if (error?.response.status === 401) {
-			store.dispatch(logout());
+			store.dispatch(authLogout());
 		}
 		console.log(error);
 		return error?.response?.data?.error ? Promise.reject(error.response.data.error) : Promise.reject(error);

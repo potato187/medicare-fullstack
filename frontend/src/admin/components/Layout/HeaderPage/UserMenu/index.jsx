@@ -1,5 +1,5 @@
 import { SERVER_URL } from '@/admin/constant';
-import { logout } from '@/admin/redux/slices/authSlice';
+import { authLogout } from '@/admin/redux/slices/authSlice';
 import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from '@/shared/components';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { MdLogout } from 'react-icons/md';
@@ -22,7 +22,7 @@ export function UserMenu({ username, email, image = null }) {
 	} = module;
 
 	const handleLogOut = () => {
-		dispatch(logout());
+		dispatch(authLogout());
 	};
 
 	return (
