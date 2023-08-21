@@ -1,21 +1,13 @@
 'use strict';
 const { typeOf } = require('@/utils');
+const { getQueryStrategy } = require('./repository/queryStrategies');
 
-const handlerParseParamsToArray = (params = []) => {
+module.exports = (params = []) => {
 	return (req, res, next) => {
 		for (const keyParam of params) {
-			const valueParam = req.query[keyParam];
-
-			if (typeOf(valueParam) === 'string') {
-				req.query[keyParam] = [valueParam.split(',')];
-			}
-
-			if (typeOf(valueParam) === 'array') {
-				req.query[keyParam] = valueParam.map((pairKey) => pairKey.split(','));
-			}
+			const type = typeOf(valueParam);
+			req.query[keyParam] = getQueryStrategy(type, req.query[keyParam]);
 		}
 		return next();
 	};
 };
-
-module.exports = handlerParseParamsToArray;

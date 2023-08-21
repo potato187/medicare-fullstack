@@ -14,11 +14,10 @@ const {
 
 class AccessService {
 	static async singUp({ firstName, lastName, email, phone, password, role, gender }) {
-		const filter = { $or: [{ email }, { phone }] };
-		const foundAdmin = await AdminRepo.findByFilter(filter);
+		const adminExist = await AdminRepo.findByFilter({ $or: [{ email }, { phone }] });
 
-		if (foundAdmin) {
-			throw new ConflictRequestError('Phone or email already is use.');
+		if (adminExist) {
+			throw new ConflictRequestError({ code: 200400 });
 		}
 
 		const newAdmin = await AdminRepo.createAdmin({ firstName, lastName, email, phone, password, role, gender });
@@ -32,24 +31,24 @@ class AccessService {
 	static async login({ email, password }) {
 		const filter = { email };
 		const select = ['_id', 'email', 'password', 'role', 'firstName', 'lastName'];
-		const foundAdmin = await AdminRepo.findByFilter(filter, select);
+		const admin = await AdminRepo.findByFilter(filter, select);
 
-		if (!foundAdmin) {
-			throw new NotFoundRequestError();
+		if (!admin) {
+			throw new NotFoundRequestError({ code: 200404 });
 		}
 
-		if (!bcrypt.compareSync(password, foundAdmin.password)) {
-			throw new UnauthorizedRequestError();
+		if (!bcrypt.compareSync(password, admin.password)) {
+			throw new UnauthorizedRequestError({ code: 200401 });
 		}
 
 		const [publicKey, privateKey] = [generateToken(), generateToken()];
-		const payload = { userId: foundAdmin._id, role: foundAdmin.role };
+		const payload = { userId: admin._id, role: admin.role };
 		const tokens = await authUtils.createTokenPair(payload, publicKey, privateKey);
 
-		await KeyTokenRepo.createPairToken(foundAdmin._id, publicKey, privateKey);
+		await KeyTokenRepo.createPairToken(admin._id, publicKey, privateKey);
 
 		return {
-			admin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'role'], object: foundAdmin }),
+			admin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'role'], object: admin }),
 			tokens,
 		};
 	}
@@ -60,7 +59,7 @@ class AccessService {
 
 	static async handleRefreshToken({ user, keyStore, refreshToken }) {
 		if (!keyStore || keyStore.refreshTokenUsed.includes(refreshToken)) {
-			throw new ForbiddenRequestError('Something is wrong, pls login again');
+			throw new ForbiddenRequestError({ code: 200403 });
 		}
 
 		await verifyToken(refreshToken, keyStore.privateKey);

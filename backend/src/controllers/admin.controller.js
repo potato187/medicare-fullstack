@@ -5,21 +5,21 @@ const { AdminService } = require('@/services');
 class AdminController {
 	query = async (req, res, next) => {
 		new SuccessResponse({
-			message: 'Query successfully!',
+			code: 100200,
 			metadata: await AdminService.query(req.query),
 		}).send(res);
 	};
 
 	updateAdminById = async (req, res, next) => {
 		new SuccessResponse({
-			message: 'Update admin  successfully!',
+			code: 300200,
 			metadata: await AdminService.updateAdminById({ id: req.params.id, updateBody: req.body }),
 		}).send(res);
 	};
 
 	deleteAdminById = async (req, res, next) => {
 		new SuccessResponse({
-			message: 'Delete admin  successfully!',
+			code: 301200,
 			metadata: await AdminService.deleteAdminById(req.params.id),
 		}).send(res);
 	};

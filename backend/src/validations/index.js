@@ -26,7 +26,7 @@ const genderValidator = Joi.string().pattern(genderRegex).message({
 });
 
 const ObjectIdMongodbValidator = Joi.string().custom((value, helper) => {
-	return Types.ObjectId.isValid(value) ? value : helper.message('Invalid Id');
+	return Types.ObjectId.isValid(value) ? value : helper.message('107400');
 });
 
 const nameValidator = Joi.string().alphanum().min(3).max(50);

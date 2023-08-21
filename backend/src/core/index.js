@@ -1,4 +1,5 @@
 module.exports = {
-	...require('./error.response'),
-	...require('./success.response'),
+	...require('./error.core'),
+	...require('./success.core'),
+	...require('./error.core'),
 };
