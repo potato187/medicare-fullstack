@@ -24,13 +24,10 @@ class KeyTokenRepo {
 		return _KeyTokenModel.deleteOne({ _id: convertToObjectIdMongodb(id) });
 	}
 
-	static markRefreshTokenUsed = async (id, newRefreshToken, markRefreshToken) => {
+	static markRefreshTokenUsed = async (id, markRefreshToken) => {
 		return await _KeyTokenModel.updateOne(
 			{ _id: convertToObjectIdMongodb(id) },
 			{
-				$set: {
-					refreshToken: newRefreshToken,
-				},
 				$addToSet: {
 					refreshTokenUsed: markRefreshToken,
 				},

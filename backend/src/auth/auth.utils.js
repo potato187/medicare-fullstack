@@ -1,13 +1,19 @@
 'use strict';
 const JWT = require('jsonwebtoken');
 
+const createAccessToken = async (payload, publicKey) => {
+	return await JWT.sign(payload, publicKey, {
+		expiresIn: 1,
+	});
+};
+
 const createTokenPair = async (payload, publicKey, privateKey) => {
 	const accessToken = await JWT.sign(payload, publicKey, {
-		expiresIn: '2 days',
+		expiresIn: 1,
 	});
 
 	const refreshToken = await JWT.sign(payload, privateKey, {
-		expiresIn: '7 days',
+		expiresIn: 120,
 	});
 
 	return { accessToken, refreshToken };
@@ -18,6 +24,7 @@ const verifyToken = async (token, secretKey) => {
 };
 
 module.exports = {
+	createAccessToken,
 	createTokenPair,
 	verifyToken,
 };

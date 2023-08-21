@@ -77,7 +77,7 @@ const codeReason = {
 		vi: '',
 		en: 'Admin updated successfully',
 	},
-	301200: {
+	301204: {
 		vi: '',
 		en: 'Admin deleted successfully',
 	},

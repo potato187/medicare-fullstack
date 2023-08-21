@@ -1,20 +1,18 @@
 'use strict';
-const { SuccessResponse } = require('@/core');
+const { OkResponse } = require('@/core');
 const { ResourceService } = require('@/services');
 
 class ResourceClass {
 	async getAllGender(req, res, next) {
-		new SuccessResponse({
-			code: 100200,
+		new OkResponse({
 			metadata: await ResourceService.getAllGender(),
-		}).send(res);
+		}).send(req, res);
 	}
 
 	async getAllAdminRole(req, res, next) {
-		new SuccessResponse({
-			code: 100200,
+		new OkResponse({
 			metadata: await ResourceService.getAllAAdminRole(),
-		}).send(res);
+		}).send(req, res);
 	}
 }
 

@@ -9,13 +9,20 @@ class SuccessResponse {
 		this.metadata = metadata;
 	}
 
-	send(res, headers = {}) {
+	send(req, res, headers = {}) {
+		const { accessToken = null, refreshToken = null } = req.tokens || {};
+
+		if (accessToken && refreshToken) {
+			headers.accessToken = accessToken;
+			headers.refreshToken = refreshToken;
+		}
+
 		const statusCode = +this.code.toString().slice(-3);
-		return res.status(statusCode).json(this);
+		return res.status(statusCode).json({ ...this, headers });
 	}
 }
 class OkResponse extends SuccessResponse {
-	constructor({ code, metadata }) {
+	constructor({ code = 100200, metadata }) {
 		super(code, metadata);
 	}
 }
@@ -27,7 +34,6 @@ class CreatedResponse extends SuccessResponse {
 }
 
 module.exports = {
-	SuccessResponse,
 	OkResponse,
 	CreatedResponse,
 };

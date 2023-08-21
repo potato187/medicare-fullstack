@@ -12,7 +12,7 @@ class ErrorResponse extends Error {
 
 class BadRequestError extends ErrorResponse {
 	constructor(error = {}) {
-		const { message = ReasonPhrases.BAD_REQUEST, status = StatusCodes.BAD_REQUEST, code = 100500 } = error;
+		const { message = ReasonPhrases.BAD_REQUEST, status = StatusCodes.BAD_REQUEST, code = 100400 } = error;
 		super(message, status, code);
 	}
 }
@@ -51,7 +51,7 @@ class InterServerRequestError extends ErrorResponse {
 
 class UnauthorizedRequestError extends ErrorResponse {
 	constructor(error = {}) {
-		const { message = ReasonPhrases.UNAUTHORIZED, status = StatusCodes.UNAUTHORIZED, code = 100500 } = error;
+		const { message = ReasonPhrases.UNAUTHORIZED, status = StatusCodes.UNAUTHORIZED, code = 100401 } = error;
 		super(message, status, code);
 	}
 }

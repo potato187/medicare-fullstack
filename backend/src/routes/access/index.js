@@ -13,10 +13,4 @@ router.use(authMiddleware.authorization);
 router.get('/logout', tryCatch(AccessController.logout));
 router.post('/sign-up', handlerValidateRequest(signUpSchema), tryCatch(AccessController.signUp));
 
-router.post(
-	'/refresh-token',
-	handlerValidateRequest(refreshTokenSchema),
-	tryCatch(AccessController.handleRefreshToken),
-);
-
 module.exports = router;

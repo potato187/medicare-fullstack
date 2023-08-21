@@ -1,27 +1,26 @@
 'use strict';
-const { SuccessResponse } = require('@/core');
+const { OkResponse } = require('@/core');
 const { AdminService } = require('@/services');
 
 class AdminController {
 	query = async (req, res, next) => {
-		new SuccessResponse({
-			code: 100200,
+		new OkResponse({
 			metadata: await AdminService.query(req.query),
-		}).send(res);
+		}).send(req, res);
 	};
 
 	updateAdminById = async (req, res, next) => {
-		new SuccessResponse({
+		new OkResponse({
 			code: 300200,
 			metadata: await AdminService.updateAdminById({ id: req.params.id, updateBody: req.body }),
-		}).send(res);
+		}).send(req, res);
 	};
 
 	deleteAdminById = async (req, res, next) => {
-		new SuccessResponse({
-			code: 301200,
+		new OkResponse({
+			code: 301204,
 			metadata: await AdminService.deleteAdminById(req.params.id),
-		}).send(res);
+		}).send(req, res);
 	};
 }
 

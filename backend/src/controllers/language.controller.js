@@ -1,27 +1,24 @@
 'use strict';
-const { SuccessResponse } = require('@/core');
+const { OkResponse } = require('@/core');
 const { LanguageService } = require('@/services');
 
 class LanguageController {
 	getById = async (req, res, next) => {
-		new SuccessResponse({
-			code: 100200,
+		new OkResponse({
 			metadata: await LanguageService.getById(req.params.id),
-		}).send(res);
+		}).send(req, res);
 	};
 
 	getAll = async (req, res, next) => {
-		new SuccessResponse({
-			code: 100200,
+		new OkResponse({
 			metadata: await LanguageService.getAll(req.params.id),
-		}).send(res);
+		}).send(req, res);
 	};
 
 	updateById = async (req, res, next) => {
-		new SuccessResponse({
-			code: 100200,
+		new OkResponse({
 			metadata: await LanguageService.updateById({ languageId: req.params.id, bodyUpdate: req.body }),
-		}).send(res);
+		}).send(req, res);
 	};
 }
 

@@ -56,23 +56,6 @@ class AccessService {
 	static async logout(keyStore) {
 		return await KeyTokenRepo.removeById(keyStore._id);
 	}
-
-	static async handleRefreshToken({ user, keyStore, refreshToken }) {
-		if (!keyStore || keyStore.refreshTokenUsed.includes(refreshToken)) {
-			throw new ForbiddenRequestError({ code: 200403 });
-		}
-
-		await verifyToken(refreshToken, keyStore.privateKey);
-
-		const tokens = await authUtils.createTokenPair(user, keyStore.publicKey, keyStore.privateKey);
-
-		await KeyTokenRepo.markRefreshTokenUsed(keyStore._id, tokens.refreshToken, refreshToken);
-
-		return {
-			user,
-			tokens,
-		};
-	}
 }
 
 module.exports = AccessService;
