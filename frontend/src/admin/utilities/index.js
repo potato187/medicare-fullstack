@@ -71,5 +71,3 @@ export const formatDataForSelect = (languageId = LANGUAGE_DEFAULT, key = 'value'
 		return data.map((item) => ({ value: item.id, label: item[`${key}_${languageId}`] }));
 	};
 };
-
-export const catchError = (languageId = LANGUAGE_DEFAULT) => {};

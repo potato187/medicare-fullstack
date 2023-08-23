@@ -1,4 +1,4 @@
-import { languageApi } from '@/admin/api';
+import { languageApi } from '@/admin/service';
 import { changeLanguage } from '@/admin/redux/slices/authSlice';
 import { buildValidationForm } from '@/admin/validation';
 import { useAuth } from '@/hooks';
@@ -48,6 +48,7 @@ export function AuthLanguagesProvider({ children }) {
 	useEffect(() => {
 		const fetchAllLanguages = async () => {
 			const { metadata } = await languageApi.getLanguages();
+
 			const response = Object.keys(metadata).reduce((obj, languageId) => {
 				obj[languageId] = flattenMessages(metadata[languageId]);
 				return obj;

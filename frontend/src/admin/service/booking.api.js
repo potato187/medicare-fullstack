@@ -1,4 +1,4 @@
-import { axiosClient } from './axiosClient';
+import { axiosClient } from './axios/axiosClient';
 import { BOOKINGS_PATH } from './constant';
 
 export const bookingApi = {

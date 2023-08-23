@@ -1,4 +1,4 @@
-import { authApi } from '@/admin/api';
+import { authService } from '@/admin/service';
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -19,11 +19,11 @@ const initialState = {
 };
 
 export const authLogin = createAsyncThunk('auth/login', async ({ email, password }) => {
-	return await authApi.login({ email, password });
+	return await authService.login({ email, password });
 });
 
 export const authLogout = createAsyncThunk('auth/logout', async () => {
-	return await authApi.logout();
+	return await authService.logout();
 });
 
 const authSlice = createSlice({
@@ -33,6 +33,10 @@ const authSlice = createSlice({
 		changeLanguage: (state, { payload }) => {
 			const { languageId } = payload;
 			state.languageId = languageId;
+		},
+		authRefreshTokens: (state, { payload }) => {
+			state.payload.accessToken = payload.accessToken;
+			state.payload.refreshToken = payload.refreshToken;
 		},
 	},
 	extraReducers: (builder) => {
@@ -53,7 +57,7 @@ const authSlice = createSlice({
 				state.payload.accessToken = tokens.accessToken;
 				state.payload.refreshToken = tokens.refreshToken;
 			})
-			.addMatcher(isAnyOf(authLogin.rejected, authLogout.fulfilled, authLogout.rejected), (state, meta) => {
+			.addMatcher(isAnyOf(authLogin.rejected, authLogout.fulfilled, authLogout.rejected), (state) => {
 				state.isLoading = false;
 				state.isSuccess = false;
 				state.isLogin = false;
@@ -62,5 +66,5 @@ const authSlice = createSlice({
 	},
 });
 
-export const { changeLanguage } = authSlice.actions;
+export const { changeLanguage, authRefreshTokens } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,4 +1,4 @@
-import { axiosClient } from './axiosClient';
+import { axiosClient } from './axios/axiosClient';
 import { POST_CATEGORIES_PATH } from './constant';
 
 export const postCategoryApi = {

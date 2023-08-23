@@ -1,4 +1,4 @@
-import { SERVER_URL } from '@/admin/constant';
+import { PATH_IMAGES, SERVER_URL } from '@/admin/constant';
 import { authLogout } from '@/admin/redux/slices/authSlice';
 import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from '@/shared/components';
 import { AiOutlineSetting } from 'react-icons/ai';
@@ -34,7 +34,8 @@ export function UserMenu({ username, email, image = null }) {
 						width={32}
 						height={32}
 						loading='lazy'
-						src={SERVER_URL + '/' + image}
+						/* src={SERVER_URL + '/' + image} */
+						src={PATH_IMAGES.AVATAR_PLACEHOLDER}
 						alt={username}
 					/>
 				</div>

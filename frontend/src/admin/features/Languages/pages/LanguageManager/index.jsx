@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
 import { convertData, convertName } from '../../utilities';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { languageApi } from '@/admin/api';
+import { languageApi } from '@/admin/service';
 
 export function LanguageManager() {
 	const { languageId = '' } = useParams();

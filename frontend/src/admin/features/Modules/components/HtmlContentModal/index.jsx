@@ -10,7 +10,7 @@ import {
 	TextArea,
 } from '@/admin/components';
 
-import { htmlContentApi } from '@/admin/api';
+import { htmlContentApi } from '@/admin/service';
 import { setDefaultValues } from '@/admin/utilities';
 import { tryCatch } from '@/shared/utils';
 import { yupResolver } from '@hookform/resolvers/yup';

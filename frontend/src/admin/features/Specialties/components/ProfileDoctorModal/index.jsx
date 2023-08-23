@@ -1,4 +1,4 @@
-import { doctorApi } from '@/admin/api';
+import { doctorApi } from '@/admin/service';
 import {
 	BaseModal,
 	BaseModalBody,

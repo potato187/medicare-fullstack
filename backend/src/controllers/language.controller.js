@@ -6,19 +6,19 @@ class LanguageController {
 	getById = async (req, res, next) => {
 		new OkResponse({
 			metadata: await LanguageService.getById(req.params.id),
-		}).send(req, res);
+		}).send(res);
 	};
 
 	getAll = async (req, res, next) => {
 		new OkResponse({
 			metadata: await LanguageService.getAll(req.params.id),
-		}).send(req, res);
+		}).send(res);
 	};
 
 	updateById = async (req, res, next) => {
 		new OkResponse({
 			metadata: await LanguageService.updateById({ languageId: req.params.id, bodyUpdate: req.body }),
-		}).send(req, res);
+		}).send(res);
 	};
 }
 

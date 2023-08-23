@@ -1,4 +1,4 @@
-import { axiosClient } from './axiosClient';
+import { axiosClient } from './axios/axiosClient';
 import { LANGUAGES_PATH } from './constant';
 
 export const languageApi = {

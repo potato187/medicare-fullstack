@@ -1,4 +1,4 @@
-import { htmlContentApi } from '@/admin/api';
+import { htmlContentApi } from '@/admin/service';
 import {
 	Button,
 	Container,

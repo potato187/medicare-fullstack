@@ -6,13 +6,13 @@ class ResourceClass {
 	async getAllGender(req, res, next) {
 		new OkResponse({
 			metadata: await ResourceService.getAllGender(),
-		}).send(req, res);
+		}).send(res);
 	}
 
 	async getAllAdminRole(req, res, next) {
 		new OkResponse({
 			metadata: await ResourceService.getAllAAdminRole(),
-		}).send(req, res);
+		}).send(res);
 	}
 }
 

@@ -1,4 +1,4 @@
-import { postCategoryApi } from '@/admin/api';
+import { postCategoryApi } from '@/admin/service';
 import { Button, ConfirmModal, Container, SortableTree, WrapScrollBar } from '@/admin/components';
 import { flattenTree, removeItem } from '@/admin/components/AdvanceUI/Tree/utilities';
 import { useToggle } from '@/admin/hooks';

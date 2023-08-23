@@ -12,9 +12,9 @@ import { Layout } from './components';
 import { AdminManager, LanguageManager, LoginPage } from './features';
 import { persistor, store } from './redux/store/configureStore';
 
-export default function Admin() {
-	const ProtectedLayout = withAuth(Layout);
+const ProtectedRoute = withAuth(Layout);
 
+export default function Admin() {
 	return (
 		<React.Fragment>
 			<Provider store={store}>
@@ -22,7 +22,7 @@ export default function Admin() {
 					<IntlProviderWrapper>
 						<PersistGate loading={null} persistor={persistor}>
 							<Routes>
-								<Route path='dashboard/*' element={<ProtectedLayout />}>
+								<Route path='dashboard/*' element={<ProtectedRoute />}>
 									<Route path='languages'>
 										<Route path=':languageId' element={<LanguageManager />} />
 										<Route path='*' element={<Navigate to='en' replace />} />
@@ -33,8 +33,6 @@ export default function Admin() {
 									</Route>
 								</Route>
 								<Route path='login' element={<LoginPage />} />
-								{/* <Route index element={<Navigate to='dashboard' />} />
-							<Route path='*' element={<Navigate to='dashboard' />} /> */}
 							</Routes>
 						</PersistGate>
 					</IntlProviderWrapper>

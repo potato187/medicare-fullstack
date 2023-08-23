@@ -1,4 +1,4 @@
-import { postApi } from '@/admin/api';
+import { postApi } from '@/admin/service';
 import {
 	BaseModal,
 	BaseModalBody,

@@ -1,6 +1,6 @@
 import { tryCatch } from '@/shared/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { specialtiesApi } from '../api';
+import { specialtiesApi } from '../service';
 
 export const useFetchSpecialty = (params = {}) => {
 	const { entity = 'Doctors' } = params;

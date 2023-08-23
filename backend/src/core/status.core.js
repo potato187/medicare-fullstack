@@ -33,8 +33,8 @@ const codeReason = {
 
 	/* Auth  codes 10xxxx */
 	101401: {
-		vi: 'AccessToken không hợp lệ',
-		en: 'Invalid AccessToken.',
+		vi: 'AccessToken invalid or required.',
+		en: 'AccessToken invalid or required.',
 	},
 	102401: {
 		vi: 'AccessToken hết hạn.',
@@ -50,6 +50,11 @@ const codeReason = {
 		en: 'Invalid RefreshToken.',
 	},
 
+	105401: {
+		vi: '',
+		en: 'Refresh token is invalid or has been used.',
+	},
+
 	/* Access service error codes 20xxxx */
 	200200: {
 		vi: '',
@@ -59,17 +64,13 @@ const codeReason = {
 		vi: '',
 		en: 'Admin already exists with the provided email or phone.',
 	},
-	200401: {
+	201400: {
 		vi: '',
 		en: 'Invalid password or email.',
 	},
 	200404: {
 		vi: '',
 		en: 'Admin not found with the provided email.',
-	},
-	200403: {
-		vi: '',
-		en: 'Refresh token is invalid or has been used.',
 	},
 
 	/* Admin service error codes 30xxxx */

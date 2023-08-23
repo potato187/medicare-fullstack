@@ -1,16 +1,12 @@
 'use strict';
 const { authUtils } = require('@/auth');
-const { verifyToken } = require('@/auth/auth.utils');
-const { generateToken, getInfoData } = require('@/utils');
+const { verifyToken, createAccessToken, createTokenPair } = require('@/auth/auth.utils');
+const { generateToken, getInfoData, convertToObjectIdMongodb } = require('@/utils');
 const bcrypt = require('bcrypt');
 const { AdminRepo, KeyTokenRepo } = require('@/models/repository');
 
-const {
-	ConflictRequestError,
-	NotFoundRequestError,
-	UnauthorizedRequestError,
-	ForbiddenRequestError,
-} = require('@/core');
+const { ConflictRequestError, NotFoundRequestError, UnauthorizedRequestError } = require('@/core');
+const { decode } = require('jsonwebtoken');
 
 class AccessService {
 	static async singUp({ firstName, lastName, email, phone, password, role, gender }) {
@@ -43,6 +39,7 @@ class AccessService {
 
 		const [publicKey, privateKey] = [generateToken(), generateToken()];
 		const payload = { userId: admin._id, role: admin.role };
+
 		const tokens = await authUtils.createTokenPair(payload, publicKey, privateKey);
 
 		await KeyTokenRepo.createPairToken(admin._id, publicKey, privateKey);
@@ -55,6 +52,32 @@ class AccessService {
 
 	static async logout(keyStore) {
 		return await KeyTokenRepo.removeById(keyStore._id);
+	}
+
+	static async refreshTokens({ clientId, refreshToken }) {
+		const filter = { userId: convertToObjectIdMongodb(clientId) };
+		const select = ['_id', 'refreshTokenUsed', 'publicKey', 'privateKey'];
+		const keyStore = await KeyTokenRepo.findByFilter(filter, select);
+
+		if (!keyStore || keyStore.refreshTokenUsed.includes(refreshToken)) {
+			await KeyTokenRepo.removeById(keyStore._id);
+			throw new UnauthorizedRequestError();
+		}
+
+		try {
+			const { userId, role } = await verifyToken(refreshToken, keyStore.privateKey);
+			const accessToken = await createAccessToken({ userId, role }, keyStore.publicKey);
+
+			return { accessToken, refreshToken };
+		} catch (error) {
+			if (error.name !== 'TokenExpiredError') {
+				throw new UnauthorizedRequestError();
+			}
+		}
+
+		await KeyTokenRepo.markRefreshTokenUsed(keyStore._id, refreshToken);
+		const { userId, role } = decode(refreshToken);
+		return await createTokenPair({ userId, role }, keyStore.publicKey, keyStore.privateKey);
 	}
 }
 

@@ -1,6 +1,6 @@
 import { typeOf } from '@/utils';
 import { createFormData } from '@/admin/utilities';
-import { axiosClient } from './axiosClient';
+import { axiosClient } from './axios/axiosClient';
 import { POST_PATH } from './constant';
 
 export const postApi = {

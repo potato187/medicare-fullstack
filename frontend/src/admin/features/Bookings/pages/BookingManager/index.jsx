@@ -1,4 +1,4 @@
-import { bookingApi } from '@/admin/api';
+import { bookingApi } from '@/admin/service';
 import {
 	Button,
 	ConfirmModal,

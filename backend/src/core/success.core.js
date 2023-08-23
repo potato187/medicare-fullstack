@@ -9,16 +9,9 @@ class SuccessResponse {
 		this.metadata = metadata;
 	}
 
-	send(req, res, headers = {}) {
-		const { accessToken = null, refreshToken = null } = req.tokens || {};
-
-		if (accessToken && refreshToken) {
-			headers.accessToken = accessToken;
-			headers.refreshToken = refreshToken;
-		}
-
+	send(res, headers = {}) {
 		const statusCode = +this.code.toString().slice(-3);
-		return res.status(statusCode).json({ ...this, headers });
+		return res.status(statusCode).json({ ...this });
 	}
 }
 class OkResponse extends SuccessResponse {

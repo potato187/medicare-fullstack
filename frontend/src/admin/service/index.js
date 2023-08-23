@@ -1,5 +1,5 @@
 export * from './admin.api';
-export * from './auth.api';
+export * from './auth.service';
 export * from './booking.api';
 export * from './doctor.api';
 export * from './htmlContent.api';

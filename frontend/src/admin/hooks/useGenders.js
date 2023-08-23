@@ -1,6 +1,6 @@
 import { tryCatch } from '@/shared/utils';
 import { useEffect, useMemo, useState } from 'react';
-import { resourceApi } from '../api';
+import { resourceApi } from '../service';
 
 export const useGenders = (languageId = 'en') => {
 	const [genders, setGenders] = useState([]);
