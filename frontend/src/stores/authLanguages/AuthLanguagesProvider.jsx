@@ -1,16 +1,16 @@
-import { languageApi } from 'admin/service';
+import { languageApi } from 'admin/api';
 import { buildValidationForm } from 'admin/validation';
 import { useAuth } from 'hooks';
 import produce from 'immer';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { tryCatch } from 'shared/utils';
+import { tryCatch } from 'admin/utilities';
 import { flattenMessages } from 'utils';
 import { changeLanguage } from 'admin/redux/slices/auth';
 import LanguageContext, { LANGUAGE_DEFAULT } from './context';
 
 export default function AuthLanguagesProvider({ children }) {
-	const auth = useAuth();
+	const { user } = useAuth();
 	const [languages, setLanguages] = useState(null);
 	const [validationForm, setValidationForm] = useState({});
 	const dispatch = useDispatch();
@@ -34,11 +34,11 @@ export default function AuthLanguagesProvider({ children }) {
 		return {
 			languages,
 			validationForm,
-			languageId: auth.languageId || LANGUAGE_DEFAULT,
+			languageId: user.languageId || LANGUAGE_DEFAULT,
 			changeLanguageById,
 			updateLanguage,
 		};
-	}, [languages, changeLanguageById, updateLanguage, validationForm, auth.languageId]);
+	}, [languages, changeLanguageById, updateLanguage, validationForm, user.languageId]);
 
 	useEffect(() => {
 		const fetchAllLanguages = async () => {

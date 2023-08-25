@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 export const withRoleCheck = (Component = () => null, allowedRoles = [], to = '../../user-profile') => {
 	return function WrapperComponent(props) {
-		const { roleId = '' } = useSelector((state) => state.auth?.payload);
+		const { user } = useSelector((state) => state.auth.user);
+
 		const navigate = useNavigate();
-		if (!allowedRoles.includes(roleId)) {
+		if (!allowedRoles.includes(user?.role)) {
 			navigate(to, { replace: true });
 		}
 

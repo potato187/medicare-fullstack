@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
-import { postCategoryApi } from 'admin/service';
+import { postCategoryApi } from 'admin/api';
 import { Button, ConfirmModal, Container, FormattedDescription, SortableTree, WrapScrollBar } from 'admin/components';
 import { flattenTree, removeItem } from 'admin/components/AdvanceUI/Tree/utilities';
 import { useToggle } from 'admin/hooks';
-import { compose, findPathFromRoot } from 'admin/utilities';
+import { compose, findPathFromRoot, tryCatch } from 'admin/utilities';
 import { useAuth } from 'hooks';
-import { tryCatch } from 'shared/utils';
+
 import { AddCategoryModal, ModifyCategoryModal } from '../../components';
 
 export function CategoryManager() {

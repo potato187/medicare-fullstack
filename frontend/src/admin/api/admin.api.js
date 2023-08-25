@@ -1,4 +1,4 @@
-import { axiosClient } from './axios/axiosClient';
+import { axiosClient } from './axiosClient';
 import { ADMIN_PATH } from './constant';
 
 export const adminApi = {

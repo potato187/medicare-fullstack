@@ -3,7 +3,7 @@ import moment from 'moment';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { postApi } from 'admin/service';
+import { postApi } from 'admin/api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -19,8 +19,8 @@ import {
 	TextArea,
 } from 'admin/components';
 import { useQuery } from 'admin/hooks';
-import { setDefaultValues } from 'admin/utilities';
-import { tryCatch } from 'shared/utils';
+import { setDefaultValues, tryCatch } from 'admin/utilities';
+
 import { postDefaultValues, postSchema } from '../../schema';
 
 const POST_SITE_MAP = {

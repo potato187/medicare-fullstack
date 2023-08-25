@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { isValidExtension, typeOf } from '@/utils';
+import { isValidExtension, typeOf } from 'utils';
 import { PASSWORD_VALIDATION_REGEX, PHONE_VALIDATION_REGEX } from '../constant';
 
 const isValidImageExtension = isValidExtension(['jpg', 'jpeg', 'png']);

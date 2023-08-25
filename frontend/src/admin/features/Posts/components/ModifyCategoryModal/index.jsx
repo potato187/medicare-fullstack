@@ -10,7 +10,7 @@ import {
 	Button,
 	FieldCheckBox,
 	FloatingLabelInput,
-} from '@/admin/components';
+} from 'admin/components';
 import { postCategorySchema } from '../../schema';
 
 export function ModifyCategoryModal({

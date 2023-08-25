@@ -2,7 +2,7 @@ import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import React, { useRef } from 'react';
 import { toast } from 'react-toastify';
-import { htmlContentApi } from '@/admin/service';
+import { htmlContentApi } from 'admin/api';
 import {
 	Button,
 	Container,
@@ -13,11 +13,11 @@ import {
 	TableGrid,
 	TableHeader,
 	SortableTableHeader,
-} from '@/admin/components';
+} from 'admin/components';
 
-import { useAsyncLocation, useQuery, useToggle } from '@/admin/hooks';
-import { useAuth } from '@/hooks';
-import { formatDate } from '@/utils';
+import { useAsyncLocation, useQuery, useToggle } from 'admin/hooks';
+import { useAuth } from 'hooks';
+import { formatDate } from 'utils';
 import { HtmlContentModal } from '../../components';
 
 export function HtmlContentManager() {

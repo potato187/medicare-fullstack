@@ -1,6 +1,5 @@
 /* eslint-disable */
-import { useEffect, useMemo, useState } from 'react';
-import { tryCatch } from '@/shared/utils';
+import { useMemo, useState } from 'react';
 
 export const useQuery = (name = 'data', params, transformData = null, deps = []) => {
 	const [data, setData] = useState([]);

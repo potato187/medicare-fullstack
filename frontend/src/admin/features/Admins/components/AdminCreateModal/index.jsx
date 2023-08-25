@@ -10,7 +10,7 @@ import {
 	FloatingLabelInput,
 	FloatingLabelPassword,
 	FloatingLabelSelect,
-} from '@/admin/components';
+} from 'admin/components';
 import { adminDefaultValues, adminValidation } from '../../validation';
 
 export function AdminCreateModal({

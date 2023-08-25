@@ -3,9 +3,9 @@ import { Navigate } from 'react-router-dom';
 
 export function withAuth(WrappedComponent) {
 	function Wrapper(props) {
-		const { isLogin } = useSelector((state) => state.auth);
+		const { status } = useSelector((state) => state.auth);
 
-		if (!isLogin) {
+		if (!status.isLogin) {
 			return <Navigate to='../login' replace />;
 		}
 

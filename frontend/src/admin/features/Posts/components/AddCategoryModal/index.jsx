@@ -10,7 +10,7 @@ import {
 	Button,
 	FieldCheckBox,
 	FloatingLabelInput,
-} from '@/admin/components';
+} from 'admin/components';
 import { postCategorySchema, postDefaultValues } from '../../schema';
 
 export function AddCategoryModal({ isOpen = false, toggle = () => false, onSubmit = () => null }) {

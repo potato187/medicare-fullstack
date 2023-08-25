@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import { Card, CardBody, Button, FormInputController, FormPasswordController } from '@/admin/components';
+import { Card, CardBody, Button, FormInputController, FormPasswordController } from 'admin/components';
 
 export function LoginForm({ onSubmit, isLoading }) {
 	return (

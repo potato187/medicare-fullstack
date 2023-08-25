@@ -1,5 +1,6 @@
 import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
 import cn from 'classnames';
+import React from 'react';
 import { RxCaretDown } from 'react-icons/rx';
 
 export function PaginationSelector({
@@ -30,14 +31,15 @@ export function PaginationSelector({
 				<DropdownBody className='dropdown__list'>
 					<ul>
 						{paginationNumbers.map((item) => (
-							<DropdownItem
-								type='li'
-								key={item.value}
-								className={cn({ active: item === +perPage })}
-								customOnClick={() => onSelect({ key: name, value: item })}
-							>
-								{item}
-							</DropdownItem>
+							<React.Fragment key={item}>
+								<DropdownItem
+									type='li'
+									className={cn({ active: item === +perPage })}
+									customOnClick={() => onSelect({ key: name, value: item })}
+								>
+									{item}
+								</DropdownItem>
+							</React.Fragment>
 						))}
 					</ul>
 				</DropdownBody>

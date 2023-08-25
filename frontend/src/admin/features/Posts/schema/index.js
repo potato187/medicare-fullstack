@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { imageValidation, requiredValidation } from '@/admin/validation';
+import { imageValidation, requiredValidation } from 'admin/validation';
 
 export const postDefaultValues = {
 	id: null,

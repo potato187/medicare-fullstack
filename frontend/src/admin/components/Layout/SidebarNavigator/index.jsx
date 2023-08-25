@@ -85,7 +85,7 @@ function NavItem({ to = '', intl = '', Icon = () => null, ...props }) {
 }
 
 export function SidebarNavigator({ routesConfig = [] }) {
-	const { payload } = useSelector((state) => state.auth);
+	const { user } = useSelector((state) => state.auth);
 
 	const location = useLocation();
 	const [activePath, setActivePath] = useState(location.pathname);
@@ -107,7 +107,7 @@ export function SidebarNavigator({ routesConfig = [] }) {
 			</NavLink>
 			<div className={mainClass}>
 				{routesConfig.map(({ listChildren = [], allowedRoles = [], ...props }) =>
-					allowedRoles.includes(payload.role) ? (
+					allowedRoles.includes(user.role) ? (
 						listChildren.length ? (
 							<NavItemGroup
 								key={props.intl}

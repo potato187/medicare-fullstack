@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { IMPORT_STATUS } from '@/admin/constant';
+import { IMPORT_STATUS } from 'admin/constant';
 import module from './style.module.scss';
 
 export function TrStatus({ status = 'prepare', className = '', children }) {

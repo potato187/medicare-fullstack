@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { MdAdd, MdImportExport } from 'react-icons/md';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-import { doctorApi } from '@/admin/service';
+import { doctorApi } from 'admin/api';
 import {
 	Button,
 	ConfirmModal,
@@ -12,7 +12,6 @@ import {
 	Dropdown,
 	DropdownIntl,
 	FooterContainer,
-	PaginationSelector,
 	Table,
 	TableBody,
 	TableGrid,
@@ -20,13 +19,12 @@ import {
 	SortableTableHeader,
 	UnFieldCheckBox,
 	UnFieldDebounce,
-} from '@/admin/components';
-import { PAGINATION_OPTIONS, SEARCH_OPTIONS, SPECIALTY_ID_DEFAULT } from '@/admin/constant';
-import { useAsyncLocation, useFetchSpecialty, useQuery, useToggle } from '@/admin/hooks';
-import { compose } from '@/admin/utilities';
-import { useAuth } from '@/hooks';
-import { downloadExcelFile } from '@/utils';
-import { BasePagination, FormattedDescription } from '@/shared/components';
+} from 'admin/components';
+import { SEARCH_OPTIONS, SPECIALTY_ID_DEFAULT } from 'admin/constant';
+import { useAsyncLocation, useFetchSpecialty, useQuery, useToggle } from 'admin/hooks';
+import { compose } from 'admin/utilities';
+import { useAuth } from 'hooks';
+import { downloadExcelFile } from 'utils';
 import { CreateDoctorModal, ExportModal, ImportExcelModal, ProfileDoctorModal } from '../../components';
 
 export function SpecialtyManager() {
@@ -234,7 +232,6 @@ export function SpecialtyManager() {
 			const fileName = 'doctors';
 			downloadExcelFile(response, fileName);
 		} catch (error) {
-			console.log(error);
 		}
 	};
 

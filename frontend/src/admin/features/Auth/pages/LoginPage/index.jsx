@@ -3,14 +3,15 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { Button, Card, CardBody, FormInputController, FormPasswordController, Layout } from 'admin/components';
+import { Button, Card, CardBody, FormInputController, FormPasswordController } from 'admin/components';
 import { authLogin } from 'admin/redux/slices/auth';
 import { accountDefaultValues, accountValidation } from '../../validation';
+import { Layout } from '../../components';
 
 const REDIRECT_TO_DASHBOARD = '../dashboard';
 
 export function LoginPage() {
-	const { isLogin } = useSelector((state) => state.auth);
+	const { status } = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
 	const methods = useForm({
 		mode: 'onChange',
@@ -18,13 +19,13 @@ export function LoginPage() {
 		resolver: yupResolver(accountValidation),
 	});
 
-	if (isLogin) {
-		return <Navigate to={REDIRECT_TO_DASHBOARD} />;
-	}
-
 	const onSubmit = (data) => {
 		dispatch(authLogin(data));
 	};
+
+	if (status.isLogin) {
+		return <Navigate to={REDIRECT_TO_DASHBOARD} />;
+	}
 
 	return (
 		<FormProvider {...methods}>

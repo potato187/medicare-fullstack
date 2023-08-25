@@ -1,5 +1,6 @@
+import { toast } from 'react-toastify';
 import queryString from 'query-string';
-import { createParamsComparator, typeOf } from '@/utils';
+import { createParamsComparator, typeOf } from 'utils';
 import { PARAMS_OPTIONS_ORDER } from '../constant';
 
 const LANGUAGE_DEFAULT = 'en';
@@ -81,5 +82,48 @@ export const formatDataForSelect = (languageId = LANGUAGE_DEFAULT, key = 'value'
 		return data.map((item) => {
 			return { value: item.id, label: item[`${key}_${languageId}`] };
 		});
+	};
+};
+
+export const generateBreadcrumb = (location) => {
+	return location
+		.split('/')
+		.filter(Boolean)
+		.slice(1)
+		.map((path, index, source) => {
+			return {
+				url: source.slice(0, index + 1).join('/'),
+				intl: `${source.slice(0, index + 1).join('.')}.title`,
+			};
+		});
+};
+
+export const tryCatchAndToast = (callback, languageId = 'en', finallyCallback = null) => {
+	return async (...props) => {
+		try {
+			await Promise.resolve(callback(...props));
+		} catch (error) {
+			const errorMessage = error?.message?.[languageId] || 'An error occurred.';
+			toast.error(errorMessage);
+		} finally {
+			if (finallyCallback) {
+				finallyCallback();
+			}
+		}
+	};
+};
+
+export const tryCatch = (callback, finallyCallback = null) => {
+	return async (...props) => {
+		try {
+			await Promise.resolve(callback(...props));
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.error(error);
+		} finally {
+			if (finallyCallback) {
+				finallyCallback();
+			}
+		}
 	};
 };

@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { setDefaultValues } from '@/admin/utilities';
+import { setDefaultValues } from 'admin/utilities';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -11,7 +11,7 @@ import {
 	Button,
 	FloatingLabelInput,
 	FloatingLabelSelect,
-} from '@/admin/components';
+} from 'admin/components';
 import { adminValidation } from '../../validation';
 
 export function AdminEditModal({

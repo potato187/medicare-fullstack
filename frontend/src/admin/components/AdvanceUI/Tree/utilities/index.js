@@ -1,5 +1,5 @@
 import { arrayMove } from '@dnd-kit/sortable';
-import { flatten } from '@/admin/utilities';
+import { flatten } from 'admin/utilities';
 
 export const flattenTree = (items = []) => {
 	return flatten(items);

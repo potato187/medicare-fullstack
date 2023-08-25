@@ -14,9 +14,9 @@ import {
 	TextArea,
 } from 'admin/components';
 
-import { htmlContentApi } from 'admin/service';
-import { setDefaultValues } from 'admin/utilities';
-import { tryCatch } from 'shared/utils';
+import { htmlContentApi } from 'admin/api';
+import { setDefaultValues, tryCatch } from 'admin/utilities';
+
 import { htmlContentDefaults, htmlContentValidation } from '../../schema';
 
 export function HtmlContentModal({

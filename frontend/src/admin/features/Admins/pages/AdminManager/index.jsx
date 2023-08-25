@@ -17,11 +17,10 @@ import {
 	UnFieldDebounce,
 } from 'admin/components';
 
-import { adminApi, authService } from 'admin/service';
+import { adminApi } from 'admin/api';
 import { useAdminRoles, useAsyncLocation, useCurrentIndex, useGenders, useToggle } from 'admin/hooks';
-import { compose } from 'admin/utilities';
+import { compose, tryCatch } from 'admin/utilities';
 import { useAuth } from 'hooks';
-import { tryCatch } from 'shared/utils';
 import { AdminCreateModal, AdminEditModal } from '../../components';
 
 export function AdminManager() {
@@ -53,7 +52,7 @@ export function AdminManager() {
 	const openConfirmModal = compose(updateAdminIndex, toggleConfirmDeletionModal);
 
 	const handleCreateAdmin = tryCatch(async (newAdmin) => {
-		const { message, metadata } = await authService.signUp(newAdmin);
+		const { message, metadata } = await adminApi.signUp(newAdmin);
 		if (totalPages === +page && +pagesize > Admins.length) {
 			setAdmins(
 				produce((draft) => {
@@ -117,7 +116,7 @@ export function AdminManager() {
 						</div>
 					</div>
 					<TableGrid className='scrollbar'>
-						<Table hover striped auto>
+						<Table hover striped auto={1}>
 							<TableHeader>
 								<th className='text-center'>
 									<FormattedMessage id='table.no' />

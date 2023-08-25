@@ -1,6 +1,6 @@
 import moment from 'moment';
 import queryString from 'query-string';
-import { PAGINATION_OPTIONS } from '@/admin/constant';
+import { PAGINATION_OPTIONS } from 'admin/constant';
 
 export const createWrapperAndAppendToBody = (wrapperId) => {
 	const wrapperElement = document.createElement('div');

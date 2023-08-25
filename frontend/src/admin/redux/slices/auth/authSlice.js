@@ -55,19 +55,17 @@ const authSlice = createSlice({
 				state.tokens.accessToken = tokens.accessToken;
 				state.tokens.refreshToken = tokens.refreshToken;
 			})
-			.addMatcher(authRefreshTokens.fulfilled, (state, meta) => {
-				const { accessToken, refreshToken } = meta.payload.metadata;
-				state.tokens.accessToken = accessToken;
-				state.tokens.refreshToken = refreshToken;
+			.addMatcher(isAnyOf(authRefreshTokens.fulfilled), (state, meta) => {
+				const tokens = meta?.payload?.metadata || {};
+
+				state.tokens.accessToken = tokens.accessToken;
+				state.tokens.refreshToken = tokens.refreshToken;
 			})
-			.addMatcher(
-				isAnyOf(authLogout.fulfilled, authLogin.rejected, authLogout.rejected, authRefreshTokens.rejected),
-				(state) => {
-					state.user = initialState.user;
-					state.tokens = initialState.tokens;
-					state.status = initialState.status;
-				},
-			);
+			.addMatcher(isAnyOf(authLogout.fulfilled, authLogin.rejected, authLogout.rejected), (state) => {
+				state.user = initialState.user;
+				state.tokens = initialState.tokens;
+				state.status = initialState.status;
+			});
 	},
 });
 

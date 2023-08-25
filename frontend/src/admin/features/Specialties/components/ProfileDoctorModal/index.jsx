@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { doctorApi } from '@/admin/service';
+import { doctorApi } from 'admin/api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -17,9 +17,8 @@ import {
 	TabPanel,
 	Tabs,
 } from 'admin/components';
-import { setDefaultValues } from 'admin/utilities';
+import { setDefaultValues, tryCatch } from 'admin/utilities';
 
-import { tryCatch } from 'shared/utils';
 import { doctorValidation } from '../../validation';
 
 export function ProfileDoctorModal({

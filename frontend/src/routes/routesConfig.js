@@ -1,5 +1,5 @@
+import { ADMIN_ROLE } from 'admin/constant';
 import { MdOutlineAdminPanelSettings, MdLanguage, MdOutlineMedicalServices } from 'react-icons/md';
-import { ADMIN_ROLE, DOCTOR_ROLE } from '@/admin/constant';
 
 export const routesConfig = [
 	{
@@ -28,7 +28,7 @@ export const routesConfig = [
 		to: '/admin/dashboard/specialty',
 		intl: 'dashboard.specialty.title',
 		Icon: MdOutlineMedicalServices,
-		allowedRoles: [ADMIN_ROLE, DOCTOR_ROLE],
+		allowedRoles: [ADMIN_ROLE],
 	},
 	{
 		to: '/admin/dashboard/booking',

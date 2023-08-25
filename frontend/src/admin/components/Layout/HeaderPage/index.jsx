@@ -3,7 +3,7 @@ import { BiExitFullscreen, BiFullscreen } from 'react-icons/bi';
 import { MdOutlineDarkMode, MdOutlineLightMode } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { generateBreadcrumb } from 'shared/utils';
+import { generateBreadcrumb } from 'admin/utilities';
 import { LANGUAGES } from 'admin/constant';
 import { LanguagesDropdown } from './LanguagesDropdown';
 import { UserMenu } from './UserMenu';
@@ -13,7 +13,7 @@ import { Button } from '../../BaseUI';
 
 export function HeaderPage() {
 	const location = useLocation();
-	const { payload } = useSelector((state) => state.auth);
+	const { user } = useSelector((state) => state.auth);
 	const [breadcrumb, setBreadcrumb] = useState([]);
 
 	useEffect(() => {
@@ -49,7 +49,7 @@ export function HeaderPage() {
 							<MdOutlineLightMode size='1.25em' />
 							<MdOutlineDarkMode size='1.25em' />
 						</Button>
-						<UserMenu {...payload} />
+						<UserMenu {...user} />
 					</div>
 				</div>
 			</div>

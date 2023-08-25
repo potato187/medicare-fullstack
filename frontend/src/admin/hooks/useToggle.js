@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { typeOf } from '@/utils';
+import { typeOf } from 'utils';
 
 export const useToggle = (initialState = false) => {
 	const [isOpen, setIsOpen] = useState(initialState);

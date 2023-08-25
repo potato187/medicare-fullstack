@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { emailValidation, passwordValidation } from '@/admin/validation';
+import { emailValidation, passwordValidation } from 'admin/validation';
 
 export const accountDefaultValues = {
 	email: 'charlie.admin@example.com',

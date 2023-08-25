@@ -3,8 +3,8 @@ import { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { CSSTransition } from 'react-transition-group';
-import { useClickOutside } from '@/hooks';
-import { useToggle } from '@/admin/hooks';
+import { useClickOutside } from 'hooks';
+import { useToggle } from 'admin/hooks';
 import module from '../style.module.scss';
 
 export function FloatingLabelSelect({

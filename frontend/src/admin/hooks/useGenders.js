@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { tryCatch } from '@/shared/utils';
-import { resourceApi } from '../service';
+import { tryCatch } from 'admin/utilities';
+import { resourceApi } from '../api';
 
 export const useGenders = (languageId = 'en') => {
 	const [genders, setGenders] = useState([]);

@@ -1,6 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { PATH_IMAGES } from '@/admin/constant';
-import { ROOT_PATH } from '@/routes';
+import { PATH_IMAGES } from 'admin/constant';
 import module from './style.module.scss';
 
 export function Layout({ children }) {
@@ -30,7 +29,7 @@ export function Layout({ children }) {
 			<div className={mainCln}>
 				<div className='container'>
 					<div className='text-center'>
-						<NavLink to={ROOT_PATH} className='d-block mb-3'>
+						<NavLink to='' className='d-block mb-3'>
 							<img height='20' width='20' src={PATH_IMAGES.LOGO_SM} alt='' />
 						</NavLink>
 						<p className='fw-700 text-white-50 mb-3'>Premium Admin & Dashboard Template</p>

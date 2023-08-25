@@ -1,5 +1,4 @@
 import { BaseModal, BaseModalBody, BaseModalFooter, BaseModalHeader, Button } from 'admin/components/BaseUI';
-import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
@@ -29,11 +28,3 @@ export function ConfirmModal({
 		</BaseModal>
 	);
 }
-
-ConfirmModal.propTypes = {
-	idTitleIntl: PropTypes.string.isRequired,
-	isOpen: PropTypes.bool.isRequired,
-	onClose: PropTypes.func.isRequired,
-	onSubmit: PropTypes.func.isRequired,
-	children: PropTypes.node,
-};

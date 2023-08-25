@@ -1,4 +1,4 @@
-import { axiosClient } from './axios/axiosClient';
+import { axiosClient } from './axiosClient';
 import { RESOURCE_PATH } from './constant';
 
 export const resourceApi = {

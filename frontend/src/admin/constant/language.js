@@ -1,5 +1,5 @@
-import usFlag from '@/assets/images/us.svg';
-import vnFlag from '@/assets/images/vn.svg';
+import usFlag from 'assets/images/us.svg';
+import vnFlag from 'assets/images/vn.svg';
 
 export const LANGUAGES = [
 	{

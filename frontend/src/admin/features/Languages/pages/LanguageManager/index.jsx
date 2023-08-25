@@ -15,7 +15,7 @@ import {
 	Breadcrumb,
 	WrapScrollBar,
 } from 'admin/components';
-import { languageApi } from 'admin/service';
+import { languageApi } from 'admin/api';
 import { convertData, convertName } from '../../utilities';
 
 export function LanguageManager() {

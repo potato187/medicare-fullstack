@@ -8,6 +8,7 @@ export function Table({
 	hover = false,
 	fixed = false,
 	editContent = false,
+	auto = false,
 	children,
 	...props
 }) {
@@ -17,7 +18,7 @@ export function Table({
 		[module['table-striped-columns']]: striped,
 		[module['table-hover']]: hover,
 		[module['table-fixed']]: fixed,
-		[module['table-auto']]: fixed,
+		[module['table-auto']]: auto,
 		[module['table-edit-content']]: editContent,
 	});
 

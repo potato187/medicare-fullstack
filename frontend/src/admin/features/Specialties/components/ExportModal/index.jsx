@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { BaseModal, BaseModalBody, BaseModalFooter, BaseModalHeader, Button, FieldCheckBox } from '@/admin/components';
+import { BaseModal, BaseModalBody, BaseModalFooter, BaseModalHeader, Button, FieldCheckBox } from 'admin/components';
 
 export function ExportModal({ titleIntl = '', isOpen = false, onClose = () => false, onSubmit = () => null }) {
 	const methods = useForm({

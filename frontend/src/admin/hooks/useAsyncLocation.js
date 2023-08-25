@@ -2,9 +2,9 @@
 import queryString from 'query-string';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from '@/admin/constant';
-import { tryCatch } from '@/shared/utils';
-import { typeOf } from '@/utils';
+import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
+import { tryCatch } from 'admin/utilities';
+import { typeOf } from 'utils';
 import { createURL } from '../utilities';
 
 export const useAsyncLocation = ({

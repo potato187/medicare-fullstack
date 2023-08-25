@@ -1,5 +1,5 @@
 import urlJoin from 'url-join';
-import { PATH_IMAGES } from '@/admin/constant';
+import { PATH_IMAGES } from 'admin/constant';
 
 const getUrlPostThumbnail = (url) => {
 	return url ? urlJoin(import.meta.env.VITE_REACT_APP_SERVER_URL, url) : PATH_IMAGES.BANNER_PLACEHOLDER;

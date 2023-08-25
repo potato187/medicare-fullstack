@@ -1,11 +1,11 @@
 import cn from 'classnames';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { CSSTransition } from 'react-transition-group';
-import './transition.scss';
 import { FormattedMessage } from 'react-intl';
 import { useClickOutside } from 'hooks';
 import { BasePortal } from '../BasePortal';
+import './transition.scss';
 import module from './style.module.scss';
 
 export function BaseModal({
@@ -15,9 +15,10 @@ export function BaseModal({
 	isOpen = false,
 	backdrop = true,
 	keyboard = false,
-	onClose = () => {},
+	onClose = () => false,
 	children,
 }) {
+	const nodeRef = useRef(null);
 	const {
 		modal: modalCln,
 		'modal--sm': modalSmCln,
@@ -39,7 +40,11 @@ export function BaseModal({
 		className,
 	);
 
-	const nodeRef = useRef(null);
+	const handleOnClose = useCallback(() => {
+		if (onClose) {
+			onClose();
+		}
+	}, [onClose]);
 
 	const dialogRef = useClickOutside(() => {
 		if (keyboard && !backdrop) {
@@ -58,7 +63,7 @@ export function BaseModal({
 	useEffect(() => {
 		const closeOnEscapeKey = (e) => {
 			if (e.key === 'Escape' || e.keyCode === 27) {
-				onClose();
+				handleOnClose();
 			}
 		};
 
@@ -68,7 +73,7 @@ export function BaseModal({
 		return () => {
 			document.removeEventListener('keydown', closeOnEscapeKey);
 		};
-	}, [keyboard, onClose]);
+	}, [keyboard, handleOnClose]);
 
 	return (
 		<BasePortal wrapperId={selectorId}>

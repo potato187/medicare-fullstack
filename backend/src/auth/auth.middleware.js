@@ -44,7 +44,6 @@ const authorization = tryCatch(async (req, res, next) => {
 
 		return next();
 	} catch (error) {
-		console.log(error.name);
 		if (error.name !== 'TokenExpiredError') {
 			return next(new UnauthorizedRequestError({ code: 100401 }));
 		}

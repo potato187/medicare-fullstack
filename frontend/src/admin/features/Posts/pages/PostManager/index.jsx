@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
-import { postApi } from 'admin/service';
+import { postApi } from 'admin/api';
 import {
 	Button,
 	ConfirmModal,

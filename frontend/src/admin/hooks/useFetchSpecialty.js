@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { tryCatch } from '@/shared/utils';
-import { specialtiesApi } from '../service';
+import { tryCatch } from 'admin/utilities';
+import { specialtiesApi } from '../api';
 
 export const useFetchSpecialty = (params = {}) => {
 	const { entity = 'Doctors' } = params;
