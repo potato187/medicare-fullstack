@@ -7,7 +7,6 @@ export function Table({
 	striped = false,
 	hover = false,
 	fixed = false,
-	auto = false,
 	editContent = false,
 	children,
 	...props

@@ -1,11 +1,11 @@
-import { useSwitchState } from '@/hooks';
-import { FormattedDescription } from '@/shared/components';
 import { ErrorMessage } from '@hookform/error-message';
 import cn from 'classnames';
-import { useEffect, useId } from 'react';
+import { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useSwitchState } from 'hooks';
+import { FormattedDescription } from 'admin/components/BaseUI';
 import module from '../style.module.scss';
 
 export function FloatingLabelPassword({ name, labelIntl, ...props }) {

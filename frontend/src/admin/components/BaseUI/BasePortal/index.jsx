@@ -1,6 +1,6 @@
-import { createWrapperAndAppendToBody } from '@/utils';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { createWrapperAndAppendToBody } from 'utils';
 
 export function BasePortal({ children, selectorId = 'portal-root' }) {
 	const [container, setContainer] = useState(null);

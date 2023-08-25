@@ -57,10 +57,10 @@ function Button(
 	let renderChildren = children;
 	if (isLoading) {
 		renderChildren = (
-			<React.Fragment>
-				<span className={module['spinner']}></span>
+			<>
+				<span className={module['spinner']} />
 				{children}
-			</React.Fragment>
+			</>
 		);
 	}
 

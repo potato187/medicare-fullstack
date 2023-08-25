@@ -1,11 +1,11 @@
-import { useSwitchState } from '@/hooks';
 import { ErrorMessage } from '@hookform/error-message';
 import React, { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { VscEye, VscEyeClosed } from 'react-icons/vsc';
-import module from './style.module.scss';
 import { useIntl } from 'react-intl';
-import { FormattedDescription } from '@/shared/components';
+import { useSwitchState } from 'hooks';
+import { FormattedDescription } from 'admin/components/BaseUI';
+import module from './style.module.scss';
 
 export function FormPasswordController({ name, labelInt, placeholderInt, ...props }) {
 	const id = useId();
@@ -23,7 +23,7 @@ export function FormPasswordController({ name, labelInt, placeholderInt, ...prop
 				control={control}
 				render={({ field }) => {
 					return (
-						<React.Fragment>
+						<>
 							<label htmlFor={id}>{label}</label>
 							<div className={passwordCln}>
 								<input id={id} {...field} {...props} type={hidden ? 'text' : 'password'} placeholder={placeholder} />
@@ -40,7 +40,7 @@ export function FormPasswordController({ name, labelInt, placeholderInt, ...prop
 									</div>
 								)}
 							/>
-						</React.Fragment>
+						</>
 					);
 				}}
 			/>

@@ -1,5 +1,4 @@
 import { Quill } from 'react-quill';
-import h3Svg from '@/assets/images/icons/header-3.svg';
 
 const icons = Quill.import('ui/icons');
 icons.header[3] = `

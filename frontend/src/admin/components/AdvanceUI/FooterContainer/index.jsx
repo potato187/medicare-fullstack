@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
+import { PAGINATION_OPTIONS } from 'admin/constant';
+import { BasePagination } from 'admin/components/BaseUI';
 import { PaginationSelector } from '../PaginationSelector';
-import { PAGINATION_OPTIONS } from '@/admin/constant';
-import { BasePagination } from '@/shared/components';
 
 export function FooterContainer({
 	pagesize = 25,

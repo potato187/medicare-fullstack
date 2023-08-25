@@ -1,6 +1,6 @@
 import React from 'react';
-import { Action } from '../Action';
 import { MdDragIndicator } from 'react-icons/md';
+import { Action } from '../Action';
 
 export const Handle = React.forwardRef((props, ref) => {
 	return (

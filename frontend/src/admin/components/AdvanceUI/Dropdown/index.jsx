@@ -1,4 +1,4 @@
-import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from '@/shared/components/BaseDropdown';
+import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
 import cn from 'classnames';
 import { RxCaretDown } from 'react-icons/rx';
 
@@ -32,16 +32,17 @@ export function Dropdown({
 				</DropdownHeader>
 				<DropdownBody className='dropdown__list'>
 					<ul>
-						{options.map((item, index) => (
+						{options.map((item) => (
 							<DropdownItem
 								type='li'
-								key={index}
+								key={item.name}
 								className={cn({
 									active: item.value === option.value,
 									'show-counter': showCounter,
 									disabled: showCounter && item.count === 0,
 								})}
-								customOnClick={() => onSelect({ key: name, value: item.value })}>
+								customOnClick={() => onSelect({ key: name, value: item.value })}
+							>
 								<span>{item.label}</span>
 								{showCounter ? <span>({item.count || 0})</span> : null}
 							</DropdownItem>

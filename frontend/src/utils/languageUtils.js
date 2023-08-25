@@ -1,4 +1,4 @@
-import { typeOf } from '@/utils';
+import { typeOf } from './functions';
 
 export const flattenMessages = (nestedMessages, prefix = '') => {
 	if (nestedMessages === null) {

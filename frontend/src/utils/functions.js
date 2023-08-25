@@ -1,6 +1,6 @@
-import { PAGINATION_OPTIONS } from '@/admin/constant';
 import moment from 'moment';
 import queryString from 'query-string';
+import { PAGINATION_OPTIONS } from '@/admin/constant';
 
 export const createWrapperAndAppendToBody = (wrapperId) => {
 	const wrapperElement = document.createElement('div');
@@ -9,7 +9,9 @@ export const createWrapperAndAppendToBody = (wrapperId) => {
 	return wrapperElement;
 };
 
-export const typeOf = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+export const typeOf = (value) => {
+	return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+};
 
 export const getFlatParams = (params = '', DEFAULT_PARAMS) => {
 	if (!params) return DEFAULT_PARAMS;
@@ -28,7 +30,13 @@ export const createParamsComparator = (paramOrder = []) => {
 	};
 };
 
-export const setQueryParams = (pathName = '', navigate = () => null, haystack = PAGINATION_OPTIONS) => {
+export const setQueryParams = (
+	pathName = '',
+	navigate = () => {
+		return null;
+	},
+	haystack = PAGINATION_OPTIONS,
+) => {
 	const sortedQueryParams = sortQueryParams(haystack);
 	const direct = navigate;
 	const locationPathName = pathName;
@@ -50,7 +58,7 @@ export const formatDate = (date, format = 'DD/MM/YYYY') => {
 };
 
 export const downloadExcelFile = (response, filename = 'data.xlsx') => {
-	filename += '_' + moment().format('DD_MM_YY') + '.xlsx';
+	filename += `_${moment().format('DD_MM_YY')}.xlsx`;
 	const url = window.URL.createObjectURL(new Blob([response]));
 	const link = document.createElement('a');
 	link.href = url;
@@ -65,7 +73,6 @@ export const downloadExcelFile = (response, filename = 'data.xlsx') => {
 export const isValidExtension = (extensions = []) => {
 	return (filename) => {
 		if (!filename || !filename.trim().length) return false;
-		console.log(filename);
 		const ext = filename.split('.').pop().toLowerCase();
 		return extensions.includes(ext);
 	};
@@ -76,7 +83,9 @@ export const filterWeekends = (date) => {
 	return day !== 0;
 };
 
-export const formatPhone = (phoneNumber) => phoneNumber.replace(/^(\d{4})(\d{3})(\d{3})$/, '$1 $2 $3');
+export const formatPhone = (phoneNumber) => {
+	return phoneNumber.replace(/^(\d{4})(\d{3})(\d{3})$/, '$1 $2 $3');
+};
 
 export const debounce = (func, timeout = 300) => {
 	let timer;

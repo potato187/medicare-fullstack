@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from './style.module.scss';
 import classNames from 'classnames';
-import { Action, Add, Handle, Remove, Update } from '../Buttons';
 import { MdExpandMore } from 'react-icons/md';
+import styles from './style.module.scss';
+import { Action, Handle, Remove, Update } from '../Buttons';
 
 export const TreeItem = React.forwardRef(
 	(
@@ -41,7 +41,8 @@ export const TreeItem = React.forwardRef(
 				style={{
 					'--spacing': `${indentationWidth * depth}px`,
 				}}
-				{...props}>
+				{...props}
+			>
 				<div className={styles.TreeItem} ref={ref} style={style}>
 					<Handle {...handleProps} />
 					{onCollapse && (

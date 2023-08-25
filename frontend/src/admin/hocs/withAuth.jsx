@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 export function withAuth(WrappedComponent) {
-	const Wrapper = (props) => {
+	function Wrapper(props) {
 		const { isLogin } = useSelector((state) => state.auth);
 
 		if (!isLogin) {
@@ -10,7 +10,7 @@ export function withAuth(WrappedComponent) {
 		}
 
 		return <WrappedComponent {...props} />;
-	};
+	}
 
 	return Wrapper;
 }

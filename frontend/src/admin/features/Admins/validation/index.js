@@ -1,6 +1,6 @@
+import * as yup from 'yup';
 import { ADMIN_ROLE, GENDER_DEFAULT } from '@/admin/constant';
 import { emailValidation, phoneValidation, requiredValidation } from '@/admin/validation';
-import * as yup from 'yup';
 
 export const adminDefaultValues = {
 	firstName: '',

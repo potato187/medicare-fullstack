@@ -1,3 +1,8 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
+import { setDefaultValues } from '@/admin/utilities';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -7,11 +12,6 @@ import {
 	FloatingLabelInput,
 	FloatingLabelSelect,
 } from '@/admin/components';
-import { setDefaultValues } from '@/admin/utilities';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
 import { adminValidation } from '../../validation';
 
 export function AdminEditModal({
@@ -45,7 +45,7 @@ export function AdminEditModal({
 
 	useEffect(() => {
 		setDefaultValues(methods, defaultValues);
-	}, [defaultValues]);
+	}, [defaultValues, methods]);
 
 	return (
 		<FormProvider {...methods}>

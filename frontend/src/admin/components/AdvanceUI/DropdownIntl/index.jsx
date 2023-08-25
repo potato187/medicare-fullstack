@@ -1,12 +1,11 @@
-import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from '@/shared/components/BaseDropdown';
+import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
 import cn from 'classnames';
 import { RxCaretDown } from 'react-icons/rx';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 export function DropdownIntl({ name = '', options = [], value = '', className = '', size = '', onSelect = () => {} }) {
-	if (!options.length) return null;
-
 	const intl = useIntl();
+	if (!options.length) return null;
 	const option = options.find((option) => option.value === value) ?? options[0];
 
 	const styles = cn(
@@ -29,12 +28,13 @@ export function DropdownIntl({ name = '', options = [], value = '', className = 
 				</DropdownHeader>
 				<DropdownBody className='dropdown__list'>
 					<ul>
-						{options.map((item, index) => (
+						{options.map((item) => (
 							<DropdownItem
 								type='li'
-								key={index}
+								key={item.value}
 								className={cn({ active: item.value === option.value })}
-								customOnClick={() => onSelect({ key: name, value: item.value })}>
+								customOnClick={() => onSelect({ key: name, value: item.value })}
+							>
 								{intl.formatMessage({ id: item.label })}
 							</DropdownItem>
 						))}

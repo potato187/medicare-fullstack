@@ -1,11 +1,10 @@
 import produce from 'immer';
 import { useMemo } from 'react';
-import module from './style.module.scss';
-import { findIndexById, findIndexByParentId } from '../utilities';
 import cn from 'classnames';
-import { buildTree } from '../utilities';
+import module from './style.module.scss';
+import { findIndexById, findIndexByParentId, buildTree } from '../utilities';
 
-const Item = ({ data = {}, onChange = () => null, children }) => {
+function Item({ data = {}, onChange = () => null, children }) {
 	const { id, isSelected, title, name } = data;
 
 	return (
@@ -17,9 +16,9 @@ const Item = ({ data = {}, onChange = () => null, children }) => {
 			{children}
 		</li>
 	);
-};
+}
 
-const RenderTree = ({ data = [], onChange = () => null }) => {
+function RenderTree({ data = [], onChange = () => null }) {
 	return (
 		<ul>
 			{data.map((item) => (
@@ -29,9 +28,9 @@ const RenderTree = ({ data = [], onChange = () => null }) => {
 			))}
 		</ul>
 	);
-};
+}
 
-export function SelectorTree({ name, tree = [], setTree = () => {} }) {
+export function SelectorTree({ tree = [], setTree = () => {} }) {
 	const flattenedTree = useMemo(() => buildTree(tree), [tree]);
 
 	const { tree: treeCln } = module;

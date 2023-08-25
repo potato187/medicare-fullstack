@@ -1,5 +1,5 @@
-import { ADMIN_ROLE, DOCTOR_ROLE } from '@/admin/constant';
 import { MdOutlineAdminPanelSettings, MdLanguage, MdOutlineMedicalServices } from 'react-icons/md';
+import { ADMIN_ROLE, DOCTOR_ROLE } from '@/admin/constant';
 
 export const routesConfig = [
 	{

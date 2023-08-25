@@ -7,7 +7,6 @@ export const adminApi = {
 	},
 
 	updateById(id, data) {
-		console.log(data);
 		return axiosClient.patch(`${ADMIN_PATH}/update/${id}`, data);
 	},
 

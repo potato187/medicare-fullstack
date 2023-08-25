@@ -1,4 +1,9 @@
-import { postApi } from '@/admin/service';
+import produce from 'immer';
+import React, { useRef } from 'react';
+import { MdAdd } from 'react-icons/md';
+import { FormattedMessage } from 'react-intl';
+import { toast } from 'react-toastify';
+import { postApi } from 'admin/service';
 import {
 	Button,
 	ConfirmModal,
@@ -6,7 +11,6 @@ import {
 	DropdownIntl,
 	DropdownTree,
 	FooterContainer,
-	PaginationSelector,
 	Table,
 	TableBody,
 	TableGrid,
@@ -14,18 +18,12 @@ import {
 	SortableTableHeader,
 	UnFieldDebounce,
 	UnFieldSwitch,
-} from '@/admin/components';
-import { PAGINATION_OPTIONS } from '@/admin/constant';
-import { useAsyncLocation, useQuery, useToggle } from '@/admin/hooks';
-import { compose } from '@/admin/utilities';
-import { useAuth } from '@/hooks';
-import { BasePagination, FormattedDescription } from '@/shared/components';
-import { formatDate } from '@/utils';
-import produce from 'immer';
-import React, { useRef } from 'react';
-import { MdAdd } from 'react-icons/md';
-import { FormattedMessage } from 'react-intl';
-import { toast } from 'react-toastify';
+	FormattedDescription,
+} from 'admin/components';
+import { useAsyncLocation, useQuery, useToggle } from 'admin/hooks';
+import { compose } from 'admin/utilities';
+import { useAuth } from 'hooks';
+import { formatDate } from 'utils';
 import { PostEditorModal } from '../../components/PostEditorModal';
 import { POST_SEARCH_OPTIONS } from '../../constant';
 
@@ -103,7 +101,7 @@ export function PostManager() {
 
 	const submitCreatePost = async ({ postData, categoryIds }) => {
 		try {
-			const id = postData.id;
+			const { id } = postData;
 			const { data, message } = await postApi.createOrUpdateOne({ postData, categoryIds });
 
 			setPosts(
@@ -156,7 +154,7 @@ export function PostManager() {
 	};
 
 	return (
-		<React.Fragment>
+		<>
 			<Container id='page-main'>
 				<div className='d-flex flex-column h-100 py-5'>
 					<div className='d-flex pb-4'>
@@ -241,15 +239,11 @@ export function PostManager() {
 										<td className='text-center'>{formatDate(post.publicDate)}</td>
 										<td className='text-center'>{formatDate(post.createdAt)}</td>
 										<td className='text-center'>
-											{
-												<UnFieldSwitch
-													name={post.id}
-													checked={+post.display === 1}
-													onChange={(event) =>
-														onChangeDisplayPost({ id: post.id, display: event.target.checked, index })
-													}
-												/>
-											}
+											<UnFieldSwitch
+												name={post.id}
+												checked={+post.display === 1}
+												onChange={(event) => onChangeDisplayPost({ id: post.id, display: event.target.checked, index })}
+											/>
 										</td>
 										<td>
 											<div className='d-flex justify-content-center gap-2'>
@@ -288,12 +282,13 @@ export function PostManager() {
 				idTitleIntl='dashboard.posts.modal.post_deletion_confirmation_modal.title'
 				isOpen={statusConfirmModal}
 				onClose={toggleConfirmModal}
-				onSubmit={submitDeletePost}>
+				onSubmit={submitDeletePost}
+			>
 				<FormattedDescription
 					id='dashboard.posts.modal.post_deletion_confirmation_modal.description'
 					values={{ title: Posts?.[postIndexRef.current]?.[`title_${languageId}`] || '' }}
 				/>
 			</ConfirmModal>
-		</React.Fragment>
+		</>
 	);
 }

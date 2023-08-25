@@ -1,14 +1,13 @@
-import { postCategoryApi } from '@/admin/service';
-import { Button, ConfirmModal, Container, SortableTree, WrapScrollBar } from '@/admin/components';
-import { flattenTree, removeItem } from '@/admin/components/AdvanceUI/Tree/utilities';
-import { useToggle } from '@/admin/hooks';
-import { compose, findPathFromRoot } from '@/admin/utilities';
-import { useAuth } from '@/hooks';
-import { FormattedDescription } from '@/shared/components';
-import { tryCatch } from '@/shared/utils';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
+import { postCategoryApi } from 'admin/service';
+import { Button, ConfirmModal, Container, FormattedDescription, SortableTree, WrapScrollBar } from 'admin/components';
+import { flattenTree, removeItem } from 'admin/components/AdvanceUI/Tree/utilities';
+import { useToggle } from 'admin/hooks';
+import { compose, findPathFromRoot } from 'admin/utilities';
+import { useAuth } from 'hooks';
+import { tryCatch } from 'shared/utils';
 import { AddCategoryModal, ModifyCategoryModal } from '../../components';
 
 export function CategoryManager() {
@@ -101,7 +100,7 @@ export function CategoryManager() {
 	}, []);
 
 	return (
-		<React.Fragment>
+		<>
 			<Container id='page-main'>
 				<div className='d-flex flex-column h-100 py-5'>
 					<WrapScrollBar>
@@ -142,7 +141,8 @@ export function CategoryManager() {
 				idTitleIntl='dashboard.posts.modal.category_deletion_confirmation_modal.title'
 				isOpen={statusDeletionModal}
 				onClose={toggleDeletionModal}
-				onSubmit={submitConfirmDeletionCategory}>
+				onSubmit={submitConfirmDeletionCategory}
+			>
 				<FormattedDescription
 					id='dashboard.posts.modal.category_deletion_confirmation_modal.description'
 					values={{ title: focusedCategory?.[localizedTitle] ?? '' }}
@@ -152,9 +152,10 @@ export function CategoryManager() {
 				idTitleIntl='dashboard.posts.modal.sort_categories_confirmation_modal.title'
 				isOpen={statusSortModal}
 				onClose={toggleSortModal}
-				onSubmit={confirmSortCategories}>
+				onSubmit={confirmSortCategories}
+			>
 				<FormattedMessage id='dashboard.posts.modal.sort_categories_confirmation_modal.description' />
 			</ConfirmModal>
-		</React.Fragment>
+		</>
 	);
 }

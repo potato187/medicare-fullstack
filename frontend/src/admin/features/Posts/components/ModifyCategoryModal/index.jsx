@@ -1,3 +1,7 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -7,10 +11,6 @@ import {
 	FieldCheckBox,
 	FloatingLabelInput,
 } from '@/admin/components';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
 import { postCategorySchema } from '../../schema';
 
 export function ModifyCategoryModal({
@@ -30,11 +30,11 @@ export function ModifyCategoryModal({
 		Object.entries(defaultValues).forEach(([key, value]) => {
 			methods.setValue(key, value);
 		});
-	}, [defaultValues]);
+	}, [defaultValues, methods]);
 
 	useEffect(() => {
 		methods.setValue('url', methods.getValues('slug'));
-	}, [watchSlugField]);
+	}, [watchSlugField, methods]);
 
 	return (
 		<FormProvider {...methods}>

@@ -1,3 +1,11 @@
+import React, { useEffect, useMemo } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useLanguages } from 'stores';
 import {
 	Button,
 	Container,
@@ -6,17 +14,9 @@ import {
 	FloatingInput,
 	Breadcrumb,
 	WrapScrollBar,
-} from '@/admin/components';
-import { useLanguages } from '@/store';
-import React, { useEffect, useMemo } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
+} from 'admin/components';
+import { languageApi } from 'admin/service';
 import { convertData, convertName } from '../../utilities';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { languageApi } from '@/admin/service';
 
 export function LanguageManager() {
 	const { languageId = '' } = useParams();
@@ -40,12 +40,12 @@ export function LanguageManager() {
 
 	useEffect(() => {
 		methods.clearErrors();
-		Object.entries(language).map(([prefix, { fields }]) => {
-			for (const key in fields) {
+		Object.entries(language).forEach(([prefix, { fields }]) => {
+			Object.keys(fields).forEach((key) => {
 				methods.setValue(`${prefix}.${key}`, fields[key]);
-			}
+			});
 		});
-	}, [languageId]);
+	}, [languageId, methods, language]);
 
 	return (
 		<FormProvider {...methods}>

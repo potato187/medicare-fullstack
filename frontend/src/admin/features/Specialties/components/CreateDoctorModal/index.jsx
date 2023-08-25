@@ -1,3 +1,6 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -11,10 +14,7 @@ import {
 	TabNavItem,
 	TabPanel,
 	Tabs,
-} from '@/admin/components';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
+} from 'admin/components';
 import { doctorDefaultValues, doctorValidation } from '../../validation';
 
 export function CreateDoctorModal({
@@ -45,8 +45,8 @@ export function CreateDoctorModal({
 						<Tabs className='tabs' tabIndexActive={0}>
 							<TabNav>
 								<TabNavItem labelIntl='form.profile' tabIndex={0} />
-								<TabNavItem labelIntl='common.description_en' tabIndex={1} />
-								<TabNavItem labelIntl='common.description_vi' tabIndex={2} />
+								<TabNavItem labelIntl='common.description_en' index={1} />
+								<TabNavItem labelIntl='common.description_vi' index={2} />
 							</TabNav>
 							<TabPanel tabIndex={0}>
 								<div className='row'>
@@ -76,10 +76,10 @@ export function CreateDoctorModal({
 									</div>
 								</div>
 							</TabPanel>
-							<TabPanel tabIndex={1}>
+							<TabPanel index={1}>
 								<FormInputEditor name='description.en' />
 							</TabPanel>
-							<TabPanel tabIndex={2}>
+							<TabPanel index={2}>
 								<FormInputEditor name='description.vi' />
 							</TabPanel>
 						</Tabs>
@@ -93,7 +93,8 @@ export function CreateDoctorModal({
 						isLoading={methods.formState.isSubmitting}
 						type='submit'
 						size='sm'
-						onClick={methods.handleSubmit(onSubmit)}>
+						onClick={methods.handleSubmit(onSubmit)}
+					>
 						<FormattedMessage id='button.create' />
 					</Button>
 				</BaseModalFooter>

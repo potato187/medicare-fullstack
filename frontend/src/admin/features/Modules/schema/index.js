@@ -1,5 +1,6 @@
-import { imageValidation, requiredValidation } from '@/admin/validation';
 import * as yup from 'yup';
+import { imageValidation, requiredValidation } from '@/admin/validation';
+
 export const htmlContentDefaults = {
 	title_vi: '',
 	title_en: '',

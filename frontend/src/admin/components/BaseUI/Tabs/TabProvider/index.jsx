@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import cn from 'classnames';
 
 const tabsContext = createContext({
@@ -17,18 +17,16 @@ export const useTabs = () => {
 export function Tabs({ className = 'tabs', tabIndexActive = 0, children }) {
 	const [tabIndex, setTabIndex] = useState(tabIndexActive);
 
-	const onSelect = (tabIndexActive) => {
-		if (tabIndex !== tabIndexActive) {
-			setTabIndex(tabIndexActive);
-		}
-	};
+	const onSelect = useCallback((tabIndexActive) => {
+		setTabIndex(tabIndexActive);
+	}, []);
 
 	const values = useMemo(
 		() => ({
 			tabIndexActive: tabIndex,
 			onSelect,
 		}),
-		[tabIndex],
+		[tabIndex, onSelect],
 	);
 
 	return (

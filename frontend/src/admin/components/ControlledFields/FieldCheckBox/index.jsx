@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 function FieldCheckBox({ labelIntl, ...props }, ref) {
+	const id = useId();
 	return (
-		<label className='field-input-check'>
-			<input type='checkbox' {...props} ref={ref} />
+		<label className='field-input-check' htmlFor={id}>
+			<input type='checkbox' {...props} ref={ref} id={id} />
 			{labelIntl ? (
 				<span>
 					<FormattedMessage id={labelIntl} />

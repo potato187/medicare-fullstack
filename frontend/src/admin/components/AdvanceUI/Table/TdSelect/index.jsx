@@ -1,12 +1,12 @@
-import { useClickOutside, useSwitchState } from '@/hooks';
 import cn from 'classnames';
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { RxCaretDown } from 'react-icons/rx';
 import { CSSTransition } from 'react-transition-group';
+import { useClickOutside, useSwitchState } from 'hooks';
 import module from './style.module.scss';
 
-export function TdSelect({ languageId = 'en', name, options = [], ...props }) {
+export function TdSelect({ name, options = [], ...props }) {
 	const [position, setPosition] = useState({
 		top: '100%',
 		left: 0,
@@ -42,7 +42,7 @@ export function TdSelect({ languageId = 'en', name, options = [], ...props }) {
 		if (option.value !== value) {
 			setValue(name, option.value);
 		}
-	}, []);
+	}, [name, option.value, setValue, value]);
 
 	useLayoutEffect(() => {
 		if (nodeRef.current && tdRef.current) {
@@ -64,12 +64,12 @@ export function TdSelect({ languageId = 'en', name, options = [], ...props }) {
 				}));
 			}
 		}
-	}, [isOpen]);
+	}, [isOpen, nodeRef]);
 
 	return (
 		<td ref={tdRef} {...props}>
 			<div className={style}>
-				<div className={selectHeaderCln} onClick={openSelect}>
+				<div aria-hidden className={selectHeaderCln} onClick={openSelect}>
 					<span className='text-capitalize'>{option.label}</span>
 					<Controller
 						id={id}
@@ -82,12 +82,14 @@ export function TdSelect({ languageId = 'en', name, options = [], ...props }) {
 				<CSSTransition in={isOpen} timeout={300} classNames='dropdown-menu' unmountOnExit nodeRef={nodeRef}>
 					<div className={cn('select-list', listCln)} style={{ ...position }} ref={nodeRef}>
 						<ul className='scrollbar scrollbar--sm'>
-							{options.map(({ value, label }, index) => (
+							{options.map(({ value, label }) => (
 								<li
+									aria-hidden
 									type='li'
-									key={index}
+									key={value}
 									className={cn('text-capitalize', { active: value === option.value })}
-									onClick={() => handleSelectOption(value)}>
+									onClick={() => handleSelectOption(value)}
+								>
 									{label}
 								</li>
 							))}

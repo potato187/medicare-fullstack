@@ -1,3 +1,9 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
+import { setDefaultValues } from '@/admin/utilities';
+import { useQuery } from '@/admin/hooks';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -8,12 +14,6 @@ import {
 	FloatingLabelSelect,
 	TextArea,
 } from '@/admin/components';
-import { useQuery } from '@/admin/hooks';
-import { setDefaultValues } from '@/admin/utilities';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
 import { bookingValidation } from '../../validation';
 
 export function BookingModel({
@@ -59,7 +59,7 @@ export function BookingModel({
 	useEffect(() => {
 		setDefaultValues(methods, defaultValues);
 		methods.setValue('specialtyId', specialtyId);
-	}, [defaultValues]);
+	}, [defaultValues, specialtyId, methods]);
 
 	return (
 		<FormProvider {...methods}>
@@ -112,7 +112,8 @@ export function BookingModel({
 						size='xs'
 						type='submit'
 						info
-						onClick={methods.handleSubmit(onSubmit)}>
+						onClick={methods.handleSubmit(onSubmit)}
+					>
 						<FormattedMessage id='button.update' />
 					</Button>
 				</BaseModalFooter>

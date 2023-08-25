@@ -1,8 +1,8 @@
-import { routesConfig } from '@/routes/routesConfig';
 import { Outlet } from 'react-router-dom';
-import module from './style.module.scss';
+import { routesConfig } from 'routes/routesConfig';
 import { SidebarNavigator } from './SidebarNavigator';
 import { HeaderPage } from './HeaderPage';
+import module from './style.module.scss';
 
 export function Layout() {
 	const { admin: adminCln, 'admin-sidebar': sidebarCln, 'admin-main': mainCln, 'admin-wrapper': wrapperCln } = module;

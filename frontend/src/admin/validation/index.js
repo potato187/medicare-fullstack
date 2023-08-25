@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import { PASSWORD_VALIDATION_REGEX, PHONE_VALIDATION_REGEX } from '../constant';
 import { isValidExtension, typeOf } from '@/utils';
+import { PASSWORD_VALIDATION_REGEX, PHONE_VALIDATION_REGEX } from '../constant';
 
 const isValidImageExtension = isValidExtension(['jpg', 'jpeg', 'png']);
 const isValidExcelExtension = isValidExtension(['xlsx']);
@@ -12,14 +12,16 @@ export const emailValidation = yup
 	.email('form.message.error.email_format')
 	.required('form.message.error.required');
 
-export const phoneValidation = yup
-	.string()
-	.test('phone-validation', 'form.message.error.phone_format', (phone) => PHONE_VALIDATION_REGEX.test(phone));
+export const phoneValidation = yup.string().test('phone-validation', 'form.message.error.phone_format', (phone) => {
+	return PHONE_VALIDATION_REGEX.test(phone);
+});
 
 export const passwordValidation = yup
 	.string()
 	.required('form.message.error.required')
-	.test('weakPassword', 'form.message.error.password', (password) => PASSWORD_VALIDATION_REGEX.test(password));
+	.test('weakPassword', 'form.message.error.password', (password) => {
+		return PASSWORD_VALIDATION_REGEX.test(password);
+	});
 
 export const imageValidation = yup.mixed().test('imageExtension', 'form.message.error.media_extension', (file) => {
 	if (!file || typeOf(file) === 'string') return true;

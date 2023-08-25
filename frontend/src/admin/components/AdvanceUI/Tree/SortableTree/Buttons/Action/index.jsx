@@ -5,6 +5,7 @@ import styles from './style.module.scss';
 export const Action = React.forwardRef(({ active, className, cursor, style, ...props }, ref) => {
 	return (
 		<button
+			type='button'
 			ref={ref}
 			{...props}
 			className={classNames(styles.Action, className)}

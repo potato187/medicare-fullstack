@@ -1,13 +1,13 @@
-import { PATH_IMAGES } from '@/admin/constant';
 import React, { useEffect, useId, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { MdOutlinePermMedia } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
-import module from './style.module.scss';
 import { ErrorMessage } from '@hookform/error-message';
-import { generateUrl, typeOf } from '@/utils';
+import { generateUrl, typeOf } from 'utils';
+import { PATH_IMAGES } from 'admin/constant';
+import module from './style.module.scss';
 
-const FiledUploadMedia = ({ name, intlLabel, id, type }) => {
+function FiledUploadMedia({ name, intlLabel, id, type }) {
 	const { watch, formState } = useFormContext();
 	const watchFile = watch(name, '');
 	const [progress, setProgress] = useState(0);
@@ -42,39 +42,40 @@ const FiledUploadMedia = ({ name, intlLabel, id, type }) => {
 		return () => {
 			clearInterval(timer);
 		};
-	}, [watchFile]);
+	}, [watchFile, formState.errors, name, type]);
+
+	let Main = (
+		<div className={progressBarCln} style={{ '--progress': `${progress}` }}>
+			<div className={progressBarIconCln}>
+				<svg className={progressBarRingCln} viewBox='0 0 44 44'>
+					<circle cx='22' cy='22' r='20.2' />
+				</svg>
+			</div>
+		</div>
+	);
+
+	if (progress) {
+		Main = !blobUrl.current ? (
+			<>
+				<MdOutlinePermMedia size='2em' />
+				<span className={labelCln}>
+					<FormattedMessage id={intlLabel} />
+				</span>
+			</>
+		) : (
+			<div className='ratio ratio-16x9'>
+				{!progress && !formState.errors[name] ? <img src={blobUrl.current} alt='' /> : null}
+			</div>
+		);
+	}
 
 	return (
-		<React.Fragment>
-			<label className={containerCln} htmlFor={id}>
-				{!progress ? (
-					<React.Fragment>
-						{!blobUrl.current ? (
-							<React.Fragment>
-								<MdOutlinePermMedia size='2em' />
-								<span className={labelCln}>
-									<FormattedMessage id={intlLabel} />
-								</span>
-							</React.Fragment>
-						) : (
-							<div className='ratio ratio-16x9'>
-								{!progress && !formState.errors[name] ? <img src={blobUrl.current} alt='' /> : null}
-							</div>
-						)}
-					</React.Fragment>
-				) : (
-					<div className={progressBarCln} style={{ '--progress': `${progress}` }}>
-						<div className={progressBarIconCln}>
-							<svg className={progressBarRingCln} viewBox='0 0 44 44'>
-								<circle cx='22' cy='22' r='20.2' />
-							</svg>
-						</div>
-					</div>
-				)}
-			</label>
-		</React.Fragment>
+		<label htmlFor={id} className={containerCln}>
+			<input hidden />
+			<Main />
+		</label>
 	);
-};
+}
 
 export function FieldFileUpload({ name, intlLabel, ...props }) {
 	const id = useId();

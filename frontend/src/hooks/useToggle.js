@@ -5,7 +5,9 @@ export function useToggle(initialValue = false) {
 	const [value, setValue] = useState(initialValue);
 
 	const toggleValue = useCallback(() => {
-		setValue((prevValue) => !prevValue);
+		setValue((prevValue) => {
+			return !prevValue;
+		});
 	}, []);
 
 	return [value, toggleValue, setValue];

@@ -1,7 +1,7 @@
-import { FormattedDescription } from '@/shared/components';
 import { ErrorMessage } from '@hookform/error-message';
 import { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { FormattedDescription } from 'admin/components/BaseUI';
 import module from '../style.module.scss';
 
 export function FloatingInput({ name, label, ...props }) {

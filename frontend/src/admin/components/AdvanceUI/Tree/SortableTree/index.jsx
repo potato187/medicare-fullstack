@@ -55,7 +55,7 @@ const dropAnimationConfig = {
 	},
 };
 
-export const SortableTree = function ({
+export function SortableTree({
 	items = [],
 	setItems = () => [],
 	collapsible = false,
@@ -108,6 +108,73 @@ export const SortableTree = function ({
 		};
 	}, [flattenedItems, offsetLeft]);
 
+	const handleDragStart = ({ active: { id: activeId } }) => {
+		setActiveId(activeId);
+		setOverId(activeId);
+
+		document.body.style.setProperty('cursor', 'grabbing');
+	};
+
+	const handleDragMove = ({ delta }) => {
+		setOffsetLeft(delta.x);
+	};
+
+	const handleDragOver = ({ over }) => {
+		setOverId(over?.id ?? null);
+	};
+
+	function resetState() {
+		setOverId(null);
+		setActiveId(null);
+		setOffsetLeft(0);
+
+		document.body.style.setProperty('cursor', '');
+	}
+
+	const handleDragEnd = ({ active, over }) => {
+		resetState();
+
+		if (projected && over) {
+			const { depth, parentId } = projected;
+			const clonedItems = JSON.parse(JSON.stringify(flattenTree(items)));
+			const overIndex = clonedItems.findIndex(({ id }) => id === over.id);
+			const activeIndex = clonedItems.findIndex(({ id }) => id === active.id);
+			const activeTreeItem = clonedItems[activeIndex];
+
+			clonedItems[activeIndex] = { ...activeTreeItem, depth, parentId };
+
+			const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
+
+			const newItems = arrangeTreeIndices(buildTree(sortedItems));
+
+			setItems(newItems);
+		}
+	};
+
+	function handleDragCancel() {
+		resetState();
+	}
+
+	function handleRemove(id) {
+		handleConfirmDeletion(findItemDeep(items, id));
+	}
+
+	function handleUpdate(id) {
+		handleModifyItem(findItemDeep(items, id));
+	}
+
+	function handleCollapse(id) {
+		const newItems = setProperty([...items], id, 'collapsed', (value) => !value);
+		setItems(newItems);
+	}
+
+	function adjustTranslate({ transform }) {
+		return {
+			...transform,
+			y: transform.y - 25,
+		};
+	}
+
 	return (
 		<DndContext
 			sensors={sensors}
@@ -117,7 +184,8 @@ export const SortableTree = function ({
 			onDragMove={handleDragMove}
 			onDragOver={handleDragOver}
 			onDragEnd={handleDragEnd}
-			onDragCancel={handleDragCancel}>
+			onDragCancel={() => handleDragCancel()}
+		>
 			<SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
 				{flattenedItems.map(({ id, children, collapsed, depth, ...rest }) => (
 					<SortableTreeItem
@@ -151,71 +219,4 @@ export const SortableTree = function ({
 			</SortableContext>
 		</DndContext>
 	);
-
-	function handleDragStart({ active: { id: activeId } }) {
-		setActiveId(activeId);
-		setOverId(activeId);
-
-		document.body.style.setProperty('cursor', 'grabbing');
-	}
-
-	function handleDragMove({ delta }) {
-		setOffsetLeft(delta.x);
-	}
-
-	function handleDragOver({ over }) {
-		setOverId(over?.id ?? null);
-	}
-
-	function handleDragEnd({ active, over }) {
-		resetState();
-
-		if (projected && over) {
-			const { depth, parentId } = projected;
-			const clonedItems = JSON.parse(JSON.stringify(flattenTree(items)));
-			const overIndex = clonedItems.findIndex(({ id }) => id === over.id);
-			const activeIndex = clonedItems.findIndex(({ id }) => id === active.id);
-			const activeTreeItem = clonedItems[activeIndex];
-
-			clonedItems[activeIndex] = { ...activeTreeItem, depth, parentId };
-
-			const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
-
-			const newItems = arrangeTreeIndices(buildTree(sortedItems));
-
-			setItems(newItems);
-		}
-	}
-
-	function handleDragCancel() {
-		resetState();
-	}
-
-	function resetState() {
-		setOverId(null);
-		setActiveId(null);
-		setOffsetLeft(0);
-
-		document.body.style.setProperty('cursor', '');
-	}
-
-	function handleRemove(id) {
-		handleConfirmDeletion(findItemDeep(items, id));
-	}
-
-	function handleUpdate(id) {
-		handleModifyItem(findItemDeep(items, id));
-	}
-
-	function handleCollapse(id) {
-		const newItems = setProperty([...items], id, 'collapsed', (value) => !value);
-		setItems(newItems);
-	}
-
-	function adjustTranslate({ transform }) {
-		return {
-			...transform,
-			y: transform.y - 25,
-		};
-	}
-};
+}

@@ -1,7 +1,7 @@
-import { useClickOutside } from '@/hooks';
 import cn from 'classnames';
 import React, { createContext, useCallback, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { useClickOutside } from 'hooks';
 import { BasePortal } from '../BasePortal';
 
 const DropdownContext = createContext({
@@ -26,8 +26,16 @@ function DropdownProvider({ children, ...props }) {
 		setIsOpen(newState);
 	}, []);
 
+	const values = useMemo(() => {
+		return {
+			isOpen,
+			headerRef,
+			setToggle,
+		};
+	}, [isOpen, setToggle]);
+
 	return (
-		<DropdownContext.Provider value={{ isOpen, headerRef, setToggle }} {...props}>
+		<DropdownContext.Provider value={values} {...props}>
 			<div className='dropdown'>{children}</div>
 		</DropdownContext.Provider>
 	);
@@ -47,7 +55,7 @@ export function DropdownHeader({ className = '', children, ...props }) {
 	});
 
 	return (
-		<div className={styles} onClick={() => setToggle(true)} ref={headerRef} {...props}>
+		<div className={styles} onClick={() => setToggle(true)} aria-hidden='true' ref={headerRef} {...props}>
 			{children}
 		</div>
 	);
@@ -67,7 +75,7 @@ export function DropdownBody({ className = '', selectorId = 'portal-dropdown', c
 		}
 	});
 
-	const updateCoords = () => {
+	const updateCoords = useCallback(() => {
 		if (headerRef.current && nodeRef.current) {
 			const idContainer = headerRef.current.dataset.parent ?? 'root';
 			const container = document.getElementById(idContainer);
@@ -93,7 +101,7 @@ export function DropdownBody({ className = '', selectorId = 'portal-dropdown', c
 
 			setCoords(newCoords);
 		}
-	};
+	}, [headerRef, nodeRef]);
 
 	useLayoutEffect(() => {
 		window.addEventListener('scroll', updateCoords);
@@ -103,11 +111,11 @@ export function DropdownBody({ className = '', selectorId = 'portal-dropdown', c
 			window.removeEventListener('scroll', updateCoords);
 			window.removeEventListener('resize', updateCoords);
 		};
-	}, []);
+	}, [updateCoords]);
 
 	useLayoutEffect(() => {
 		updateCoords();
-	}, [isOpen, nodeRef.current, headerRef.current]);
+	}, [isOpen, updateCoords]);
 
 	return (
 		<BasePortal selectorId={selectorId}>
@@ -118,7 +126,8 @@ export function DropdownBody({ className = '', selectorId = 'portal-dropdown', c
 					style={{
 						position: 'fixed',
 						...coords,
-					}}>
+					}}
+				>
 					{children}
 				</div>
 			</CSSTransition>
@@ -130,7 +139,9 @@ export function DropdownItem({ type = 'div', customOnClick, children, ...props }
 	const { setToggle } = useDropdown();
 
 	const onClick = () => {
-		customOnClick && customOnClick();
+		if (customOnClick) {
+			customOnClick();
+		}
 		setToggle(false);
 	};
 

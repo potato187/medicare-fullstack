@@ -1,15 +1,15 @@
-import { Button } from '@/admin/components';
-import { LANGUAGES } from '@/admin/constant';
-import { generateBreadcrumb } from '@/shared/utils';
 import { useEffect, useState } from 'react';
 import { BiExitFullscreen, BiFullscreen } from 'react-icons/bi';
 import { MdOutlineDarkMode, MdOutlineLightMode } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { generateBreadcrumb } from 'shared/utils';
+import { LANGUAGES } from 'admin/constant';
 import { LanguagesDropdown } from './LanguagesDropdown';
 import { UserMenu } from './UserMenu';
 import module from './style.module.scss';
 import { HeaderBreadcrumb } from './HeaderBreadcrumb';
+import { Button } from '../../BaseUI';
 
 export function HeaderPage() {
 	const location = useLocation();
@@ -31,11 +31,11 @@ export function HeaderPage() {
 		<div className={headerCln}>
 			<div className={wrapperClass}>
 				<div className='d-flex justify-content-between align-items-center w-100'>
-					<button className={toggleCln}>
+					<button type='button' className={toggleCln}>
 						<div className={toggleWrapperCln}>
-							<span></span>
-							<span></span>
-							<span></span>
+							<span />
+							<span />
+							<span />
 						</div>
 					</button>
 

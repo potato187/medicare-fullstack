@@ -1,8 +1,8 @@
 import { ErrorMessage } from '@hookform/error-message';
 import React, { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import module from '../style.module.scss';
 import { FormattedMessage } from 'react-intl';
+import module from '../style.module.scss';
 
 export function FloatingLabelFileExcel({ name, labelIntl, onSubmit = () => null }) {
 	const id = useId();

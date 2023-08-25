@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import module from '../style.module.scss';
 
-export function TextArea({ name, labelIntl, className = '', ...props }) {
+export function TextArea({ name, labelIntl, ...props }) {
 	const { control } = useFormContext();
 	const id = useId();
 	const {
@@ -22,9 +22,7 @@ export function TextArea({ name, labelIntl, className = '', ...props }) {
 				control={control}
 				name={name}
 				defaultValue=''
-				render={({ field }) => (
-					<textarea autoComplete='off' id={id} className={classNames} {...field} {...props}></textarea>
-				)}
+				render={({ field }) => <textarea autoComplete='off' id={id} className={classNames} {...field} {...props} />}
 			/>
 			<label htmlFor={id} className={labelCln}>
 				<FormattedMessage id={labelIntl} />

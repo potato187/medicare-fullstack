@@ -1,3 +1,7 @@
+import { MdAdd } from 'react-icons/md';
+import { FormattedMessage } from 'react-intl';
+import React, { useRef } from 'react';
+import { toast } from 'react-toastify';
 import { htmlContentApi } from '@/admin/service';
 import {
 	Button,
@@ -14,11 +18,7 @@ import {
 import { useAsyncLocation, useQuery, useToggle } from '@/admin/hooks';
 import { useAuth } from '@/hooks';
 import { formatDate } from '@/utils';
-import { MdAdd } from 'react-icons/md';
-import { FormattedMessage } from 'react-intl';
 import { HtmlContentModal } from '../../components';
-import React, { useRef } from 'react';
-import { toast } from 'react-toastify';
 
 export function HtmlContentManager() {
 	const { languageId } = useAuth();
@@ -82,13 +82,12 @@ export function HtmlContentManager() {
 			const { message } = await htmlContentApi.createOrUpdate(htmlContent);
 			toast.success(message[languageId]);
 		} catch (error) {
-			console.log(error);
 			toast.error(error.message[languageId]);
 		}
 	};
 
 	return (
-		<React.Fragment>
+		<>
 			<Container id='page-main'>
 				<div className='d-flex flex-column h-100 py-5'>
 					<div className='d-flex pb-4'>
@@ -179,6 +178,6 @@ export function HtmlContentManager() {
 				onClose={toggleHtmlContentModal}
 				onSubmit={handleOnSubmit}
 			/>
-		</React.Fragment>
+		</>
 	);
 }

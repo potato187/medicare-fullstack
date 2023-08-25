@@ -1,8 +1,8 @@
-import { FormattedDescription } from '@/shared/components';
 import { ErrorMessage } from '@hookform/error-message';
 import React, { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { FormattedDescription } from 'admin/components/BaseUI';
 import module from './style.module.scss';
 
 export function FormInputController({ name, labelInt, placeholderInt, required = false, ...props }) {
@@ -20,7 +20,7 @@ export function FormInputController({ name, labelInt, placeholderInt, required =
 				control={control}
 				render={({ field }) => {
 					return (
-						<React.Fragment>
+						<>
 							<label htmlFor={id}>
 								{label}
 								{required ? <span className='text-danger fw-500 fz-xs ml-1'>*</span> : null}
@@ -35,7 +35,7 @@ export function FormInputController({ name, labelInt, placeholderInt, required =
 									</div>
 								)}
 							/>
-						</React.Fragment>
+						</>
 					);
 				}}
 			/>

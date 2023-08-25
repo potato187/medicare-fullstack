@@ -29,7 +29,7 @@ export const convertData = (input) => {
 
 		if (!result[newKey]) {
 			result[newKey] = {
-				breadcrumb: breadcrumb,
+				breadcrumb,
 				fields: {},
 			};
 		}
@@ -42,5 +42,9 @@ export const convertData = (input) => {
 
 export const convertName = (name) => {
 	const [first, ...rest] = name.split('_');
-	return [first, ...rest].map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`).join(' ');
+	return [first, ...rest]
+		.map((word) => {
+			return `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
+		})
+		.join(' ');
 };

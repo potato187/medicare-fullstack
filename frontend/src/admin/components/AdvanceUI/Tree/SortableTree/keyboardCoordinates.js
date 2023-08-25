@@ -1,14 +1,21 @@
-import { KeyboardCode } from '@dnd-kit/core';
+import { KeyboardCode, closestCorners, getFirstCollision } from '@dnd-kit/core';
+import { getProjection } from '../utilities';
 
 const directions = [KeyboardCode.Down, KeyboardCode.Right, KeyboardCode.Up, KeyboardCode.Left];
 const horizontal = [KeyboardCode.Left, KeyboardCode.Right];
 
-export const sortableTreeKeyboardCoordinates =
-	(context = {}, indicator = false, indentationWidth = 1) =>
-	(event, { currentCoordinates, context: { active, over, collisionRect, droppableRects, droppableContainers } }) => {
+export const sortableTreeKeyboardCoordinates = (context = {}, indicator = false, indentationWidth = 1) => {
+	return (
+		event,
+		{ currentCoordinates, context: { active, over, collisionRect, droppableRects, droppableContainers } },
+	) => {
+		if (!directions.includes(event.code)) {
+			return undefined;
+		}
+
 		if (directions.includes(event.code)) {
 			if (!active || !collisionRect) {
-				return;
+				return undefined;
 			}
 
 			event.preventDefault();
@@ -37,9 +44,10 @@ export const sortableTreeKeyboardCoordinates =
 							};
 						}
 						break;
+					default: {
+						return undefined;
+					}
 				}
-
-				return undefined;
 			}
 
 			const containers = [];
@@ -66,6 +74,8 @@ export const sortableTreeKeyboardCoordinates =
 							containers.push(container);
 						}
 						break;
+					default:
+						break;
 				}
 			});
 
@@ -88,9 +98,13 @@ export const sortableTreeKeyboardCoordinates =
 				const newDroppable = droppableContainers.get(closestId);
 
 				if (activeRect && newRect && newDroppable) {
-					const newIndex = items.findIndex(({ id }) => id === closestId);
+					const newIndex = items.findIndex(({ id }) => {
+						return id === closestId;
+					});
 					const newItem = items[newIndex];
-					const activeIndex = items.findIndex(({ id }) => id === active.id);
+					const activeIndex = items.findIndex(({ id }) => {
+						return id === active.id;
+					});
 					const activeItem = items[activeIndex];
 
 					if (newItem && activeItem) {
@@ -103,11 +117,11 @@ export const sortableTreeKeyboardCoordinates =
 						);
 						const isBelow = newIndex > activeIndex;
 						const modifier = isBelow ? 1 : -1;
-						const offset = indicator ? (collisionRect.height - activeRect.height) / 2 : 0;
+						const calcOffset = indicator ? (collisionRect.height - activeRect.height) / 2 : 0;
 
 						const newCoordinates = {
 							x: newRect.left + depth * indentationWidth,
-							y: newRect.top + modifier * offset,
+							y: newRect.top + modifier * calcOffset,
 						};
 
 						return newCoordinates;
@@ -118,3 +132,4 @@ export const sortableTreeKeyboardCoordinates =
 
 		return undefined;
 	};
+};

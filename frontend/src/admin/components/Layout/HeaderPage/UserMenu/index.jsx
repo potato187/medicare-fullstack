@@ -1,13 +1,13 @@
-import { PATH_IMAGES, SERVER_URL } from '@/admin/constant';
-import { authLogout } from '@/admin/redux/slices/authSlice';
-import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from '@/shared/components';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { MdLogout } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
+import { authLogout } from 'admin/redux/slices/auth';
+import { PATH_IMAGES } from 'admin/constant';
 import module from './style.module.scss';
 
-export function UserMenu({ username, email, image = null }) {
+export function UserMenu({ username, email }) {
 	const dispatch = useDispatch();
 	const {
 		'user-dropdown': userDropdownCln,
@@ -52,7 +52,7 @@ export function UserMenu({ username, email, image = null }) {
 							<span>Profile</span>
 						</NavLink>
 					</DropdownItem>
-					<li className={dividerCln}></li>
+					<li className={dividerCln} />
 					<DropdownItem type='li' customOnClick={handleLogOut}>
 						<span>
 							<MdLogout size='1.25em' />

@@ -1,13 +1,12 @@
 import cn from 'classnames';
-import module from './style.module.scss';
-import { debounce } from '@/utils';
 import { useIntl } from 'react-intl';
 import { MdSearch } from 'react-icons/md';
+import { debounce } from 'utils';
+import module from './style.module.scss';
 
 export function UnFieldDebounce({
 	className = '',
 	initialValue = '',
-	delay = 300,
 	placeholderIntl,
 	onChange = () => null,
 	...props

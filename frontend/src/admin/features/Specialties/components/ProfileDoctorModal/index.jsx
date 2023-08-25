@@ -1,3 +1,7 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import { doctorApi } from '@/admin/service';
 import {
 	BaseModal,
@@ -12,14 +16,10 @@ import {
 	TabNavItem,
 	TabPanel,
 	Tabs,
-} from '@/admin/components';
-import { setDefaultValues } from '@/admin/utilities';
+} from 'admin/components';
+import { setDefaultValues } from 'admin/utilities';
 
-import { tryCatch } from '@/shared/utils';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
+import { tryCatch } from 'shared/utils';
 import { doctorValidation } from '../../validation';
 
 export function ProfileDoctorModal({
@@ -43,12 +43,12 @@ export function ProfileDoctorModal({
 
 	useEffect(() => {
 		setDefaultValues(methods, defaultValues);
-	}, [defaultValues]);
+	}, [defaultValues, methods]);
 
 	useEffect(() => {
 		const fetchDescription = async (id) => {
 			const { data } = await doctorApi.getDoctorDescription(id);
-			Object.entries(data).map(([key, value]) => {
+			Object.entries(data).forEach(([key, value]) => {
 				methods.setValue(`description.${key.trim()}`, value);
 			});
 		};
@@ -56,7 +56,7 @@ export function ProfileDoctorModal({
 		if (defaultValues.id) {
 			tryCatch(fetchDescription)(defaultValues.id);
 		}
-	}, [defaultValues.id]);
+	}, [defaultValues.id, methods]);
 
 	return (
 		<FormProvider {...methods}>
@@ -66,9 +66,9 @@ export function ProfileDoctorModal({
 					<form onSubmit={methods.handleSubmit(onSubmit)}>
 						<Tabs tabIndexActive={0}>
 							<TabNav>
-								<TabNavItem labelIntl='user.profile' tabIndex={0} />
-								<TabNavItem labelIntl='user.description.en' tabIndex={1} />
-								<TabNavItem labelIntl='user.description.vi' tabIndex={2} />
+								<TabNavItem labelIntl='user.profile' index={0} />
+								<TabNavItem labelIntl='user.description.en' index={1} />
+								<TabNavItem labelIntl='user.description.vi' index={2} />
 							</TabNav>
 							<TabPanel tabIndex={0}>
 								<div className='row'>
@@ -98,10 +98,10 @@ export function ProfileDoctorModal({
 									</div>
 								</div>
 							</TabPanel>
-							<TabPanel tabIndex={1}>
+							<TabPanel index={1}>
 								<FormInputEditor name='description.en' />
 							</TabPanel>
-							<TabPanel tabIndex={2}>
+							<TabPanel index={2}>
 								<FormInputEditor name='description.vi' />
 							</TabPanel>
 						</Tabs>
@@ -116,7 +116,8 @@ export function ProfileDoctorModal({
 						size='sm'
 						type='submit'
 						info
-						onClick={methods.handleSubmit(onSubmit)}>
+						onClick={methods.handleSubmit(onSubmit)}
+					>
 						<FormattedMessage id='button.update' />
 					</Button>
 				</BaseModalFooter>

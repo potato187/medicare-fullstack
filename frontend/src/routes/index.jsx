@@ -1,6 +1,6 @@
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Admin from '@/admin';
 import Users from '@/users';
-import { Navigate, createBrowserRouter } from 'react-router-dom';
 
 export const ROOT_PATH = '/';
 export const ADMIN_PATH = 'admin';

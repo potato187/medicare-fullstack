@@ -8,7 +8,9 @@ export const tryCatchAndToast = (callback, languageId = 'en', finallyCallback = 
 			const errorMessage = error?.message?.[languageId] || 'An error occurred.';
 			toast.error(errorMessage);
 		} finally {
-			finallyCallback && finallyCallback();
+			if (finallyCallback) {
+				finallyCallback();
+			}
 		}
 	};
 };
@@ -20,7 +22,9 @@ export const tryCatch = (callback, finallyCallback = null) => {
 		} catch (error) {
 			/* console.error(error); */
 		} finally {
-			finallyCallback && finallyCallback();
+			if (finallyCallback) {
+				finallyCallback();
+			}
 		}
 	};
 };

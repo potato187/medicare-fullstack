@@ -6,14 +6,14 @@ import { FormattedMessage } from 'react-intl';
 import module from '../style.module.scss';
 
 const InputDatePicker = React.forwardRef((props, ref) => {
-	const id = useId();
+	const domIt = useId();
 	const { labelIntl, ...rest } = props;
 	const { 'form-group': formGroupCln, 'form-label': labelCln, 'form-control': inputCln } = module;
 
 	return (
 		<div className={formGroupCln}>
-			<input id={id} {...rest} className={classNames(inputCln, 'w-full')} ref={ref} />
-			<label htmlFor={id} className={labelCln}>
+			<input {...rest} className={classNames(inputCln, 'w-full')} ref={ref} id={domIt} />
+			<label htmlFor={domIt} className={labelCln}>
 				<FormattedMessage id={labelIntl} />
 			</label>
 		</div>

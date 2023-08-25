@@ -1,4 +1,9 @@
-import { postApi } from '@/admin/service';
+import { yupResolver } from '@hookform/resolvers/yup';
+import moment from 'moment';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
+import { postApi } from 'admin/service';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -12,15 +17,10 @@ import {
 	FormInputEditor,
 	SelectorTree,
 	TextArea,
-} from '@/admin/components';
-import { useQuery } from '@/admin/hooks';
-import { setDefaultValues } from '@/admin/utilities';
-import { tryCatch } from '@/shared/utils';
-import { yupResolver } from '@hookform/resolvers/yup';
-import moment from 'moment';
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
+} from 'admin/components';
+import { useQuery } from 'admin/hooks';
+import { setDefaultValues } from 'admin/utilities';
+import { tryCatch } from 'shared/utils';
 import { postDefaultValues, postSchema } from '../../schema';
 
 const POST_SITE_MAP = {
@@ -32,13 +32,13 @@ const POST_SITE_MAP = {
 	CONTENT_EN: ['common.title', 'common.content_en'],
 };
 
-export const PostEditorModal = ({
+export function PostEditorModal({
 	languageId = 'en',
 	postId = undefined,
 	isOpen = false,
 	onClose = () => false,
 	onSubmit = () => null,
-}) => {
+}) {
 	const methods = useForm({
 		defaultValues: postDefaultValues,
 		mode: 'onChange',
@@ -104,7 +104,7 @@ export const PostEditorModal = ({
 		} else {
 			setDefaultValues(methods, postDefaultValues);
 		}
-	}, [postId, languageId, isOpen]);
+	}, [postId, methods, setPostCategories, languageId, isOpen]);
 
 	return (
 		<FormProvider {...methods}>
@@ -119,7 +119,9 @@ export const PostEditorModal = ({
 										<Breadcrumb breadcrumb={POST_SITE_MAP.INFORMATION}>
 											{(item, index) => (
 												<li key={index}>
-													<span>{<FormattedMessage id={item} />}</span>
+													<span>
+														<FormattedMessage id={item} />
+													</span>
 												</li>
 											)}
 										</Breadcrumb>
@@ -149,7 +151,9 @@ export const PostEditorModal = ({
 										<Breadcrumb breadcrumb={POST_SITE_MAP.SHORT_DESCRIPTION_VI}>
 											{(item, index) => (
 												<li key={index}>
-													<span>{<FormattedMessage id={item} />}</span>
+													<span>
+														<FormattedMessage id={item} />
+													</span>
 												</li>
 											)}
 										</Breadcrumb>
@@ -169,7 +173,9 @@ export const PostEditorModal = ({
 										<Breadcrumb breadcrumb={POST_SITE_MAP.SHORT_DESCRIPTION_EN}>
 											{(item, index) => (
 												<li key={index}>
-													<span>{<FormattedMessage id={item} />}</span>
+													<span>
+														<FormattedMessage id={item} />
+													</span>
 												</li>
 											)}
 										</Breadcrumb>
@@ -189,7 +195,9 @@ export const PostEditorModal = ({
 										<Breadcrumb breadcrumb={POST_SITE_MAP.CONTENT_VI}>
 											{(item, index) => (
 												<li key={index}>
-													<span>{<FormattedMessage id={item} />}</span>
+													<span>
+														<FormattedMessage id={item} />
+													</span>
 												</li>
 											)}
 										</Breadcrumb>
@@ -204,7 +212,9 @@ export const PostEditorModal = ({
 										<Breadcrumb breadcrumb={POST_SITE_MAP.CONTENT_EN}>
 											{(item, index) => (
 												<li key={index}>
-													<span>{<FormattedMessage id={item} />}</span>
+													<span>
+														<FormattedMessage id={item} />
+													</span>
 												</li>
 											)}
 										</Breadcrumb>
@@ -221,7 +231,9 @@ export const PostEditorModal = ({
 									<Breadcrumb breadcrumb={POST_SITE_MAP.CATEGORIES}>
 										{(item, index) => (
 											<li key={index}>
-												<span>{<FormattedMessage id={item} />}</span>
+												<span>
+													<FormattedMessage id={item} />
+												</span>
 											</li>
 										)}
 									</Breadcrumb>
@@ -246,4 +258,4 @@ export const PostEditorModal = ({
 			</BaseModal>
 		</FormProvider>
 	);
-};
+}

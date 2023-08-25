@@ -1,5 +1,5 @@
-import module from './style.module.scss';
 import cn from 'classnames';
+import module from './style.module.scss';
 
 export function Card({ className = '', children }) {
 	const classes = cn(module['card'], className);

@@ -1,10 +1,9 @@
-import { ORDER_ASCENDING as ASC, ORDER_DESCENDING as DESC, ORDER_NONE } from '@/admin/constant';
 import cn from 'classnames';
 import { useState } from 'react';
 import { TiArrowSortedDown, TiArrowSortedUp, TiArrowUnsorted } from 'react-icons/ti';
 import { FormattedMessage } from 'react-intl';
+import { ORDER_ASCENDING as ASC, ORDER_DESCENDING as DESC, ORDER_NONE } from 'admin/constant';
 import module from './style.module.scss';
-import { typeOf } from '@/utils';
 
 const getIconDirection = (order) => {
 	switch (order) {

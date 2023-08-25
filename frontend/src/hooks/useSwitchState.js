@@ -1,5 +1,5 @@
-import { typeOf } from '@/utils';
 import { useCallback, useState } from 'react';
+import { typeOf } from 'utils';
 
 export function useSwitchState(initialValue = false) {
 	const [isOpen, setIsOpen] = useState(initialValue);
@@ -13,8 +13,15 @@ export function useSwitchState(initialValue = false) {
 	}, []);
 
 	const toggle = useCallback((newOpen) => {
-		setIsOpen((prevState) => (typeOf(newOpen) === 'boolean' ? newOpen : !prevState));
+		setIsOpen((prevState) => {
+			return typeOf(newOpen) === 'boolean' ? newOpen : !prevState;
+		});
 	}, []);
 
-	return { isOpen, turnOff, turnOn, toggle };
+	return {
+		isOpen,
+		turnOff,
+		turnOn,
+		toggle,
+	};
 }

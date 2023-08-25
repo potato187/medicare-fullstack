@@ -1,27 +1,27 @@
+import produce from 'immer';
+import React from 'react';
+import { MdAdd } from 'react-icons/md';
+import { FormattedMessage } from 'react-intl';
+import { toast } from 'react-toastify';
 import {
 	Button,
 	ConfirmModal,
 	Container,
 	FooterContainer,
+	FormattedDescription,
 	SortableTableHeader,
 	Table,
 	TableBody,
 	TableGrid,
 	TableHeader,
 	UnFieldDebounce,
-} from '@/admin/components';
+} from 'admin/components';
 
-import { adminApi, authService } from '@/admin/service';
-import { useAdminRoles, useAsyncLocation, useCurrentIndex, useGenders, useToggle } from '@/admin/hooks';
-import { compose } from '@/admin/utilities';
-import { useAuth } from '@/hooks';
-import { FormattedDescription } from '@/shared/components';
-import { tryCatch } from '@/shared/utils';
-import produce from 'immer';
-import React from 'react';
-import { MdAdd } from 'react-icons/md';
-import { FormattedMessage } from 'react-intl';
-import { toast } from 'react-toastify';
+import { adminApi, authService } from 'admin/service';
+import { useAdminRoles, useAsyncLocation, useCurrentIndex, useGenders, useToggle } from 'admin/hooks';
+import { compose } from 'admin/utilities';
+import { useAuth } from 'hooks';
+import { tryCatch } from 'shared/utils';
 import { AdminCreateModal, AdminEditModal } from '../../components';
 
 export function AdminManager() {
@@ -92,7 +92,7 @@ export function AdminManager() {
 	}, languageId);
 
 	return (
-		<React.Fragment>
+		<>
 			<Container id='page-main'>
 				<div className='d-flex flex-column h-100 py-5'>
 					<div className='d-flex pb-4'>
@@ -185,12 +185,13 @@ export function AdminManager() {
 				idTitleIntl='dashboard.admin.modal.confirm_deletion_admin.title'
 				isOpen={statusConfirmModal}
 				onClose={toggleConfirmDeletionModal}
-				onSubmit={handleConfirmDeletion}>
+				onSubmit={handleConfirmDeletion}
+			>
 				<FormattedDescription
 					id='dashboard.admin.modal.confirm_deletion_admin.description'
 					values={{ email: Admins[adminIndexRef.current]?.email ?? '' }}
 				/>
 			</ConfirmModal>
-		</React.Fragment>
+		</>
 	);
 }

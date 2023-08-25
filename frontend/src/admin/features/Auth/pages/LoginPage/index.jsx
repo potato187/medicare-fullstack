@@ -1,13 +1,13 @@
-import { Button, Card, CardBody, FormInputController, FormPasswordController } from '@/admin/components';
-import { authLogin } from '@/admin/redux/slices/authSlice';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { Layout } from '../../components';
+import { Button, Card, CardBody, FormInputController, FormPasswordController, Layout } from 'admin/components';
+import { authLogin } from 'admin/redux/slices/auth';
 import { accountDefaultValues, accountValidation } from '../../validation';
-const _REDIRECT_TO_DASHBOARD = '../dashboard';
+
+const REDIRECT_TO_DASHBOARD = '../dashboard';
 
 export function LoginPage() {
 	const { isLogin } = useSelector((state) => state.auth);
@@ -19,7 +19,7 @@ export function LoginPage() {
 	});
 
 	if (isLogin) {
-		return <Navigate to={_REDIRECT_TO_DASHBOARD} />;
+		return <Navigate to={REDIRECT_TO_DASHBOARD} />;
 	}
 
 	const onSubmit = (data) => {
@@ -57,7 +57,8 @@ export function LoginPage() {
 											type='submit'
 											size='sm'
 											isLoading={methods.formState.isLoading}
-											onClick={methods.handleSubmit(onSubmit)}>
+											onClick={methods.handleSubmit(onSubmit)}
+										>
 											<FormattedMessage id='button.login' />
 										</Button>
 									</div>

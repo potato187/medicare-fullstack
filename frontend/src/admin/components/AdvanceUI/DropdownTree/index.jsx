@@ -1,10 +1,12 @@
-import { BaseDropdown, DropdownBody, DropdownHeader } from '@/shared/components/BaseDropdown';
 import cn from 'classnames';
 import { useMemo } from 'react';
 import { RxCaretDown } from 'react-icons/rx';
+import { BaseDropdown, DropdownBody, DropdownHeader } from 'admin/components/BaseUI';
 import { buildTree } from '../Tree/utilities';
 
-const RenderTree = ({ list, onChange }) => {
+function RenderTree({ options, onChange }) {
+	const list = useMemo(() => buildTree(options), [options]);
+
 	return (
 		<ul>
 			{list.map(({ id, name, title, isSelected, children }) => (
@@ -26,13 +28,11 @@ const RenderTree = ({ list, onChange }) => {
 			))}
 		</ul>
 	);
-};
+}
 
 export function DropdownTree({ nameGroup, options = [], onChange = () => {}, ...props }) {
 	if (!options.length) return null;
-
 	const option = options.filter((option) => option.isSelected)[0] || options[0];
-	const memorizedTree = useMemo(() => buildTree(options), [options]);
 
 	const styles = cn(
 		'dropdown',
@@ -51,7 +51,7 @@ export function DropdownTree({ nameGroup, options = [], onChange = () => {}, ...
 					<RxCaretDown size='1.5em' />
 				</DropdownHeader>
 				<DropdownBody className='dropdown__list tree tree--sm'>
-					<RenderTree list={memorizedTree} onChange={onChange} />
+					<RenderTree options={options} onChange={onChange} />
 				</DropdownBody>
 			</div>
 		</BaseDropdown>

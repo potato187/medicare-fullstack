@@ -1,19 +1,27 @@
-import { createParamsComparator, typeOf } from '@/utils';
 import queryString from 'query-string';
+import { createParamsComparator, typeOf } from '@/utils';
 import { PARAMS_OPTIONS_ORDER } from '../constant';
 
 const LANGUAGE_DEFAULT = 'en';
 
 export const flatten = (items = [], parentId = null, depth = 0) => {
 	return items.reduce((acc, item, index) => {
-		return [...acc, { ...item, parentId, depth, index }, ...flatten(item.children, item.id, depth + 1)];
+		return [
+			...acc,
+			{
+				...item,
+				parentId,
+				depth,
+				index,
+			},
+			...flatten(item.children, item.id, depth + 1),
+		];
 	}, []);
 };
 
 export const findPathFromRoot = (items = [], targetId = null, path = []) => {
 	if (!targetId) return [];
-
-	for (const index in items) {
+	for (let index = 0, len = items.length; index < len; index++) {
 		const currentItem = items[index];
 		const newPath = [...path, +index];
 		if (currentItem.id === targetId) {
@@ -31,15 +39,17 @@ export const findPathFromRoot = (items = [], targetId = null, path = []) => {
 export const setDefaultValues = (methods = null, defaultValues = {}) => {
 	if (!methods || !defaultValues) return;
 	Object.keys(defaultValues).map((key) => {
-		methods?.setValue(key, defaultValues[key]);
+		return methods?.setValue(key, defaultValues[key]);
 	});
 };
 
 export const compose = (...fns) => {
 	return (arg) => {
-		return fns.reduce((composed, fn) => {
-			fn && fn(composed);
-		}, arg);
+		fns.forEach((fn) => {
+			if (fn) {
+				fn(arg);
+			}
+		});
 	};
 };
 
@@ -68,6 +78,8 @@ export const createURL = (options, config = {}) => {
 
 export const formatDataForSelect = (languageId = LANGUAGE_DEFAULT, key = 'value') => {
 	return (data) => {
-		return data.map((item) => ({ value: item.id, label: item[`${key}_${languageId}`] }));
+		return data.map((item) => {
+			return { value: item.id, label: item[`${key}_${languageId}`] };
+		});
 	};
 };

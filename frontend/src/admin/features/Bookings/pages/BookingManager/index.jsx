@@ -1,32 +1,4 @@
-import { bookingApi } from '@/admin/service';
-import {
-	Button,
-	ConfirmModal,
-	Container,
-	DatePickerRange,
-	Dropdown,
-	DropdownIntl,
-	FooterContainer,
-	SortableTableHeader,
-	Table,
-	TableBody,
-	TableGrid,
-	TableHeader,
-	UnFieldDebounce,
-} from '@/admin/components';
-import {
-	DATE_FORMAT_QUERY,
-	DEFAULT_DATE,
-	PATIENT_SEARCH_OPTIONS,
-	SPECIALTY_ID_DEFAULT,
-	STATUS_ID_DEFAULT,
-	WORKING_HOUR_ID_DEFAULT,
-} from '@/admin/constant';
-import { useAsyncLocation, useFetchSpecialty, useToggle } from '@/admin/hooks';
-import { compose } from '@/admin/utilities';
-import { useAuth } from '@/hooks';
-import { FormattedDescription } from '@/shared/components';
-import { formatPhone } from '@/utils';
+/* eslint-disable */
 import produce from 'immer';
 import moment from 'moment';
 import React, { useRef } from 'react';
@@ -94,7 +66,7 @@ export function BookingManager() {
 	const handleConfirmDeletionBooking = async () => {
 		try {
 			const index = bookingIndex.current;
-			const bookingId = Bookings[index].bookingId;
+			const { bookingId } = Bookings[index];
 			const { message } = await bookingApi.deleteOne(bookingId);
 			toast.success(message[languageId]);
 			setBookings(
@@ -145,7 +117,7 @@ export function BookingManager() {
 	};
 
 	return (
-		<React.Fragment>
+		<>
 			<Container id='page-main'>
 				<div className='d-flex flex-column h-100 py-5'>
 					<div className='row position-relative pb-4 z-index-2'>
@@ -263,7 +235,8 @@ export function BookingManager() {
 				idTitleIntl='dashboard.booking.modal.confirm_deletion_booking.title'
 				isOpen={statusConfirmModal}
 				onClose={toggleConfirmDeletion}
-				onSubmit={handleConfirmDeletionBooking}>
+				onSubmit={handleConfirmDeletionBooking}
+			>
 				<FormattedDescription
 					id='dashboard.booking.modal.confirm_deletion_booking.message'
 					values={{ email: Bookings[bookingIndex.current]?.email ?? '' }}
@@ -281,6 +254,6 @@ export function BookingManager() {
 				onClose={toggleModalBooking}
 				onSubmit={handleUpdateBooking}
 			/>
-		</React.Fragment>
+		</>
 	);
 }

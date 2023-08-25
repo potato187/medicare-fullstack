@@ -1,3 +1,9 @@
+/* eslint-disable */
+import produce from 'immer';
+import React, { useRef } from 'react';
+import { MdAdd, MdImportExport } from 'react-icons/md';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { toast } from 'react-toastify';
 import { doctorApi } from '@/admin/service';
 import {
 	Button,
@@ -19,13 +25,8 @@ import { PAGINATION_OPTIONS, SEARCH_OPTIONS, SPECIALTY_ID_DEFAULT } from '@/admi
 import { useAsyncLocation, useFetchSpecialty, useQuery, useToggle } from '@/admin/hooks';
 import { compose } from '@/admin/utilities';
 import { useAuth } from '@/hooks';
-import { BasePagination, FormattedDescription } from '@/shared/components';
 import { downloadExcelFile } from '@/utils';
-import produce from 'immer';
-import React, { useRef } from 'react';
-import { MdAdd, MdImportExport } from 'react-icons/md';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { toast } from 'react-toastify';
+import { BasePagination, FormattedDescription } from '@/shared/components';
 import { CreateDoctorModal, ExportModal, ImportExcelModal, ProfileDoctorModal } from '../../components';
 
 export function SpecialtyManager() {
@@ -103,7 +104,7 @@ export function SpecialtyManager() {
 	const handleOpenConfirmDeletionModal = compose(updateDoctorIndex, toggleConfirmDeletionModal);
 
 	const toggleSelectedAll = (event) => {
-		const checked = event.target.checked;
+		const { checked } = event.target;
 		setDoctors(
 			produce((draft) => {
 				draft.forEach((item) => {
@@ -248,7 +249,7 @@ export function SpecialtyManager() {
 	};
 
 	return (
-		<React.Fragment>
+		<>
 			<Container id='page-main'>
 				<div className='d-flex flex-column h-100 py-5'>
 					<div className='d-flex pb-4'>
@@ -402,7 +403,8 @@ export function SpecialtyManager() {
 				idTitleIntl='dashboard.specialty.modal.confirm_deletion.title'
 				isOpen={statusConfirmDeletionModal}
 				onClose={toggleConfirmDeletionModal}
-				onSubmit={handleDeleteDoctor}>
+				onSubmit={handleDeleteDoctor}
+			>
 				<FormattedDescription
 					id='dashboard.specialty.modal.confirm_deletion.description'
 					values={{ email: Doctors[doctorIndexRef.current]?.email || '' }}
@@ -423,6 +425,6 @@ export function SpecialtyManager() {
 				onClose={toggleImportModal}
 				onSubmit={handleImportDoctor}
 			/>
-		</React.Fragment>
+		</>
 	);
 }

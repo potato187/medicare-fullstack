@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
 
-export const useNotification = ({ type }) => {
+export const useNotification = () => {
 	return toast;
 };

@@ -1,22 +1,21 @@
-import '@/admin/styles/style.scss';
-import { IntlProviderWrapper } from '@/hocs';
-import { BaseNotification } from '@/shared/components';
-import '@/shared/styles/style.scss';
-import { AuthLanguagesProvider } from '@/store';
+import { IntlProviderWrapper } from 'hocs';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
+import { AuthLanguagesProvider } from 'stores';
 import { withAuth } from './hocs';
-import { Layout } from './components';
+import { BaseNotification, Layout } from './components';
 import { AdminManager, LanguageManager, LoginPage } from './features';
 import { persistor, store } from './redux/store/configureStore';
+import 'shared/styles/style.scss';
+import 'admin/styles/style.scss';
 
 const ProtectedRoute = withAuth(Layout);
 
 export default function Admin() {
 	return (
-		<React.Fragment>
+		<>
 			<Provider store={store}>
 				<AuthLanguagesProvider>
 					<IntlProviderWrapper>
@@ -39,6 +38,6 @@ export default function Admin() {
 				</AuthLanguagesProvider>
 			</Provider>
 			<BaseNotification />
-		</React.Fragment>
+		</>
 	);
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Action } from '../Action';
 import { MdOutlineClose } from 'react-icons/md';
+import { Action } from '../Action';
 
 export function Remove(props) {
 	return (

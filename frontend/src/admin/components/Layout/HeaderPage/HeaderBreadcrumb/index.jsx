@@ -11,9 +11,9 @@ export function HeaderBreadcrumb({ breadcrumb = [] }) {
 				<FormattedMessage id={breadcrumb.at(-1).intl} />
 			</h1>
 			<ul className={listCln}>
-				{breadcrumb.map(({ url = '', intl = '' }, index) => (
-					<li key={index}>
-						<Link className='text-capitalize' to={'/' + url}>
+				{breadcrumb.map(({ url = '', intl = '' }) => (
+					<li key={url}>
+						<Link className='text-capitalize' to={`/${url}`}>
 							<FormattedMessage id={intl} />
 						</Link>
 					</li>

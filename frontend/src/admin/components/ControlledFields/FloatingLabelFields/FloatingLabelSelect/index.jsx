@@ -1,10 +1,10 @@
-import { useToggle } from '@/admin/hooks';
-import { useClickOutside } from '@/hooks';
 import cn from 'classnames';
 import { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { CSSTransition } from 'react-transition-group';
+import { useClickOutside } from '@/hooks';
+import { useToggle } from '@/admin/hooks';
 import module from '../style.module.scss';
 
 export function FloatingLabelSelect({
@@ -16,14 +16,14 @@ export function FloatingLabelSelect({
 	isNotDisabled = false,
 	className = '',
 }) {
-	if (!options.length) return null;
-
 	const id = useId();
 	const { control, setValue, getValues } = useFormContext();
 	const [isOpen, toggleDropdown] = useToggle();
 	const nodeRef = useClickOutside(() => {
 		toggleDropdown(false);
 	});
+
+	if (!options.length) return null;
 
 	const {
 		'form-group': formGroupCln,
@@ -46,7 +46,7 @@ export function FloatingLabelSelect({
 	return (
 		<div className={cn(dropdownCln, className)}>
 			<div className={formGroupCln}>
-				<div className={inputCln} onClick={toggleDropdown}>
+				<div className={inputCln} onClick={toggleDropdown} aria-hidden>
 					{option.label}
 				</div>
 				<label htmlFor={id} className={labelCln}>
@@ -61,15 +61,17 @@ export function FloatingLabelSelect({
 			{!disabled ? (
 				<CSSTransition in={isOpen} timeout={300} classNames='dropdown-menu' unmountOnExit nodeRef={nodeRef}>
 					<div className={cn(dropdownListCln, 'scrollbar scrollbar--sm')} ref={nodeRef}>
-						{options.map((item, index) => (
+						{options.map((item) => (
 							<div
-								key={index}
+								aria-hidden
+								key={item.value}
 								className={cn({
 									[activeCln]: item.value === option.value,
 									[disabledCln]: item.disabled && isNotDisabled,
 									[disabledCln]: showCounter && item.count === 0,
 								})}
-								onClick={() => handleOnSelect(item)}>
+								onClick={() => handleOnSelect(item)}
+							>
 								{`${item.label} ${item.count ? `(${item.count})` : ''}`}
 							</div>
 						))}

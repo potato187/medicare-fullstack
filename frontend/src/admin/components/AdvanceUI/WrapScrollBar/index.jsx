@@ -1,6 +1,6 @@
 import React from 'react';
-import module from './style.module.scss';
 import cn from 'classnames';
+import module from './style.module.scss';
 
 export function WrapScrollBar({ as = 'div', className = '', children, size = '', ...props }) {
 	const { scrollbar: scrollbarCln, 'scrollbar--sm': smCln } = module;

@@ -1,7 +1,7 @@
 import { createFormData } from '@/admin/utilities';
+import { typeOf } from '@/utils';
 import { axiosClient } from './axios/axiosClient';
 import { HTML_CONTENT_PATH } from './constant';
-import { typeOf } from '@/utils';
 
 export const htmlContentApi = {
 	getByParams(params) {

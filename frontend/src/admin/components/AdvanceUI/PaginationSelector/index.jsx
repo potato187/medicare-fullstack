@@ -1,4 +1,4 @@
-import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from '@/shared/components';
+import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
 import cn from 'classnames';
 import { RxCaretDown } from 'react-icons/rx';
 
@@ -29,12 +29,13 @@ export function PaginationSelector({
 				</DropdownHeader>
 				<DropdownBody className='dropdown__list'>
 					<ul>
-						{paginationNumbers.map((item, index) => (
+						{paginationNumbers.map((item) => (
 							<DropdownItem
 								type='li'
-								key={index}
+								key={item.value}
 								className={cn({ active: item === +perPage })}
-								customOnClick={() => onSelect({ key: name, value: item })}>
+								customOnClick={() => onSelect({ key: name, value: item })}
+							>
 								{item}
 							</DropdownItem>
 						))}

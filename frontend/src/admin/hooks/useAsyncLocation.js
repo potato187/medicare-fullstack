@@ -1,12 +1,17 @@
-import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from '@/admin/constant';
-import { tryCatch } from '@/shared/utils';
-import { typeOf } from '@/utils';
+/* eslint-disable */
 import queryString from 'query-string';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from '@/admin/constant';
+import { tryCatch } from '@/shared/utils';
+import { typeOf } from '@/utils';
 import { createURL } from '../utilities';
 
-export const useAsyncLocation = ({ getData = () => null }) => {
+export const useAsyncLocation = ({
+	getData = () => {
+		return null;
+	},
+}) => {
 	const { pathname: locationPathName, search: locationSearch } = useLocation();
 	const navigate = useNavigate();
 	const [data, setData] = useState([]);
@@ -17,7 +22,7 @@ export const useAsyncLocation = ({ getData = () => null }) => {
 
 		return {
 			...params,
-			sort: sort ? sort : [],
+			sort: sort || [],
 			page,
 			pagesize,
 		};
@@ -41,7 +46,9 @@ export const useAsyncLocation = ({ getData = () => null }) => {
 	const handleOnChangeSort = (key, direction) => {
 		const sortItem = `${key},${direction}`;
 		const sortList = typeOf(queryParams.sort) === 'string' ? [queryParams.sort] : queryParams.sort;
-		const sortItemIndex = sortList.findIndex((item) => item.includes(key));
+		const sortItemIndex = sortList.findIndex((item) => {
+			return item.includes(key);
+		});
 
 		if (sortItemIndex > -1) {
 			direction !== ORDER_NONE ? sortList.splice(sortItemIndex, 1, sortItem) : sortList.splice(sortItemIndex, 1);

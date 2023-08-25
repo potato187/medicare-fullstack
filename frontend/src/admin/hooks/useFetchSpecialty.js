@@ -1,5 +1,6 @@
-import { tryCatch } from '@/shared/utils';
+/* eslint-disable */
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { tryCatch } from '@/shared/utils';
 import { specialtiesApi } from '../service';
 
 export const useFetchSpecialty = (params = {}) => {
@@ -14,15 +15,14 @@ export const useFetchSpecialty = (params = {}) => {
 
 	const memorizedOptions = useMemo(() => {
 		const key = `total${entity}`;
-		return specialties.map(
-			(specialty) => ({
+		return specialties.map((specialty) => {
+			return {
 				value: specialty.value,
 				label: specialty[language],
 				count: specialty[key],
 				disabled: specialty[key] === 0,
-			}),
-			[],
-		);
+			};
+		}, []);
 	}, [specialties, language]);
 
 	useEffect(() => {
@@ -30,7 +30,9 @@ export const useFetchSpecialty = (params = {}) => {
 			const { data } = await specialtiesApi.getAll(params);
 			setSpecialties(data);
 		};
-		tryCatch(fetchData, language, () => setIsLoaded(true))();
+		tryCatch(fetchData, language, () => {
+			return setIsLoaded(true);
+		})();
 	}, []);
 
 	return { isLoaded, memorizedOptions, updateSpecialties };

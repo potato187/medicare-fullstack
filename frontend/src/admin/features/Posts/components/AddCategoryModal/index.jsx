@@ -1,3 +1,7 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
+import * as yup from 'yup';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -7,10 +11,6 @@ import {
 	FieldCheckBox,
 	FloatingLabelInput,
 } from '@/admin/components';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import * as yup from 'yup';
 import { postCategorySchema, postDefaultValues } from '../../schema';
 
 export function AddCategoryModal({ isOpen = false, toggle = () => false, onSubmit = () => null }) {

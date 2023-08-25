@@ -1,3 +1,7 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -8,15 +12,11 @@ import {
 	FloatingLabelInput,
 	FloatingLabelSelect,
 	TextArea,
-} from '@/admin/components';
+} from 'admin/components';
 
-import { htmlContentApi } from '@/admin/service';
-import { setDefaultValues } from '@/admin/utilities';
-import { tryCatch } from '@/shared/utils';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
+import { htmlContentApi } from 'admin/service';
+import { setDefaultValues } from 'admin/utilities';
+import { tryCatch } from 'shared/utils';
 import { htmlContentDefaults, htmlContentValidation } from '../../schema';
 
 export function HtmlContentModal({
@@ -44,7 +44,7 @@ export function HtmlContentModal({
 		} else {
 			methods.reset();
 		}
-	}, [htmlContentId]);
+	}, [htmlContentId, methods]);
 
 	return (
 		<FormProvider {...methods}>
@@ -91,7 +91,8 @@ export function HtmlContentModal({
 						isLoading={methods.formState.isSubmitting}
 						type='submit'
 						size='sm'
-						onClick={methods.handleSubmit(onSubmit)}>
+						onClick={methods.handleSubmit(onSubmit)}
+					>
 						<FormattedMessage id='button.create' />
 					</Button>
 				</BaseModalFooter>

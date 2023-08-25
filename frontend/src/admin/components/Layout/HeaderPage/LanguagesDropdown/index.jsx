@@ -1,7 +1,6 @@
-import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from '@/shared/components';
-import { useLanguages } from '@/store';
 import cn from 'classnames';
-import { Button } from '@/admin/components';
+import { useLanguages } from 'stores';
+import { BaseDropdown, Button, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
 import module from './style.module.scss';
 
 export function LanguagesDropdown({ list = [] }) {
@@ -22,7 +21,8 @@ export function LanguagesDropdown({ list = [] }) {
 						type='button'
 						key={id}
 						className={cn(itemCln, { active: id === languageId })}
-						customOnClick={() => changeLanguageById(id)}>
+						customOnClick={() => changeLanguageById(id)}
+					>
 						<img className='rounded-1' width={16} height={16} src={image} alt={name} />
 						<span>{name}</span>
 					</DropdownItem>

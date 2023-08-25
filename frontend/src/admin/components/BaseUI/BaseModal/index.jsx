@@ -1,12 +1,12 @@
-import { useClickOutside } from '@/hooks';
-import { BasePortal } from '@/shared/components';
 import cn from 'classnames';
 import { useEffect, useRef } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { CSSTransition } from 'react-transition-group';
-import module from './style.module.scss';
 import './transition.scss';
 import { FormattedMessage } from 'react-intl';
+import { useClickOutside } from 'hooks';
+import { BasePortal } from '../BasePortal';
+import module from './style.module.scss';
 
 export function BaseModal({
 	selectorId = 'modal',
@@ -43,12 +43,14 @@ export function BaseModal({
 
 	const dialogRef = useClickOutside(() => {
 		if (keyboard && !backdrop) {
-			keyboard && onClose();
+			onClose();
 		}
 		if (!keyboard && backdrop && nodeRef.current) {
 			nodeRef.current.classList.add(modalStaticCln);
 			setTimeout(() => {
-				nodeRef.current && nodeRef.current.classList.remove(modalStaticCln);
+				if (nodeRef.current) {
+					nodeRef.current.classList.remove(modalStaticCln);
+				}
 			}, 300);
 		}
 	});
@@ -60,11 +62,13 @@ export function BaseModal({
 			}
 		};
 
-		keyboard && document.addEventListener('keydown', closeOnEscapeKey);
+		if (keyboard) {
+			document.addEventListener('keydown', closeOnEscapeKey);
+		}
 		return () => {
 			document.removeEventListener('keydown', closeOnEscapeKey);
 		};
-	}, []);
+	}, [keyboard, onClose]);
 
 	return (
 		<BasePortal wrapperId={selectorId}>
@@ -88,7 +92,7 @@ export function BaseModalHeader({ idIntl = '', className, onClose = null }) {
 	return (
 		<div className={cn(modalHeaderClass, className)}>
 			<h2 className={titleClass}>{idIntl ? <FormattedMessage id={idIntl} /> : null}</h2>
-			<button onClick={onClose} className={btnCloseClass}>
+			<button type='button' onClick={onClose} className={btnCloseClass}>
 				<AiOutlineClose size='1.5em' />
 			</button>
 		</div>

@@ -1,4 +1,3 @@
-import { PATH_IMAGES } from '@/admin/constant';
 import cn from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
@@ -6,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
+import { PATH_IMAGES } from 'admin/constant';
 import module from './style.module.scss';
 
 function NavItemGroup({
@@ -35,14 +35,16 @@ function NavItemGroup({
 
 	useEffect(() => {
 		if (nodeRef.current) {
-			nodeRef.current.style.setProperty('--height', nodeRef.current.scrollHeight + 'px');
+			nodeRef.current.style.setProperty('--height', `${nodeRef.current.scrollHeight}px`);
 		}
 	}, []);
 
 	return (
 		<div className={cn(groupCln, { [showCln]: isOpen })} {...props}>
-			<div className={titleCln} onClick={handleOnclick}>
-				<i>{<Icon />}</i>
+			<div aria-hidden className={titleCln} onClick={handleOnclick}>
+				<i>
+					<Icon />
+				</i>
 				<span>
 					<FormattedMessage id={intl} />
 				</span>
@@ -53,8 +55,8 @@ function NavItemGroup({
 
 			<CSSTransition in={isOpen} appear={isOpen} nodeRef={nodeRef} timeout={0} classNames='collapse'>
 				<div className={listCln} ref={nodeRef}>
-					{listChildren.map(({ to, intl }, index) => (
-						<React.Fragment key={index}>
+					{listChildren.map(({ to, intl }) => (
+						<React.Fragment key={to}>
 							<NavLink to={to} className={itemCln}>
 								<FormattedMessage id={intl} />
 							</NavLink>
@@ -71,7 +73,9 @@ function NavItem({ to = '', intl = '', Icon = () => null, ...props }) {
 	return (
 		<div className={navItemClass} {...props}>
 			<NavLink to={to} className={titleCln}>
-				<i>{<Icon />}</i>
+				<i>
+					<Icon />
+				</i>
 				<span>
 					<FormattedMessage id={intl} />
 				</span>
@@ -102,18 +106,18 @@ export function SidebarNavigator({ routesConfig = [] }) {
 				<img src={PATH_IMAGES.LOGO} width='100' alt='' />
 			</NavLink>
 			<div className={mainClass}>
-				{routesConfig.map(({ listChildren = [], allowedRoles = [], ...props }, index) =>
+				{routesConfig.map(({ listChildren = [], allowedRoles = [], ...props }) =>
 					allowedRoles.includes(payload.role) ? (
 						listChildren.length ? (
 							<NavItemGroup
-								key={index}
+								key={props.intl}
 								listChildren={listChildren}
 								activePath={activePath}
 								onClick={onClick}
 								{...props}
 							/>
 						) : (
-							<NavItem key={index} {...props} />
+							<NavItem key={props.intl} {...props} />
 						)
 					) : null,
 				)}

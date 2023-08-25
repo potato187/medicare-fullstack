@@ -1,3 +1,11 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import { MdOutlineDeleteOutline } from 'react-icons/md';
+import { FormattedMessage } from 'react-intl';
+import * as yup from 'yup';
+import { readFileExcel } from 'utils';
+import { emailValidation, fileExcelValidation, phoneValidation, requiredValidation } from 'admin/validation';
+import { DOCTOR_POSITIONS, GENDERS, IMPORT_STATUS } from 'admin/constant';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -12,15 +20,7 @@ import {
 	TdInput,
 	TdSelect,
 	TrStatus,
-} from '@/admin/components';
-import { DOCTOR_POSITIONS, GENDERS, IMPORT_STATUS } from '@/admin/constant';
-import { emailValidation, fileExcelValidation, phoneValidation, requiredValidation } from '@/admin/validation';
-import { readFileExcel } from '@/utils';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
-import { MdOutlineDeleteOutline } from 'react-icons/md';
-import { FormattedMessage } from 'react-intl';
-import * as yup from 'yup';
+} from 'admin/components';
 
 export function ImportExcelModal({
 	genders = [],
@@ -101,7 +101,7 @@ export function ImportExcelModal({
 	};
 
 	const updateDoctorsImportStatus = (importedDoctors) => {
-		importedDoctors.map((insertedSuccess, index) => {
+		importedDoctors.forEach((insertedSuccess, index) => {
 			const key = insertedSuccess ? 'SUCCESS' : 'FAIL';
 			methods.setValue(`doctors.${index}.importStatus`, IMPORT_STATUS[key]);
 		});
