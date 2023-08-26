@@ -5,3 +5,4 @@ export * from './path';
 export * from './regex';
 export * from './searchOption';
 export * from './status';
+export * from './headers';

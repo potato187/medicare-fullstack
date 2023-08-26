@@ -61,11 +61,14 @@ const authSlice = createSlice({
 				state.tokens.accessToken = tokens.accessToken;
 				state.tokens.refreshToken = tokens.refreshToken;
 			})
-			.addMatcher(isAnyOf(authLogout.fulfilled, authLogin.rejected, authLogout.rejected), (state) => {
-				state.user = initialState.user;
-				state.tokens = initialState.tokens;
-				state.status = initialState.status;
-			});
+			.addMatcher(
+				isAnyOf(authLogout.fulfilled, authLogin.rejected, authLogout.fulfilled, authLogout.rejected),
+				(state) => {
+					state.user = initialState.user;
+					state.tokens = initialState.tokens;
+					state.status = initialState.status;
+				},
+			);
 	},
 });
 

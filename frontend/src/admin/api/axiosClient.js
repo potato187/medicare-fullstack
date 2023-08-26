@@ -1,4 +1,5 @@
-import { authRefreshTokens } from 'admin/redux/slices/auth';
+import { HEADERS } from 'admin/constant';
+import { authLogout, authRefreshTokens } from 'admin/redux/slices/auth';
 import { store } from 'admin/redux/store/configureStore';
 import axios from 'axios';
 
@@ -12,12 +13,12 @@ axiosClient.interceptors.request.use(
 		const { tokens, user } = store.getState()?.auth || {};
 
 		if (tokens) {
-			config.headers['Authorization'] = `Bearer ${tokens.accessToken}`;
-			config.headers['Refresh-Token'] = tokens.refreshToken;
+			config.headers[HEADERS.AUTHORIZATION] = `Bearer ${tokens.accessToken}`;
+			config.headers[HEADERS.REFRESH_TOKEN] = tokens.refreshToken;
 		}
 
 		if (user?.id) {
-			config.headers['X-Client-Id'] = user.id;
+			config.headers[HEADERS.CLIENT_ID] = user.id;
 		}
 
 		return config;
@@ -35,25 +36,34 @@ axiosClient.interceptors.response.use(
 		return response.data ? Promise.resolve(response.data) : Promise.resolve(response);
 	},
 	async (error) => {
-		const { config } = error;
-		if (!isRefreshToken && error.response.status === 401 && error.response.data.code === 101401 && !config._retry) {
-			config._retry = true;
-			isRefreshToken = true;
+		const httpStatusCode = error.response.status;
+		const responseErrorCode = error.response.data.code;
+
+		if (httpStatusCode === 401) {
+			const { config } = error;
 			const { user, tokens } = store.getState()?.auth || {};
 
-			if (user?.id) {
-				store
-					.dispatch(authRefreshTokens({ id: user.id, tokens }))
-					.then(() => {
-						requestsToRefresh.forEach((callback) => callback());
-					})
-					.catch((error) => {
-						requestsToRefresh.forEach((callback) => callback(error));
-					})
-					.finally(() => {
-						isRefreshToken = false;
-						requestsToRefresh = [];
-					});
+			if (responseErrorCode === 10401) {
+				store.dispatch(authLogout({ id: user.id, tokens }));
+			}
+
+			if (responseErrorCode === 101401 && !isRefreshToken) {
+				isRefreshToken = true;
+
+				if (user?.id) {
+					store
+						.dispatch(authRefreshTokens({ id: user.id, tokens }))
+						.then(() => {
+							requestsToRefresh.forEach((callback) => callback());
+						})
+						.catch((error) => {
+							requestsToRefresh.forEach((callback) => callback(error));
+						})
+						.finally(() => {
+							isRefreshToken = false;
+							requestsToRefresh = [];
+						});
+				}
 			}
 
 			return new Promise((resolve, reject) => {
@@ -66,6 +76,7 @@ axiosClient.interceptors.response.use(
 				});
 			});
 		}
+
 		return error.response?.data ? Promise.reject(error.response.data) : Promise.reject(error.response);
 	},
 );
