@@ -6,7 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { AuthLanguagesProvider } from 'stores';
 import { withAuth } from './hocs';
 import { BaseNotification, Layout } from './components';
-import { AdminManager, LanguageManager, LoginPage } from './features';
+import { AdminManager, LanguageManager, LoginPage, SpecialtyManager } from './features';
 import { persistor, store } from './redux/store/configureStore';
 import 'shared/styles/style.scss';
 import 'admin/styles/style.scss';
@@ -28,6 +28,10 @@ export default function Admin() {
 									</Route>
 									<Route path='admin/*'>
 										<Route path='manage' element={<AdminManager />} />
+										<Route path='*' element={<Navigate to='manage' replace />} />
+									</Route>
+									<Route path='specialty/*'>
+										<Route path='manage' element={<SpecialtyManager />} />
 										<Route path='*' element={<Navigate to='manage' replace />} />
 									</Route>
 								</Route>

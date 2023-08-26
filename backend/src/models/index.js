@@ -3,4 +3,5 @@ module.exports = {
 	_RoleModel: require('./role.model'),
 	_KeyTokenModel: require('./keyToken.model'),
 	_GenderModel: require('./gender.model'),
+	_SpecialtyModel: require('./specialty.model'),
 };

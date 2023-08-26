@@ -2,7 +2,7 @@ import { axiosClient } from './axiosClient';
 import { SPECIALTIES_PATH } from './constant';
 
 export const specialtiesApi = {
-	getAll(params) {
+	queryByParams(params) {
 		return axiosClient.get(`${SPECIALTIES_PATH}/get`, { params });
 	},
 };
