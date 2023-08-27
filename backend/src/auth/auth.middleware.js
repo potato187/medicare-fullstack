@@ -24,7 +24,7 @@ const authorization = tryCatch(async (req, res, next) => {
 
 	const filter = { userId: convertToObjectIdMongodb(clientId) };
 	const select = ['publicKey', 'refreshTokenUsed'];
-	const keyStore = await KeyTokenRepo.findByFilter(filter, select);
+	const keyStore = await KeyTokenRepo.findOne(filter, select);
 
 	console.log(keyStore);
 

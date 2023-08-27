@@ -30,6 +30,10 @@ class TokenBuilder {
 		return this;
 	}
 
+	getKey() {
+		return this.data.key;
+	}
+
 	async verifyToken() {
 		let payload = {};
 		let errorCode = 0;

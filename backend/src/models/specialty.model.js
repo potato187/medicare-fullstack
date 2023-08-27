@@ -1,12 +1,17 @@
 'use strict';
 const { Schema, model } = require('mongoose');
-const { default: slugify } = require('slugify');
+const slugify = require('slugify');
 
 const DOCUMENT_NAME = 'Specialty';
 const COLLECTION_NAME = 'specialties';
 
 const specialtySchema = new Schema(
 	{
+		key: {
+			type: String,
+			unique: true,
+			required: true,
+		},
 		name: {
 			vi: {
 				type: String,
@@ -42,12 +47,10 @@ const specialtySchema = new Schema(
 	},
 );
 
-const Specialization = model(DOCUMENT_NAME, specialtySchema);
-
 specialtySchema.pre('save', function (next) {
 	this.slug.vi = slugify(this.name.vi, { lower: true });
 	this.slug.en = slugify(this.name.en, { lower: true });
 	next();
 });
 
-module.exports = Specialization;
+module.exports = model(DOCUMENT_NAME, specialtySchema);

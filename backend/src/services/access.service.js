@@ -1,87 +1,100 @@
 'use strict';
 const { generateToken, getInfoData, convertToObjectIdMongodb } = require('@/utils');
-const { KeyTokenRepo } = require('@/models/repository');
+const { KeyTokenRepo, UtilsRepo } = require('@/models/repository');
 const { UnauthorizedRequestError, ConflictRequestError } = require('@/core');
 const { AdminBuilder } = require('./builder');
 const TokenBuilder = require('./builder/tokens.builder');
-
-const ACCESS_TOKEN_EXPIRES = 10;
-const REFRESH_TOKEN_EXPIRES = 10000;
+const { ACCESS_TOKEN_EXPIRES, REFRESH_TOKEN_EXPIRES } = require('@/auth/auth.constant');
+const { ADMIN_MODEL, KEY_TOKEN_MODEL } = require('@/models/repository/constant');
 
 class AccessService {
 	static async singUp({ firstName, lastName, email, phone, password, role, gender }) {
-		const adminBuilder = await new AdminBuilder()
+		const admin = await new AdminBuilder()
 			.setFirstName(firstName)
 			.setLastName(lastName)
 			.setEmail(email)
 			.setPhone(phone)
 			.setPassword(password)
 			.setRole(role)
-			.setGender(gender);
+			.setGender(gender)
+			.build();
 
-		const filter = { $or: [{ email }, { phone }] };
-		if (await adminBuilder.find({ filter })) {
+		const adminFound = await UtilsRepo.findOne({
+			model: ADMIN_MODEL,
+			filter: { $or: [{ email }, { phone }] },
+		});
+
+		if (adminFound) {
 			throw new ConflictRequestError({ code: 200400 });
 		}
 
-		return await adminBuilder.insertAndSelect(['_id', 'email', 'firstName', 'lastName', 'role']);
+		const newUser = new UtilsRepo.createOne({
+			model: ADMIN_MODEL,
+			body: admin,
+		});
+
+		return getInfoData({
+			fields: ['_id', 'email', 'firstName', 'lastName', 'role'],
+			object: newUser,
+		});
 	}
 
 	static async login({ email, password }) {
 		const adminBuilder = new AdminBuilder().setEmail(email).setPassword(password);
 
-		const filter = { email };
-		const select = ['_id', 'email', 'password', 'firstName', 'lastName', 'role'];
-		const foundAdmin = await adminBuilder.find({ filter, select });
+		const foundAdmin = await UtilsRepo.findOne({
+			model: ADMIN_MODEL,
+			filter: { email },
+			select: ['_id', 'email', 'password', 'firstName', 'lastName', 'role'],
+		});
 
 		if (!foundAdmin || !adminBuilder.comparePassword(foundAdmin.password)) {
 			throw new UnauthorizedRequestError({ code: 200401 });
 		}
 
-		const [publicKey, privateKey] = [generateToken(), generateToken()];
 		const payload = { userId: foundAdmin._id, role: foundAdmin.role };
+		const accessTokenBuilder = new TokenBuilder().setPayload(payload).setKey(generateToken());
+		const refreshTokenBuilder = new TokenBuilder().setPayload(payload).setKey(generateToken());
 
-		const accessToken = await new TokenBuilder()
-			.setPayload(payload)
-			.setKey(publicKey)
-			.build({ expiresIn: ACCESS_TOKEN_EXPIRES });
-
-		const refreshToken = await new TokenBuilder()
-			.setPayload(payload)
-			.setKey(privateKey)
-			.build({ expiresIn: REFRESH_TOKEN_EXPIRES });
-
-		await KeyTokenRepo.createPairToken(payload.userId, publicKey, privateKey);
+		await KeyTokenRepo.createPairToken(payload.userId, accessTokenBuilder.getKey(), refreshTokenBuilder.getKey());
 
 		return {
 			foundAdmin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'role'], object: foundAdmin }),
 			tokens: {
-				accessToken,
-				refreshToken,
+				accessToken: await accessTokenBuilder.build(),
+				refreshToken: await refreshTokenBuilder.build(),
 			},
 		};
 	}
 
 	static async logout(keyStore) {
-		return await KeyTokenRepo.removeById(keyStore._id);
+		return await UtilsRepo.removeById({
+			model: KEY_TOKEN_MODEL,
+			id: keyStore._id,
+		});
 	}
 
 	static async refreshTokens({ clientId, refreshToken }) {
-		const filter = { userId: convertToObjectIdMongodb(clientId) };
-		const select = ['_id', 'refreshTokenUsed', 'publicKey', 'privateKey'];
-		const keyStore = await KeyTokenRepo.findByFilter(filter, select);
+		const keyStore = await UtilsRepo.findOne({
+			model: KEY_TOKEN_MODEL,
+			filter: { userId: convertToObjectIdMongodb(clientId) },
+			select: ['_id', 'refreshTokenUsed', 'publicKey', 'privateKey'],
+		});
 
 		if (!keyStore || keyStore.refreshTokenUsed.includes(refreshToken)) {
 			if (keyStore) {
-				await KeyTokenRepo.removeById(keyStore._id);
+				await UtilsRepo.removeById({
+					model: KEY_TOKEN_MODEL,
+					id: keyStore._id,
+				});
 			}
 			throw new UnauthorizedRequestError();
 		}
 
 		const refreshTokenBuilder = new TokenBuilder()
-			.setToken(refreshToken)
 			.setKey(keyStore.privateKey)
-			.setPayload({ userId: clientId });
+			.setPayload({ userId: clientId })
+			.setToken(refreshToken);
 
 		const { payload, errorCode } = await refreshTokenBuilder.verifyToken();
 		const accessTokenBuilder = new TokenBuilder().setKey(keyStore.publicKey).setPayload(payload);
@@ -98,6 +111,7 @@ class AccessService {
 		}
 
 		await KeyTokenRepo.markRefreshTokenUsed(keyStore._id, refreshTokenBuilder.getToken());
+
 		return {
 			accessToken: await accessTokenBuilder.build({ expiresIn: ACCESS_TOKEN_EXPIRES }),
 			refreshToken: await refreshTokenBuilder.build({ expiresIn: REFRESH_TOKEN_EXPIRES }),

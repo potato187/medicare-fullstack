@@ -73,16 +73,6 @@ class AdminBuilder {
 	comparePassword(password) {
 		return bcrypt.compareSync(this.data.password, password);
 	}
-
-	async insertAndSelect(fields = []) {
-		const data = this.build();
-		const object = await AdminRepo.createAdmin(data);
-		return getInfoData({ fields, object });
-	}
-
-	async find({ filter, select = [] }) {
-		return await AdminRepo.findByFilter(filter, select);
-	}
 }
 
 module.exports = AdminBuilder;

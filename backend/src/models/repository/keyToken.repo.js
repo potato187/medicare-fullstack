@@ -3,7 +3,7 @@ const { createSelectData, convertToObjectIdMongodb } = require('@/utils');
 const _KeyTokenModel = require('../keyToken.model');
 
 class KeyTokenRepo {
-	static async findByFilter(filter, select = ['_id']) {
+	static async findOne(filter, select = ['_id']) {
 		return await _KeyTokenModel.findOne(filter).select(createSelectData(select));
 	}
 
