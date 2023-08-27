@@ -1,30 +1,29 @@
 'use strict';
 const JWT = require('jsonwebtoken');
 
-const createAccessToken = async (payload, publicKey) => {
-	return await JWT.sign(payload, publicKey, {
-		expiresIn: '3 days',
-	});
-};
+const verifyToken = async (clientId, token, secretKey) => {
+	let errorCode = 0;
+	const payload = {};
 
-const createTokenPair = async (payload, publicKey, privateKey) => {
-	const accessToken = await JWT.sign(payload, publicKey, {
-		expiresIn: '3 days',
-	});
+	try {
+		const decode = await JWT.verify(token, secretKey);
 
-	const refreshToken = await JWT.sign(payload, privateKey, {
-		expiresIn: '30 days',
-	});
+		if (decode.userId !== clientId) {
+			errorCode = 100401;
+		}
+	} catch (error) {
+		errorCode = error.name !== 'TokenExpiredError' ? 100401 : 101401;
+	}
 
-	return { accessToken, refreshToken };
-};
+	if (errorCode === 101401) {
+		const { userId, role } = JWT.decode(token);
+		payload.userId = userId;
+		payload.role = role;
+	}
 
-const verifyToken = async (token, secretKey) => {
-	return await JWT.verify(token, secretKey);
+	return { payload, errorCode };
 };
 
 module.exports = {
-	createAccessToken,
-	createTokenPair,
 	verifyToken,
 };

@@ -4,14 +4,14 @@ const _SpecialtyModel = require('../specialty.model');
 const _KeyTokenModel = require('../keyToken.model');
 const _GenderModel = require('../gender.model');
 const _RoleModel = require('../role.model');
-const { createSelectData } = require('@/utils');
+const { createSelectData, convertToObjectIdMongodb } = require('@/utils');
 const { ForbiddenRequestError } = require('@/core');
 const { ADMIN_MODEL, KEY_TOKEN_MODEL, SPECIALLY_MODEL, GENDER_MODEL, ROLE_MODEL } = require('./constant');
 
 class UtilsRepo {
 	static modelsRegister = {};
 	static registerModel = (model, modelRef) => {
-		modelsRegister[model] = modelRef;
+		UtilsRepo.modelsRegister[model] = modelRef;
 	};
 
 	static getModel(model) {
@@ -50,8 +50,8 @@ class UtilsRepo {
 
 UtilsRepo.registerModel(ADMIN_MODEL, _AdminModel);
 UtilsRepo.registerModel(GENDER_MODEL, _GenderModel);
-UtilsRepo.registerModel(KEY_TOKEN_MODEL, _SpecialtyModel);
+UtilsRepo.registerModel(SPECIALLY_MODEL, _SpecialtyModel);
 UtilsRepo.registerModel(ROLE_MODEL, _RoleModel);
-UtilsRepo.registerModel(SPECIALLY_MODEL, _KeyTokenModel);
+UtilsRepo.registerModel(KEY_TOKEN_MODEL, _KeyTokenModel);
 
 module.exports = UtilsRepo;

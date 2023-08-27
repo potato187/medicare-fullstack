@@ -4,8 +4,8 @@ const { KeyTokenRepo, UtilsRepo } = require('@/models/repository');
 const { UnauthorizedRequestError, ConflictRequestError } = require('@/core');
 const { AdminBuilder } = require('./builder');
 const TokenBuilder = require('./builder/tokens.builder');
-const { ACCESS_TOKEN_EXPIRES, REFRESH_TOKEN_EXPIRES } = require('@/auth/auth.constant');
 const { ADMIN_MODEL, KEY_TOKEN_MODEL } = require('@/models/repository/constant');
+const { authUtils } = require('@/auth');
 
 class AccessService {
 	static async singUp({ firstName, lastName, email, phone, password, role, gender }) {
@@ -40,29 +40,29 @@ class AccessService {
 	}
 
 	static async login({ email, password }) {
-		const adminBuilder = new AdminBuilder().setEmail(email).setPassword(password);
+		const accountBuilder = new AdminBuilder().setEmail(email).setPassword(password);
 
-		const foundAdmin = await UtilsRepo.findOne({
+		const account = await UtilsRepo.findOne({
 			model: ADMIN_MODEL,
 			filter: { email },
 			select: ['_id', 'email', 'password', 'firstName', 'lastName', 'role'],
 		});
 
-		if (!foundAdmin || !adminBuilder.comparePassword(foundAdmin.password)) {
+		if (!account || !accountBuilder.comparePassword(account.password)) {
 			throw new UnauthorizedRequestError({ code: 200401 });
 		}
 
-		const payload = { userId: foundAdmin._id, role: foundAdmin.role };
+		const payload = { userId: account._id, role: account.role };
 		const accessTokenBuilder = new TokenBuilder().setPayload(payload).setKey(generateToken());
 		const refreshTokenBuilder = new TokenBuilder().setPayload(payload).setKey(generateToken());
 
 		await KeyTokenRepo.createPairToken(payload.userId, accessTokenBuilder.getKey(), refreshTokenBuilder.getKey());
 
 		return {
-			foundAdmin: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'role'], object: foundAdmin }),
+			account: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'role'], object: account }),
 			tokens: {
-				accessToken: await accessTokenBuilder.build(),
-				refreshToken: await refreshTokenBuilder.build(),
+				accessToken: await accessTokenBuilder.buildAccessToken(),
+				refreshToken: await refreshTokenBuilder.buildRefreshToken(),
 			},
 		};
 	}
@@ -91,13 +91,9 @@ class AccessService {
 			throw new UnauthorizedRequestError();
 		}
 
-		const refreshTokenBuilder = new TokenBuilder()
-			.setKey(keyStore.privateKey)
-			.setPayload({ userId: clientId })
-			.setToken(refreshToken);
-
-		const { payload, errorCode } = await refreshTokenBuilder.verifyToken();
-		const accessTokenBuilder = new TokenBuilder().setKey(keyStore.publicKey).setPayload(payload);
+		const { payload, errorCode } = await authUtils.verifyToken(clientId, refreshToken, keyStore.privateKey);
+		const refreshTokenBuilder = new TokenBuilder().setPayload(payload).setKey(keyStore.privateKey);
+		const accessTokenBuilder = new TokenBuilder().setPayload(payload).setKey(keyStore.publicKey);
 
 		if (errorCode === 100401) {
 			throw new UnauthorizedRequestError();
@@ -105,16 +101,16 @@ class AccessService {
 
 		if (!errorCode) {
 			return {
-				accessToken: await accessTokenBuilder.build({ expiresIn: ACCESS_TOKEN_EXPIRES }),
-				refreshToken: refreshTokenBuilder.getToken(),
+				accessToken: await accessTokenBuilder.buildAccessToken(),
+				refreshToken,
 			};
 		}
 
-		await KeyTokenRepo.markRefreshTokenUsed(keyStore._id, refreshTokenBuilder.getToken());
+		await KeyTokenRepo.markRefreshTokenUsed(keyStore._id, refreshToken);
 
 		return {
-			accessToken: await accessTokenBuilder.build({ expiresIn: ACCESS_TOKEN_EXPIRES }),
-			refreshToken: await refreshTokenBuilder.build({ expiresIn: REFRESH_TOKEN_EXPIRES }),
+			accessToken: await accessTokenBuilder.buildAccessToken(),
+			refreshToken: await refreshTokenBuilder.buildRefreshToken(),
 		};
 	}
 }

@@ -4,7 +4,7 @@ const { UnauthorizedRequestError, ForbiddenRequestError } = require('@/core');
 const { tryCatch } = require('@/middleware');
 const { KeyTokenRepo } = require('@/models/repository');
 const { convertToObjectIdMongodb } = require('@/utils');
-const { TokenBuilder } = require('@/services/builder');
+const { verifyToken } = require('./auth.utils');
 
 const checkRoles = (roles = []) => {
 	return async (req, res, next) => {
@@ -26,18 +26,11 @@ const authorization = tryCatch(async (req, res, next) => {
 	const select = ['publicKey', 'refreshTokenUsed'];
 	const keyStore = await KeyTokenRepo.findOne(filter, select);
 
-	console.log(keyStore);
-
 	if (!keyStore) {
 		return next(new UnauthorizedRequestError({ code: 100401 }));
 	}
 
-	const accessTokenBuilder = new TokenBuilder()
-		.setPayload({ userId: clientId })
-		.setToken(accessToken)
-		.setKey(keyStore.publicKey);
-
-	const { payload, errorCode } = await accessTokenBuilder.verifyToken();
+	const { payload, errorCode } = await verifyToken(clientId, accessToken, keyStore.publicKey);
 
 	if (errorCode) {
 		const refreshToken = req.headers[HEADERS.REFRESH_TOKEN];
