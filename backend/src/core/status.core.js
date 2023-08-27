@@ -26,6 +26,10 @@ const codeReason = {
 		vi: 'Không tìm thấy trang.',
 		en: 'Page not found.',
 	},
+	100409: {
+		vi: 'Yêu cầu không hợp lệ.',
+		en: 'Invalid request.',
+	},
 	100500: {
 		vi: 'Lỗi nội bộ của máy chủ.',
 		en: 'Internal server error.',
@@ -81,6 +85,16 @@ const codeReason = {
 	301204: {
 		vi: '',
 		en: 'Admin deleted successfully',
+	},
+
+	/*  Specialty  error codes  40xxxx */
+	400404: {
+		vi: 'Chuyên ngành không tồn tại.',
+		en: 'Specialty does not exist.',
+	},
+	400409: {
+		vi: 'Chuyên ngành đã tồn tại.',
+		en: 'Specialty already exists.',
 	},
 };
 

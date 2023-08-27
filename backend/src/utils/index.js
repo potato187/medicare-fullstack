@@ -42,6 +42,42 @@ const createSearchData = (fields = [], key_search, regexOptions = 'i') => {
 	});
 };
 
+const removeFalsyProperties = (falsyMap = ['undefined', 'null']) => {
+	return function fn(object) {
+		return Object.entries(object).reduce((obj, [key, value]) => {
+			const type = typeOf(value);
+			if (type !== 'object' && !falsyMap.includes(type)) {
+				obj[key] = value;
+			}
+
+			if (type === 'object') {
+				obj[key] = fn(value);
+			}
+
+			return obj;
+		}, {});
+	};
+};
+
+const flattenObject = (object = null, prefix = '') => {
+	if (object === null) {
+		return {};
+	}
+
+	return Object.keys(object).reduce((object, key) => {
+		const value = object[key];
+		const prefixKey = prefix ? `${prefix}.${key}` : key;
+
+		if (typeOf(value) === 'string') {
+			Object.assign(object, { [prefixKey]: value });
+		} else {
+			Object.assign(object, flattenObject(value, prefixKey));
+		}
+
+		return object;
+	}, {});
+};
+
 module.exports = {
 	convertToObjectIdMongodb,
 	createSearchData,
@@ -51,4 +87,6 @@ module.exports = {
 	generateToken,
 	getInfoData,
 	typeOf,
+	flattenObject,
+	removeFalsyProperties,
 };

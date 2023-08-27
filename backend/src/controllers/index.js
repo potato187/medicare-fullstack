@@ -1,6 +1,7 @@
 module.exports = {
 	AccessController: require('./access.controller'),
-	LanguageController: require('./language.controller'),
 	AdminController: require('./admin.controller'),
+	LanguageController: require('./language.controller'),
 	ResourceController: require('./resource.controller'),
+	SpecialtyController: require('./specialty.controller'),
 };

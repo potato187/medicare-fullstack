@@ -11,6 +11,9 @@ const verifyToken = async (clientId, token, secretKey) => {
 		if (decode.userId !== clientId) {
 			errorCode = 100401;
 		}
+
+		payload.userId = decode.userId;
+		payload.role = decode.role;
 	} catch (error) {
 		errorCode = error.name !== 'TokenExpiredError' ? 100401 : 101401;
 	}
