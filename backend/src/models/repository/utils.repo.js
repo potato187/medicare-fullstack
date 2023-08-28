@@ -4,8 +4,14 @@ const _SpecialtyModel = require('../specialty.model');
 const _KeyTokenModel = require('../keyToken.model');
 const _GenderModel = require('../gender.model');
 const _RoleModel = require('../role.model');
-const { createSelectData, convertToObjectIdMongodb, removeFalsyProperties, flattenObject } = require('@/utils');
-const { ForbiddenRequestError } = require('@/core');
+const {
+	createSelectData,
+	convertToObjectIdMongodb,
+	removeFalsyProperties,
+	flattenObject,
+	getInfoData,
+} = require('@/utils');
+const { ForbiddenRequestError, BadRequestError } = require('@/core');
 const { ADMIN_MODEL, KEY_TOKEN_MODEL, SPECIALLY_MODEL, GENDER_MODEL, ROLE_MODEL } = require('./constant');
 
 class UtilsRepo {
@@ -17,7 +23,7 @@ class UtilsRepo {
 	static getModel(model) {
 		const Model = UtilsRepo.modelsRegister[model];
 		if (!Model) {
-			throw new ForbiddenRequestError(` ${model} is invalid model in Utils Role Class`);
+			throw new ForbiddenRequestError(` ${model} is a invalid model in UtilsRepo`);
 		}
 		return Model;
 	}
@@ -29,29 +35,31 @@ class UtilsRepo {
 
 	static async findOne({ model, filter, select = ['_id'] }) {
 		const _Model = UtilsRepo.getModel(model);
-		return await _Model.findOne(filter).select(createSelectData(select)).lean();
+		return await _Model.findOne(filter).select(select).lean();
 	}
 
-	static async find({ model, filter }) {
+	static async findOneAndUpdate({ model, filter, updateBody, options = { new: true }, select = [] }) {
 		const _Model = UtilsRepo.getModel(model);
-		return await _Model.find(filter);
-	}
 
-	static async findByIdAndUpdate({ model, id, updateBody, options = { new: true } }) {
-		const _Model = UtilsRepo.getModel(model);
 		const flattenObj = flattenObject(updateBody);
-		const cleanedObj = removeFalsyProperties(flattenObj);
-		return await _Model.findByIdAndUpdate(id, cleanedObj, options);
+		const cleanedObj = removeFalsyProperties([null, undefined])(flattenObj);
+
+		const updated = await _Model.findOneAndUpdate(filter, cleanedObj, options);
+
+		return getInfoData({
+			fields: select,
+			object: updated,
+		});
 	}
 
 	static async removeById({ model, id }) {
 		const _Model = UtilsRepo.getModel(model);
-		return _Model.deleteOne({ _id: convertToObjectIdMongodb(id) });
+		return await _Model.deleteOne({ _id: convertToObjectIdMongodb(id) });
 	}
 
 	static async getAll({ model, query, sort, select = ['_id'] }) {
 		const _Model = UtilsRepo.getModel(model);
-		return _Model.find(query).sort(sort).select(select).lean().exec();
+		return await _Model.find(query).sort(sort).select(select).lean().exec();
 	}
 }
 

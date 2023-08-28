@@ -1,21 +1,28 @@
 'use strict';
 const { authMiddleware } = require('@/auth');
 const { SpecialtyController } = require('@/controllers');
-const { tryCatch } = require('@/middleware');
+const { tryCatch, handlerValidateRequest } = require('@/middleware');
+const { idSchema } = require('@/validations');
 const express = require('express');
+const { createSchema, updateSchema } = require('./schema');
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
 router.use(authMiddleware.checkRoles(['admin']));
 
-router.get('/:id', tryCatch(SpecialtyController.getOne));
+router.get('/:id', handlerValidateRequest(idSchema, 'params'), tryCatch(SpecialtyController.getOne));
 
 router.get('/', tryCatch(SpecialtyController.getAll));
 
-router.post('/', tryCatch(SpecialtyController.createOne));
+router.post('/', handlerValidateRequest(createSchema), tryCatch(SpecialtyController.createOne));
 
-router.patch('/:id', tryCatch(SpecialtyController.updateOne));
+router.patch(
+	'/:id',
+	handlerValidateRequest(idSchema, 'params'),
+	handlerValidateRequest(idSchema, updateSchema),
+	tryCatch(SpecialtyController.updateOne),
+);
 
-router.delete('/:id', tryCatch(SpecialtyController.deleteOne));
+router.delete('/:id', handlerValidateRequest(idSchema, 'params'), tryCatch(SpecialtyController.deleteOne));
 
 module.exports = router;

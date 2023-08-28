@@ -31,12 +31,17 @@ const ObjectIdMongodbValidator = Joi.string().custom((value, helper) => {
 
 const nameValidator = Joi.string().alphanum().min(3).max(50);
 
+const idSchema = Joi.object({
+	id: ObjectIdMongodbValidator,
+});
+
 module.exports = {
 	adminRoleValidator,
 	emailValidator,
+	genderValidator,
+	idSchema,
 	nameValidator,
+	ObjectIdMongodbValidator,
 	passwordValidator,
 	phoneValidator,
-	genderValidator,
-	ObjectIdMongodbValidator,
 };

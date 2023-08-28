@@ -2,6 +2,7 @@
 const { Types } = require('mongoose');
 const crypto = require('node:crypto');
 const _ = require('lodash');
+const slugify = require('slugify');
 
 const getInfoData = ({ fields = [], object = {} }) => {
 	return _.pick(object, fields);
@@ -60,33 +61,39 @@ const removeFalsyProperties = (falsyMap = ['undefined', 'null']) => {
 };
 
 const flattenObject = (object = null, prefix = '') => {
-	if (object === null) {
+	if (object === null || object === undefined) {
 		return {};
 	}
 
-	return Object.keys(object).reduce((object, key) => {
-		const value = object[key];
+	return Object.entries(object).reduce((obj, [key, value]) => {
 		const prefixKey = prefix ? `${prefix}.${key}` : key;
 
-		if (typeOf(value) === 'string') {
-			Object.assign(object, { [prefixKey]: value });
-		} else {
-			Object.assign(object, flattenObject(value, prefixKey));
+		if (typeOf(value) !== 'object') {
+			obj[prefixKey] = value;
 		}
 
-		return object;
+		if (typeOf(value) === 'object') {
+			Object.assign(obj, flattenObject(value, prefixKey));
+		}
+
+		return obj;
 	}, {});
+};
+
+const createSlug = (string, options = { lower: true }) => {
+	return slugify(string, options);
 };
 
 module.exports = {
 	convertToObjectIdMongodb,
 	createSearchData,
 	createSelectData,
+	createSlug,
 	createSortData,
 	createUnSelectData,
+	flattenObject,
 	generateToken,
 	getInfoData,
-	typeOf,
-	flattenObject,
 	removeFalsyProperties,
+	typeOf,
 };
