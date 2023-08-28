@@ -10,6 +10,7 @@ class ResourceClass {
 				model: req.params.model,
 				...req.query,
 			}),
+<<<<<<< HEAD
 		}).send(res);
 	}
 
@@ -19,6 +20,8 @@ class ResourceClass {
 				model: req.params.model,
 				data: req.body,
 			}),
+=======
+>>>>>>> 0b42fde (Refactoring backend  resource feature)
 		}).send(res);
 	}
 }

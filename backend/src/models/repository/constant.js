@@ -3,7 +3,6 @@ module.exports = {
 	ROLE_MODEL: 'role',
 	GENDER_MODEL: 'gender',
 	KEY_TOKEN_MODEL: 'keyToken',
-	ROLE_MODEL: 'role',
 	SPECIALLY_MODEL: 'specialty',
 	POSITION_MODEL: 'position',
 	WORKING_HOUR_MODEL: 'workingHour',

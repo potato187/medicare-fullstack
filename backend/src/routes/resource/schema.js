@@ -8,9 +8,7 @@ const modelSchema = Joi.object({
 
 const querySchema = Joi.object({
 	sort: Joi.array()
-		.items(
-			Joi.array().ordered(Joi.string().valid('key').default('ctime'), Joi.string().valid('asc', 'desc').default('asc')),
-		)
+		.items(Joi.array().ordered(Joi.string().valid('key').default(''), Joi.string().valid('asc', 'desc').default('asc')))
 		.default([['ctime', 'asc']]),
 	select: Joi.array().items(Joi.string().valid('_id', 'key', 'name')),
 });
