@@ -43,7 +43,7 @@ axiosClient.interceptors.response.use(
 			const { config } = error;
 			const { user, tokens } = store.getState()?.auth || {};
 
-			if (responseErrorCode === 10401) {
+			if (responseErrorCode === 100401) {
 				store.dispatch(authLogout({ id: user.id, tokens }));
 			}
 

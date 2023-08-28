@@ -1,23 +1,14 @@
 'use strict';
 const { MONGODB_EXCLUDE_FIELDS } = require('@/constant');
 const { UtilsRepo } = require('@/models/repository');
-const { GENDER_MODEL } = require('@/models/repository/constant');
-const { createUnSelectData } = require('@/utils');
+const { createUnSelectData, createSortData, createSelectData } = require('@/utils');
 
 class ResourceService {
-	static async getAllGender() {
+	static async getAll({ model, sort, select }) {
 		return await UtilsRepo.getAll({
-			model: GENDER_MODEL,
-			sort: { gender_key: 1 },
-			select: createUnSelectData(MONGODB_EXCLUDE_FIELDS),
-		});
-	}
-
-	static async getAllAAdminRole() {
-		return await UtilsRepo.getAll({
-			model: GENDER_MODEL,
-			sort: { role_key: 1 },
-			select: createUnSelectData(MONGODB_EXCLUDE_FIELDS),
+			model,
+			sort: sort ? createSortData(sort) : { ctime: 1 },
+			select: select ? createSelectData(select) : createUnSelectData(MONGODB_EXCLUDE_FIELDS),
 		});
 	}
 }

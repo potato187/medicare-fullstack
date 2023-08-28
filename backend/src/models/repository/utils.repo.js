@@ -65,8 +65,9 @@ class UtilsRepo {
 
 UtilsRepo.registerModel(ADMIN_MODEL, _AdminModel);
 UtilsRepo.registerModel(GENDER_MODEL, _GenderModel);
-UtilsRepo.registerModel(SPECIALLY_MODEL, _SpecialtyModel);
-UtilsRepo.registerModel(ROLE_MODEL, _RoleModel);
 UtilsRepo.registerModel(KEY_TOKEN_MODEL, _KeyTokenModel);
+UtilsRepo.registerModel(ROLE_MODEL, _RoleModel);
+UtilsRepo.registerModel(ROLE_MODEL, _RoleModel);
+UtilsRepo.registerModel(SPECIALLY_MODEL, _SpecialtyModel);
 
 module.exports = UtilsRepo;

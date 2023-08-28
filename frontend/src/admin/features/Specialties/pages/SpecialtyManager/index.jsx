@@ -1,29 +1,19 @@
+/* eslint-disable */
 import { specialtiesApi } from 'admin/api';
 import { Container } from 'admin/components';
-import { useAsyncLocation, useCurrentIndex, useToggle } from 'admin/hooks';
-import { compose } from 'admin/utilities';
+import { useAsyncLocation, useCurrentIndex, useFetchSpecialties, useFetchSpecialty } from 'admin/hooks';
 import { useAuth } from 'hooks';
-import { useIntl } from 'react-intl';
 
 export function SpecialtyManager() {
-	const { languageId } = useAuth();
+	/* 	const { languageId } = useAuth();
 	const { currentIndexRef: doctorIndexRef, setCurrentIndex: updateDoctorIndex } = useCurrentIndex();
-	const intl = useIntl();
+ */
 
-	const {
-		data: Specialties,
-		setData: setSpecialties,
-		queryParams,
-		totalPages,
-		handleOnChangeSort,
-		handleOnChangeSearch,
-		handleOnPageChange,
-		handleOnSelect,
-	} = useAsyncLocation({
-		getData: specialtiesApi.queryAdminByParams,
-	});
+	const Specialties = useFetchSpecialties();
 
-	const [statusProfileModal, toggleProfileModal] = useToggle();
+	console.log(Specialties);
+
+	/* 	const [statusProfileModal, toggleProfileModal] = useToggle();
 	const [statusCreateDoctorModal, toggleCreateDoctorModal] = useToggle();
 	const [statusConfirmDeletionModal, toggleConfirmDeletionModal] = useToggle();
 	const [statusExportModal, toggleExportModal] = useToggle();
@@ -31,7 +21,7 @@ export function SpecialtyManager() {
 
 	const handleOpenProfileModal = compose(updateDoctorIndex, toggleProfileModal);
 
-	const handleOpenConfirmDeletionModal = compose(updateDoctorIndex, toggleConfirmDeletionModal);
+	const handleOpenConfirmDeletionModal = compose(updateDoctorIndex, toggleConfirmDeletionModal); */
 
 	return (
 		<Container id='page-main'>

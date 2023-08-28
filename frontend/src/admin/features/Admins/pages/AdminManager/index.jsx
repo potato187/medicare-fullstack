@@ -18,7 +18,7 @@ import {
 } from 'admin/components';
 
 import { adminApi } from 'admin/api';
-import { useAdminRoles, useAsyncLocation, useCurrentIndex, useGenders, useToggle } from 'admin/hooks';
+import { useFetchAdminRoles, useAsyncLocation, useCurrentIndex, useFetchGenders, useToggle } from 'admin/hooks';
 import { compose, tryCatch } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import { AdminCreateModal, AdminEditModal } from '../../components';
@@ -41,8 +41,8 @@ export function AdminManager() {
 	});
 
 	const { page = 1, pagesize = 25 } = queryParams;
-	const Genders = useGenders(languageId);
-	const AdminRoles = useAdminRoles(languageId);
+	const Genders = useFetchGenders(languageId);
+	const AdminRoles = useFetchAdminRoles(languageId);
 
 	const [statusCreateModal, toggleCreateModal] = useToggle();
 	const [statusProfileModal, toggleProfile] = useToggle();

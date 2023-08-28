@@ -9,7 +9,7 @@ import { createURL } from '../utilities';
 
 export const useAsyncLocation = ({
 	getData = () => {
-		return null;
+		return [];
 	},
 }) => {
 	const { pathname: locationPathName, search: locationSearch } = useLocation();

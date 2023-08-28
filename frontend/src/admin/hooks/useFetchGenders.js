@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { tryCatch } from 'admin/utilities';
 import { resourceApi } from '../api';
 
-export const useGenders = (languageId = 'en') => {
+export const useFetchGenders = (languageId = 'en') => {
 	const [genders, setGenders] = useState([]);
 
 	const Genders = useMemo(() => {
@@ -13,7 +13,10 @@ export const useGenders = (languageId = 'en') => {
 
 	useEffect(() => {
 		tryCatch(async () => {
-			const { metadata } = await resourceApi.getAllGender();
+			const { metadata } = await resourceApi.getAll('gender', {
+				sort: [['gender_key', 'asc']],
+				select: ['gender_name', 'gender_key'],
+			});
 			setGenders(metadata);
 		})();
 	}, []);
