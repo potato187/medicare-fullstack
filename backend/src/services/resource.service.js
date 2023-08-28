@@ -1,8 +1,6 @@
 'use strict';
-const { MONGODB_EXCLUDE_FIELDS } = require('@/constant');
-const { insertMany } = require('@/models/keyToken.model');
 const { UtilsRepo } = require('@/models/repository');
-const { createUnSelectData, createSortData, createSelectData } = require('@/utils');
+const { createSortData, createSelectData } = require('@/utils');
 
 class ResourceService {
 	static async getAll({ model, sort, select }) {
