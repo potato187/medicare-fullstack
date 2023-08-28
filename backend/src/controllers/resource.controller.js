@@ -1,6 +1,5 @@
 'use strict';
 const { OkResponse } = require('@/core');
-const { GENDER_MODEL, ROLE_MODEL, SPECIALLY_MODEL } = require('@/models/repository/constant');
 const { ResourceService } = require('@/services');
 
 class ResourceClass {
@@ -10,7 +9,6 @@ class ResourceClass {
 				model: req.params.model,
 				...req.query,
 			}),
-<<<<<<< HEAD
 		}).send(res);
 	}
 
@@ -20,8 +18,6 @@ class ResourceClass {
 				model: req.params.model,
 				data: req.body,
 			}),
-=======
->>>>>>> 0b42fde (Refactoring backend  resource feature)
 		}).send(res);
 	}
 }
