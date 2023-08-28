@@ -7,13 +7,13 @@ export const useFetchSpecialties = (languageId = 'en') => {
 
 	const Specialties = useMemo(() => {
 		return specialties.map(({ name, _id }) => {
-			return { label: name[languageId], value: _id };
+			return { label: name[languageId], value: _id, count: 0 };
 		});
 	}, [specialties, languageId]);
 
 	useEffect(() => {
 		tryCatch(async () => {
-			const { metadata } = await resourceApi.getAll('specialty', { sort: [['key', 'asc']], select: ['_id', 'name'] });
+			const { metadata } = await resourceApi.getAll('specialty', { select: ['_id', 'name'] });
 			setSpecialties(metadata);
 		})();
 	}, []);

@@ -3,7 +3,7 @@ const { authMiddleware } = require('@/auth');
 const { ResourceController } = require('@/controllers');
 const { tryCatch, handlerValidateRequest } = require('@/middleware');
 const express = require('express');
-const { modelSchema, querySchema } = require('./schema');
+const { modelSchema, querySchema, postSchema } = require('./schema');
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
@@ -14,6 +14,13 @@ router.get(
 	handlerValidateRequest(modelSchema, 'params'),
 	handlerValidateRequest(querySchema, 'query'),
 	tryCatch(ResourceController.getAll),
+);
+
+router.post(
+	'/:model',
+	handlerValidateRequest(modelSchema, 'params'),
+	handlerValidateRequest(postSchema),
+	tryCatch(ResourceController.insertMany),
 );
 
 module.exports = router;

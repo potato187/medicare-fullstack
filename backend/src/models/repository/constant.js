@@ -5,4 +5,6 @@ module.exports = {
 	KEY_TOKEN_MODEL: 'keyToken',
 	ROLE_MODEL: 'role',
 	SPECIALLY_MODEL: 'specialty',
+	POSITION_MODEL: 'position',
+	WORKING_HOUR_MODEL: 'workingHour',
 };

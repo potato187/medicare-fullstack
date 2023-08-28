@@ -1,48 +1,52 @@
 'use strict';
-const { Schema, model } = require('mongoose');
+const { GENDERS, BOOKING_STATUS } = require('@/constant');
+const { Schema, model, Types } = require('mongoose');
 
 const DOCUMENT_NAME = 'Doctor';
 const doctorSchema = new Schema(
 	{
 		firstName: {
 			type: String,
-			require: true,
+			required: true,
 		},
 		lastName: {
 			type: String,
-			require: true,
+			required: true,
 		},
 		gender: {
 			type: String,
-			require: true,
-			enum: ['GF', 'GM', 'GO'],
+			required: true,
+			enum: GENDERS,
 		},
 		email: {
 			type: String,
 			required: true,
+			unique: true,
 		},
 		phone: {
 			type: String,
 			required: true,
+			unique: true,
 		},
 		address: String,
-		specialization: {
-			type: String,
+		specialtyId: {
+			type: Types.ObjectId,
+			ref: 'Specialty',
 			required: true,
 		},
 		qualificationId: {
-			type: String,
+			type: Types.ObjectId,
+			ref: 'Quantification',
 			required: true,
 		},
 		appointments: [
 			{
-				date: Date,
-				patient: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'Patient',
-				},
+				bookingId: Types.ObjectId,
+				ref: 'booking',
+				required: true,
 			},
 		],
+		default: [],
 	},
 	{
 		timestamps: true,

@@ -1,18 +1,22 @@
 'use strict';
 const _AdminModel = require('../admin.model');
-const _SpecialtyModel = require('../specialty.model');
-const _KeyTokenModel = require('../keyToken.model');
 const _GenderModel = require('../gender.model');
+const _KeyTokenModel = require('../keyToken.model');
+const _PositionModel = require('../position.model');
 const _RoleModel = require('../role.model');
+const _SpecialtyModel = require('../specialty.model');
+const _WorkingHourModel = require('../workingHour.model');
+const { convertToObjectIdMongodb, removeFalsyProperties, flattenObject, getInfoData } = require('@/utils');
+const { ForbiddenRequestError } = require('@/core');
 const {
-	createSelectData,
-	convertToObjectIdMongodb,
-	removeFalsyProperties,
-	flattenObject,
-	getInfoData,
-} = require('@/utils');
-const { ForbiddenRequestError, BadRequestError } = require('@/core');
-const { ADMIN_MODEL, KEY_TOKEN_MODEL, SPECIALLY_MODEL, GENDER_MODEL, ROLE_MODEL } = require('./constant');
+	ADMIN_MODEL,
+	KEY_TOKEN_MODEL,
+	SPECIALLY_MODEL,
+	GENDER_MODEL,
+	ROLE_MODEL,
+	POSITION_MODEL,
+	WORKING_HOUR_MODEL,
+} = require('./constant');
 
 class UtilsRepo {
 	static modelsRegister = {};
@@ -61,13 +65,19 @@ class UtilsRepo {
 		const _Model = UtilsRepo.getModel(model);
 		return await _Model.find(query).sort(sort).select(select).lean().exec();
 	}
+
+	static async insertMany({ model, dataArray = [] }) {
+		const _Model = UtilsRepo.getModel(model);
+		return await _Model.create(dataArray);
+	}
 }
 
 UtilsRepo.registerModel(ADMIN_MODEL, _AdminModel);
 UtilsRepo.registerModel(GENDER_MODEL, _GenderModel);
 UtilsRepo.registerModel(KEY_TOKEN_MODEL, _KeyTokenModel);
-UtilsRepo.registerModel(ROLE_MODEL, _RoleModel);
+UtilsRepo.registerModel(POSITION_MODEL, _PositionModel);
 UtilsRepo.registerModel(ROLE_MODEL, _RoleModel);
 UtilsRepo.registerModel(SPECIALLY_MODEL, _SpecialtyModel);
+UtilsRepo.registerModel(WORKING_HOUR_MODEL, _WorkingHourModel);
 
 module.exports = UtilsRepo;

@@ -1,9 +1,9 @@
 'use strict';
 const { Schema, model } = require('mongoose');
 
-const DOCUMENT_NAME = 'Gender';
+const DOCUMENT_NAME = 'Position';
 
-const genderSchema = new Schema(
+const positionSchema = new Schema(
 	{
 		key: {
 			type: String,
@@ -26,4 +26,4 @@ const genderSchema = new Schema(
 	},
 );
 
-module.exports = model(DOCUMENT_NAME, genderSchema);
+module.exports = model(DOCUMENT_NAME, positionSchema);

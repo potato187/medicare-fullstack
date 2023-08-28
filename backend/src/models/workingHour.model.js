@@ -5,10 +5,20 @@ const DOCUMENT_NAME = 'WorkingHour';
 
 const workingHourSchema = new Schema(
 	{
-		wh_key: String,
-		wh_name: {
-			vi: String,
-			en: String,
+		key: {
+			type: String,
+			unique: true,
+			required: true,
+		},
+		name: {
+			vi: {
+				type: String,
+				required: true,
+			},
+			en: {
+				type: String,
+				required: true,
+			},
 		},
 	},
 	{

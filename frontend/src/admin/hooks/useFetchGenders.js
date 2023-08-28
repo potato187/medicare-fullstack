@@ -6,17 +6,14 @@ export const useFetchGenders = (languageId = 'en') => {
 	const [genders, setGenders] = useState([]);
 
 	const Genders = useMemo(() => {
-		return genders.map(({ gender_key, gender_name }) => {
-			return { label: gender_name[languageId], value: gender_key };
+		return genders.map(({ key, name }) => {
+			return { label: name[languageId], value: key };
 		});
 	}, [genders, languageId]);
 
 	useEffect(() => {
 		tryCatch(async () => {
-			const { metadata } = await resourceApi.getAll('gender', {
-				sort: [['gender_key', 'asc']],
-				select: ['gender_name', 'gender_key'],
-			});
+			const { metadata } = await resourceApi.getAll('gender');
 			setGenders(metadata);
 		})();
 	}, []);

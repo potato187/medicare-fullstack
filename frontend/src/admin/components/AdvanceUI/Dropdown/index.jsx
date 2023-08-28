@@ -1,5 +1,6 @@
 import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
 import cn from 'classnames';
+import React from 'react';
 import { RxCaretDown } from 'react-icons/rx';
 
 export function Dropdown({
@@ -33,19 +34,20 @@ export function Dropdown({
 				<DropdownBody className='dropdown__list'>
 					<ul>
 						{options.map((item) => (
-							<DropdownItem
-								type='li'
-								key={item.name}
-								className={cn({
-									active: item.value === option.value,
-									'show-counter': showCounter,
-									disabled: showCounter && item.count === 0,
-								})}
-								customOnClick={() => onSelect({ key: name, value: item.value })}
-							>
-								<span>{item.label}</span>
-								{showCounter ? <span>({item.count || 0})</span> : null}
-							</DropdownItem>
+							<React.Fragment key={item.value}>
+								<DropdownItem
+									type='li'
+									className={cn({
+										active: item.value === option.value,
+										'show-counter': showCounter,
+										disabled: showCounter && item.count === 0,
+									})}
+									customOnClick={() => onSelect({ key: name, value: item.value })}
+								>
+									<span>{item.label}</span>
+									{showCounter ? <span>({item.count || 0})</span> : null}
+								</DropdownItem>
+							</React.Fragment>
 						))}
 					</ul>
 				</DropdownBody>

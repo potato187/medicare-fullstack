@@ -12,6 +12,15 @@ class ResourceClass {
 			}),
 		}).send(res);
 	}
+
+	async insertMany(req, res, next) {
+		new OkResponse({
+			metadata: await ResourceService.insertMany({
+				model: req.params.model,
+				data: req.body,
+			}),
+		}).send(res);
+	}
 }
 
 module.exports = new ResourceClass();
