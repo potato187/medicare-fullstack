@@ -1,5 +1,5 @@
 'use strict';
-const { OkResponse } = require('@/core');
+const { OkResponse, CreatedResponse } = require('@/core');
 const { ResourceService } = require('@/services');
 
 class ResourceClass {
@@ -13,7 +13,7 @@ class ResourceClass {
 	}
 
 	async insertMany(req, res, next) {
-		new OkResponse({
+		new CreatedResponse({
 			metadata: await ResourceService.insertMany({
 				model: req.params.model,
 				data: req.body,

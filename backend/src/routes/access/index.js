@@ -3,7 +3,7 @@ const { authMiddleware } = require('@/auth');
 const { AccessController } = require('@/controllers');
 const { handlerValidateRequest, tryCatch } = require('@/middleware');
 const express = require('express');
-const { signUpSchema, loginSchema } = require('./schema.validation');
+const { signUpSchema, loginSchema } = require('./schema');
 
 const router = express.Router();
 

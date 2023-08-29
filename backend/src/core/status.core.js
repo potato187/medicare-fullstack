@@ -10,6 +10,10 @@ const codeReason = {
 		vi: 'Ok!',
 		en: 'Ok!',
 	},
+	100201: {
+		vi: 'Created!',
+		en: 'Created!',
+	},
 	101400: {
 		vi: '',
 		en: 'Invalid Email',
@@ -95,6 +99,16 @@ const codeReason = {
 	400409: {
 		vi: 'Chuyên ngành đã tồn tại.',
 		en: 'Specialty already exists.',
+	},
+
+	/*  Doctor error codes 50xxxx */
+	500404: {
+		vi: 'Bác sĩ không tồn tại.',
+		en: 'Doctor does not exist.',
+	},
+	500409: {
+		vi: 'Bác sĩ đã tồn tại.',
+		en: 'Doctor already exists.',
 	},
 };
 

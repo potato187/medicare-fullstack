@@ -3,7 +3,7 @@ const { generateToken, getInfoData, convertToObjectIdMongodb } = require('@/util
 const { KeyTokenRepo, UtilsRepo } = require('@/models/repository');
 const { UnauthorizedRequestError, ConflictRequestError } = require('@/core');
 const { AdminBuilder } = require('./builder');
-const TokenBuilder = require('./builder/tokens.builder');
+const TokenBuilder = require('./builder/_tokens.builder');
 const { ADMIN_MODEL, KEY_TOKEN_MODEL } = require('@/models/repository/constant');
 const { authUtils } = require('@/auth');
 

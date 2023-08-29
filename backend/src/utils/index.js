@@ -4,24 +4,23 @@ const crypto = require('node:crypto');
 const _ = require('lodash');
 const slugify = require('slugify');
 
-const getInfoData = ({ fields = [], object = {} }) => {
-	return _.pick(object, fields);
-};
-
-const typeOf = (value) => {
-	return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-};
-
-const generateToken = (length = 64, format = 'hex') => {
-	return crypto.randomBytes(length).toString(format);
-};
-
 const convertToObjectIdMongodb = (id) => {
 	return new Types.ObjectId(id);
 };
 
+const createSearchData = (fields = [], key_search, regexOptions = 'i') => {
+	const searchRegex = new RegExp(key_search, regexOptions);
+	return fields.map((field) => {
+		return { [field]: { $regex: searchRegex } };
+	});
+};
+
 const createSelectData = (select) => {
 	return Object.fromEntries(select.map((key) => [key, 1]));
+};
+
+const createSlug = (string, options = { lower: true }) => {
+	return slugify(string, options);
 };
 
 const createSortData = (sort = []) => {
@@ -34,30 +33,6 @@ const createSortData = (sort = []) => {
 
 const createUnSelectData = (select = ['_id', '__v', 'createdAt', 'updatedAt']) => {
 	return Object.fromEntries(select.map((key) => [key, 0]));
-};
-
-const createSearchData = (fields = [], key_search, regexOptions = 'i') => {
-	const searchRegex = new RegExp(key_search, regexOptions);
-	return fields.map((field) => {
-		return { [field]: { $regex: searchRegex } };
-	});
-};
-
-const removeFalsyProperties = (falsyMap = ['undefined', 'null']) => {
-	return function fn(object) {
-		return Object.entries(object).reduce((obj, [key, value]) => {
-			const type = typeOf(value);
-			if (type !== 'object' && !falsyMap.includes(type)) {
-				obj[key] = value;
-			}
-
-			if (type === 'object') {
-				obj[key] = fn(value);
-			}
-
-			return obj;
-		}, {});
-	};
 };
 
 const flattenObject = (object = null, prefix = '') => {
@@ -80,8 +55,38 @@ const flattenObject = (object = null, prefix = '') => {
 	}, {});
 };
 
-const createSlug = (string, options = { lower: true }) => {
-	return slugify(string, options);
+const generateToken = (length = 64, format = 'hex') => {
+	return crypto.randomBytes(length).toString(format);
+};
+
+const getInfoData = ({ fields = [], object = {} }) => {
+	return _.pick(object, fields);
+};
+
+const isEmpty = (value) => {
+	const type = typeOf(value);
+	return type !== 'null' && type !== 'undefined';
+};
+
+const removeFalsyProperties = (falsyMap = ['undefined', 'null']) => {
+	return function fn(object) {
+		return Object.entries(object).reduce((obj, [key, value]) => {
+			const type = typeOf(value);
+			if (type !== 'object' && !falsyMap.includes(type)) {
+				obj[key] = value;
+			}
+
+			if (type === 'object') {
+				obj[key] = fn(value);
+			}
+
+			return obj;
+		}, {});
+	};
+};
+
+const typeOf = (value) => {
+	return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
 };
 
 module.exports = {
@@ -94,6 +99,7 @@ module.exports = {
 	flattenObject,
 	generateToken,
 	getInfoData,
+	isEmpty,
 	removeFalsyProperties,
 	typeOf,
 };

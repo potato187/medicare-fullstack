@@ -11,14 +11,12 @@ class AdminController {
 
 	updateAdminById = async (req, res, next) => {
 		new OkResponse({
-			code: 300200,
 			metadata: await AdminService.updateAdminById({ id: req.params.id, updateBody: req.body }),
 		}).send(res);
 	};
 
 	deleteAdminById = async (req, res, next) => {
 		new OkResponse({
-			code: 301204,
 			metadata: await AdminService.deleteAdminById(req.params.id),
 		}).send(res);
 	};

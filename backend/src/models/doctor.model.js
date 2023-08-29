@@ -1,5 +1,5 @@
 'use strict';
-const { GENDERS, BOOKING_STATUS } = require('@/constant');
+const { GENDERS, STATUS } = require('@/constant');
 const { Schema, model, Types } = require('mongoose');
 
 const DOCUMENT_NAME = 'Doctor';
@@ -34,19 +34,25 @@ const doctorSchema = new Schema(
 			ref: 'Specialty',
 			required: true,
 		},
-		qualificationId: {
+		positionId: {
 			type: Types.ObjectId,
 			ref: 'Quantification',
 			required: true,
 		},
-		appointments: [
-			{
-				bookingId: Types.ObjectId,
-				ref: 'booking',
-				required: true,
-			},
-		],
-		default: [],
+		appointments: {
+			type: Array,
+			required: true,
+			default: [],
+		},
+		isDeleted: {
+			type: Boolean,
+			default: false,
+		},
+		isActive: {
+			type: String,
+			enum: STATUS,
+			default: 'active',
+		},
 	},
 	{
 		timestamps: true,

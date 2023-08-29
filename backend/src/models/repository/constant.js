@@ -6,4 +6,5 @@ module.exports = {
 	SPECIALLY_MODEL: 'specialty',
 	POSITION_MODEL: 'position',
 	WORKING_HOUR_MODEL: 'workingHour',
+	DOCTOR_MODEL: 'doctor',
 };

@@ -1,3 +1,174 @@
 'use strict';
+const { _DoctorModel } = require('@/models');
+const { ConflictRequestError, NotFoundRequestError } = require('@/core');
+const { DOCTOR_MODEL } = require('@/models/repository/constant');
+const { DoctorBuilder } = require('./builder');
+const {
+	getInfoData,
+	convertToObjectIdMongodb,
+	createSortData,
+	createSearchData,
+	createSelectData,
+} = require('@/utils');
+const { UtilsRepo } = require('@/models/repository');
 
-class DoctorService {}
+const FIELDS_ABLE_SEARCH = ['firstName', 'lastName', 'email', 'phone', 'address'];
+
+class DoctorService {
+	static async findByFilter(filter) {
+		const doctor = await UtilsRepo.findOne({
+			model: DOCTOR_MODEL,
+			filter,
+		});
+		return doctor !== null;
+	}
+
+	static async checkIsExist(filter) {
+		const doctor = await DoctorService.findByFilter(filter);
+		if (!doctor) {
+			throw new NotFoundRequestError({ code: 500404 });
+		}
+		return true;
+	}
+
+	static async checkIsConflict(filter) {
+		const doctor = await DoctorService.findByFilter(filter);
+		if (doctor) {
+			throw new ConflictRequestError({ code: 500409 });
+		}
+		return true;
+	}
+
+	static async updateOne() {}
+
+	static async createOne(body) {
+		const { firstName, lastName, gender, address, email, phone, specialtyId, positionId } = body;
+		const doctorBuilder = new DoctorBuilder()
+			.setFirstName(firstName)
+			.setLastName(lastName)
+			.setGender(gender)
+			.setAddress(address)
+			.setEmail(email)
+			.setPhone(phone)
+			.setSpecialtyId(specialtyId)
+			.setPositionId(positionId);
+
+		await DoctorService.checkIsConflict({
+			$or: [{ email: doctorBuilder.data.email }, { phone: doctorBuilder.data.phone }],
+		});
+
+		const newDoctor = await UtilsRepo.createOne({
+			model: DOCTOR_MODEL,
+			body: doctorBuilder.build(),
+		});
+
+		return getInfoData({
+			fields: doctorBuilder.getKeys(),
+			object: newDoctor,
+		});
+	}
+
+	static async insertMany(uploadBody) {
+		const doctorsStatus = uploadBody.map((item, index) => ({
+			index,
+			email: item.email,
+			status: 'resolve',
+		}));
+
+		try {
+			await _DoctorModel.insertMany(uploadBody, { ordered: false, lean: true });
+		} catch (error) {
+			error.writeErrors.forEach((err) => {
+				doctorsStatus[err.index].status = 'reject';
+			});
+		}
+
+		return {
+			doctorsStatus,
+		};
+	}
+
+	static async updateOne({ doctorId, updateBody }) {
+		const filter = { _id: convertToObjectIdMongodb(doctorId) };
+
+		await DoctorService.checkIsExist(filter);
+
+		return await UtilsRepo.findOneAndUpdate({
+			model: DOCTOR_MODEL,
+			filter,
+			updateBody,
+			select: Object.keys(updateBody),
+		});
+	}
+
+	static async deleteOne({ doctorId }) {
+		return await DoctorService.updateOne({
+			doctorId,
+			updateBody: { isDeleted: true },
+		});
+	}
+
+	static async queryByParameters({
+		specialtyId = '',
+		positionId = '',
+		keySearch = '',
+		sort = { updateAt: 'asc' },
+		page = 1,
+		pagesize = 25,
+		select = [],
+	}) {
+		const filter = { isDeleted: false, isActive: 'active' };
+		const _page = Math.max(1, +page);
+		const _limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
+		const _skip = (_page - 1) * _limit;
+		let _sort = createSortData(sort);
+
+		if (specialtyId) {
+			filter.specialtyId = convertToObjectIdMongodb(specialtyId);
+		}
+
+		if (positionId) {
+			filter.positionId = convertToObjectIdMongodb(positionId);
+		}
+
+		if (keySearch) {
+			filter.$or = createSearchData(FIELDS_ABLE_SEARCH, key_search);
+		}
+
+		const [{ results, total }] = await _DoctorModel
+			.aggregate()
+			.match(filter)
+			.facet({
+				results: [
+					{ $sort: _sort },
+					{ $skip: _skip },
+					{ $limit: _limit },
+					{
+						$project: createSelectData(select),
+					},
+				],
+				totalCount: [{ $count: 'count' }],
+			})
+			.addFields({
+				total: {
+					$ifNull: [{ $arrayElemAt: ['$totalCount.count', 0] }, 0],
+				},
+			})
+			.project({
+				results: 1,
+				total: 1,
+			});
+
+		return {
+			data: results,
+			meta: {
+				page: _page,
+				pagesize: _limit,
+				totalPages: Math.ceil(total / _limit) || 1,
+				keySearch,
+			},
+		};
+	}
+}
+
+module.exports = DoctorService;

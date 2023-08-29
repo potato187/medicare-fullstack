@@ -1,6 +1,7 @@
 module.exports = {
 	AccessService: require('./access.service'),
 	AdminService: require('./admin.service'),
+	DoctorService: require('./doctor.service'),
 	KeyTokenService: require('./keyToken.service'),
 	LanguageService: require('./language.service'),
 	ResourceService: require('./resource.service'),

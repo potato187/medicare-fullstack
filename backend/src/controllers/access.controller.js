@@ -6,7 +6,6 @@ const { AccessService } = require('@/services');
 class AccessController {
 	signUp = async (req, res, next) => {
 		new CreatedResponse({
-			code: 200201,
 			metadata: await AccessService.singUp(req.body),
 		}).send(res);
 	};

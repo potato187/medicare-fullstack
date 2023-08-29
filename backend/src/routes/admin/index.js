@@ -3,7 +3,7 @@ const { authMiddleware } = require('@/auth');
 const { AdminController } = require('@/controllers');
 const { tryCatch, handlerValidateRequest, handlerParseParamsToArray } = require('@/middleware');
 const express = require('express');
-const { querySchema, updateSchema, paramsSchema } = require('./schema.validation');
+const { querySchema, updateSchema, paramsSchema } = require('./schema');
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
