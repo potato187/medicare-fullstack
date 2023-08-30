@@ -51,10 +51,10 @@ export function CreateDoctorModal({
 							<TabPanel tabIndex={0}>
 								<div className='row'>
 									<div className='col-4 mb-6'>
-										<FloatingLabelInput name='first_name' labelIntl='form.first_name' />
+										<FloatingLabelInput name='first_name' labelIntl='form.firstName' />
 									</div>
 									<div className='col-4 mb-6'>
-										<FloatingLabelInput name='last_name' labelIntl='form.last_name' />
+										<FloatingLabelInput name='last_name' labelIntl='form.lastName' />
 									</div>
 									<div className='col-4 mb-6'>
 										<FloatingLabelInput name='email' labelIntl='form.email' />

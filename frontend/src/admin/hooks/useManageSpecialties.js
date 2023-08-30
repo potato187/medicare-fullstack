@@ -79,13 +79,17 @@ export const useManageSpecialties = (languageId = 'en') => {
 		setQueryParams({ page: selected + 1 });
 	};
 
-	const handleOnSelect = ({ value }) => {
-		const index = Specialties.findIndex((item) => item.value === value);
-		setSpecialtyIndex(index);
+	const handleOnSelect = ({ key, value }) => {
+		setQueryParams({ [key]: value });
 	};
 
 	const handleOnChangeSearch = (str) => {
 		setQueryParams({ key_search: str });
+	};
+
+	const handleSelectSpecialty = ({ value }) => {
+		const index = Specialties.findIndex((specialty) => specialty.value === value);
+		setSpecialtyIndex(index);
 	};
 
 	useEffect(() => {
@@ -112,5 +116,6 @@ export const useManageSpecialties = (languageId = 'en') => {
 		handleOnPageChange,
 		handleOnChangeSort,
 		handleOnChangeSearch,
+		handleSelectSpecialty,
 	};
 };

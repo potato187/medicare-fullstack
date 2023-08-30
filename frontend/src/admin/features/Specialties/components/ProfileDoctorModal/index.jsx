@@ -1,7 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
 import { doctorApi } from 'admin/api';
 import {
 	BaseModal,
@@ -11,14 +8,15 @@ import {
 	Button,
 	FloatingLabelInput,
 	FloatingLabelSelect,
-	FormInputEditor,
 	TabNav,
 	TabNavItem,
 	TabPanel,
 	Tabs,
 } from 'admin/components';
 import { setDefaultValues, tryCatch } from 'admin/utilities';
-
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import { doctorValidation } from '../../validation';
 
 export function ProfileDoctorModal({
@@ -65,17 +63,17 @@ export function ProfileDoctorModal({
 					<form onSubmit={methods.handleSubmit(onSubmit)}>
 						<Tabs tabIndexActive={0}>
 							<TabNav>
-								<TabNavItem labelIntl='user.profile' index={0} />
-								<TabNavItem labelIntl='user.description.en' index={1} />
-								<TabNavItem labelIntl='user.description.vi' index={2} />
+								<TabNavItem labelIntl='common.profile' index={0} />
+								<TabNavItem labelIntl='common.description_en' index={1} />
+								<TabNavItem labelIntl='common.description_vi' index={2} />
 							</TabNav>
 							<TabPanel tabIndex={0}>
 								<div className='row'>
 									<div className='col-4 mb-6'>
-										<FloatingLabelInput name='first_name' labelIntl='form.first_name' />
+										<FloatingLabelInput name='firstName' labelIntl='form.firstName' />
 									</div>
 									<div className='col-4 mb-6'>
-										<FloatingLabelInput name='last_name' labelIntl='form.last_name' />
+										<FloatingLabelInput name='lastName' labelIntl='form.lastName' />
 									</div>
 									<div className='col-4 mb-6'>
 										<FloatingLabelInput name='email' labelIntl='form.email' />
@@ -96,12 +94,6 @@ export function ProfileDoctorModal({
 										<FloatingLabelSelect name='positionId' labelIntl='common.position' options={positions} />
 									</div>
 								</div>
-							</TabPanel>
-							<TabPanel index={1}>
-								<FormInputEditor name='description.en' />
-							</TabPanel>
-							<TabPanel index={2}>
-								<FormInputEditor name='description.vi' />
 							</TabPanel>
 						</Tabs>
 					</form>

@@ -55,10 +55,10 @@ export function AdminEditModal({
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='firstName' labelIntl='form.first_name' />
+								<FloatingLabelInput name='firstName' labelIntl='form.firstName' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='lastName' labelIntl='form.last_name' />
+								<FloatingLabelInput name='lastName' labelIntl='form.lastName' />
 							</div>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='email' labelIntl='form.email' />

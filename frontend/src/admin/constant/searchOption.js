@@ -5,11 +5,11 @@ export const SEARCH_OPTIONS = [
 	},
 	{
 		value: 'first_name',
-		label: 'form.first_name',
+		label: 'form.firstName',
 	},
 	{
 		value: 'last_name',
-		label: 'form.last_name',
+		label: 'form.lastName',
 	},
 	{
 		value: 'email',

@@ -128,8 +128,8 @@ export function AdminManager() {
 								<th className='text-center'>
 									<FormattedMessage id='table.no' />
 								</th>
-								<SortableTableHeader name='firstName' intl='form.first_name' onChange={handleOnChangeSort} />
-								<SortableTableHeader name='lastName' intl='form.last_name' onChange={handleOnChangeSort} />
+								<SortableTableHeader name='firstName' intl='form.firstName' onChange={handleOnChangeSort} />
+								<SortableTableHeader name='lastName' intl='form.lastName' onChange={handleOnChangeSort} />
 								<SortableTableHeader name='email' intl='form.email' onChange={handleOnChangeSort} />
 								<th className='text-start'>
 									<FormattedMessage id='form.phone' />

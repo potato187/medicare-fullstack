@@ -2,7 +2,7 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { authLogin, authLogout, authRefreshTokens } from './authAction';
 
 const initialState = {
-	user: {
+	info: {
 		id: '',
 		email: '',
 		role: '',
@@ -46,11 +46,11 @@ const authSlice = createSlice({
 				state.status.isLogin = true;
 				state.status.isSuccess = true;
 
-				state.user.id = account._id;
-				state.user.email = account.email;
-				state.user.firstName = account.firstName;
-				state.user.lastName = account.lastName;
-				state.user.role = account.role;
+				state.info.id = account._id;
+				state.info.email = account.email;
+				state.info.firstName = account.firstName;
+				state.info.lastName = account.lastName;
+				state.info.role = account.role;
 
 				state.tokens.accessToken = tokens.accessToken;
 				state.tokens.refreshToken = tokens.refreshToken;
@@ -64,7 +64,7 @@ const authSlice = createSlice({
 			.addMatcher(
 				isAnyOf(authLogout.fulfilled, authLogin.rejected, authLogout.fulfilled, authLogout.rejected),
 				(state) => {
-					state.user = initialState.user;
+					state.info = initialState.info;
 					state.tokens = initialState.tokens;
 					state.status = initialState.status;
 				},

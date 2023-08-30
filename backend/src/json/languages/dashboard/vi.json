@@ -31,7 +31,8 @@
 		"link": "Link",
 		"pages": "Pages",
 		"index": "index",
-		"categories": "Categories"
+		"categories": "Categories",
+		"profile": "Profile"
 	},
 	"table": {
 		"no": "No.",
@@ -63,8 +64,8 @@
 	},
 	"form": {
 		"fullName": "Full Name",
-		"first_name": "First Name",
-		"last_name": "Last Name",
+		"firstName": "First Name",
+		"lastName": "Last Name",
 		"gender": "Gender",
 		"phone": "Phone Number",
 		"address": "Address",

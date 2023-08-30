@@ -147,10 +147,10 @@ export function ImportExcelModal({
 								<TableHeader>
 									<th className='text-center'>No.</th>
 									<th className='text-start'>
-										<FormattedMessage id='form.first_name' />
+										<FormattedMessage id='form.firstName' />
 									</th>
 									<th className='text-start'>
-										<FormattedMessage id='form.last_name' />
+										<FormattedMessage id='form.lastName' />
 									</th>
 									<th className='text-start'>
 										<FormattedMessage id='form.email' />
