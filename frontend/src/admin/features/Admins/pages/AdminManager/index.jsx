@@ -1,8 +1,3 @@
-import produce from 'immer';
-import React from 'react';
-import { MdAdd } from 'react-icons/md';
-import { FormattedMessage } from 'react-intl';
-import { toast } from 'react-toastify';
 import {
 	Button,
 	ConfirmModal,
@@ -16,9 +11,13 @@ import {
 	TableHeader,
 	UnFieldDebounce,
 } from 'admin/components';
+import produce from 'immer';
+import { MdAdd } from 'react-icons/md';
+import { FormattedMessage } from 'react-intl';
+import { toast } from 'react-toastify';
 
 import { adminApi } from 'admin/api';
-import { useFetchAdminRoles, useAsyncLocation, useCurrentIndex, useFetchGenders, useToggle } from 'admin/hooks';
+import { useAsyncLocation, useCurrentIndex, useFetchResource, useToggle } from 'admin/hooks';
 import { compose, tryCatch } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import { AdminCreateModal, AdminEditModal } from '../../components';
@@ -41,8 +40,16 @@ export function AdminManager() {
 	});
 
 	const { page = 1, pagesize = 25 } = queryParams;
-	const Genders = useFetchGenders(languageId);
-	const AdminRoles = useFetchAdminRoles(languageId);
+
+	const Genders = useFetchResource({
+		endpoint: 'gender',
+		languageId,
+	});
+
+	const AdminRoles = useFetchResource({
+		endpoint: 'role',
+		languageId,
+	});
 
 	const [statusCreateModal, toggleCreateModal] = useToggle();
 	const [statusProfileModal, toggleProfile] = useToggle();

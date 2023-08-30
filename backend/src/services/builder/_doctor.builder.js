@@ -1,6 +1,6 @@
 'use strict';
-const { GENDERS, STATUS } = require('@/constant');
-const { typeOf, isEmpty, convertToObjectIdMongodb } = require('@/utils');
+const { GENDERS, STATUS, POSITIONS } = require('@/constant');
+const { convertToObjectIdMongodb } = require('@/utils');
 
 class DoctorBuilder {
 	constructor() {
@@ -12,7 +12,7 @@ class DoctorBuilder {
 			phone: '',
 			address: '',
 			specialtyId: '',
-			positionId: '',
+			position: POSITIONS[0],
 			appointments: [],
 			isDeleted: false,
 			isActive: STATUS[0],
@@ -54,8 +54,8 @@ class DoctorBuilder {
 		return this;
 	}
 
-	setPositionId(positionId) {
-		this.data.positionId = convertToObjectIdMongodb(positionId);
+	setPosition(position) {
+		this.data.position = position;
 		return this;
 	}
 

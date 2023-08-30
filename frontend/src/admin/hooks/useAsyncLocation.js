@@ -7,11 +7,7 @@ import { tryCatch } from 'admin/utilities';
 import { typeOf } from 'utils';
 import { createURL } from '../utilities';
 
-export const useAsyncLocation = ({
-	getData = () => {
-		return [];
-	},
-}) => {
+export const useAsyncLocation = ({ getData = () => [], parameters = {}, deps = [] }) => {
 	const { pathname: locationPathName, search: locationSearch } = useLocation();
 	const navigate = useNavigate();
 	const [data, setData] = useState([]);
@@ -21,6 +17,7 @@ export const useAsyncLocation = ({
 		const { sort, page = 1, pagesize = PAGINATION_NUMBER_DEFAULT, ...params } = queryString.parse(locationSearch);
 
 		return {
+			...parameters,
 			...params,
 			sort: sort || [],
 			page,

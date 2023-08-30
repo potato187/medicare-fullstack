@@ -3,9 +3,9 @@ const { CreatedResponse, OkResponse } = require('@/core');
 const { DoctorService } = require('@/services');
 
 class DoctorController {
-	async queryByParameters(req, res, next) {
+	async queryByParams(req, res, next) {
 		new CreatedResponse({
-			metadata: await DoctorService.queryByParameters(req.query),
+			metadata: await DoctorService.queryByParams(req.query),
 		}).send(res);
 	}
 

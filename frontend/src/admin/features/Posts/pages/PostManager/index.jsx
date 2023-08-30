@@ -201,28 +201,28 @@ export function PostManager() {
 								</th>
 								<SortableTableHeader
 									className='text-start'
-									sortMap={queryParams.sort}
+									sortArray={queryParams.sort}
 									name={localTitle}
 									intl='common.title'
 									onSort={handleOnSort}
 								/>
 								<SortableTableHeader
 									className='text-center'
-									sortMap={queryParams.sort}
+									sortArray={queryParams.sort}
 									name='publicDate'
 									intl='common.public_date'
 									onSort={handleOnSort}
 								/>
 								<SortableTableHeader
 									className='text-center'
-									sortMap={queryParams.sort}
+									sortArray={queryParams.sort}
 									name='createdAt'
 									intl='common.created_at'
 									onSort={handleOnSort}
 								/>
 								<SortableTableHeader
 									className='text-center'
-									sortMap={queryParams.sort}
+									sortArray={queryParams.sort}
 									name='display'
 									intl='form.display'
 									onSort={handleOnSort}

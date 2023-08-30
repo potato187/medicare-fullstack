@@ -9,7 +9,7 @@ const splitArrayQuery = (values) => {
 };
 
 const queryStrategies = {
-	sting: splitStringQuery,
+	string: splitStringQuery,
 	array: splitArrayQuery,
 };
 

@@ -1,4 +1,5 @@
 'use strict';
+const { POSITIONS } = require('@/constant');
 const Joi = require('joi');
 const { Types } = require('mongoose');
 
@@ -30,10 +31,15 @@ const ObjectIdMongodbValidator = Joi.string().custom((value, helper) => {
 });
 
 const nameValidator = Joi.string().trim().min(3).max(50);
+
 const addressValidator = Joi.string().trim().min(3).max(150);
 
 const idSchema = Joi.object({
 	id: ObjectIdMongodbValidator,
+});
+
+const positionValidator = Joi.string().custom((value, helper) => {
+	return POSITIONS.includes(value) ? value : helper.message('107400');
 });
 
 module.exports = {
@@ -46,4 +52,5 @@ module.exports = {
 	ObjectIdMongodbValidator,
 	passwordValidator,
 	phoneValidator,
+	positionValidator,
 };

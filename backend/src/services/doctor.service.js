@@ -51,7 +51,7 @@ class DoctorService {
 			.setEmail(email)
 			.setPhone(phone)
 			.setSpecialtyId(specialtyId)
-			.setPositionId(positionId);
+			.setPosition(positionId);
 
 		await DoctorService.checkIsConflict({
 			$or: [{ email: doctorBuilder.data.email }, { phone: doctorBuilder.data.phone }],
@@ -108,10 +108,10 @@ class DoctorService {
 		});
 	}
 
-	static async queryByParameters({
+	static async queryByParams({
 		specialtyId = '',
 		positionId = '',
-		keySearch = '',
+		key_search = '',
 		sort = { updateAt: 'asc' },
 		page = 1,
 		pagesize = 25,
@@ -119,9 +119,9 @@ class DoctorService {
 	}) {
 		const filter = { isDeleted: false, isActive: 'active' };
 		const _page = Math.max(1, +page);
-		const _limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
-		const _skip = (_page - 1) * _limit;
-		let _sort = createSortData(sort);
+		const $limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
+		const $skip = (_page - 1) * $limit;
+		const $sort = createSortData(sort);
 
 		if (specialtyId) {
 			filter.specialtyId = convertToObjectIdMongodb(specialtyId);
@@ -131,7 +131,7 @@ class DoctorService {
 			filter.positionId = convertToObjectIdMongodb(positionId);
 		}
 
-		if (keySearch) {
+		if (key_search) {
 			filter.$or = createSearchData(FIELDS_ABLE_SEARCH, key_search);
 		}
 
@@ -140,14 +140,17 @@ class DoctorService {
 			.match(filter)
 			.facet({
 				results: [
-					{ $sort: _sort },
-					{ $skip: _skip },
-					{ $limit: _limit },
+					{ $sort },
+					{ $skip },
+					{ $limit },
 					{
 						$project: createSelectData(select),
 					},
 				],
 				totalCount: [{ $count: 'count' }],
+			})
+			.sort({
+				'position.order': 1,
 			})
 			.addFields({
 				total: {
@@ -163,9 +166,9 @@ class DoctorService {
 			data: results,
 			meta: {
 				page: _page,
-				pagesize: _limit,
-				totalPages: Math.ceil(total / _limit) || 1,
-				keySearch,
+				pagesize: $limit,
+				totalPages: Math.ceil(total / $limit) || 1,
+				key_search,
 			},
 		};
 	}

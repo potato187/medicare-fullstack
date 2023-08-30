@@ -117,14 +117,14 @@ export function HtmlContentManager() {
 									<FormattedMessage id='table.no' />
 								</th>
 								<SortableTableHeader
-									sortMap={queryParams.sort}
+									sortArray={queryParams.sort}
 									name={localTitle}
 									intl='common.title'
 									onSort={handleOnSort}
 								/>
 								<SortableTableHeader
 									className='text-center'
-									sortMap={queryParams.sort}
+									sortArray={queryParams.sort}
 									name='index'
 									intl='table.index'
 									onSort={handleOnSort}
@@ -134,7 +134,7 @@ export function HtmlContentManager() {
 								</th>
 								<SortableTableHeader
 									className='text-center'
-									sortMap={queryParams.sort}
+									sortArray={queryParams.sort}
 									name='createdAt'
 									intl='common.created_at'
 									onSort={handleOnSort}
