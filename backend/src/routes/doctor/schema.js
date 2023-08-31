@@ -9,6 +9,11 @@ const {
 } = require('@/validations');
 const Joi = require('joi');
 
+const descriptionValidate = Joi.object({
+	vi: Joi.string().allow(''),
+	en: Joi.string().allow(''),
+});
+
 const doctorFieldValidate = Joi.string().valid(
 	'_id',
 	'firstName',
@@ -35,6 +40,7 @@ const createSchema = Joi.object({
 	phone: phoneValidator,
 	specialtyId: ObjectIdMongodbValidator.required(),
 	position: positionValidator,
+	description: descriptionValidate,
 });
 
 const updateSchema = Joi.object({
@@ -46,6 +52,7 @@ const updateSchema = Joi.object({
 	phone: phoneValidator,
 	specialtyId: ObjectIdMongodbValidator,
 	position: positionValidator,
+	description: descriptionValidate,
 	isActive: Joi.string().valid('active', 'inactive'),
 });
 

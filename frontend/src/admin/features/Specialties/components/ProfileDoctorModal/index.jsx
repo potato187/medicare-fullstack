@@ -42,7 +42,10 @@ export function ProfileDoctorModal({
 	const handleOnSubmit = (data) => {
 		let updateBody = createUpdateBody(methods, data);
 		updateBody = getDifferentValues(defaultValues, updateBody);
-		console.log(updateBody);
+		onSubmit({
+			id: defaultValues._id,
+			updateBody,
+		});
 	};
 
 	useEffect(() => {
@@ -73,7 +76,7 @@ export function ProfileDoctorModal({
 		if (defaultValues._id) {
 			tryCatch(fetchDescription)(defaultValues._id);
 		}
-	}, [defaultValues._id, methods]);
+	}, [isOpen, defaultValues._id, methods]);
 
 	return (
 		<FormProvider {...methods}>

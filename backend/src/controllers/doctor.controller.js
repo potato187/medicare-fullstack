@@ -32,7 +32,7 @@ class DoctorController {
 	async updateOne(req, res, next) {
 		new OkResponse({
 			metadata: await DoctorService.updateOne({
-				doctorId: req.params.id,
+				id: req.params.id,
 				updateBody: req.body,
 			}),
 		}).send(res);

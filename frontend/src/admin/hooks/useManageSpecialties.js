@@ -109,6 +109,7 @@ export const useManageSpecialties = (languageId = 'en') => {
 	return {
 		Specialties,
 		Doctors: doctors,
+		setDoctors,
 		Positions,
 		totalPages,
 		queryParams,

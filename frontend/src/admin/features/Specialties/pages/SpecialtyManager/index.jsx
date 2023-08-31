@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+import { doctorApi } from 'admin/api';
 import {
 	Button,
 	Container,
@@ -16,8 +18,9 @@ import { compose, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import { MdAdd, MdImportExport } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
+import produce from 'immer';
+import { toast } from 'react-toastify';
 import { ProfileDoctorModal } from '../../components';
-import { useMemo } from 'react';
 
 export function SpecialtyManager() {
 	const {
@@ -29,6 +32,7 @@ export function SpecialtyManager() {
 	const {
 		Specialties,
 		Doctors,
+		setDoctors,
 		Positions,
 		queryParams,
 		handleOnSelect,
@@ -50,7 +54,7 @@ export function SpecialtyManager() {
 				return { label: name[languageId], value: key };
 			}),
 	});
-
+	/* eslint-disable */
 	const [statusCreateDoctorModal, toggleCreateDoctorModal] = useToggle();
 	const [statusProfileModal, toggleProfileModal] = useToggle();
 	const [statusConfirmDeletionModal, toggleConfirmDeletionModal] = useToggle();
@@ -60,9 +64,27 @@ export function SpecialtyManager() {
 	const handleOpenProfileModal = compose(setDoctorIndex, toggleProfileModal);
 	const handleOpenConfirmDeletionModal = compose(setDoctorIndex, toggleConfirmDeletionModal);
 
-	const handleUpdateDoctor = tryCatchAndToast(async (data) => {
-		/* 		const { message, metad } = await doctorApi.updateOne(data); */
-		console.log(data);
+	const handleUpdateDoctor = tryCatchAndToast(async ({ id, updateBody }) => {
+		if (Object.keys(updateBody).length) {
+			const { message, metadata } = await doctorApi.updateOne({
+				id,
+				updateBody,
+			});
+
+			setDoctors(
+				produce((draft) => {
+					Object.keys(metadata).forEach((key) => {
+						if (key !== '_id' && key !== 'description') {
+							draft[doctorIndexRef.current][key] = metadata[key];
+						}
+					});
+				}),
+			);
+
+			toast.success(message[languageId]);
+		}
+
+		toggleProfileModal();
 	}, languageId);
 
 	return (

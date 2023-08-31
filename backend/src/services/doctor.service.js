@@ -86,8 +86,8 @@ class DoctorService {
 		};
 	}
 
-	static async updateOne({ doctorId, updateBody }) {
-		const filter = { _id: convertToObjectIdMongodb(doctorId) };
+	static async updateOne({ id, updateBody }) {
+		const filter = { _id: convertToObjectIdMongodb(id) };
 
 		await DoctorService.checkIsExist(filter);
 

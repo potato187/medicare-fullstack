@@ -130,11 +130,9 @@ export const tryCatch = (callback, finallyCallback = null) => {
 };
 
 export const createUpdateBody = (methods, data) => {
-	const { dirtyFields, touchedFields } = methods.formState;
+	const { dirtyFields } = methods.formState;
 	const updateBody = Object.keys(dirtyFields).reduce((hash, key) => {
-		if (touchedFields[key]) {
-			hash[key] = data[key];
-		}
+		hash[key] = data[key];
 		return hash;
 	}, {});
 

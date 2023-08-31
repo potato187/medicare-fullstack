@@ -12,6 +12,6 @@ export const doctorApi = {
 	},
 
 	async updateOne({ id, updateBody }) {
-		return await axiosClient.put(`${DOCTOR_PATH}/${id}`, { updateBody });
+		return await axiosClient.patch(`${DOCTOR_PATH}/${id}`, { ...updateBody });
 	},
 };
