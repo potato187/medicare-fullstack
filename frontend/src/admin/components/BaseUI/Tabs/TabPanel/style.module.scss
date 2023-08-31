@@ -1,7 +1,11 @@
 .tab-panel {
 	display: none;
+	pointer-events: none;
+	user-select: none;
 
 	&.active {
 		display: block;
+		pointer-events: auto;
+		user-select: auto;
 	}
 }

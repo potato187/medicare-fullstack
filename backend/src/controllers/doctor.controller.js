@@ -8,6 +8,14 @@ class DoctorController {
 			metadata: await DoctorService.queryByParams(req.query),
 		}).send(res);
 	}
+	async getOne(req, res, next) {
+		new CreatedResponse({
+			metadata: await DoctorService.getOne({
+				doctorId: req.params.id,
+				select: req.query.select,
+			}),
+		}).send(res);
+	}
 
 	async createOne(req, res, next) {
 		new CreatedResponse({

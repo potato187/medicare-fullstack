@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { doctorApi } from 'admin/api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -8,15 +7,17 @@ import {
 	Button,
 	FloatingLabelInput,
 	FloatingLabelSelect,
+	FormInputEditor,
 	TabNav,
 	TabNavItem,
 	TabPanel,
 	Tabs,
 } from 'admin/components';
-import { setDefaultValues, tryCatch } from 'admin/utilities';
+import { createUpdateBody, getDifferentValues, setDefaultValues, tryCatch } from 'admin/utilities';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
+import { doctorApi } from 'admin/api';
 import { doctorValidation } from '../../validation';
 
 export function ProfileDoctorModal({
@@ -38,36 +39,55 @@ export function ProfileDoctorModal({
 		onClose();
 	};
 
+	const handleOnSubmit = (data) => {
+		let updateBody = createUpdateBody(methods, data);
+		updateBody = getDifferentValues(defaultValues, updateBody);
+		console.log(updateBody);
+	};
+
 	useEffect(() => {
 		setDefaultValues(methods, defaultValues);
 	}, [defaultValues, methods]);
 
 	useEffect(() => {
 		const fetchDescription = async (id) => {
-			const { data } = await doctorApi.getDoctorDescription(id);
-			Object.entries(data).forEach(([key, value]) => {
-				methods.setValue(`description.${key.trim()}`, value);
+			const {
+				metadata: { description },
+			} = await doctorApi.getOne({
+				id,
+				params: {
+					select: ['description'],
+				},
 			});
+
+			if (description) {
+				Object.keys(description).forEach((key) => {
+					methods.setValue(`description.${key}`, description[key], {
+						shouldDirty: false,
+						shouldTouch: false,
+					});
+				});
+			}
 		};
 
-		if (defaultValues.id) {
-			tryCatch(fetchDescription)(defaultValues.id);
+		if (defaultValues._id) {
+			tryCatch(fetchDescription)(defaultValues._id);
 		}
-	}, [defaultValues.id, methods]);
+	}, [defaultValues._id, methods]);
 
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='lg' isOpen={isOpen} onClose={handleOnClose}>
 				<BaseModalHeader idIntl='dashboard.specialty.modal.update_doctor.title' onClose={handleOnClose} />
 				<BaseModalBody>
-					<form onSubmit={methods.handleSubmit(onSubmit)}>
+					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<Tabs tabIndexActive={0}>
 							<TabNav>
 								<TabNavItem labelIntl='common.profile' index={0} />
 								<TabNavItem labelIntl='common.description_en' index={1} />
 								<TabNavItem labelIntl='common.description_vi' index={2} />
 							</TabNav>
-							<TabPanel tabIndex={0}>
+							<TabPanel tabPanelIndex={0}>
 								<div className='row'>
 									<div className='col-4 mb-6'>
 										<FloatingLabelInput name='firstName' labelIntl='form.firstName' />
@@ -85,15 +105,21 @@ export function ProfileDoctorModal({
 										<FloatingLabelInput name='address' labelIntl='form.address' />
 									</div>
 									<div className='col-4 mb-6 z-index-2'>
-										<FloatingLabelSelect name='genderId' labelIntl='common.gender' options={genders} />
+										<FloatingLabelSelect name='gender' labelIntl='common.gender' options={genders} />
 									</div>
 									<div className='col-4 mb-6 z-index-2'>
 										<FloatingLabelSelect name='specialtyId' labelIntl='common.specialty' options={specialties} />
 									</div>
 									<div className='col-4 mb-6'>
-										<FloatingLabelSelect name='positionId' labelIntl='common.position' options={positions} />
+										<FloatingLabelSelect name='position' labelIntl='common.position' options={positions} />
 									</div>
 								</div>
+							</TabPanel>
+							<TabPanel tabPanelIndex={1}>
+								<FormInputEditor name='description.en' />
+							</TabPanel>
+							<TabPanel tabPanelIndex={2}>
+								<FormInputEditor name='description.vi' />
 							</TabPanel>
 						</Tabs>
 					</form>
@@ -102,13 +128,7 @@ export function ProfileDoctorModal({
 					<Button size='sm' type='button' secondary onClick={handleOnClose}>
 						<FormattedMessage id='button.cancel' />
 					</Button>
-					<Button
-						isLoading={methods.formState.isSubmitting}
-						size='sm'
-						type='submit'
-						info
-						onClick={methods.handleSubmit(onSubmit)}
-					>
+					<Button size='sm' type='submit' info onClick={methods.handleSubmit(handleOnSubmit)}>
 						<FormattedMessage id='button.update' />
 					</Button>
 				</BaseModalFooter>

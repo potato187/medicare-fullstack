@@ -9,6 +9,23 @@ const {
 } = require('@/validations');
 const Joi = require('joi');
 
+const doctorFieldValidate = Joi.string().valid(
+	'_id',
+	'firstName',
+	'lastName',
+	'email',
+	'phone',
+	'description',
+	'gender',
+	'position',
+	'address',
+	'specialtyId',
+);
+
+const selectValidate = Joi.alternatives()
+	.try(doctorFieldValidate, Joi.array().items(doctorFieldValidate))
+	.default(['_id', 'firstName', 'lastName', 'email', 'phone', 'specialtyId', 'position', 'gender', 'address']);
+
 const createSchema = Joi.object({
 	firstName: nameValidator.required(),
 	lastName: nameValidator.required(),
@@ -35,8 +52,7 @@ const updateSchema = Joi.object({
 const importSchema = Joi.array().items(createSchema).min(1);
 
 const querySchema = Joi.object({
-	specialtyId: ObjectIdMongodbValidator.required(),
-	position: positionValidator,
+	specialtyId: ObjectIdMongodbValidator,
 	key_search: Joi.string().allow('').default(''),
 	page: Joi.number().integer().min(1).max(100).default(1),
 	pagesize: Joi.number().integer().min(1).max(100).default(25),
@@ -51,9 +67,11 @@ const querySchema = Joi.object({
 			['updatedAt', 'asc'],
 			['position', 'asc'],
 		]),
-	select: Joi.array()
-		.items(Joi.string().valid('_id', 'firstName', 'lastName', 'email', 'phone'))
-		.default(['_id', 'firstName', 'lastName', 'email', 'phone', 'position']),
+	select: selectValidate,
+});
+
+const getOneSchema = Joi.object({
+	select: selectValidate,
 });
 
 module.exports = {
@@ -61,4 +79,5 @@ module.exports = {
 	createSchema,
 	updateSchema,
 	importSchema,
+	getOneSchema,
 };

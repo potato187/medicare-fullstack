@@ -1,4 +1,3 @@
-/* eslint-disable */
 import {
 	Button,
 	Container,
@@ -13,12 +12,12 @@ import {
 	UnFieldDebounce,
 } from 'admin/components';
 import { useCurrentIndex, useFetchResource, useManageSpecialties, useToggle } from 'admin/hooks';
-import React from 'react';
+import { compose, tryCatchAndToast } from 'admin/utilities';
+import { useAuth } from 'hooks';
 import { MdAdd, MdImportExport } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { ProfileDoctorModal } from '../../components';
-import { useAuth } from 'hooks';
-import { compose } from 'admin/utilities';
+import { useMemo } from 'react';
 
 export function SpecialtyManager() {
 	const {
@@ -39,12 +38,15 @@ export function SpecialtyManager() {
 		handleSelectSpecialty,
 	} = useManageSpecialties(languageId);
 
+	const positionOptions = useMemo(() => {
+		return Object.entries(Positions).map(([key, value]) => ({ label: value, value: key }));
+	}, [Positions]);
+
 	const Genders = useFetchResource({
 		endpoint: 'gender',
 		languageId,
 		formatter: (genders) =>
 			genders.map(({ key, name }) => {
-				console.log(name, languageId);
 				return { label: name[languageId], value: key };
 			}),
 	});
@@ -56,11 +58,15 @@ export function SpecialtyManager() {
 	const [statusImportModal, toggleImportModal] = useToggle();
 
 	const handleOpenProfileModal = compose(setDoctorIndex, toggleProfileModal);
-
 	const handleOpenConfirmDeletionModal = compose(setDoctorIndex, toggleConfirmDeletionModal);
 
+	const handleUpdateDoctor = tryCatchAndToast(async (data) => {
+		/* 		const { message, metad } = await doctorApi.updateOne(data); */
+		console.log(data);
+	}, languageId);
+
 	return (
-		<React.Fragment>
+		<>
 			<Container id='page-main'>
 				<div className='d-flex flex-column h-100 py-5'>
 					<div className='d-flex pb-4'>
@@ -150,9 +156,10 @@ export function SpecialtyManager() {
 									<tr key={id}>
 										<th>
 											<UnFieldCheckBox
+												id={`checkbox-${id}`}
 												className='none-label'
 												checked={isSelected}
-												onChange={() => toggleSelectedById(id)}
+												/* 			onChange={() => toggleSelectedById(id)} */
 											/>
 										</th>
 										<td className='text-center'>{index + 1}</td>
@@ -190,9 +197,10 @@ export function SpecialtyManager() {
 				specialties={Specialties}
 				defaultValues={Doctors[doctorIndexRef.current]}
 				genders={Genders}
-				positions={Positions}
+				positions={positionOptions}
 				onClose={toggleProfileModal}
+				onSubmit={handleUpdateDoctor}
 			/>
-		</React.Fragment>
+		</>
 	);
 }

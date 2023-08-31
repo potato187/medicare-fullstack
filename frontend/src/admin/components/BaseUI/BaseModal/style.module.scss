@@ -23,11 +23,12 @@
 	}
 
 	&-dialog {
-		display: flex;
-		flex-flow: column nowrap;
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: auto 1fr auto;
 		max-width: var(--modal-max-width);
 		min-width: var(--modal-min-width);
-		max-height: 80vh;
+		max-height: 90vh;
 		margin: 1.5rem auto auto auto;
 		background-color: var(--modal-bg);
 		border-radius: 0.25rem;
@@ -87,10 +88,13 @@
 	}
 
 	&-body {
-		flex: 1 1 auto;
 		font-size: var(--theme-text-sm);
 		padding: var(--spacing-md) var(--spacing-lg);
 		z-index: 2;
+
+		&--sm {
+			padding: var(--spacing-sm) var(--spacing-md);
+		}
 	}
 
 	&-header + form > &-body,

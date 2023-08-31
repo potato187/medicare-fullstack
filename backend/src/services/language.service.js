@@ -34,7 +34,7 @@ class LanguageService {
 		if (!fs.existsSync(filePath)) {
 			throw new NotFoundRequestError();
 		}
-		console.log(bodyUpdate);
+	
 		fs.writeFileSync(filePath, JSON.stringify(bodyUpdate));
 		return bodyUpdate;
 	}

@@ -2,14 +2,14 @@ import * as yup from 'yup';
 import { emailValidation, phoneValidation, requiredValidation } from 'admin/validation';
 
 export const doctorDefaultValues = {
-	id: '',
-	first_name: '',
-	last_name: '',
+	_id: '',
+	firstName: '',
+	lastName: '',
 	email: '',
 	phone: '',
 	address: '',
-	genderId: '',
-	positionId: '',
+	gender: '',
+	position: '',
 	specialtyId: '',
 	description: {
 		en: '',
@@ -18,8 +18,8 @@ export const doctorDefaultValues = {
 };
 
 export const doctorValidation = yup.object().shape({
-	first_name: requiredValidation,
-	last_name: requiredValidation,
+	firstName: requiredValidation,
+	lastName: requiredValidation,
 	email: emailValidation,
 	phone: phoneValidation,
 });

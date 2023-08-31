@@ -18,6 +18,10 @@ const codeReason = {
 		vi: '',
 		en: 'Invalid Email',
 	},
+	107400: {
+		vi: '',
+		en: 'Invalid id',
+	},
 	100401: {
 		vi: 'Không có quyền truy cập.',
 		en: 'Unauthorized access.',

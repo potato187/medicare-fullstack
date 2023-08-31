@@ -9,6 +9,7 @@ module.exports = (params = []) => {
 			const type = typeOf(valueParam);
 			req.query[keyParam] = getQueryStrategy(type, valueParam);
 		}
+	
 		return next();
 	};
 };

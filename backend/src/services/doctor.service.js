@@ -39,8 +39,6 @@ class DoctorService {
 		return true;
 	}
 
-	static async updateOne() {}
-
 	static async createOne(body) {
 		const { firstName, lastName, gender, address, email, phone, specialtyId, positionId } = body;
 		const doctorBuilder = new DoctorBuilder()
@@ -118,9 +116,9 @@ class DoctorService {
 		select = [],
 	}) {
 		const filter = { isDeleted: false, isActive: 'active' };
-		const _page = Math.max(1, +page);
+		const $page = Math.max(1, +page);
 		const $limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
-		const $skip = (_page - 1) * $limit;
+		const $skip = ($page - 1) * $limit;
 		const $sort = createSortData(sort);
 
 		if (specialtyId) {
@@ -165,12 +163,22 @@ class DoctorService {
 		return {
 			data: results,
 			meta: {
-				page: _page,
+				page: $page,
 				pagesize: $limit,
 				totalPages: Math.ceil(total / $limit) || 1,
 				key_search,
 			},
 		};
+	}
+
+	static async getOne({ doctorId, select = ['_id'] }) {
+		const doctor = await UtilsRepo.findOne({
+			model: DOCTOR_MODEL,
+			filter: { _id: convertToObjectIdMongodb(doctorId) },
+			select,
+		});
+
+		return doctor;
 	}
 }
 

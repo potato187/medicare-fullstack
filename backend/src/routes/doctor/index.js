@@ -3,7 +3,7 @@ const express = require('express');
 const { authMiddleware } = require('@/auth');
 const { DoctorController } = require('@/controllers');
 const { handlerValidateRequest, tryCatch, handlerParseParamsToArray } = require('@/middleware');
-const { createSchema, updateSchema, importSchema, querySchema } = require('./schema');
+const { createSchema, updateSchema, importSchema, querySchema, getOneSchema } = require('./schema');
 const { idSchema } = require('@/validations');
 const router = express.Router();
 
@@ -15,6 +15,13 @@ router.get(
 	handlerParseParamsToArray(['sort']),
 	handlerValidateRequest(querySchema, 'query'),
 	tryCatch(DoctorController.queryByParams),
+);
+
+router.get(
+	'/:id',
+	handlerValidateRequest(idSchema, 'params'),
+	handlerValidateRequest(getOneSchema, 'query'),
+	tryCatch(DoctorController.getOne),
 );
 
 router.post('/', handlerValidateRequest(createSchema), tryCatch(DoctorController.createOne));

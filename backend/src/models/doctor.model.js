@@ -29,6 +29,10 @@ const doctorSchema = new Schema(
 			unique: true,
 		},
 		address: String,
+		description: {
+			vi: String,
+			en: String,
+		},
 		specialtyId: {
 			type: Types.ObjectId,
 			ref: 'Specialty',

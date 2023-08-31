@@ -7,17 +7,9 @@ import { useClickOutside } from 'hooks';
 import { useToggle } from 'admin/hooks';
 import module from '../style.module.scss';
 
-export function FloatingLabelSelect({
-	showCounter = false,
-	name,
-	labelIntl,
-	options = [],
-	disabled = false,
-	isNotDisabled = false,
-	className = '',
-}) {
-	const id = useId();
-	const { control, setValue, getValues } = useFormContext();
+export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = false, className = '' }) {
+	const domId = useId();
+	const methods = useFormContext();
 	const [isOpen, toggleDropdown] = useToggle();
 	const nodeRef = useClickOutside(() => {
 		toggleDropdown(false);
@@ -32,14 +24,13 @@ export function FloatingLabelSelect({
 		'select-dropdown': dropdownCln,
 		'select-dropdown__list': dropdownListCln,
 		'item-active': activeCln,
-		'item-disabled': disabledCln,
 	} = module;
 
-	const value = getValues(name);
-	const option = options.find((option) => option.value === value) || options[0];
+	const value = methods.getValues(name);
+	const currentOption = options.find((option) => option.value === value) || options[0];
 
 	const handleOnSelect = (option) => {
-		setValue(name, option.value, { shouldDirty: true });
+		methods.setValue(name, option.value, { shouldDirty: true, shouldTouch: true });
 		toggleDropdown(false);
 	};
 
@@ -47,32 +38,31 @@ export function FloatingLabelSelect({
 		<div className={cn(dropdownCln, className)}>
 			<div className={formGroupCln}>
 				<div className={inputCln} onClick={toggleDropdown} aria-hidden>
-					{option.label}
+					{currentOption.label}
 				</div>
-				<label htmlFor={id} className={labelCln}>
+				<label htmlFor={domId} className={labelCln}>
 					<FormattedMessage id={labelIntl} />
 				</label>
 				<Controller
 					name={name}
-					control={control}
-					render={({ field }) => <input id={id} type='text' hidden {...field} />}
+					control={methods.control}
+					defaultValue=''
+					render={({ field }) => <input hidden id={domId} type='text' {...field} />}
 				/>
 			</div>
 			{!disabled ? (
 				<CSSTransition in={isOpen} timeout={300} classNames='dropdown-menu' unmountOnExit nodeRef={nodeRef}>
 					<div className={cn(dropdownListCln, 'scrollbar scrollbar--sm')} ref={nodeRef}>
-						{options.map((item) => (
+						{options.map((option) => (
 							<div
 								aria-hidden
-								key={item.value}
+								key={option.value}
 								className={cn({
-									[activeCln]: item.value === option.value,
-									[disabledCln]: item.disabled && isNotDisabled,
-									[disabledCln]: showCounter && item.count === 0,
+									[activeCln]: option.value === currentOption.value,
 								})}
-								onClick={() => handleOnSelect(item)}
+								onClick={() => handleOnSelect(option)}
 							>
-								{`${item.label} ${item.count ? `(${item.count})` : ''}`}
+								{option.label}
 							</div>
 						))}
 					</div>

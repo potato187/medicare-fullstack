@@ -39,8 +39,9 @@ export const findPathFromRoot = (items = [], targetId = null, path = []) => {
 
 export const setDefaultValues = (methods = null, defaultValues = {}) => {
 	if (!methods || !defaultValues) return;
-	Object.keys(defaultValues).map((key) => {
-		return methods?.setValue(key, defaultValues[key]);
+
+	Object.keys(defaultValues).forEach((key) => {
+		methods?.setValue(key, defaultValues[key]);
 	});
 };
 
@@ -126,4 +127,33 @@ export const tryCatch = (callback, finallyCallback = null) => {
 			}
 		}
 	};
+};
+
+export const createUpdateBody = (methods, data) => {
+	const { dirtyFields, touchedFields } = methods.formState;
+	const updateBody = Object.keys(dirtyFields).reduce((hash, key) => {
+		if (touchedFields[key]) {
+			hash[key] = data[key];
+		}
+		return hash;
+	}, {});
+
+	return updateBody;
+};
+
+export const getDifferentValues = (beforeObject, afterObject) => {
+	return Object.entries(afterObject).reduce((hash, [key, value]) => {
+		if (typeOf(value) !== 'object' && value !== beforeObject[key]) {
+			hash[key] = value;
+		}
+		if (JSON.stringify(value) !== JSON.stringify(beforeObject[key])) {
+			hash[key] = value;
+		}
+
+		if (!beforeObject[key]) {
+			hash[key] = value;
+		}
+
+		return hash;
+	}, {});
 };

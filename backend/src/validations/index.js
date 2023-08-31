@@ -39,7 +39,7 @@ const idSchema = Joi.object({
 });
 
 const positionValidator = Joi.string().custom((value, helper) => {
-	return POSITIONS.includes(value) ? value : helper.message('107400');
+	return POSITIONS.includes(value) ? value : helper.message('108400');
 });
 
 module.exports = {

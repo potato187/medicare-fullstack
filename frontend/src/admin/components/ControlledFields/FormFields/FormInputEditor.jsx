@@ -10,6 +10,7 @@ export function FormInputEditor({ name }) {
 		<Controller
 			name={name}
 			control={control}
+			defaultValue=''
 			render={({ field }) => <ReactQuill theme='snow' modules={Editor.modules} formats={Editor.formats} {...field} />}
 		/>
 	);

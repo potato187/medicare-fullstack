@@ -105,9 +105,10 @@ export function BaseModalHeader({ idIntl = '', className, onClose = null }) {
 }
 
 export function BaseModalBody({ as: Component = 'div', className, children, ...props }) {
-	const { 'modal-body': modalBodyClass } = module;
+	const styles = cn(module['modal-body'], className);
+
 	return (
-		<Component className={cn(modalBodyClass, className)} {...props}>
+		<Component className={styles} {...props}>
 			{children}
 		</Component>
 	);
