@@ -2,14 +2,13 @@ import * as yup from 'yup';
 import { emailValidation, phoneValidation, requiredValidation } from 'admin/validation';
 
 export const doctorDefaultValues = {
-	_id: '',
 	firstName: '',
 	lastName: '',
 	email: '',
 	phone: '',
 	address: '',
-	gender: '',
-	position: '',
+	gender: 'GF',
+	position: 'P01',
 	specialtyId: '',
 	description: {
 		en: '',

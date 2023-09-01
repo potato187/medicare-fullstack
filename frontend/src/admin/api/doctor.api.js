@@ -14,4 +14,12 @@ export const doctorApi = {
 	async updateOne({ id, updateBody }) {
 		return await axiosClient.patch(`${DOCTOR_PATH}/${id}`, { ...updateBody });
 	},
+
+	async createOne(body) {
+		return await axiosClient.post(`${DOCTOR_PATH}`, body);
+	},
+
+	async deleteOne(id) {
+		return await axiosClient.delete(`${DOCTOR_PATH}/${id}`);
+	},
 };

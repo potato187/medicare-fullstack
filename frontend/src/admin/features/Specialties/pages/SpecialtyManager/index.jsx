@@ -2,9 +2,11 @@ import { useMemo } from 'react';
 import { doctorApi } from 'admin/api';
 import {
 	Button,
+	ConfirmModal,
 	Container,
 	Dropdown,
 	FooterContainer,
+	FormattedDescription,
 	SortableTableHeader,
 	Table,
 	TableBody,
@@ -20,7 +22,7 @@ import { MdAdd, MdImportExport } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import produce from 'immer';
 import { toast } from 'react-toastify';
-import { ProfileDoctorModal } from '../../components';
+import { CreateDoctorModal, ProfileDoctorModal } from '../../components';
 
 export function SpecialtyManager() {
 	const {
@@ -85,6 +87,35 @@ export function SpecialtyManager() {
 		}
 
 		toggleProfileModal();
+	}, languageId);
+
+	const handleCreateDoctor = tryCatchAndToast(async (newDoctor) => {
+		const { metadata, message } = await doctorApi.createOne(newDoctor);
+		toast.success(message[languageId]);
+
+		if (Doctors.length < +queryParams.pagesize) {
+			setDoctors(
+				produce((draft) => {
+					delete newDoctor.description;
+					draft.push(metadata);
+				}),
+			);
+		}
+		toggleCreateDoctorModal();
+	}, languageId);
+
+	const handleDeleteDoctor = tryCatchAndToast(async () => {
+		const doctor = Doctors[doctorIndexRef.current] || {};
+		if (doctor && doctor._id) {
+			const { message } = await doctorApi.deleteOne(doctor._id);
+			setDoctors(
+				produce((draft) => {
+					draft.splice(doctorIndexRef.current, 1);
+				}),
+			);
+			toggleConfirmDeletionModal();
+			toast.success(message[languageId]);
+		}
 	}, languageId);
 
 	return (
@@ -214,6 +245,17 @@ export function SpecialtyManager() {
 					/>
 				</div>
 			</Container>
+
+			<CreateDoctorModal
+				specialtyId={queryParams.specialtyId}
+				isOpen={statusCreateDoctorModal}
+				genders={Genders}
+				specialties={Specialties}
+				positions={positionOptions}
+				onClose={toggleCreateDoctorModal}
+				onSubmit={handleCreateDoctor}
+			/>
+
 			<ProfileDoctorModal
 				isOpen={statusProfileModal}
 				specialties={Specialties}
@@ -223,6 +265,18 @@ export function SpecialtyManager() {
 				onClose={toggleProfileModal}
 				onSubmit={handleUpdateDoctor}
 			/>
+
+			<ConfirmModal
+				idTitleIntl='dashboard.specialty.modal.confirm_deletion.title'
+				isOpen={statusConfirmDeletionModal}
+				onClose={toggleConfirmDeletionModal}
+				onSubmit={handleDeleteDoctor}
+			>
+				<FormattedDescription
+					id='dashboard.specialty.modal.confirm_deletion.description'
+					values={{ email: Doctors[doctorIndexRef.current]?.email || '' }}
+				/>
+			</ConfirmModal>
 		</>
 	);
 }

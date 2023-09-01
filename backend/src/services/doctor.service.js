@@ -99,9 +99,9 @@ class DoctorService {
 		});
 	}
 
-	static async deleteOne({ doctorId }) {
+	static async deleteOne({ id }) {
 		return await DoctorService.updateOne({
-			doctorId,
+			id,
 			updateBody: { isDeleted: true },
 		});
 	}

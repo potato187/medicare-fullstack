@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -19,6 +20,7 @@ import { doctorDefaultValues, doctorValidation } from '../../validation';
 
 export function CreateDoctorModal({
 	isOpen = false,
+	specialtyId = '',
 	specialties = [],
 	positions = [],
 	genders = [],
@@ -36,6 +38,12 @@ export function CreateDoctorModal({
 		methods.reset();
 	};
 
+	useEffect(() => {
+		if (specialtyId) {
+			methods.setValue('specialtyId', specialtyId);
+		}
+	}, [specialtyId, methods]);
+
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='lg' isOpen={isOpen} onClose={onClose}>
@@ -44,17 +52,17 @@ export function CreateDoctorModal({
 					<form onSubmit={methods.handleSubmit(onSubmit)}>
 						<Tabs className='tabs' tabIndexActive={0}>
 							<TabNav>
-								<TabNavItem labelIntl='form.profile' tabIndex={0} />
+								<TabNavItem labelIntl='form.profile' index={0} />
 								<TabNavItem labelIntl='common.description_en' index={1} />
 								<TabNavItem labelIntl='common.description_vi' index={2} />
 							</TabNav>
-							<TabPanel tabIndex={0}>
+							<TabPanel tabPanelIndex={0}>
 								<div className='row'>
 									<div className='col-4 mb-6'>
-										<FloatingLabelInput name='first_name' labelIntl='form.firstName' />
+										<FloatingLabelInput name='firstName' labelIntl='form.firstName' />
 									</div>
 									<div className='col-4 mb-6'>
-										<FloatingLabelInput name='last_name' labelIntl='form.lastName' />
+										<FloatingLabelInput name='lastName' labelIntl='form.lastName' />
 									</div>
 									<div className='col-4 mb-6'>
 										<FloatingLabelInput name='email' labelIntl='form.email' />
@@ -66,20 +74,20 @@ export function CreateDoctorModal({
 										<FloatingLabelInput name='address' labelIntl='form.address' />
 									</div>
 									<div className='col-4 mb-6 z-index-2'>
-										<FloatingLabelSelect name='genderId' labelIntl='form.gender' options={genders} />
+										<FloatingLabelSelect name='gender' labelIntl='form.gender' options={genders} />
 									</div>
 									<div className='col-4 mb-6 z-index-2'>
 										<FloatingLabelSelect name='specialtyId' labelIntl='common.specialty' options={specialties} />
 									</div>
 									<div className='col-4 mb-6'>
-										<FloatingLabelSelect name='positionId' labelIntl='common.position' options={positions} />
+										<FloatingLabelSelect name='position' labelIntl='common.position' options={positions} />
 									</div>
 								</div>
 							</TabPanel>
-							<TabPanel index={1}>
+							<TabPanel tabPanelIndex={1}>
 								<FormInputEditor name='description.en' />
 							</TabPanel>
-							<TabPanel index={2}>
+							<TabPanel tabPanelIndex={2}>
 								<FormInputEditor name='description.vi' />
 							</TabPanel>
 						</Tabs>
@@ -89,12 +97,7 @@ export function CreateDoctorModal({
 					<Button type='button' size='sm' secondary onClick={handleOnClose}>
 						<FormattedMessage id='button.close' />
 					</Button>
-					<Button
-						isLoading={methods.formState.isSubmitting}
-						type='submit'
-						size='sm'
-						onClick={methods.handleSubmit(onSubmit)}
-					>
+					<Button type='submit' size='sm' onClick={methods.handleSubmit(onSubmit)}>
 						<FormattedMessage id='button.create' />
 					</Button>
 				</BaseModalFooter>

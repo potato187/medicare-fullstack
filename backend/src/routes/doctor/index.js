@@ -35,11 +35,6 @@ router.patch(
 	tryCatch(DoctorController.updateOne),
 );
 
-router.delete(
-	'/:id',
-	handlerValidateRequest(idSchema, 'params'),
-	handlerValidateRequest(updateSchema),
-	tryCatch(DoctorController.deleteOne),
-);
+router.delete('/:id', handlerValidateRequest(idSchema, 'params'), tryCatch(DoctorController.deleteOne));
 
 module.exports = router;

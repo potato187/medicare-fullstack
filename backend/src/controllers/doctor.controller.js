@@ -39,9 +39,10 @@ class DoctorController {
 	}
 
 	async deleteOne(req, res, next) {
+		console.log(req.params);
 		new OkResponse({
 			metadata: await DoctorService.deleteOne({
-				doctorId: req.params.id,
+				id: req.params.id,
 			}),
 		}).send(res);
 	}

@@ -104,6 +104,8 @@ export const tryCatchAndToast = (callback, languageId = 'en', finallyCallback = 
 		try {
 			await Promise.resolve(callback(...props));
 		} catch (error) {
+			/* eslint  no-console: "off" */
+			console.log(error);
 			const errorMessage = error?.message?.[languageId] || 'An error occurred.';
 			toast.error(errorMessage);
 		} finally {
