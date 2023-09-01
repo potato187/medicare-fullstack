@@ -14,6 +14,9 @@ const descriptionValidate = Joi.object({
 	en: Joi.string().allow(''),
 });
 
+const pageSizeValidate = Joi.number().integer().min(1).max(100).default(25);
+const pageValidate = Joi.number().integer().min(1).max(100).default(1);
+
 const doctorFieldValidate = Joi.string().valid(
 	'_id',
 	'firstName',
@@ -61,8 +64,8 @@ const importSchema = Joi.array().items(createSchema).min(1);
 const querySchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
 	key_search: Joi.string().allow('').default(''),
-	page: Joi.number().integer().min(1).max(100).default(1),
-	pagesize: Joi.number().integer().min(1).max(100).default(25),
+	page: pageValidate,
+	pagesize: pageSizeValidate,
 	sort: Joi.array()
 		.items(
 			Joi.array().ordered(
@@ -81,10 +84,34 @@ const getOneSchema = Joi.object({
 	select: selectValidate,
 });
 
+const exportSchema = Joi.object({
+	type: Joi.string().valid('all', 'selected', 'page'),
+	languageId: Joi.string().valid('en', 'vi').default('en'),
+	specialtyId: Joi.when({
+		is: 'page',
+		then: ObjectIdMongodbValidator,
+		otherwise: Joi.forbidden(),
+	}),
+	page: Joi.when('type', {
+		is: 'page',
+		then: pageValidate,
+	}),
+	pagesize: Joi.when('type', {
+		is: 'page',
+		then: pageSizeValidate,
+	}),
+	ids: Joi.when('type', {
+		is: 'selected',
+		then: Joi.array().items(ObjectIdMongodbValidator).min(1),
+		otherwise: Joi.forbidden(),
+	}),
+});
+
 module.exports = {
 	querySchema,
 	createSchema,
 	updateSchema,
 	importSchema,
 	getOneSchema,
+	exportSchema,
 };

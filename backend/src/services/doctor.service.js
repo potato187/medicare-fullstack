@@ -1,7 +1,7 @@
 'use strict';
 const { _DoctorModel } = require('@/models');
-const { ConflictRequestError, NotFoundRequestError } = require('@/core');
-const { DOCTOR_MODEL } = require('@/models/repository/constant');
+const { ConflictRequestError, NotFoundRequestError, InterServerRequestError } = require('@/core');
+const { DOCTOR_MODEL, GENDER_MODEL, POSITION_MODEL, SPECIALLY_MODEL } = require('@/models/repository/constant');
 const { DoctorBuilder } = require('./builder');
 const {
 	getInfoData,
@@ -179,6 +179,90 @@ class DoctorService {
 		});
 
 		return doctor;
+	}
+
+	static async cleanExportData(doctors, languageId) {
+		try {
+			const [specialtiesResolve, gendersResolve, positionsResolve] = await Promise.all([
+				UtilsRepo.getAll({
+					model: SPECIALLY_MODEL,
+					select: ['_id', 'name'],
+				}),
+				UtilsRepo.getAll({
+					model: GENDER_MODEL,
+					select: ['key', 'name'],
+				}),
+				UtilsRepo.getAll({
+					model: POSITION_MODEL,
+					select: ['key', 'name'],
+				}),
+			]);
+			const specialties = specialtiesResolve.reduce(
+				(object, { _id, name }) => ({ ...object, [_id]: name[languageId] }),
+				{},
+			);
+
+			const genders = gendersResolve.reduce((object, { key, name }) => ({ ...object, [key]: name[languageId] }), {});
+
+			const positions = positionsResolve.reduce(
+				(object, { key, name }) => ({ ...object, [key]: name[languageId] }),
+				{},
+			);
+
+			return doctors.map((doctor) => ({
+				fullName: `${doctor.lastName} ${doctor.firstName}`,
+				email: doctor.email,
+				phone: doctor.phone,
+				address: doctor.address,
+				gender: genders[doctor.gender] ?? '',
+				specialty: specialties[doctor.specialtyId] ?? '',
+				position: positions[doctor.position] ?? '',
+			}));
+		} catch (error) {
+			throw new InterServerRequestError();
+		}
+	}
+
+	static async exportPerPage({ specialtyId = '', page = 1, pagesize = 25 }) {
+		const skip = (page - 1) * pagesize;
+		return await _DoctorModel
+			.find({ specialtyId: convertToObjectIdMongodb(specialtyId) })
+			.sort({ ctime: 1 })
+			.skip(skip)
+			.limit(pagesize)
+			.lean();
+	}
+
+	static async exportAll() {
+		return await _DoctorModel.find({}).sort({ ctime: 1 }).select().lean();
+	}
+
+	static async exportFormIds(ids) {
+		return await _DoctorModel
+			.find({ _id: { $in: ids } })
+			.sort({ ctime: 1 })
+			.select()
+			.lean();
+	}
+
+	static async export({ type, ...rest }) {
+		let doctors;
+
+		switch (type) {
+			case 'selected':
+				doctors = await DoctorService.exportFormIds(rest.ids);
+				break;
+			case 'page':
+				doctors = await DoctorService.exportPerPage({ ...rest });
+				break;
+			default:
+				doctors = await DoctorService.exportAll();
+				break;
+		}
+		return {
+			type: type,
+			list: await DoctorService.cleanExportData(doctors, rest.languageId),
+		};
 	}
 }
 

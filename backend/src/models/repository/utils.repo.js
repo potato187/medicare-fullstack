@@ -64,7 +64,7 @@ class UtilsRepo {
 		return await _Model.deleteOne({ _id: convertToObjectIdMongodb(id) });
 	}
 
-	static async getAll({ model, query, populate = null, sort, select = ['_id'] }) {
+	static async getAll({ model, query, sort, select = ['_id'] }) {
 		const _Model = UtilsRepo.getModel(model);
 		return await _Model.find(query).sort(sort).select(select).lean().exec();
 	}

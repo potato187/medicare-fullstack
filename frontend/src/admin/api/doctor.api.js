@@ -4,7 +4,7 @@ import { DOCTOR_PATH } from './constant';
 export const doctorApi = {
 	async queryByParameters(params) {
 		if (!params.specialtyId) return { metadata: { data: [], meta: { totalPages: 1 } } };
-		return await axiosClient.get(`${DOCTOR_PATH}`, { params });
+		return await axiosClient.get(`${DOCTOR_PATH}/query`, { params });
 	},
 
 	async getOne({ id, params }) {
@@ -21,5 +21,9 @@ export const doctorApi = {
 
 	async deleteOne(id) {
 		return await axiosClient.delete(`${DOCTOR_PATH}/${id}`);
+	},
+
+	async export(body) {
+		return await axiosClient.post(`${DOCTOR_PATH}/export`, body);
 	},
 };

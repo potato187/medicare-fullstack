@@ -100,7 +100,7 @@ export const useManageSpecialties = (languageId = 'en') => {
 		tryCatch(async () => {
 			if (Specialties.length) {
 				const { metadata } = await doctorApi.queryByParameters(queryParams);
-				setDoctors(metadata.data);
+				setDoctors(metadata.data.map((data) => ({ ...data, isSelected: false })));
 				setTotalPages(metadata.meta.totalPages);
 			}
 		})();

@@ -4,12 +4,12 @@ const { DoctorService } = require('@/services');
 
 class DoctorController {
 	async queryByParams(req, res, next) {
-		new CreatedResponse({
+		new OkResponse({
 			metadata: await DoctorService.queryByParams(req.query),
 		}).send(res);
 	}
 	async getOne(req, res, next) {
-		new CreatedResponse({
+		new OkResponse({
 			metadata: await DoctorService.getOne({
 				doctorId: req.params.id,
 				select: req.query.select,
@@ -39,11 +39,16 @@ class DoctorController {
 	}
 
 	async deleteOne(req, res, next) {
-		console.log(req.params);
 		new OkResponse({
 			metadata: await DoctorService.deleteOne({
 				id: req.params.id,
 			}),
+		}).send(res);
+	}
+
+	async export(req, res, next) {
+		new OkResponse({
+			metadata: await DoctorService.export(req.body),
 		}).send(res);
 	}
 }

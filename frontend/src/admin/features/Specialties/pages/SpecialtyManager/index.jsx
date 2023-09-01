@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { doctorApi } from 'admin/api';
 import {
 	Button,
@@ -18,13 +17,15 @@ import {
 import { useCurrentIndex, useFetchResource, useManageSpecialties, useToggle } from 'admin/hooks';
 import { compose, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
-import { MdAdd, MdImportExport } from 'react-icons/md';
-import { FormattedMessage } from 'react-intl';
 import produce from 'immer';
+import { useMemo } from 'react';
+import { MdAdd, MdImportExport } from 'react-icons/md';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-import { CreateDoctorModal, ProfileDoctorModal } from '../../components';
+import { CreateDoctorModal, ExportModal, ProfileDoctorModal } from '../../components';
 
 export function SpecialtyManager() {
+	const intl = useIntl();
 	const {
 		user: { languageId },
 	} = useAuth();
@@ -118,6 +119,54 @@ export function SpecialtyManager() {
 		}
 	}, languageId);
 
+	const toggleSelect = (index) => {
+		setDoctors(
+			produce((draft) => {
+				draft[index].isSelected = !draft[index].isSelected;
+			}),
+		);
+	};
+
+	const toggleSelectAll = (event) => {
+		const { checked } = event.target;
+		setDoctors(
+			produce((draft) => {
+				draft.forEach((item) => {
+					item.isSelected = checked;
+				});
+			}),
+		);
+	};
+
+	const handleExportDoctor = tryCatchAndToast(async (data) => {
+		if (data.type === 'selected') {
+			data.ids = Doctors.reduce((arr, { _id, isSelected }) => {
+				if (isSelected) {
+					arr.push(_id);
+				}
+				return arr;
+			}, []);
+
+			if (!data.ids.length) {
+				console.log('is here');
+				toast.warning(
+					intl.formatMessage({ id: 'dashboard.specialty.modal.export_modal.warning_message.export_selected' }),
+				);
+				return false;
+			}
+		}
+
+		if (data.type === 'page') {
+			data.pagesize = queryParams.pagesize;
+			data.page = queryParams.page;
+			data.specialtyId = queryParams.specialtyId;
+		}
+
+		const response = await doctorApi.export(data);
+		/* 		const fileName = 'doctors';
+		downloadExcelFile(response, fileName); */
+	}, languageId);
+
 	return (
 		<>
 			<Container id='page-main'>
@@ -168,7 +217,7 @@ export function SpecialtyManager() {
 						<Table hover striped auto>
 							<TableHeader>
 								<th className='text-center'>
-									<UnFieldCheckBox className='none-label text-center' />
+									<UnFieldCheckBox className='none-label text-center' onChange={toggleSelectAll} />
 								</th>
 								<th className='text-center'>
 									<FormattedMessage id='table.no' />
@@ -212,7 +261,7 @@ export function SpecialtyManager() {
 												id={`checkbox-${id}`}
 												className='none-label'
 												checked={isSelected}
-												/* 			onChange={() => toggleSelectedById(id)} */
+												onChange={() => toggleSelect(index)}
 											/>
 										</th>
 										<td className='text-center'>{index + 1}</td>
@@ -277,6 +326,13 @@ export function SpecialtyManager() {
 					values={{ email: Doctors[doctorIndexRef.current]?.email || '' }}
 				/>
 			</ConfirmModal>
+
+			<ExportModal
+				titleIntl='dashboard.specialty.modal.export_modal.title'
+				isOpen={statusExportModal}
+				onClose={toggleExportModal}
+				onSubmit={handleExportDoctor}
+			/>
 		</>
 	);
 }

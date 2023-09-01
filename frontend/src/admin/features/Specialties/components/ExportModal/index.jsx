@@ -5,7 +5,7 @@ import { BaseModal, BaseModalBody, BaseModalFooter, BaseModalHeader, Button, Fie
 export function ExportModal({ titleIntl = '', isOpen = false, onClose = () => false, onSubmit = () => null }) {
 	const methods = useForm({
 		defaultValues: {
-			export_option: 'all',
+			type: 'all',
 		},
 	});
 
@@ -16,21 +16,21 @@ export function ExportModal({ titleIntl = '', isOpen = false, onClose = () => fa
 				<form onSubmit={methods.handleSubmit(onSubmit)}>
 					<div className='d-flex flex-column gap-2'>
 						<FieldCheckBox
-							{...methods.register('export_option')}
+							{...methods.register('type')}
 							type='radio'
 							value='all'
 							labelIntl='dashboard.specialty.modal.export_modal.export_all'
 						/>
 						<FieldCheckBox
-							{...methods.register('export_option')}
+							{...methods.register('type')}
 							type='radio'
 							value='selected'
 							labelIntl='dashboard.specialty.modal.export_modal.export_selected'
 						/>
 						<FieldCheckBox
-							{...methods.register('export_option')}
+							{...methods.register('type')}
 							type='radio'
-							value='per_page'
+							value='page'
 							labelIntl='dashboard.specialty.modal.export_modal.export_per_page'
 						/>
 					</div>
