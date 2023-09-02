@@ -40,9 +40,19 @@ class UtilsRepo {
 		return await _Model.create(body);
 	}
 
+	static async insertMany({ model, dataArray = [] }) {
+		const _Model = UtilsRepo.getModel(model);
+		return await _Model.create(dataArray);
+	}
+
 	static async findOne({ model, filter, select = ['_id'] }) {
 		const _Model = UtilsRepo.getModel(model);
 		return await _Model.findOne(filter).select(select).lean();
+	}
+
+	static async getAll({ model, query, sort, select = ['_id'] }) {
+		const _Model = UtilsRepo.getModel(model);
+		return await _Model.find(query).sort(sort).select(select).lean().exec();
 	}
 
 	static async findOneAndUpdate({ model, filter, updateBody, options = { new: true }, select = [] }) {
@@ -62,16 +72,6 @@ class UtilsRepo {
 	static async removeById({ model, id }) {
 		const _Model = UtilsRepo.getModel(model);
 		return await _Model.deleteOne({ _id: convertToObjectIdMongodb(id) });
-	}
-
-	static async getAll({ model, query, sort, select = ['_id'] }) {
-		const _Model = UtilsRepo.getModel(model);
-		return await _Model.find(query).sort(sort).select(select).lean().exec();
-	}
-
-	static async insertMany({ model, dataArray = [] }) {
-		const _Model = UtilsRepo.getModel(model);
-		return await _Model.create(dataArray);
 	}
 }
 

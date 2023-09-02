@@ -10,7 +10,7 @@ import { changeLanguage } from 'admin/redux/slices/auth';
 import LanguageContext, { LANGUAGE_DEFAULT } from './context';
 
 export default function AuthLanguagesProvider({ children }) {
-	const { user } = useAuth();
+	const { info } = useAuth();
 	const [languages, setLanguages] = useState(null);
 	const [validationForm, setValidationForm] = useState({});
 	const dispatch = useDispatch();
@@ -34,11 +34,11 @@ export default function AuthLanguagesProvider({ children }) {
 		return {
 			languages,
 			validationForm,
-			languageId: user.languageId || LANGUAGE_DEFAULT,
+			languageId: info.languageId || LANGUAGE_DEFAULT,
 			changeLanguageById,
 			updateLanguage,
 		};
-	}, [languages, changeLanguageById, updateLanguage, validationForm, user.languageId]);
+	}, [languages, changeLanguageById, updateLanguage, validationForm, info.languageId]);
 
 	useEffect(() => {
 		const fetchAllLanguages = async () => {

@@ -34,6 +34,18 @@ const selectValidate = Joi.alternatives()
 	.try(doctorFieldValidate, Joi.array().items(doctorFieldValidate))
 	.default(['_id', 'firstName', 'lastName', 'email', 'phone', 'specialtyId', 'position', 'gender', 'address']);
 
+const sortValidate = Joi.array()
+	.items(
+		Joi.array().ordered(
+			Joi.string().valid('createdAt', 'updatedAt', 'firstName', 'lastName', 'email', 'position').default('updatedAt'),
+			Joi.string().valid('asc', 'desc').default('asc'),
+		),
+	)
+	.default([
+		['updatedAt', 'asc'],
+		['position', 'asc'],
+	]);
+
 const createSchema = Joi.object({
 	firstName: nameValidator.required(),
 	lastName: nameValidator.required(),
@@ -66,17 +78,7 @@ const querySchema = Joi.object({
 	key_search: Joi.string().allow('').default(''),
 	page: pageValidate,
 	pagesize: pageSizeValidate,
-	sort: Joi.array()
-		.items(
-			Joi.array().ordered(
-				Joi.string().valid('createdAt', 'updatedAt', 'firstName', 'lastName', 'email', 'position').default('updatedAt'),
-				Joi.string().valid('asc', 'desc').default('asc'),
-			),
-		)
-		.default([
-			['updatedAt', 'asc'],
-			['position', 'asc'],
-		]),
+	sort: sortValidate,
 	select: selectValidate,
 });
 
@@ -87,7 +89,7 @@ const getOneSchema = Joi.object({
 const exportSchema = Joi.object({
 	type: Joi.string().valid('all', 'selected', 'page'),
 	languageId: Joi.string().valid('en', 'vi').default('en'),
-	specialtyId: Joi.when({
+	specialtyId: Joi.when('type', {
 		is: 'page',
 		then: ObjectIdMongodbValidator,
 		otherwise: Joi.forbidden(),
@@ -100,11 +102,13 @@ const exportSchema = Joi.object({
 		is: 'page',
 		then: pageSizeValidate,
 	}),
+
 	ids: Joi.when('type', {
 		is: 'selected',
 		then: Joi.array().items(ObjectIdMongodbValidator).min(1),
 		otherwise: Joi.forbidden(),
 	}),
+	sort: sortValidate,
 });
 
 module.exports = {

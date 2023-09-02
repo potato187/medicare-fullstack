@@ -181,7 +181,7 @@ class DoctorService {
 		return doctor;
 	}
 
-	static async cleanExportData(doctors, languageId) {
+	static async formatterExportData(doctors, languageId) {
 		try {
 			const [specialtiesResolve, gendersResolve, positionsResolve] = await Promise.all([
 				UtilsRepo.getAll({
@@ -223,46 +223,45 @@ class DoctorService {
 		}
 	}
 
-	static async exportPerPage({ specialtyId = '', page = 1, pagesize = 25 }) {
+	static async getDoctorsBySpecialty({ specialtyId = '', sort, page = 1, pagesize = 25 }) {
 		const skip = (page - 1) * pagesize;
 		return await _DoctorModel
-			.find({ specialtyId: convertToObjectIdMongodb(specialtyId) })
-			.sort({ ctime: 1 })
+			.find({ specialtyId: convertToObjectIdMongodb(specialtyId), isDeleted: false })
+			.sort(sort)
 			.skip(skip)
 			.limit(pagesize)
 			.lean();
 	}
 
-	static async exportAll() {
-		return await _DoctorModel.find({}).sort({ ctime: 1 }).select().lean();
+	static async getDoctorByFilter({ filter, sort, select }) {
+		return await UtilsRepo.getAll({
+			model: DOCTOR_MODEL,
+			query: filter,
+			sort,
+			select,
+		});
 	}
 
-	static async exportFormIds(ids) {
-		return await _DoctorModel
-			.find({ _id: { $in: ids } })
-			.sort({ ctime: 1 })
-			.select()
-			.lean();
-	}
-
-	static async export({ type, ...rest }) {
-		let doctors;
+	static async export({ type, sort, ...rest }) {
+		let doctors = [];
+		sort = createSortData(sort);
+		const select = ['-updatedAt', '-createdAt', '-description', '-appointments', '-__v'];
+		const filter = { isDeleted: false };
 
 		switch (type) {
 			case 'selected':
-				doctors = await DoctorService.exportFormIds(rest.ids);
+				filter._id = { $in: rest.ids };
+				doctors = await DoctorService.getDoctorByFilter({ filter, sort, select });
 				break;
 			case 'page':
-				doctors = await DoctorService.exportPerPage({ ...rest });
+				doctors = await DoctorService.getDoctorsBySpecialty({ sort, ...rest });
 				break;
 			default:
-				doctors = await DoctorService.exportAll();
+				doctors = await DoctorService.getDoctorByFilter({ filter, sort, select });
 				break;
 		}
-		return {
-			type: type,
-			list: await DoctorService.cleanExportData(doctors, rest.languageId),
-		};
+
+		return await DoctorService.formatterExportData(doctors, rest.languageId);
 	}
 }
 

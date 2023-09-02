@@ -1,5 +1,6 @@
 'use  strict';
-const { CreatedResponse, OkResponse } = require('@/core');
+const { CreatedResponse, OkResponse, InterServerRequestError } = require('@/core');
+const { excelHelper } = require('@/helpers');
 const { DoctorService } = require('@/services');
 
 class DoctorController {
@@ -47,9 +48,20 @@ class DoctorController {
 	}
 
 	async export(req, res, next) {
-		new OkResponse({
-			metadata: await DoctorService.export(req.body),
-		}).send(res);
+		const data = await DoctorService.export(req.body);
+		const workbook = excelHelper.exportWorkbook(data, req.body.languageId);
+
+		res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		res.setHeader('Content-Disposition', 'attachment; filename=data.xlsx');
+
+		workbook.xlsx
+			.write(res)
+			.then(() => {
+				res.status(200).end();
+			})
+			.catch(() => {
+				next(new InterServerRequestError());
+			});
 	}
 }
 module.exports = new DoctorController();

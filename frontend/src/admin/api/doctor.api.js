@@ -24,6 +24,8 @@ export const doctorApi = {
 	},
 
 	async export(body) {
-		return await axiosClient.post(`${DOCTOR_PATH}/export`, body);
+		return await axiosClient.post(`${DOCTOR_PATH}/export`, body, {
+			responseType: 'blob',
+		});
 	},
 };

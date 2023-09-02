@@ -35,7 +35,13 @@ router.delete('/:id', handlerValidateRequest(idSchema, 'params'), tryCatch(Docto
 
 router.post('/', handlerValidateRequest(createSchema), tryCatch(DoctorController.createOne));
 
-router.post('/export', handlerValidateRequest(exportSchema), tryCatch(DoctorController.export));
+router.post(
+	'/export',
+	handlerParseParamsToArray(['sort'], 'body'),
+	handlerValidateRequest(exportSchema),
+	tryCatch(DoctorController.export),
+);
+
 router.post('/import', handlerValidateRequest(importSchema), tryCatch(DoctorController.insertMany));
 
 module.exports = router;

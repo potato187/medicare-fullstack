@@ -10,15 +10,15 @@ export const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
 	(config) => {
-		const { tokens, user } = store.getState()?.auth || {};
+		const { tokens, info } = store.getState()?.auth || {};
 
 		if (tokens) {
 			config.headers[HEADERS.AUTHORIZATION] = `Bearer ${tokens.accessToken}`;
 			config.headers[HEADERS.REFRESH_TOKEN] = tokens.refreshToken;
 		}
 
-		if (user?.id) {
-			config.headers[HEADERS.CLIENT_ID] = user.id;
+		if (info?.id) {
+			config.headers[HEADERS.CLIENT_ID] = info.id;
 		}
 
 		return config;
@@ -41,18 +41,18 @@ axiosClient.interceptors.response.use(
 
 		if (httpStatusCode === 401) {
 			const { config } = error;
-			const { user, tokens } = store.getState()?.auth || {};
+			const { info, tokens } = store.getState()?.auth || {};
 
 			if (responseErrorCode === 100401) {
-				store.dispatch(authLogout({ id: user.id, tokens }));
+				store.dispatch(authLogout({ id: info.id, tokens }));
 			}
 
 			if (responseErrorCode === 101401 && !isRefreshToken) {
 				isRefreshToken = true;
 
-				if (user?.id) {
+				if (info?.id) {
 					store
-						.dispatch(authRefreshTokens({ id: user.id, tokens }))
+						.dispatch(authRefreshTokens({ id: info.id, tokens }))
 						.then(() => {
 							requestsToRefresh.forEach((callback) => callback());
 						})

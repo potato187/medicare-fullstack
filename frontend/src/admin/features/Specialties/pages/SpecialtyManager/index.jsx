@@ -22,12 +22,13 @@ import { useMemo } from 'react';
 import { MdAdd, MdImportExport } from 'react-icons/md';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
+import { downloadExcelFile } from 'utils';
 import { CreateDoctorModal, ExportModal, ProfileDoctorModal } from '../../components';
 
 export function SpecialtyManager() {
 	const intl = useIntl();
 	const {
-		user: { languageId },
+		info: { languageId },
 	} = useAuth();
 
 	const { currentIndexRef: doctorIndexRef, setCurrentIndex: setDoctorIndex } = useCurrentIndex();
@@ -148,7 +149,6 @@ export function SpecialtyManager() {
 			}, []);
 
 			if (!data.ids.length) {
-				console.log('is here');
 				toast.warning(
 					intl.formatMessage({ id: 'dashboard.specialty.modal.export_modal.warning_message.export_selected' }),
 				);
@@ -162,9 +162,12 @@ export function SpecialtyManager() {
 			data.specialtyId = queryParams.specialtyId;
 		}
 
+		data.sort = queryParams.sort;
 		const response = await doctorApi.export(data);
-		/* 		const fileName = 'doctors';
-		downloadExcelFile(response, fileName); */
+		const fileName = 'doctors';
+		downloadExcelFile(response, fileName);
+
+		toggleExportModal();
 	}, languageId);
 
 	return (

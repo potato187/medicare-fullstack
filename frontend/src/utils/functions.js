@@ -59,11 +59,14 @@ export const formatDate = (date, format = 'DD/MM/YYYY') => {
 
 export const downloadExcelFile = (response, filename = 'data.xlsx') => {
 	filename += `_${moment().format('DD_MM_YY')}.xlsx`;
-	const url = window.URL.createObjectURL(new Blob([response]));
+	const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+	const url = window.URL.createObjectURL(blob);
+
 	const link = document.createElement('a');
 	link.href = url;
 	link.setAttribute('download', filename);
 	link.style.display = 'none';
+
 	document.body.appendChild(link);
 	link.click();
 	URL.revokeObjectURL(url);
