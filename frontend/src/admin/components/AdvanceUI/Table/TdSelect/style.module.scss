@@ -5,7 +5,7 @@
 	transition: var(--transition-colors);
 
 	&.focus {
-		border-color: var(--bs-info);
+		border-color: var(--bs-gray-400);
 	}
 
 	input.invalid {
@@ -22,6 +22,30 @@
 	}
 
 	&__list {
-		box-shadow: var(--bs-shadow);
+		position: absolute;
+
+		> ul {
+			border: 1px solid var(--bs-gray-400);
+			border-radius: var(--spacing-xxs);
+			margin-top: 2px;
+			box-shadow: var(--bs-box-shadow-sm);
+		}
+
+		> ul > li {
+			display: block;
+			width: 100%;
+			line-height: 1.5;
+			padding: var(--spacing-xxs) var(--spacing-sm);
+			font-size: var(--theme-text-xs);
+			color: var(--bs-gray-900);
+			background-color: var(--bs-white);
+			transition: var(--transition-color);
+			cursor: pointer;
+
+			&:hover {
+				background-color: var(--bs-primary);
+				color: var(--bs-white);
+			}
+		}
 	}
 }

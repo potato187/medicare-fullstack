@@ -23,7 +23,7 @@ import { MdAdd, MdImportExport } from 'react-icons/md';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 import { downloadExcelFile } from 'utils';
-import { CreateDoctorModal, ExportModal, ProfileDoctorModal } from '../../components';
+import { CreateDoctorModal, ExportModal, ImportExcelModal, ProfileDoctorModal } from '../../components';
 
 export function SpecialtyManager() {
 	const intl = useIntl();
@@ -169,6 +169,11 @@ export function SpecialtyManager() {
 
 		toggleExportModal();
 	}, languageId);
+
+	const handleImportDoctor = async (doctors) => {
+		const formattedData = doctors.map(({ importStatus, ...rest }) => rest);
+		return await doctorApi.import(formattedData);
+	};
 
 	return (
 		<>
@@ -335,6 +340,17 @@ export function SpecialtyManager() {
 				isOpen={statusExportModal}
 				onClose={toggleExportModal}
 				onSubmit={handleExportDoctor}
+			/>
+
+			<ImportExcelModal
+				isOpen={statusImportModal}
+				languageId={languageId}
+				specialtyId={queryParams.specialtyId}
+				genders={Genders}
+				specialties={Specialties}
+				positions={positionOptions}
+				onClose={toggleImportModal}
+				onSubmit={handleImportDoctor}
 			/>
 		</>
 	);

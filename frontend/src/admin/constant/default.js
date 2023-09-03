@@ -22,6 +22,3 @@ export const DOCTOR_ROLE = 'RL2';
 export const GENDER_DEFAULT = 'GF';
 export const POSITION_ADMIN_DEFAULT = 'AD1';
 export const POSITION_DOCTOR_DEFAULT = 'AD1';
-
-export const DOCTOR_POSITIONS = ['DOC1', 'DOC2', 'DOC3', 'DOC4', 'DOC5'];
-export const GENDERS = ['GF', 'GM', 'GO'];

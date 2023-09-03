@@ -157,3 +157,10 @@ export const getDifferentValues = (beforeObject, afterObject) => {
 		return hash;
 	}, {});
 };
+
+export const extractFirstNameLastName = (fullName) => {
+	const names = fullName.split(' ');
+	const lastName = names.slice(-1).join('').trim();
+	const firstName = names.slice(0, -1).join(' ').trim();
+	return { firstName, lastName };
+};

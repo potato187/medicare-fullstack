@@ -71,7 +71,9 @@ const updateSchema = Joi.object({
 	isActive: Joi.string().valid('active', 'inactive'),
 });
 
-const importSchema = Joi.array().items(createSchema).min(1);
+const importSchema = Joi.object({
+	doctors: Joi.array().items(createSchema).min(1),
+});
 
 const querySchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,

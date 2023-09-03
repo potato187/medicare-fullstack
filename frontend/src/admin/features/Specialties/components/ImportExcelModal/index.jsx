@@ -1,11 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
-import { MdOutlineDeleteOutline } from 'react-icons/md';
-import { FormattedMessage } from 'react-intl';
-import * as yup from 'yup';
-import { readFileExcel } from 'utils';
-import { emailValidation, fileExcelValidation, phoneValidation, requiredValidation } from 'admin/validation';
-import { DOCTOR_POSITIONS, GENDERS, IMPORT_STATUS } from 'admin/constant';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -21,8 +14,24 @@ import {
 	TdSelect,
 	TrStatus,
 } from 'admin/components';
+import { extractFirstNameLastName, tryCatchAndToast } from 'admin/utilities';
+import { emailValidation, fileExcelValidation, phoneValidation, requiredValidation } from 'admin/validation';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import { MdOutlineDeleteOutline } from 'react-icons/md';
+import { FormattedMessage } from 'react-intl';
+import { toast } from 'react-toastify';
+import { readFileExcel } from 'utils';
+import * as yup from 'yup';
+
+export const IMPORT_STATUS = {
+	PREPARE: 'PREPARE',
+	SUCCESS: 'SUCCESS',
+	FAIL: 'FAIL',
+};
 
 export function ImportExcelModal({
+	specialtyId = '',
+	languageId = 'en',
 	genders = [],
 	positions = [],
 	isOpen = false,
@@ -46,13 +55,14 @@ export function ImportExcelModal({
 		defaultValues: {
 			doctors: [
 				{
-					first_name: '',
-					last_name: '',
+					firstName: '',
+					lastName: '',
 					email: '',
 					phone: '',
 					address: '',
-					genderId: 'GF',
-					positionId: 'DOC1',
+					gender: '',
+					position: '',
+					specialtyId: '',
 					importStatus: IMPORT_STATUS.PREPARE,
 				},
 			],
@@ -61,13 +71,11 @@ export function ImportExcelModal({
 			yup.object().shape({
 				doctors: yup.array().of(
 					yup.object().shape({
-						first_name: requiredValidation,
-						last_name: requiredValidation,
+						firstName: requiredValidation,
+						lastName: requiredValidation,
 						email: emailValidation,
 						address: requiredValidation,
 						phone: phoneValidation,
-						genderId: yup.string().oneOf(GENDERS).required(),
-						positionId: yup.string().oneOf(DOCTOR_POSITIONS).required(),
 					}),
 				),
 			}),
@@ -87,40 +95,52 @@ export function ImportExcelModal({
 		insert(fields.length + 1);
 	};
 
-	const filterFailedDoctors = (doctors) => {
-		return doctors.reduce((array, doctor, index) => {
-			const checked = doctor.importStatus;
-			if (checked !== IMPORT_STATUS.SUCCESS) {
-				delete doctor.IMPORT_STATUS;
-				array.push(doctor);
-			} else {
-				handleRemoveItem(index);
-			}
-			return array;
-		}, []);
-	};
-
-	const updateDoctorsImportStatus = (importedDoctors) => {
-		importedDoctors.forEach((insertedSuccess, index) => {
-			const key = insertedSuccess ? 'SUCCESS' : 'FAIL';
-			methods.setValue(`doctors.${index}.importStatus`, IMPORT_STATUS[key]);
-		});
-	};
-
 	const handleUploadExcelFile = async ({ fileExcel }) => {
 		const jsonData = await readFileExcel(fileExcel);
 		const doctors = jsonData.map((doctor) => {
-			doctor.importStatus = IMPORT_STATUS.PREPARE;
-			return doctor;
+			const { fullName, email, phone, address, position, gender } = doctor;
+			const { firstName, lastName } = extractFirstNameLastName(fullName);
+
+			const _gender = genders.find((genderItem) => genderItem.label.toLowerCase() === gender.toLowerCase());
+			const _position = positions.find((positionItem) => positionItem.label.toLowerCase() === position.toLowerCase());
+
+			return {
+				firstName,
+				lastName,
+				email,
+				phone,
+				address,
+				gender: _gender.value,
+				position: _position.value,
+				importStatus: IMPORT_STATUS.PREPARE,
+				specialtyId,
+			};
 		});
 		methods.setValue('doctors', doctors);
 	};
 
-	const handleOnSubmit = async (data) => {
-		const doctors = filterFailedDoctors(data.doctors);
-		const importedDoctors = await onSubmit(doctors);
-		updateDoctorsImportStatus(importedDoctors);
+	const removeDoctorsWithFailedImport = (doctors) => {
+		const doctorsFilter = doctors.filter(({ importStatus }) => importStatus !== IMPORT_STATUS.SUCCESS);
+		methods.setValue('doctors', doctorsFilter);
+		return doctorsFilter;
 	};
+
+	const updateDoctorsWithImportResults = (importedDoctors) => {
+		importedDoctors.forEach(({ index, status }) => {
+			const value = status !== 'reject' ? IMPORT_STATUS.SUCCESS : IMPORT_STATUS.FAIL;
+			methods.setValue(`doctors.${index}.importStatus`, value);
+		});
+	};
+
+	const handleOnSubmit = tryCatchAndToast(async ({ doctors }) => {
+		const filteredDoctors = removeDoctorsWithFailedImport(doctors);
+		const {
+			message,
+			metadata: { doctorsStatus },
+		} = await onSubmit([...filteredDoctors]);
+		toast.success(message[languageId]);
+		updateDoctorsWithImportResults(doctorsStatus);
+	}, languageId);
 
 	return (
 		<BaseModal size='lg' isOpen={isOpen}>
@@ -173,18 +193,21 @@ export function ImportExcelModal({
 								</TableHeader>
 								<TableBody>
 									{fields.map((field, index) => (
-										<TrStatus status={methods.getValues(`doctors.${index}.importStatus`)} key={field.id}>
+										<TrStatus
+											status={methods.getValues(`doctors.${index}.importStatus`).toLocaleLowerCase()}
+											key={field.id}
+										>
 											<td className='text-center'>{index + 1}</td>
-											<TdInput className='text-center' name={`doctors.${index}.first_name`} />
-											<TdInput className='text-center' name={`doctors.${index}.last_name`} />
+											<TdInput className='text-center' name={`doctors.${index}.firstName`} />
+											<TdInput className='text-center' name={`doctors.${index}.lastName`} />
 											<TdInput className='text-center' name={`doctors.${index}.email`} />
 											<TdInput className='text-center' name={`doctors.${index}.phone`} />
 											<TdInput className='text-center' name={`doctors.${index}.address`} />
-											<TdSelect data-parent='table-import-excel' options={genders} name={`doctors.${index}.genderId`} />
+											<TdSelect data-parent='table-import-excel' options={genders} name={`doctors.${index}.gender`} />
 											<TdSelect
 												data-parent='table-import-excel'
 												options={positions}
-												name={`doctors.${index}.positionId`}
+												name={`doctors.${index}.position`}
 											/>
 											<td className='text-center'>
 												<Button size='xs' danger soft onClick={() => handleRemoveItem(index)}>

@@ -8,6 +8,7 @@ module.exports = (schema, type = 'body') => {
 		});
 
 		if (error) {
+			console.log(error);
 			return next(new BadRequestError({ code: 100400, message: error.details[0].message }));
 		} else {
 			req[type] = value;

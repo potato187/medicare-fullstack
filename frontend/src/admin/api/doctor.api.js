@@ -28,4 +28,8 @@ export const doctorApi = {
 			responseType: 'blob',
 		});
 	},
+
+	async import(doctors) {
+		return await axiosClient.post(`${DOCTOR_PATH}/import`, { doctors });
+	},
 };

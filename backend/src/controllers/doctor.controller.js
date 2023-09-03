@@ -26,7 +26,7 @@ class DoctorController {
 
 	async insertMany(req, res, next) {
 		new CreatedResponse({
-			metadata: await DoctorService.insertMany(req.body),
+			metadata: await DoctorService.insertMany(req.body.doctors),
 		}).send(res);
 	}
 

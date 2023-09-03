@@ -27,6 +27,7 @@ export function TdSelect({ name, options = [], ...props }) {
 		'td-select__list': listCln,
 		focus: focusCln,
 	} = module;
+
 	const value = getValues(name);
 	const option = options.find((option) => option.value === value) ?? options[0];
 	const style = cn(tdSelectCln, {
@@ -42,7 +43,7 @@ export function TdSelect({ name, options = [], ...props }) {
 		if (option.value !== value) {
 			setValue(name, option.value);
 		}
-	}, [name, option.value, setValue, value]);
+	}, [name, option.value, value, setValue]);
 
 	useLayoutEffect(() => {
 		if (nodeRef.current && tdRef.current) {
@@ -80,7 +81,7 @@ export function TdSelect({ name, options = [], ...props }) {
 					<RxCaretDown size='1.5em' />
 				</div>
 				<CSSTransition in={isOpen} timeout={300} classNames='dropdown-menu' unmountOnExit nodeRef={nodeRef}>
-					<div className={cn('select-list', listCln)} style={{ ...position }} ref={nodeRef}>
+					<div className={listCln} style={{ ...position }} ref={nodeRef}>
 						<ul className='scrollbar scrollbar--sm'>
 							{options.map(({ value, label }) => (
 								<li

@@ -33,7 +33,7 @@ export const fileExcelValidation = yup
 	.required('form.message.error.required')
 	.test('excelExtension', (file) => {
 		if (!file || typeOf(file) === 'string') return true;
-		return isValidExcelExtension(file[0]?.name);
+		return isValidExcelExtension(file?.name || '');
 	});
 
 export const buildValidationForm = (data) => {
