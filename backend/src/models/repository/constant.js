@@ -7,4 +7,6 @@ module.exports = {
 	POSITION_MODEL: 'position',
 	WORKING_HOUR_MODEL: 'workingHour',
 	DOCTOR_MODEL: 'doctor',
+	PATIENT_MODEL: 'patient',
+	BOOKING_MODEL: 'booking',
 };

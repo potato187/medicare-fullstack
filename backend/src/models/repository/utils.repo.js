@@ -7,6 +7,7 @@ const _RoleModel = require('../role.model');
 const _SpecialtyModel = require('../specialty.model');
 const _WorkingHourModel = require('../workingHour.model');
 const _DoctorModel = require('../doctor.model');
+const _BookingModel = require('../booking.model');
 
 const { convertToObjectIdMongodb, removeFalsyProperties, flattenObject, getInfoData } = require('@/utils');
 const { ForbiddenRequestError } = require('@/core');
@@ -19,6 +20,7 @@ const {
 	POSITION_MODEL,
 	WORKING_HOUR_MODEL,
 	DOCTOR_MODEL,
+	BOOKING_MODEL,
 } = require('./constant');
 
 class UtilsRepo {
@@ -83,5 +85,6 @@ UtilsRepo.registerModel(POSITION_MODEL, _PositionModel);
 UtilsRepo.registerModel(SPECIALLY_MODEL, _SpecialtyModel);
 UtilsRepo.registerModel(WORKING_HOUR_MODEL, _WorkingHourModel);
 UtilsRepo.registerModel(DOCTOR_MODEL, _DoctorModel);
+UtilsRepo.registerModel(BOOKING_MODEL, _BookingModel);
 
 module.exports = UtilsRepo;

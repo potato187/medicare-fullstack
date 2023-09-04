@@ -5,4 +5,5 @@ module.exports = {
 	LanguageController: require('./language.controller'),
 	ResourceController: require('./resource.controller'),
 	SpecialtyController: require('./specialty.controller'),
+	BookingController: require('./booking.controller'),
 };

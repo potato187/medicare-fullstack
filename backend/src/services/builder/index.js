@@ -3,4 +3,5 @@ module.exports = {
 	TokenBuilder: require('./_tokens.builder'),
 	SpecialtyBuilder: require('./_specialty.builder'),
 	DoctorBuilder: require('./_doctor.builder'),
+	BookingBuilder: require('./_booking.builder'),
 };

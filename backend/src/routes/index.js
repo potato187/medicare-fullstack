@@ -8,5 +8,6 @@ router.use('/doctor', require('./doctor'));
 router.use('/language', require('./language'));
 router.use('/resource', require('./resource'));
 router.use('/specialty', require('./specialty'));
+router.use('/booking', require('./booking'));
 
 module.exports = router;

@@ -6,4 +6,5 @@ module.exports = {
 	LanguageService: require('./language.service'),
 	ResourceService: require('./resource.service'),
 	SpecialtyService: require('./specialty.service'),
+	BookingService: require('./booking.service'),
 };
