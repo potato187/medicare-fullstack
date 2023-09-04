@@ -22,12 +22,7 @@ import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 import { readFileExcel } from 'utils';
 import * as yup from 'yup';
-
-export const IMPORT_STATUS = {
-	PREPARE: 'PREPARE',
-	SUCCESS: 'SUCCESS',
-	FAIL: 'FAIL',
-};
+import { IMPORT_STATUS, doctorDefaultValue } from './constant';
 
 export function ImportExcelModal({
 	specialtyId = '',
@@ -53,19 +48,7 @@ export function ImportExcelModal({
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {
-			doctors: [
-				{
-					firstName: '',
-					lastName: '',
-					email: '',
-					phone: '',
-					address: '',
-					gender: '',
-					position: '',
-					specialtyId: '',
-					importStatus: IMPORT_STATUS.PREPARE,
-				},
-			],
+			doctors: [doctorDefaultValue],
 		},
 		resolver: yupResolver(
 			yup.object().shape({
@@ -92,7 +75,7 @@ export function ImportExcelModal({
 	};
 
 	const handleInsertItem = () => {
-		insert(fields.length + 1);
+		insert(fields.length + 1, { ...doctorDefaultValue });
 	};
 
 	const handleUploadExcelFile = async ({ fileExcel }) => {
@@ -100,7 +83,6 @@ export function ImportExcelModal({
 		const doctors = jsonData.map((doctor) => {
 			const { fullName, email, phone, address, position, gender } = doctor;
 			const { firstName, lastName } = extractFirstNameLastName(fullName);
-
 			const _gender = genders.find((genderItem) => genderItem.label.toLowerCase() === gender.toLowerCase());
 			const _position = positions.find((positionItem) => positionItem.label.toLowerCase() === position.toLowerCase());
 
