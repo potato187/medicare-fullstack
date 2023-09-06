@@ -34,17 +34,12 @@ const selectValidate = Joi.alternatives()
 	.try(doctorFieldValidate, Joi.array().items(doctorFieldValidate))
 	.default(['_id', 'firstName', 'lastName', 'email', 'phone', 'specialtyId', 'position', 'gender', 'address']);
 
-const sortValidate = Joi.array()
-	.items(
-		Joi.array().ordered(
-			Joi.string().valid('createdAt', 'updatedAt', 'firstName', 'lastName', 'email', 'position').default('updatedAt'),
-			Joi.string().valid('asc', 'desc').default('asc'),
-		),
-	)
-	.default([
-		['updatedAt', 'asc'],
-		['position', 'asc'],
-	]);
+const sortValidate = Joi.array().items(
+	Joi.array().ordered(
+		Joi.string().valid('createdAt', 'updatedAt', 'firstName', 'lastName', 'email', 'position'),
+		Joi.string().valid('asc', 'desc'),
+	),
+);
 
 const createSchema = Joi.object({
 	firstName: nameValidator.required(),
@@ -77,6 +72,7 @@ const importSchema = Joi.object({
 
 const querySchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
+	positionId: ObjectIdMongodbValidator,
 	key_search: Joi.string().allow('').default(''),
 	page: pageValidate,
 	pagesize: pageSizeValidate,

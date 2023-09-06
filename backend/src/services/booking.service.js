@@ -1,8 +1,9 @@
 'use strict';
 const { UtilsRepo } = require('@/models/repository');
 const { BOOKING_MODEL, WORKING_HOUR_MODEL, SPECIALLY_MODEL, DOCTOR_MODEL } = require('@/models/repository/constant');
-const { convertToObjectIdMongodb, getInfoData } = require('@/utils');
+const { convertToObjectIdMongodb, getInfoData, createSortData, createSelectData } = require('@/utils');
 const { BadRequestError, NotFoundRequestError } = require('@/core');
+const { _BookingModel } = require('@/models');
 
 class BookingService {
 	static async findByFilter(filter, model = BOOKING_MODEL, select = ['_id']) {
@@ -23,7 +24,7 @@ class BookingService {
 	}
 
 	static async createOne(body) {
-		const { specialtyId, doctorId, workingHourId, appointmentDate } = body;
+		const { specialtyId, doctorId, workingHourId } = body;
 
 		const foundDoctor = new UtilsRepo.findOne({
 			model: BOOKING_MODEL,
@@ -83,6 +84,79 @@ class BookingService {
 
 	static async deleteOneById(id) {
 		return await BookingService.updateOneById({ id, updateBody: { isDeleted: true } });
+	}
+
+	static async queryByParams(parameters) {
+		const {
+			specialtyId,
+			doctorId,
+			workingHourId,
+			dateStart,
+			dateEnd,
+			sort,
+			page = 1,
+			pagesize = 25,
+			status,
+			select,
+		} = parameters;
+
+		const $sort = sort.length ? createSortData(sort) : { ctime: 1 };
+		const $match = { isDeleted: false, status };
+		const $skip = (page - 1) * pagesize;
+		const $limit = page;
+
+		if (specialtyId) {
+			$match.specialtyId = convertToObjectIdMongodb(specialtyId);
+		}
+
+		if (doctorId) {
+			$match.doctorId = convertToObjectIdMongodb(doctorId);
+		}
+
+		if (workingHourId) {
+			$match.doctorId = convertToObjectIdMongodb(doctorId);
+		}
+
+		if (dateStart) {
+			$match.appointmentDate = { ...$match.appointmentDate, $gte: dateStart };
+		}
+
+		if (dateEnd) {
+			$match.appointmentDate = { ...$match.appointmentDate, $lte: dateEnd };
+		}
+
+		const [{ results, total }] = await _BookingModel
+			.aggregate()
+			.match($match)
+			.facet({
+				results: [
+					{ $sort },
+					{ $skip },
+					{ $limit },
+					{
+						$project: createSelectData(select),
+					},
+				],
+				totalCount: [{ $count: 'count' }],
+			})
+			.addFields({
+				total: {
+					$ifNull: [{ $arrayElemAt: ['$totalCount.count', 0] }, 0],
+				},
+			})
+			.project({
+				results: 1,
+				total: 1,
+			});
+
+		return {
+			data: results,
+			meta: {
+				page,
+				pagesize: $limit,
+				totalPages: Math.ceil(total / $limit) || 1,
+			},
+		};
 	}
 }
 

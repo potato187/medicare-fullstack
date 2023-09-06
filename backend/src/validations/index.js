@@ -27,7 +27,6 @@ const genderValidator = Joi.string().pattern(genderRegex).message({
 });
 
 const ObjectIdMongodbValidator = Joi.string().custom((value, helper) => {
-
 	return Types.ObjectId.isValid(value) ? value : helper.message('107400');
 });
 
@@ -35,13 +34,21 @@ const nameValidator = Joi.string().trim().min(3).max(50);
 
 const addressValidator = Joi.string().trim().min(3).max(150);
 
+const emptyStringValidator = Joi.string().allow('');
+
 const idSchema = Joi.object({
 	id: ObjectIdMongodbValidator,
 });
 
+const isDeletedValidator = Joi.boolean();
+
+const isVerify = Joi.boolean();
+
 const positionValidator = Joi.string().custom((value, helper) => {
 	return POSITIONS.includes(value) ? value : helper.message('108400');
 });
+
+const dateValidator = Joi.date().iso();
 
 module.exports = {
 	addressValidator,
@@ -49,9 +56,13 @@ module.exports = {
 	emailValidator,
 	genderValidator,
 	idSchema,
+	isDeletedValidator,
+	isVerify,
 	nameValidator,
 	ObjectIdMongodbValidator,
 	passwordValidator,
 	phoneValidator,
 	positionValidator,
+	dateValidator,
+	emptyStringValidator,
 };

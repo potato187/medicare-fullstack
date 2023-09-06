@@ -110,7 +110,7 @@ class DoctorService {
 		specialtyId = '',
 		positionId = '',
 		key_search = '',
-		sort = { updateAt: 'asc' },
+		sort = [],
 		page = 1,
 		pagesize = 25,
 		select = [],
@@ -119,7 +119,7 @@ class DoctorService {
 		const $page = Math.max(1, +page);
 		const $limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
 		const $skip = ($page - 1) * $limit;
-		const $sort = createSortData(sort);
+		const $sort = sort.length ? createSortData(sort) : { updateAt: 1 };
 
 		if (specialtyId) {
 			filter.specialtyId = convertToObjectIdMongodb(specialtyId);
@@ -146,9 +146,6 @@ class DoctorService {
 					},
 				],
 				totalCount: [{ $count: 'count' }],
-			})
-			.sort({
-				'position.order': 1,
 			})
 			.addFields({
 				total: {

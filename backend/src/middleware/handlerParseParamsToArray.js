@@ -7,8 +7,10 @@ module.exports = (params = [], typeRequest = 'query') => {
 		for (const keyParam of params) {
 			const valueParam = req[typeRequest][keyParam];
 			const type = typeOf(valueParam);
-			req[typeRequest][keyParam] = getQueryStrategy(type, valueParam);
+			req[typeRequest][keyParam] = getQueryStrategy(type, valueParam) || [];
 		}
+
+		console.log(req[typeRequest]);
 
 		return next();
 	};
