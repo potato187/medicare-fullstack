@@ -103,7 +103,7 @@ class BookingService {
 		const $sort = sort.length ? createSortData(sort) : { ctime: 1 };
 		const $match = { isDeleted: false, status };
 		const $skip = (page - 1) * pagesize;
-		const $limit = page;
+		const $limit = pagesize;
 
 		if (specialtyId) {
 			$match.specialtyId = convertToObjectIdMongodb(specialtyId);

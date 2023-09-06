@@ -2,7 +2,7 @@
 const Joi = require('joi');
 
 const modelSchema = Joi.object({
-	model: Joi.string().valid('gender', 'role', 'specialty', 'workingHour', 'position').required(),
+	model: Joi.string().valid('gender', 'role', 'specialty', 'workingHour', 'status', 'position').required(),
 });
 
 const querySchema = Joi.object({

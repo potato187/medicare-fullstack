@@ -3,15 +3,7 @@ import cn from 'classnames';
 import React from 'react';
 import { RxCaretDown } from 'react-icons/rx';
 
-export function Dropdown({
-	showCounter = false,
-	name = '',
-	options = [],
-	value = '',
-	className = '',
-	size = '',
-	onSelect = () => {},
-}) {
+export function Dropdown({ name = '', options = [], value = '', className = '', size = '', onSelect = () => {} }) {
 	if (!options.length) return null;
 
 	const option = options.find((option) => option.value === value) ?? options[0];
@@ -39,13 +31,10 @@ export function Dropdown({
 									type='li'
 									className={cn({
 										active: item.value === option.value,
-										'show-counter': showCounter,
-										disabled: showCounter && item.count === 0,
 									})}
 									customOnClick={() => onSelect({ key: name, value: item.value })}
 								>
 									<span>{item.label}</span>
-									{showCounter ? <span>({item.count || 0})</span> : null}
 								</DropdownItem>
 							</React.Fragment>
 						))}

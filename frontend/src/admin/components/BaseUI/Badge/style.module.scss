@@ -1,0 +1,17 @@
+.badge {
+	--badge-padding-x: 0.375rem;
+	--badge-padding-y: 0.25rem;
+	--badge-font-size: 0.625rem;
+	--badge-font-weight: 600;
+	--badge-border-radius: var(--spacing-xxs);
+	--badge-color: #fff;
+
+	display: inline-block;
+	padding: var(--badge-padding-y) var(--badge-padding-x);
+	font-size: var(--badge-font-size);
+	font-weight: var(--badge-font-weight);
+	line-height: 1;
+	color: var(--badge-color);
+	border: 1px solid transparent;
+	border-radius: var(--badge-border-radius);
+}

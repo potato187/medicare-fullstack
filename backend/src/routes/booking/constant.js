@@ -16,6 +16,7 @@ const SelectFields = [
 ];
 
 const BookingStatusOptions = ['pending', 'confirmed', 'completed', 'cancelled'];
+
 const BookingStatusDefault = 'pending';
 
 module.exports = {

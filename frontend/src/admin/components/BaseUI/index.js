@@ -3,6 +3,7 @@ export * from './BaseNotification';
 export * from './BasePagination';
 export * from './BasePortal';
 export * from './Breadcrumb';
+export * from './Badge';
 export { default as Button } from './Button';
 export * from './Card';
 export * from './Container';

@@ -50,6 +50,10 @@ const positionValidator = Joi.string().custom((value, helper) => {
 
 const dateValidator = Joi.date().iso();
 
+const pageValidator = Joi.number().integer().positive().min(1).max(100).default(1);
+
+const pageSizeValidator = Joi.number().integer().positive().min(1).max(100).default(25);
+
 module.exports = {
 	addressValidator,
 	adminRoleValidator,
@@ -65,4 +69,6 @@ module.exports = {
 	positionValidator,
 	dateValidator,
 	emptyStringValidator,
+	pageValidator,
+	pageSizeValidator,
 };

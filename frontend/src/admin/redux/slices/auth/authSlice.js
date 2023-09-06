@@ -28,7 +28,7 @@ const authSlice = createSlice({
 	reducers: {
 		changeLanguage: (state, { payload }) => {
 			const { languageId } = payload;
-			state.languageId = languageId;
+			state.info.languageId = languageId;
 		},
 		updateTokens: (state, { payload }) => {
 			state.tokens.accessToken = payload.accessToken;

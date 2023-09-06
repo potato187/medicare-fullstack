@@ -23,7 +23,9 @@ import { useAuth } from 'hooks';
 import { AdminCreateModal, AdminEditModal } from '../../components';
 
 export function AdminManager() {
-	const { languageId } = useAuth();
+	const {
+		info: { languageId },
+	} = useAuth();
 	const { currentIndexRef: adminIndexRef, setCurrentIndex: updateAdminIndex } = useCurrentIndex(0);
 
 	const {

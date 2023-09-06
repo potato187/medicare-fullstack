@@ -9,9 +9,11 @@ const {
 	isVerify,
 	dateValidator,
 	emptyStringValidator,
+	pageValidator,
+	pageSizeValidator,
 } = require('@/validations');
 const Joi = require('joi');
-const { BookingStatusOptions, BookingStatusDefault, SelectFields, SortFields, SortDefaults } = require('./constant');
+const { BookingStatusOptions, BookingStatusDefault, SelectFields, SortFields } = require('./constant');
 
 const sortDirections = ['asc', 'desc'];
 
@@ -71,6 +73,8 @@ const queryBookingSchema = Joi.object({
 		.valid(...BookingStatusOptions)
 		.default(BookingStatusDefault),
 	sort: sortValidator,
+	page: pageValidator,
+	pagesize: pageSizeValidator,
 });
 
 module.exports = {

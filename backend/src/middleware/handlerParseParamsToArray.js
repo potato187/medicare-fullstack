@@ -10,8 +10,6 @@ module.exports = (params = [], typeRequest = 'query') => {
 			req[typeRequest][keyParam] = getQueryStrategy(type, valueParam) || [];
 		}
 
-		console.log(req[typeRequest]);
-
 		return next();
 	};
 };
