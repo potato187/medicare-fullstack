@@ -34,7 +34,7 @@ export function FloatingDatePicker({ name, labelIntl }) {
 					calendarClassName='date-picker'
 					dateFormat='dd/MM/yyyy'
 					onChange={(date) => field.onChange(date)}
-					selected={field.value}
+					selected={new Date(field.value)}
 					customInput={<InputDatePicker labelIntl={labelIntl} />}
 				/>
 			)}

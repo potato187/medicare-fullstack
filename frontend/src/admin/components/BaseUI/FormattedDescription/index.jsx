@@ -8,16 +8,15 @@ function SpanText(props) {
 	return <span>{props?.chucks}</span>;
 }
 
-export function FormattedDescription({ id, values, ...props }) {
+export function FormattedDescription({ id, values }) {
 	return (
 		<FormattedMessage
 			id={id}
 			values={{
-				...values,
 				b: (chunks) => BlobText({ chunks }),
 				span: (chucks) => SpanText({ chucks }),
+				...values,
 			}}
-			{...props}
 		/>
 	);
 }

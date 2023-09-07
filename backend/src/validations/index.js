@@ -54,6 +54,8 @@ const pageValidator = Joi.number().integer().positive().min(1).max(100).default(
 
 const pageSizeValidator = Joi.number().integer().positive().min(1).max(100).default(25);
 
+const keySearchValidator = Joi.string().allow('').default('');
+
 module.exports = {
 	addressValidator,
 	adminRoleValidator,
@@ -71,4 +73,5 @@ module.exports = {
 	emptyStringValidator,
 	pageValidator,
 	pageSizeValidator,
+	keySearchValidator,
 };

@@ -2,15 +2,15 @@
 const { _AdminModel } = require('@/models');
 const { UtilsRepo } = require('@/models/repository');
 const { ADMIN_MODEL } = require('@/models/repository/constant');
-const { createSortData, createSearchData, getInfoData } = require('@/utils');
+const { createSortData, createSearchData, getInfoData, createSelectData } = require('@/utils');
 
 class AdminService {
-	static async query({ key_search = '', select = ['_id'], sort = { updateAt: 'asc' }, page = 1, pagesize = 25 }) {
+	static async query({ key_search = '', select = ['_id'], sort = [], page = 1, pagesize = 25 }) {
 		const searchClause = {};
 		const _page = Math.max(1, page);
 		const _limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
 		const _skip = (_page - 1) * _limit;
-		let _sort = createSortData(sort);
+		let _sort = sort.length ? createSortData(sort) : { ctime: 1 };
 
 		if (key_search) {
 			searchClause.$or = createSearchData(['firstName', 'lastName', 'email', 'phone'], key_search);
@@ -30,12 +30,7 @@ class AdminService {
 					{ $limit: _limit },
 					{
 						$project: {
-							firstName: 1,
-							lastName: 1,
-							email: 1,
-							phone: 1,
-							gender: 1,
-							role: 1,
+							...createSelectData(select),
 						},
 					},
 				],

@@ -2,9 +2,12 @@ import { bookingApi } from 'admin/api';
 import {
 	Badge,
 	Button,
+	ConfirmModal,
 	Container,
+	DatePickerRange,
 	Dropdown,
 	FooterContainer,
+	FormattedDescription,
 	SortableTableHeader,
 	Table,
 	TableBody,
@@ -12,108 +15,191 @@ import {
 	TableHeader,
 	UnFieldDebounce,
 } from 'admin/components';
-import { BOOKING_STATUS } from 'admin/constant';
-import { useAsyncLocation, useFetchResource } from 'admin/hooks';
+import { useToggle } from 'admin/hooks';
+import { compose, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
+import produce from 'immer';
 import { FormattedMessage } from 'react-intl';
+import { toast } from 'react-toastify';
 import { formatPhone } from 'utils';
+import { BookingModel } from '../../components';
+import { useManageBookings } from '../../hooks';
 
 export function BookingManager() {
 	const {
 		info: { languageId },
 	} = useAuth();
 
-	const { data: Bookings } = useAsyncLocation({
-		getData: bookingApi.getByParams,
-	});
+	const {
+		Bookings,
+		Specialties,
+		WorkingHours,
+		Statuses,
+		Genders,
+		currentBookingIndex,
+		queryParams,
+		handleSelectRangeDates,
+		setBookings,
+		setBookingIndex,
+		handleOnSelect,
+		handleSelectSpecialty,
+		handleSelectWorkingHour,
+		handleOnPageChange,
+		handleOnChangeSearch,
+	} = useManageBookings(languageId);
 
-	const Specialties = useFetchResource({
-		endpoint: 'specialty',
-		languageId,
-	});
+	const currentBooking = Bookings.length ? Bookings[currentBookingIndex] : {};
+	const statusLabels = Statuses.reduce((hash, { label, value }) => ({ ...hash, [value]: label }), {});
 
-	const WorkingHours = useFetchResource({
-		endpoint: 'workingHour',
-		languageId,
-	});
+	const [statusConfirmModal, toggleConfirmDeletion] = useToggle();
+	const [statusModalBooking, toggleModalBooking] = useToggle();
 
-	const Status = BOOKING_STATUS.map((status) => ({ ...status, label: status.label[languageId] }));
+	const openConfirmModal = compose(setBookingIndex, toggleConfirmDeletion);
+	const openModalBooking = compose(setBookingIndex, toggleModalBooking);
+
+	const handleConfirmDeletionBooking = tryCatchAndToast(async () => {
+		const { message } = await bookingApi.deleteOne(Bookings[currentBookingIndex]._id);
+
+		setBookings(
+			produce((draft) => {
+				draft.splice(currentBookingIndex, 1);
+			}),
+		);
+
+		setBookingIndex(0);
+		toast.success(message[languageId]);
+		toggleConfirmDeletion(false);
+	}, languageId);
+
+	const handleUpdateBooking = tryCatchAndToast(async (updateBody) => {
+		console.log(updateBody);
+	}, languageId);
 
 	return (
-		<Container id='page-main'>
-			<div className='d-flex flex-column h-100 py-5'>
-				<div className='row position-relative pb-4 z-index-2'>
-					<div className='col-6'>
-						<div className='d-flex items-end gap-2'>
-							<Dropdown size='md' name='specialtyId' options={Specialties} />
-							<div className='d-flex'>
-								<UnFieldDebounce
-									delay={500}
-									type='text'
-									placeholderIntl='form.search_placeholder'
-									ariallabel='search field'
-									id='form-search'
+		<>
+			<Container id='page-main'>
+				<div className='d-flex flex-column h-100 py-5'>
+					<div className='row position-relative pb-4 z-index-2'>
+						<div className='col-6'>
+							<div className='d-flex items-end gap-2'>
+								<Dropdown
+									size='md'
+									name='specialtyId'
+									value={queryParams.specialtyId}
+									options={Specialties}
+									onSelect={handleSelectSpecialty}
 								/>
+								<div className='d-flex'>
+									<UnFieldDebounce
+										delay={500}
+										type='text'
+										placeholderIntl='form.search_placeholder'
+										ariallabel='search field'
+										id='form-search'
+										onChange={handleOnChangeSearch}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className='col-6'>
+							<div className='d-flex justify-content-end gap-2'>
+								<DatePickerRange
+									languageId={languageId}
+									startDate={queryParams.startDate}
+									endDate={queryParams.endDate || null}
+									onChange={handleSelectRangeDates}
+								/>
+								<Dropdown
+									size='md'
+									name='workingHourId'
+									value={queryParams.workingHourId}
+									options={WorkingHours}
+									onSelect={handleSelectWorkingHour}
+								/>
+								<Dropdown name='status' options={Statuses} value={queryParams.status} onSelect={handleOnSelect} />
 							</div>
 						</div>
 					</div>
-					<div className='col-6'>
-						<div className='d-flex justify-content-end gap-2'>
-							<Dropdown size='md' name='workingHourId' options={WorkingHours} />
-							<Dropdown name='status' options={Status} />
-						</div>
-					</div>
-				</div>
-				<TableGrid className='scrollbar'>
-					<Table hover striped auto>
-						<TableHeader>
-							<th className='text-center'>
-								<FormattedMessage id='table.no' />
-							</th>
-							<SortableTableHeader className='text-start' name='fullName' intl='form.fullName' />
-							<th className='text-start'>
-								<FormattedMessage id='form.phone' />
-							</th>
-							<th className='text-start'>
-								<FormattedMessage id='form.address' />
-							</th>
-							<th className='text-center'>
-								<FormattedMessage id='form.address' />
-							</th>
-							<th className='text-center'>
-								<FormattedMessage id='table.actions' />
-							</th>
-						</TableHeader>
-						<TableBody>
-							{Bookings.map(({ _id, fullName, phone, address, isVerify }, index) => (
-								<tr key={_id}>
-									<td className='text-center'>{index + 1}</td>
-									<td>{fullName}</td>
-									<td>{formatPhone(phone)}</td>
-									<td>{address}</td>
-									<td className='text-center'>
-										<Badge color={isVerify ? 'primary' : 'warning'}>
-											<FormattedMessage id={`common.${isVerify ? 'verify' : 'unverified'}`} />
-										</Badge>
-									</td>
-									<td>
-										<div className='d-flex justify-content-center gap-2'>
-											<Button success size='xs' info>
-												<FormattedMessage id='button.update' />
-											</Button>
-											<Button size='xs' danger>
-												<FormattedMessage id='button.delete' />
-											</Button>
-										</div>
-									</td>
-								</tr>
-							))}
-						</TableBody>
-					</Table>
-				</TableGrid>
+					<TableGrid className='scrollbar'>
+						<Table hover striped auto>
+							<TableHeader>
+								<th className='text-center'>
+									<FormattedMessage id='table.no' />
+								</th>
+								<SortableTableHeader className='text-start' name='fullName' intl='form.fullName' />
+								<th className='text-start'>
+									<FormattedMessage id='form.phone' />
+								</th>
+								<th className='text-start'>
+									<FormattedMessage id='form.address' />
+								</th>
+								<th className='text-center'>
+									<FormattedMessage id='form.address' />
+								</th>
+								<th className='text-center'>
+									<FormattedMessage id='table.actions' />
+								</th>
+							</TableHeader>
+							<TableBody>
+								{Bookings.map(({ _id, fullName, phone, address, status }, index) => (
+									<tr key={_id}>
+										<td className='text-center'>{index + 1}</td>
+										<td>{fullName}</td>
+										<td>{formatPhone(phone)}</td>
+										<td>{address}</td>
+										<td className='text-center'>
+											<Badge color={status}>{statusLabels[status]}</Badge>
+										</td>
+										<td>
+											<div className='d-flex justify-content-center gap-2'>
+												<Button success size='xs' info onClick={() => openModalBooking(index)}>
+													<FormattedMessage id='button.update' />
+												</Button>
+												<Button size='xs' danger onClick={() => openConfirmModal(index)}>
+													<FormattedMessage id='button.delete' />
+												</Button>
+											</div>
+										</td>
+									</tr>
+								))}
+							</TableBody>
+						</Table>
+					</TableGrid>
 
-				<FooterContainer pagesize={25} totalPages={1} />
-			</div>
-		</Container>
+					<FooterContainer
+						pagesize={queryParams.pagesize || 25}
+						totalPages={queryParams.page || 1}
+						handleOnPageChange={handleOnPageChange}
+						handleOnSelect={handleOnSelect}
+					/>
+				</div>
+			</Container>
+
+			<BookingModel
+				idTitleIntl='dashboard.booking.modal.update_booking.title'
+				defaultValues={currentBooking}
+				languageId={languageId}
+				specialtyId={queryParams.specialtyId}
+				specialties={Specialties}
+				workingHours={WorkingHours}
+				statuses={Statuses}
+				genders={Genders}
+				isOpen={statusModalBooking}
+				onClose={toggleModalBooking}
+				onSubmit={handleUpdateBooking}
+			/>
+
+			<ConfirmModal
+				idTitleIntl='dashboard.booking.modal.confirm_deletion_booking.title'
+				isOpen={statusConfirmModal}
+				onClose={toggleConfirmDeletion}
+				onSubmit={handleConfirmDeletionBooking}
+			>
+				<FormattedDescription
+					id='dashboard.booking.modal.confirm_deletion_booking.message'
+					values={{ phone: currentBooking?.phone || '' }}
+				/>
+			</ConfirmModal>
+		</>
 	);
 }

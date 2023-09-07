@@ -3,7 +3,7 @@ import vi from 'date-fns/locale/vi';
 export const SERVER_URL = import.meta.env.VITE_REACT_APP_SERVER_URL;
 
 export const localeDatePicker = { vi, en: '' };
-export const DATE_FORMAT_QUERY = 'DD/MM/YYYY';
+export const DATE_FORMAT_QUERY = 'yyyy-MM-dd';
 export const DEFAULT_DATE = '30/05/2023';
 export const SPECIALTY_ID_DEFAULT = 'SP01';
 export const WORKING_HOUR_ID_DEFAULT = 'WH1';

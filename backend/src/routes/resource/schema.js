@@ -1,15 +1,17 @@
 'use strict';
+const { ObjectIdMongodbValidator } = require('@/validations');
 const Joi = require('joi');
 
 const modelSchema = Joi.object({
-	model: Joi.string().valid('gender', 'role', 'specialty', 'workingHour', 'status', 'position').required(),
+	model: Joi.string().valid('gender', 'role', 'specialty', 'doctor', 'workingHour', 'status', 'position').required(),
 });
 
 const querySchema = Joi.object({
 	sort: Joi.array()
 		.items(Joi.array().ordered(Joi.string().valid('key').default(''), Joi.string().valid('asc', 'desc').default('asc')))
 		.default([['ctime', 'asc']]),
-	select: Joi.array().items(Joi.string().valid('_id', 'key', 'name')),
+	select: Joi.array().items(Joi.string().valid('_id', 'key', 'name', 'firstName', 'lastName')),
+	specialtyId: ObjectIdMongodbValidator,
 });
 
 const postSchema = Joi.array().items(

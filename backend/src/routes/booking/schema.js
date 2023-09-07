@@ -11,6 +11,7 @@ const {
 	emptyStringValidator,
 	pageValidator,
 	pageSizeValidator,
+	keySearchValidator,
 } = require('@/validations');
 const Joi = require('joi');
 const { BookingStatusOptions, BookingStatusDefault, SelectFields, SortFields } = require('./constant');
@@ -64,7 +65,7 @@ const queryBookingSchema = Joi.object({
 	startDate: dateValidator,
 	endDate: Joi.when('startDate', {
 		is: Joi.exist(),
-		then: dateValidator.greater(Joi.ref('startDate')).required(),
+		then: dateValidator.greater(Joi.ref('startDate')).allow(''),
 	}),
 	select: Joi.array()
 		.items(...SelectFields)
@@ -75,6 +76,7 @@ const queryBookingSchema = Joi.object({
 	sort: sortValidator,
 	page: pageValidator,
 	pagesize: pageSizeValidator,
+	key_search: keySearchValidator,
 });
 
 module.exports = {

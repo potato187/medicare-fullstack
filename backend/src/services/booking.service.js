@@ -1,9 +1,18 @@
 'use strict';
 const { UtilsRepo } = require('@/models/repository');
 const { BOOKING_MODEL, WORKING_HOUR_MODEL, SPECIALLY_MODEL, DOCTOR_MODEL } = require('@/models/repository/constant');
-const { convertToObjectIdMongodb, getInfoData, createSortData, createSelectData } = require('@/utils');
+const {
+	convertToObjectIdMongodb,
+	getInfoData,
+	createSortData,
+	createSelectData,
+	createSearchData,
+} = require('@/utils');
 const { BadRequestError, NotFoundRequestError } = require('@/core');
 const { _BookingModel } = require('@/models');
+const { Types } = require('mongoose');
+
+const FIELDS_ABLE_SEARCH = ['fullName', 'phone', 'address', 'note'];
 
 class BookingService {
 	static async findByFilter(filter, model = BOOKING_MODEL, select = ['_id']) {
@@ -88,11 +97,11 @@ class BookingService {
 
 	static async queryByParams(parameters) {
 		const {
+			key_search,
 			specialtyId,
-			doctorId,
 			workingHourId,
-			dateStart,
-			dateEnd,
+			startDate,
+			endDate,
 			sort,
 			page = 1,
 			pagesize = 25,
@@ -105,24 +114,24 @@ class BookingService {
 		const $skip = (page - 1) * pagesize;
 		const $limit = pagesize;
 
+		if (key_search) {
+			$match.$or = createSearchData(FIELDS_ABLE_SEARCH, key_search);
+		}
+
 		if (specialtyId) {
 			$match.specialtyId = convertToObjectIdMongodb(specialtyId);
 		}
 
-		if (doctorId) {
-			$match.doctorId = convertToObjectIdMongodb(doctorId);
-		}
-
 		if (workingHourId) {
-			$match.doctorId = convertToObjectIdMongodb(doctorId);
+			$match.workingHourId = convertToObjectIdMongodb(workingHourId);
 		}
 
-		if (dateStart) {
-			$match.appointmentDate = { ...$match.appointmentDate, $gte: dateStart };
+		if (startDate) {
+			$match.appointmentDate = { ...$match.appointmentDate, $gte: new Date(startDate) };
 		}
 
-		if (dateEnd) {
-			$match.appointmentDate = { ...$match.appointmentDate, $lte: dateEnd };
+		if (endDate) {
+			$match.appointmentDate = { ...$match.appointmentDate, $lte: new Date(endDate) };
 		}
 
 		const [{ results, total }] = await _BookingModel

@@ -6,7 +6,6 @@ import { RxCaretDown } from 'react-icons/rx';
 export function Dropdown({ name = '', options = [], value = '', className = '', size = '', onSelect = () => {} }) {
 	if (!options.length) return null;
 
-	const option = options.find((option) => option.value === value) ?? options[0];
 	const styles = cn(
 		'dropdown',
 		{
@@ -15,6 +14,8 @@ export function Dropdown({ name = '', options = [], value = '', className = '', 
 		},
 		className,
 	);
+
+	const option = options.find((option) => option.value === value) ?? options[0];
 
 	return (
 		<BaseDropdown>
@@ -25,16 +26,16 @@ export function Dropdown({ name = '', options = [], value = '', className = '', 
 				</DropdownHeader>
 				<DropdownBody className='dropdown__list'>
 					<ul>
-						{options.map((item) => (
-							<React.Fragment key={item.value}>
+						{options.map(({ value, label }) => (
+							<React.Fragment key={value}>
 								<DropdownItem
 									type='li'
 									className={cn({
-										active: item.value === option.value,
+										active: value === option.value,
 									})}
-									customOnClick={() => onSelect({ key: name, value: item.value })}
+									customOnClick={() => onSelect({ key: name, value })}
 								>
-									<span>{item.label}</span>
+									<span>{label}</span>
 								</DropdownItem>
 							</React.Fragment>
 						))}

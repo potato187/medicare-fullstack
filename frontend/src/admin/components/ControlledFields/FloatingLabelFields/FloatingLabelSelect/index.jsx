@@ -15,8 +15,6 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 		toggleDropdown(false);
 	});
 
-	if (!options.length) return null;
-
 	const {
 		'form-group': formGroupCln,
 		'form-label': labelCln,
@@ -38,7 +36,7 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 		<div className={cn(dropdownCln, className)}>
 			<div className={formGroupCln}>
 				<div className={inputCln} onClick={toggleDropdown} aria-hidden>
-					{currentOption.label}
+					{currentOption?.label || ''}
 				</div>
 				<label htmlFor={domId} className={labelCln}>
 					<FormattedMessage id={labelIntl} />
@@ -50,7 +48,7 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 					render={({ field }) => <input hidden id={domId} type='text' {...field} />}
 				/>
 			</div>
-			{!disabled ? (
+			{!disabled && options.length ? (
 				<CSSTransition in={isOpen} timeout={300} classNames='dropdown-menu' unmountOnExit nodeRef={nodeRef}>
 					<div className={cn(dropdownListCln, 'scrollbar scrollbar--sm')} ref={nodeRef}>
 						{options.map((option) => (

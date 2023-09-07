@@ -1,15 +1,17 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
+import { setDefaultValues } from 'admin/utilities';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { setDefaultValues } from 'admin/utilities';
-import { useQuery } from 'admin/hooks';
+
+import { resourceApi } from 'admin/api';
 import {
 	BaseModal,
 	BaseModalBody,
 	BaseModalFooter,
 	BaseModalHeader,
 	Button,
+	FloatingDatePicker,
 	FloatingLabelInput,
 	FloatingLabelSelect,
 	TextArea,
@@ -24,6 +26,7 @@ export function BookingModel({
 	specialties = [],
 	workingHours = [],
 	statuses = [],
+	genders = [],
 	onClose = () => false,
 	onSubmit = () => null,
 }) {
@@ -32,6 +35,8 @@ export function BookingModel({
 		resolver: yupResolver(bookingValidation),
 	});
 
+	const [doctors, setDoctors] = useState([]);
+
 	const watchSpecialtyId = methods.watch('specialtyId', specialtyId);
 
 	const handleOnClose = () => {
@@ -39,40 +44,46 @@ export function BookingModel({
 		onClose();
 	};
 
-	const { doctors } = useQuery(
-		'doctors',
-		{
-			from: 'doctor',
-			where: [`specialtyId=${watchSpecialtyId}`],
-			attributes: ['id', 'last_name', 'first_name'],
-			sort: [['positionId', 'asc']],
-		},
-		(response) => {
-			return response.map((response) => ({
-				value: response.id,
-				label: `${response.last_name} ${response.first_name}`,
-			}));
-		},
-		[watchSpecialtyId],
-	);
+	const handleOnSubmit = (data) => {
+		const { dirtyFields } = methods.formState;
+		const updateBody = Object.keys(dirtyFields).reduce((hash, key) => {
+			hash[key] = data[key];
+			return hash;
+		}, {});
+
+		onSubmit(updateBody);
+	};
 
 	useEffect(() => {
 		setDefaultValues(methods, defaultValues);
 		methods.setValue('specialtyId', specialtyId);
 	}, [defaultValues, specialtyId, methods]);
 
+	useEffect(() => {
+		(async () => {
+			const { metadata } = await resourceApi.getAll('doctor', {
+				specialtyId: watchSpecialtyId,
+				select: ['_id', 'firstName', 'lastName'],
+			});
+
+			const doctors = metadata.map(({ _id, firstName, lastName }) => ({
+				label: `${lastName} ${firstName}`,
+				value: _id,
+			}));
+
+			setDoctors(doctors);
+		})();
+	}, [watchSpecialtyId]);
+
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='md' isOpen={isOpen}>
 				<BaseModalHeader idIntl={idTitleIntl} onClose={handleOnClose} />
 				<BaseModalBody>
-					<form onSubmit={methods.handleSubmit(onSubmit)}>
+					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='fullName' labelIntl='form.fullName' />
-							</div>
-							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='email' labelIntl='form.email' />
 							</div>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='phone' labelIntl='form.phone' />
@@ -80,7 +91,23 @@ export function BookingModel({
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='address' labelIntl='form.address' />
 							</div>
-							<div className='col-6 mb-6 z-index-5'>
+							<div className='col-6 mb-6 position-relative z-index-5'>
+								<FloatingDatePicker name='dateOfBirth' labelIntl='common.dateOfBirth' />
+							</div>
+							<div className='col-6 mb-6 position-relative z-index-4'>
+								<FloatingLabelSelect name='gender' labelIntl='common.gender' options={genders} />
+							</div>
+							<div className='col-6 mb-6 position-relative z-index-4'>
+								<FloatingLabelSelect name='status' labelIntl='common.status' options={statuses} />
+							</div>
+							<div className='col-6 mb-6 position-relative z-index-5'>
+								<FloatingDatePicker name='appointmentDate' labelIntl='common.appointmentDate' />
+							</div>
+							<div className='col-6 mb-6 position-relative z-index-4'>
+								<FloatingLabelSelect name='workingHourId' labelIntl='common.booking' options={workingHours} />
+							</div>
+
+							<div className='col-6 mb-6 z-index-3'>
 								<FloatingLabelSelect
 									showCounter
 									name='specialtyId'
@@ -88,14 +115,14 @@ export function BookingModel({
 									options={specialties}
 								/>
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-4'>
-								<FloatingLabelSelect name='doctorId' labelIntl='common.doctor' options={doctors} />
-							</div>
 							<div className='col-6 mb-6 position-relative z-index-3'>
-								<FloatingLabelSelect name='workingHourId' labelIntl='common.booking' options={workingHours} />
-							</div>
-							<div className='col-6 mb-6 position-relative z-index-2'>
-								<FloatingLabelSelect name='statusId' labelIntl='common.status' options={statuses} />
+								<FloatingLabelSelect
+									name='doctorId'
+									labelIntl='common.doctor'
+									value={defaultValues.doctorId}
+									options={doctors}
+									disabled={!doctors.length}
+								/>
 							</div>
 							<div className='col-12 position-relative z-index-1'>
 								<TextArea labelIntl='common.note' name='description' rows={5} />
@@ -112,7 +139,7 @@ export function BookingModel({
 						size='xs'
 						type='submit'
 						info
-						onClick={methods.handleSubmit(onSubmit)}
+						onClick={methods.handleSubmit(handleOnSubmit)}
 					>
 						<FormattedMessage id='button.update' />
 					</Button>

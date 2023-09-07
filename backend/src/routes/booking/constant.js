@@ -13,6 +13,7 @@ const SelectFields = [
 	'doctorId',
 	'specialtyId',
 	'isVerify',
+	'appointmentDate',
 ];
 
 const BookingStatusOptions = ['pending', 'confirmed', 'completed', 'cancelled'];

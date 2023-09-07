@@ -53,8 +53,15 @@ export const setQueryParams = (
 	};
 };
 
-export const formatDate = (date, format = 'DD/MM/YYYY') => {
+export const formatDate = (date, format = 'MM/DD/YYYY') => {
 	return moment(date).format(format);
+};
+
+export const formatDateToDDMMYYYY = (date) => {
+	const day = date.getDate().toString().padStart(2, '0');
+	const month = (date.getMonth() + 1).toString().padStart(2, '0');
+	const year = date.getFullYear();
+	return `${day}/${month}/${year}`;
 };
 
 export const downloadExcelFile = (response, filename = 'data.xlsx') => {
@@ -86,7 +93,7 @@ export const filterWeekends = (date) => {
 	return day !== 0;
 };
 
-export const formatPhone = (phoneNumber) => {
+export const formatPhone = (phoneNumber = '') => {
 	return phoneNumber.replace(/^(\d{4})(\d{3})(\d{3})$/, '$1 $2 $3');
 };
 

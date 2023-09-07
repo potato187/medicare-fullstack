@@ -3,9 +3,10 @@ const { UtilsRepo } = require('@/models/repository');
 const { createSortData, createSelectData } = require('@/utils');
 
 class ResourceService {
-	static async getAll({ model, sort, select }) {
+	static async getAll({ model, sort, select, ...query }) {
 		return await UtilsRepo.getAll({
 			model,
+			query,
 			sort: sort ? createSortData(sort) : { key: 1 },
 			select: select ? createSelectData(select) : ['key', 'name'],
 		});

@@ -1,20 +1,17 @@
 import { ErrorMessage } from '@hookform/error-message';
 import React, { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 import { useIntl } from 'react-intl';
-import { useSwitchState } from 'hooks';
 import { FormattedDescription } from 'admin/components/BaseUI';
-import module from './style.module.scss';
+import module from '../style/style.module.scss';
 
-export function FormPasswordController({ name, labelInt, placeholderInt, ...props }) {
+export function FormInputController({ name, labelInt, placeholderInt, required = false, ...props }) {
 	const id = useId();
 	const intl = useIntl();
 	const label = intl.formatMessage({ id: labelInt });
-	const placeholder = intl.formatMessage({ id: placeholderInt });
+	const placeholder = placeholderInt ? intl.formatMessage({ id: placeholderInt }) : '';
+	const { 'form-group': formCln, 'form-helper': helperCln } = module;
 	const { control, errors } = useFormContext();
-	const { isOpen: hidden, toggle: setHidden } = useSwitchState();
-	const { 'form-group': formCln, 'form-group__password': passwordCln, 'form-helper': helperCln } = module;
 
 	return (
 		<div className={formCln}>
@@ -24,13 +21,11 @@ export function FormPasswordController({ name, labelInt, placeholderInt, ...prop
 				render={({ field }) => {
 					return (
 						<>
-							<label htmlFor={id}>{label}</label>
-							<div className={passwordCln}>
-								<input id={id} {...field} {...props} type={hidden ? 'text' : 'password'} placeholder={placeholder} />
-								<button type='button' onClick={setHidden}>
-									{hidden ? <VscEye size='1.125em' /> : <VscEyeClosed size='1.125em' />}
-								</button>
-							</div>
+							<label htmlFor={id}>
+								{label}
+								{required ? <span className='text-danger fw-500 fz-xs ml-1'>*</span> : null}
+							</label>
+							<input type='text' id={id} {...field} {...props} placeholder={placeholder} />
 							<ErrorMessage
 								errors={errors}
 								name={name}
