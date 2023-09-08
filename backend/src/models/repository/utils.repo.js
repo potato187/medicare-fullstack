@@ -8,6 +8,7 @@ const _SpecialtyModel = require('../specialty.model');
 const _WorkingHourModel = require('../workingHour.model');
 const _DoctorModel = require('../doctor.model');
 const _BookingModel = require('../booking.model');
+const _PostCategoryModel = require('../postCategory.model');
 
 const { convertToObjectIdMongodb, removeFalsyProperties, flattenObject, getInfoData } = require('@/utils');
 const { ForbiddenRequestError } = require('@/core');
@@ -21,6 +22,7 @@ const {
 	WORKING_HOUR_MODEL,
 	DOCTOR_MODEL,
 	BOOKING_MODEL,
+	POST_CATEGORY_MODEL,
 } = require('./constant');
 
 class UtilsRepo {
@@ -75,6 +77,11 @@ class UtilsRepo {
 		const _Model = UtilsRepo.getModel(model);
 		return await _Model.deleteOne({ _id: convertToObjectIdMongodb(id) });
 	}
+
+	static async countByFilter({ model, filter = {} }) {
+		const _Model = UtilsRepo.getModel(model);
+		return await _Model.countDocuments(filter);
+	}
 }
 
 UtilsRepo.registerModel(ADMIN_MODEL, _AdminModel);
@@ -86,5 +93,6 @@ UtilsRepo.registerModel(SPECIALLY_MODEL, _SpecialtyModel);
 UtilsRepo.registerModel(WORKING_HOUR_MODEL, _WorkingHourModel);
 UtilsRepo.registerModel(DOCTOR_MODEL, _DoctorModel);
 UtilsRepo.registerModel(BOOKING_MODEL, _BookingModel);
+UtilsRepo.registerModel(POST_CATEGORY_MODEL, _PostCategoryModel);
 
 module.exports = UtilsRepo;

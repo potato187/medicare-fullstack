@@ -4,4 +4,5 @@ module.exports = {
 	_SpecialtyModel: require('./specialty.model'),
 	_DoctorModel: require('./doctor.model'),
 	_BookingModel: require('./booking.model'),
+	_PostCategoryModel: require('./postCategory.model'),
 };

@@ -6,4 +6,5 @@ module.exports = {
 	ResourceController: require('./resource.controller'),
 	SpecialtyController: require('./specialty.controller'),
 	BookingController: require('./booking.controller'),
+	PostCategoryController: require('./postCategory.controller'),
 };

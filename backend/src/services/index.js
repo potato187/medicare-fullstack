@@ -7,4 +7,5 @@ module.exports = {
 	ResourceService: require('./resource.service'),
 	SpecialtyService: require('./specialty.service'),
 	BookingService: require('./booking.service'),
+	PostCategoryService: require('./postCategory.service'),
 };

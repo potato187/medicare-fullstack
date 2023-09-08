@@ -7,6 +7,7 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$
 const phoneRegex = /^(84|0)[3|5|7|8|9]+([0-9]{8})\b/;
 const adminRoleRegex = /(admin|mod)/;
 const genderRegex = /(GF|GM|GO)/;
+const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 const emailValidator = Joi.string().email({ minDomainSegments: 1, tlds: { allow: ['com'] } });
 
@@ -56,6 +57,8 @@ const pageSizeValidator = Joi.number().integer().positive().min(1).max(100).defa
 
 const keySearchValidator = Joi.string().allow('').default('');
 
+const slugValidator = Joi.string().pattern(slugRegex);
+
 module.exports = {
 	addressValidator,
 	adminRoleValidator,
@@ -74,4 +77,5 @@ module.exports = {
 	pageValidator,
 	pageSizeValidator,
 	keySearchValidator,
+	slugValidator,
 };
