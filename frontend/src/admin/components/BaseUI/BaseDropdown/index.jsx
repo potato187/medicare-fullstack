@@ -93,7 +93,7 @@ export function DropdownBody({ className = '', selectorId = 'portal-dropdown', c
 				minWidth: headerRect.right - headerRect.left,
 			};
 
-			if (spaceBelow < listRect.height && spaceAbove > listRect.height + headerHeight) {
+			if (spaceBelow < listRect.height && spaceAbove > listRect.height + headerHeight + 8) {
 				newCoords.top = headerRect.top - listRect.height - 8;
 			} else {
 				newCoords.top = headerRect.top + headerRect.height;

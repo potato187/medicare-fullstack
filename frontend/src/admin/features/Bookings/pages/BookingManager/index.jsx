@@ -16,7 +16,7 @@ import {
 	UnFieldDebounce,
 } from 'admin/components';
 import { useToggle } from 'admin/hooks';
-import { compose, tryCatchAndToast } from 'admin/utilities';
+import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import produce from 'immer';
 import { FormattedMessage } from 'react-intl';
@@ -38,6 +38,7 @@ export function BookingManager() {
 		Genders,
 		currentBookingIndex,
 		queryParams,
+		totalPages,
 		handleSelectRangeDates,
 		setBookings,
 		setBookingIndex,
@@ -71,8 +72,17 @@ export function BookingManager() {
 		toggleConfirmDeletion(false);
 	}, languageId);
 
-	const handleUpdateBooking = tryCatchAndToast(async (updateBody) => {
-		console.log(updateBody);
+	const handleUpdateBooking = tryCatchAndToast(async (body) => {
+		const { metadata, message } = await bookingApi.updateOne(currentBooking._id, body);
+
+		setBookings(
+			produce((draft) => {
+				draft[currentBookingIndex] = { ...draft[currentBookingIndex], ...metadata };
+			}),
+		);
+
+		showToastMessage(message, languageId);
+		toggleModalBooking();
 	}, languageId);
 
 	return (
@@ -134,7 +144,7 @@ export function BookingManager() {
 									<FormattedMessage id='form.address' />
 								</th>
 								<th className='text-center'>
-									<FormattedMessage id='form.address' />
+									<FormattedMessage id='table.status' />
 								</th>
 								<th className='text-center'>
 									<FormattedMessage id='table.actions' />
@@ -168,7 +178,8 @@ export function BookingManager() {
 
 					<FooterContainer
 						pagesize={queryParams.pagesize || 25}
-						totalPages={queryParams.page || 1}
+						totalPages={totalPages}
+						currentPage={+queryParams.page - 1}
 						handleOnPageChange={handleOnPageChange}
 						handleOnSelect={handleOnSelect}
 					/>

@@ -1,26 +1,33 @@
-import moment from 'moment';
+import { formatISODate } from 'admin/utilities';
 import { axiosClient } from './axiosClient';
 import { BOOKING_PATH } from './constant';
 
 export const bookingApi = {
 	queryByParameters(params) {
-		if (params.startDate) {
-			params.startDate = moment(params.startDate).toISOString();
+		const { startDate, endDate, ...restParams } = params;
+		if (startDate) {
+			restParams.startDate = formatISODate(startDate);
+		}
+		if (endDate) {
+			restParams.endDate = formatISODate(endDate);
 		}
 
-		if (params.endDate) {
-			params.endDate = moment(params.endDate).toISOString();
-		}
-		return axiosClient.get(`${BOOKING_PATH}/query`, { params });
+		return axiosClient.get(`${BOOKING_PATH}/query`, { params: restParams });
 	},
 
 	deleteOne(bookingId) {
 		return axiosClient.delete(`${BOOKING_PATH}/${bookingId}`);
 	},
 
-	/* 	updateOne(data) {
-		return axiosClient.put(`${BOOKING_PATH}`, { data });
-	},
+	updateOne(id, updateBody) {
+		const { dateOfBirth, appointmentDate, ...body } = updateBody;
+		if (dateOfBirth) {
+			body.appointmentDate = formatISODate(dateOfBirth);
+		}
+		if (appointmentDate) {
+			body.appointmentDate = formatISODate(appointmentDate);
+		}
 
-	, */
+		return axiosClient.patch(`${BOOKING_PATH}/${id}`, body);
+	},
 };

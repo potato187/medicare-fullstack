@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
 import { createParamsComparator, typeOf } from 'utils';
+import moment from 'moment';
 import { PARAMS_OPTIONS_ORDER } from '../constant';
 
 const LANGUAGE_DEFAULT = 'en';
@@ -163,4 +164,13 @@ export const extractFirstNameLastName = (fullName) => {
 	const lastName = names.slice(-1).join('').trim();
 	const firstName = names.slice(0, -1).join(' ').trim();
 	return { firstName, lastName };
+};
+
+export const showToastMessage = (message, languageId, type = 'success') => {
+	toast[type](message[languageId]);
+	return true;
+};
+
+export const formatISODate = (dateString) => {
+	return moment(dateString).toISOString();
 };

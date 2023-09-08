@@ -4,4 +4,5 @@ import { phoneValidation, requiredValidation } from 'admin/validation';
 export const bookingValidation = yup.object().shape({
 	fullName: requiredValidation,
 	phone: phoneValidation,
+	doctorId: requiredValidation,
 });

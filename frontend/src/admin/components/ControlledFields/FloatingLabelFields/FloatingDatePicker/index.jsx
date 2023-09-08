@@ -3,16 +3,17 @@ import React, { useId } from 'react';
 import DatePicker from 'react-datepicker';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
+import { DATE_FORMAT_ISO } from 'admin/constant';
 import module from '../style.module.scss';
 
 const InputDatePicker = React.forwardRef((props, ref) => {
 	const domIt = useId();
-	const { labelIntl, ...rest } = props;
+	const { labelIntl, ...restProps } = props;
 	const { 'form-group': formGroupCln, 'form-label': labelCln, 'form-control': inputCln } = module;
 
 	return (
 		<div className={formGroupCln}>
-			<input {...rest} className={classNames(inputCln, 'w-full')} ref={ref} id={domIt} />
+			<input {...restProps} className={classNames(inputCln, 'w-full')} ref={ref} id={domIt} />
 			<label htmlFor={domIt} className={labelCln}>
 				<FormattedMessage id={labelIntl} />
 			</label>
@@ -32,7 +33,7 @@ export function FloatingDatePicker({ name, labelIntl }) {
 					locale='en'
 					wrapperClassName='date-picker date-picker-input'
 					calendarClassName='date-picker'
-					dateFormat='dd/MM/yyyy'
+					dateFormat={DATE_FORMAT_ISO}
 					onChange={(date) => field.onChange(date)}
 					selected={new Date(field.value)}
 					customInput={<InputDatePicker labelIntl={labelIntl} />}

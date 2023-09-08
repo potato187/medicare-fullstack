@@ -1,5 +1,5 @@
 import { BaseDropdown, DropdownBody, DropdownHeader } from 'admin/components/BaseUI';
-import { DATE_FORMAT_QUERY, localeDatePicker } from 'admin/constant';
+import { DATE_FORMAT, localeDatePicker } from 'admin/constant';
 import cn from 'classnames';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
@@ -8,8 +8,8 @@ import module from './style.module.scss';
 import { DatePickerInput } from './DatePickerInput';
 
 export function DatePickerRange({ languageId = 'en', startDate, endDate = null, className, ...props }) {
-	const sDate = moment(startDate).toDate();
-	const eDate = endDate ? moment(endDate).toDate() : null;
+	const sDate = new Date(startDate);
+	const eDate = endDate ? new Date(endDate) : null;
 	const maxDate = moment().add(7, 'days');
 	const { 'date-picker': datePickerCln, 'date-picker__calendar': calendarCln } = module;
 
@@ -26,7 +26,7 @@ export function DatePickerRange({ languageId = 'en', startDate, endDate = null, 
 						calendarClassName='date-picker'
 						className={cn(className)}
 						maxDate={maxDate.toDate()}
-						formatDate={DATE_FORMAT_QUERY}
+						formatDate={DATE_FORMAT}
 						selected={sDate}
 						startDate={sDate}
 						endDate={eDate}

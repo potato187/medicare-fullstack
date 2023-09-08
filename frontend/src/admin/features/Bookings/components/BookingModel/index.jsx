@@ -61,19 +61,28 @@ export function BookingModel({
 
 	useEffect(() => {
 		(async () => {
-			const { metadata } = await resourceApi.getAll('doctor', {
-				specialtyId: watchSpecialtyId,
-				select: ['_id', 'firstName', 'lastName'],
-			});
+			if (watchSpecialtyId) {
+				const { metadata } = await resourceApi.getAll('doctor', {
+					specialtyId: watchSpecialtyId,
+					select: ['_id', 'firstName', 'lastName'],
+				});
 
-			const doctors = metadata.map(({ _id, firstName, lastName }) => ({
-				label: `${lastName} ${firstName}`,
-				value: _id,
-			}));
+				const doctors = metadata.map(({ _id, firstName, lastName }) => ({
+					label: `${lastName} ${firstName}`,
+					value: _id,
+				}));
 
-			setDoctors(doctors);
+				setDoctors(doctors);
+			}
 		})();
 	}, [watchSpecialtyId]);
+
+	useEffect(() => {
+		(() => {
+			const doctorId = doctors.length ? doctors[0].value : '';
+			methods.setValue('doctorId', doctorId, { shouldValidate: !!doctorId });
+		})();
+	}, [watchSpecialtyId, doctors, methods]);
 
 	return (
 		<FormProvider {...methods}>
@@ -94,20 +103,20 @@ export function BookingModel({
 							<div className='col-6 mb-6 position-relative z-index-5'>
 								<FloatingDatePicker name='dateOfBirth' labelIntl='common.dateOfBirth' />
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-4'>
+							<div className='col-6 mb-6 position-relative z-index-5'>
 								<FloatingLabelSelect name='gender' labelIntl='common.gender' options={genders} />
 							</div>
 							<div className='col-6 mb-6 position-relative z-index-4'>
 								<FloatingLabelSelect name='status' labelIntl='common.status' options={statuses} />
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-5'>
+							<div className='col-6 mb-6 position-relative z-index-3'>
 								<FloatingDatePicker name='appointmentDate' labelIntl='common.appointmentDate' />
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-4'>
+							<div className='col-6 mb-6 position-relative z-index-3'>
 								<FloatingLabelSelect name='workingHourId' labelIntl='common.booking' options={workingHours} />
 							</div>
 
-							<div className='col-6 mb-6 z-index-3'>
+							<div className='col-6 mb-6 z-index-2'>
 								<FloatingLabelSelect
 									showCounter
 									name='specialtyId'
@@ -115,7 +124,7 @@ export function BookingModel({
 									options={specialties}
 								/>
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-3'>
+							<div className='col-6 mb-6 position-relative z-index-2'>
 								<FloatingLabelSelect
 									name='doctorId'
 									labelIntl='common.doctor'

@@ -1,15 +1,19 @@
 import cn from 'classnames';
 import { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { CSSTransition } from 'react-transition-group';
 import { useClickOutside } from 'hooks';
 import { useToggle } from 'admin/hooks';
+import { ErrorMessage } from '@hookform/error-message';
+import { FormattedDescription } from 'admin/components/BaseUI';
 import module from '../style.module.scss';
 
 export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = false, className = '' }) {
 	const domId = useId();
-	const methods = useFormContext();
+	const { control, errors, getValues, setValue } = useFormContext();
+	const intl = useIntl();
+	const labelText = intl.formatMessage({ id: labelIntl });
 	const [isOpen, toggleDropdown] = useToggle();
 	const nodeRef = useClickOutside(() => {
 		toggleDropdown(false);
@@ -24,11 +28,11 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 		'item-active': activeCln,
 	} = module;
 
-	const value = methods.getValues(name);
+	const value = getValues(name);
 	const currentOption = options.find((option) => option.value === value) || options[0];
 
 	const handleOnSelect = (option) => {
-		methods.setValue(name, option.value, { shouldDirty: true, shouldTouch: true });
+		setValue(name, option.value, { shouldDirty: true, shouldTouch: true });
 		toggleDropdown(false);
 	};
 
@@ -43,9 +47,18 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 				</label>
 				<Controller
 					name={name}
-					control={methods.control}
+					control={control}
 					defaultValue=''
 					render={({ field }) => <input hidden id={domId} type='text' {...field} />}
+				/>
+				<ErrorMessage
+					errors={errors}
+					name={name}
+					render={({ message }) => (
+						<div className='invalid-message'>
+							<FormattedDescription id={message} values={{ label: labelText }} />
+						</div>
+					)}
 				/>
 			</div>
 			{!disabled && options.length ? (

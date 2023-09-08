@@ -25,6 +25,7 @@ router.patch(
 	handlerValidateRequest(updateBookingSchema),
 	tryCatch(BookingController.updateOneById),
 );
+
 router.delete('/:id', handlerValidateRequest(idSchema), tryCatch(BookingController.deleteOneById));
 
 module.exports = router;

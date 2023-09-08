@@ -1,6 +1,6 @@
 'use strict';
 const { UtilsRepo } = require('@/models/repository');
-const { BOOKING_MODEL, WORKING_HOUR_MODEL, SPECIALLY_MODEL, DOCTOR_MODEL } = require('@/models/repository/constant');
+const { BOOKING_MODEL, WORKING_HOUR_MODEL, DOCTOR_MODEL } = require('@/models/repository/constant');
 const {
 	convertToObjectIdMongodb,
 	getInfoData,
@@ -61,6 +61,9 @@ class BookingService {
 	}
 
 	static async updateOneById({ id, updateBody }) {
+		const select = Object.keys(updateBody);
+		if (!select.length) return {};
+
 		const { workingHourId, specialtyId, doctorId } = updateBody;
 		const filter = { _id: convertToObjectIdMongodb(id) };
 
@@ -75,7 +78,7 @@ class BookingService {
 			await BookingService.checkIsExist(filter, WORKING_HOUR_MODEL);
 		}
 
-		if ((specialtyId && !doctorId) || (!specialtyId && doctorId)) {
+		if (specialtyId && !doctorId) {
 			throw new BadRequestError();
 		}
 
@@ -84,10 +87,19 @@ class BookingService {
 			await BookingService.checkIsExist(filter, DOCTOR_MODEL);
 		}
 
+		if (updateBody.dateOfBirth) {
+			updateBody.dateOfBirth = new Date(updateBody.dateOfBirth);
+		}
+
+		if (updateBody.appointmentDate) {
+			updateBody.appointmentDate = new Date(updateBody.appointmentDate);
+		}
+
 		return await UtilsRepo.findOneAndUpdate({
 			model: BOOKING_MODEL,
 			filter,
 			updateBody,
+			select,
 		});
 	}
 

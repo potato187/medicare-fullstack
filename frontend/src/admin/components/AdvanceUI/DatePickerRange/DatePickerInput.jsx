@@ -5,6 +5,7 @@ import module from './style.module.scss';
 
 export function DatePickerInput({ startDate, endDate = null }) {
 	const { isOpen } = useDropdown();
+
 	const { 'date-picker__input': inputCln, focus: focusCln } = module;
 	const classNames = cn(inputCln, { [focusCln]: isOpen });
 	return (

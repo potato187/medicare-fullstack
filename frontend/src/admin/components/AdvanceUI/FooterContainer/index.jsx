@@ -5,6 +5,7 @@ import { PaginationSelector } from '../PaginationSelector';
 
 export function FooterContainer({
 	pagesize = 25,
+	currentPage = 0,
 	totalPages = 1,
 	handleOnSelect = () => null,
 	handleOnPageChange = () => null,
@@ -27,7 +28,7 @@ export function FooterContainer({
 					<FormattedMessage id='table.entries' />
 				</span>
 			</div>
-			<BasePagination pageCount={+totalPages} onPageChange={handleOnPageChange} />
+			<BasePagination forcePage={currentPage} pageCount={+totalPages} onPageChange={handleOnPageChange} />
 		</div>
 	);
 }

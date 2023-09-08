@@ -1,5 +1,5 @@
 import { bookingApi } from 'admin/api';
-import { BOOKING_STATUS, DATE_FORMAT_QUERY, ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
+import { BOOKING_STATUS, DATE_FORMAT, ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
 import { useCurrentIndex, useFetchResource } from 'admin/hooks';
 import { createURL, tryCatch } from 'admin/utilities';
 import moment from 'moment';
@@ -48,11 +48,11 @@ export const useManageBookings = (languageId = 'en') => {
 		}
 
 		if (!params.startDate) {
-			params.startDate = moment().format(DATE_FORMAT_QUERY);
+			params.startDate = moment().format(DATE_FORMAT);
 		}
 
 		if (params.endDate) {
-			params.endDate = moment(params.endDate).format(DATE_FORMAT_QUERY);
+			params.endDate = moment(params.endDate).format(DATE_FORMAT);
 		}
 
 		return {
@@ -121,13 +121,13 @@ export const useManageBookings = (languageId = 'en') => {
 
 	const handleSelectRangeDates = (dates) => {
 		const [start, end] = dates;
-		const startDate = start ? moment(start, DATE_FORMAT_QUERY) : moment();
-		const endDate = end ? moment(end, DATE_FORMAT_QUERY) : null;
+		const startDate = start ? moment(start, DATE_FORMAT) : moment();
+		const endDate = end ? moment(end, DATE_FORMAT) : null;
 		const isSameDate = endDate && endDate.isSame(startDate);
 
 		setQueryParams({
-			startDate: startDate.format(DATE_FORMAT_QUERY),
-			endDate: !isSameDate && endDate ? endDate.format(DATE_FORMAT_QUERY) : '',
+			startDate: startDate.format(DATE_FORMAT),
+			endDate: !isSameDate && endDate ? endDate.format(DATE_FORMAT) : '',
 		});
 	};
 
@@ -144,6 +144,12 @@ export const useManageBookings = (languageId = 'en') => {
 			}
 		})();
 	}, [queryParams, Specialties]);
+
+	useEffect(() => {
+		if (queryParams.page > totalPages) {
+			setQueryParams({ page: 1 });
+		}
+	}, [totalPages, queryParams, setQueryParams]);
 
 	return {
 		Specialties,
