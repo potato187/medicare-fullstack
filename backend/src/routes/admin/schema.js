@@ -1,4 +1,3 @@
-'use strict';
 const {
 	nameValidator,
 	emailValidator,
@@ -7,22 +6,20 @@ const {
 	adminRoleValidator,
 	genderValidator,
 	ObjectIdMongodbValidator,
+	sortValidator,
+	selectValidator,
 } = require('@/validations');
 const Joi = require('joi');
+
+const SELECT_FIELDS = ['_id', 'firstName', 'lastName', 'email', 'phone', 'role'];
+const SORTABLE_FIELDS = ['createdAt', 'updatedAt', 'firstName', 'lastName', 'email'];
 
 const querySchema = Joi.object({
 	key_search: Joi.string().allow('').default(''),
 	page: Joi.number().integer().min(1).max(100).default(1),
 	pagesize: Joi.number().integer().min(1).max(100).default(25),
-	sort: Joi.array().items(
-		Joi.array().ordered(
-			Joi.string().valid('createdAt', 'updatedAt', 'firstName', 'lastName', 'email'),
-			Joi.string().valid('asc', 'desc'),
-		),
-	),
-	select: Joi.array()
-		.items(Joi.string().valid('_id', 'firstName', 'lastName', 'email', 'phone'))
-		.default(['_id', 'firstName', 'lastName', 'email', 'phone']),
+	sort: sortValidator(SORTABLE_FIELDS),
+	select: selectValidator(SELECT_FIELDS),
 });
 
 const updateSchema = Joi.object({

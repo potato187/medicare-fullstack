@@ -1,3 +1,5 @@
+const excelHelper = require('./excel.helper');
+
 module.exports = {
-	excelHelper: require('./excel.helper'),
+	excelHelper,
 };

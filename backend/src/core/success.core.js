@@ -1,4 +1,3 @@
-'use strict';
 const codeReason = require('./status.core');
 
 class SuccessResponse {
@@ -9,7 +8,7 @@ class SuccessResponse {
 		this.metadata = metadata;
 	}
 
-	send(res, headers = {}) {
+	send(res) {
 		const statusCode = +this.code.toString().slice(-3);
 		return res.status(statusCode).json({ ...this });
 	}

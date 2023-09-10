@@ -1,5 +1,3 @@
-'use strict';
-
 const DEV = {
 	app: {
 		port: process.env.DEV_APP_PORT || 8080,

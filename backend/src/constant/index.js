@@ -1,5 +1,9 @@
+const headerConstants = require('./header.constant');
+const mongodbConstants = require('./mongodb.constant');
+const languagesConstants = require('./languages.constant');
+
 module.exports = {
-	...require('./header.constant'),
-	...require('./mongodb.constant'),
-	...require('./languages.constant'),
+	...headerConstants,
+	...mongodbConstants,
+	...languagesConstants,
 };

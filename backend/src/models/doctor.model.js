@@ -1,4 +1,3 @@
-'use strict';
 const { GENDERS, STATUS, POSITIONS } = require('@/constant');
 const { Schema, model, Types } = require('mongoose');
 

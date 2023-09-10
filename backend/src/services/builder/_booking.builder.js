@@ -1,5 +1,3 @@
-'use strict';
-
 const { GENDER_DEFAULT } = require('@/constant');
 
 class BookingBuilder {

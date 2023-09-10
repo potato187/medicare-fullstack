@@ -1,5 +1,3 @@
-'use strict';
-
 const { STATUS } = require('@/constant');
 
 class SpecialtyBuilder {

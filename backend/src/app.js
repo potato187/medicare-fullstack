@@ -1,13 +1,13 @@
-'use strict';
-const { handlerErrors, handlerRouteException } = require('@/middleware');
 const compression = require('compression');
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
-
 require('dotenv').config();
+
+const { handlerErrors, handlerRouteException } = require('@/middleware');
+
 const app = express();
 
 app.use(helmet());
@@ -27,7 +27,7 @@ app.use(
 app.use('/public', express.static(path.join(__dirname, '../public')));
 
 // config database
-require('@/dbs').mongodInit;
+require('@/dbs/mongodb.init').getInstance();
 
 // config routes
 app.use('/v1/api', require('@/routes'));

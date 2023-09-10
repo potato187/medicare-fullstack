@@ -1,4 +1,3 @@
-'use strict';
 const ExcelJS = require('exceljs');
 
 const fieldsTranslation = {
@@ -57,11 +56,17 @@ const exportWorkbook = (data, languageId) => {
 	const workbook = new ExcelJS.Workbook();
 	const worksheet = workbook.addWorksheet('sheet 1');
 
-	const columns = data.reduce((acc, obj) => (acc = Object.getOwnPropertyNames(obj)), []);
+	const columns = data.reduce((acc, obj) => {
+		const keys = Object.getOwnPropertyNames(obj);
+		acc.push(...keys);
+		return acc;
+	}, []);
 
-	worksheet.columns = columns.map((el) => {
-		return { key: el, ...fieldsTranslation[el], header: fieldsTranslation[el].header[languageId] };
-	});
+	worksheet.columns = columns.map((el) => ({
+		key: el,
+		...fieldsTranslation[el],
+		header: fieldsTranslation[el].header[languageId],
+	}));
 
 	worksheet.addRows(data);
 

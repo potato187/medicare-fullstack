@@ -1,19 +1,21 @@
-'use strict';
 const { _AdminModel } = require('@/models');
-const { UtilsRepo } = require('@/models/repository');
+const { UtilsRepo, KeyTokenRepo } = require('@/models/repository');
 const { ADMIN_MODEL } = require('@/models/repository/constant');
-const { createSortData, createSearchData, getInfoData, createSelectData } = require('@/utils');
+const { createSortData, createSearchData, createSelectData, convertToObjectIdMongodb } = require('@/utils');
+
+const SEARCHABLE_FIELDS = ['firstName', 'lastName', 'email', 'phone'];
 
 class AdminService {
-	static async query({ key_search = '', select = ['_id'], sort = [], page = 1, pagesize = 25 }) {
+	static async queryByParams({ key_search: keySearch = '', select = ['_id'], sort = [], page = 1, pagesize = 25 }) {
 		const searchClause = {};
-		const _page = Math.max(1, page);
-		const _limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
-		const _skip = (_page - 1) * _limit;
-		let _sort = sort.length ? createSortData(sort) : { ctime: 1 };
+		const $page = Math.max(1, page);
+		const $limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
+		const $skip = ($page - 1) * $limit;
+		const $sort = sort.length ? createSortData(sort) : { ctime: 1 };
+		const $project = createSelectData(select);
 
-		if (key_search) {
-			searchClause.$or = createSearchData(['firstName', 'lastName', 'email', 'phone'], key_search);
+		if (keySearch) {
+			searchClause.$or = createSearchData(SEARCHABLE_FIELDS, keySearch);
 		}
 
 		const [{ results, total }] = await _AdminModel
@@ -24,16 +26,7 @@ class AdminService {
 				...searchClause,
 			})
 			.facet({
-				results: [
-					{ $sort: _sort },
-					{ $skip: _skip },
-					{ $limit: _limit },
-					{
-						$project: {
-							...createSelectData(select),
-						},
-					},
-				],
+				results: [{ $sort }, { $skip }, { $limit }, { $project }],
 				totalCount: [{ $count: 'count' }],
 			})
 			.addFields({
@@ -49,36 +42,42 @@ class AdminService {
 		return {
 			data: results,
 			meta: {
-				page: _page,
-				pagesize: _limit,
-				totalPages: Math.ceil(total / _limit) || 1,
-				key_search,
+				page: $page,
+				pagesize: $limit,
+				totalPages: Math.ceil(total / $limit) || 1,
+				keySearch,
 			},
 		};
 	}
 
-	static async updateAdminById({ id, updateBody }) {
-		if (!Object.keys(updateBody).length) {
+	static async updateOneById({ id, updateBody }) {
+		const select = Object.keys(updateBody);
+
+		if (!select.length) {
 			return {};
 		}
 
-		const updatedAdmin = await UtilsRepo.findByIdAndUpdate({
+		const updatedAdmin = await UtilsRepo.findOneAndUpdate({
 			model: ADMIN_MODEL,
-			id,
+			filter: { _id: convertToObjectIdMongodb(id) },
 			updateBody,
+			select,
 		});
 
-		return getInfoData({ fields: Object.keys(updateBody), object: updatedAdmin });
+		return updatedAdmin;
 	}
 
-	static async deleteAdminById(id) {
-		await UtilsRepo.findByIdAndUpdate({
-			model: ADMIN_MODEL,
-			id,
-			body: { isDeleted: true },
-		});
-
-		return { deletedAdminId: id };
+	static async deleteOneById(id) {
+		const result = await AdminService.updateOneById({ id, updateBody: { isDeleted: true, isActive: 'inactive' } });
+		if (result.isDeleted) {
+			const store = await KeyTokenRepo.findOne({ userId: convertToObjectIdMongodb(id) }, ['_id']);
+			if (store?._id) {
+				await KeyTokenRepo.removeById(store._id);
+			}
+		}
+		return {
+			idDeletion: id,
+		};
 	}
 }
 

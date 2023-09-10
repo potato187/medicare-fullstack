@@ -1,10 +1,10 @@
-'use strict';
 const { authMiddleware } = require('@/auth');
 const { SpecialtyController } = require('@/controllers');
 const { tryCatch, handlerValidateRequest } = require('@/middleware');
 const { idSchema } = require('@/validations');
 const express = require('express');
 const { createSchema, updateSchema } = require('./schema');
+
 const router = express.Router();
 
 router.use(authMiddleware.authorization);

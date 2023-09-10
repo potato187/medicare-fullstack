@@ -1,10 +1,9 @@
-'use strict';
 const { BOOKING_STATUS, GENDERS, GENDER_DEFAULT } = require('@/constant');
 const { Schema, model, Types } = require('mongoose');
 
 const DOCUMENT_NAME = 'Booking';
 
-const bookingSchema = new Schema(
+const createSchema = new Schema(
 	{
 		specialtyId: {
 			type: Types.ObjectId,
@@ -74,4 +73,4 @@ const bookingSchema = new Schema(
 	},
 );
 
-module.exports = model(DOCUMENT_NAME, bookingSchema);
+module.exports = model(DOCUMENT_NAME, createSchema);

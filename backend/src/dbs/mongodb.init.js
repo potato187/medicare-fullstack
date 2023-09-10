@@ -1,4 +1,3 @@
-'use strict';
 const mongoose = require('mongoose');
 const { mongodConfig } = require('@/configs');
 
@@ -12,7 +11,8 @@ class Database {
 		this.connect();
 	}
 
-	connect(type = 'mongodb') {
+	// eslint-disable-next-line class-methods-use-this
+	connect() {
 		if (process.env.NODE_ENV === 'dev') {
 			mongoose.set('debug', true);
 			mongoose.set('debug', { color: true });
@@ -20,10 +20,12 @@ class Database {
 
 		mongoose
 			.connect(connectURI)
-			.then((_) => {
+			.then(() => {
+				// eslint-disable-next-line no-console
 				console.log('Database Connected MongoDB Success.');
 			})
 			.catch((err) => {
+				// eslint-disable-next-line no-console
 				console.error('Error connecting to MongoDB:', err);
 			});
 	}
@@ -37,5 +39,4 @@ class Database {
 	}
 }
 
-const instanceMongoDB = Database.getInstance();
-module.exports = instanceMongoDB;
+module.exports = Database;

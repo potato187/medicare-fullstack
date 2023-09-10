@@ -1,9 +1,4 @@
-'use strict';
 const { ROLES, GENDERS, STATUS } = require('@/constant');
-const { ConflictRequestError, NotFoundRequestError, UnauthorizedRequestError } = require('@/core');
-const { _AdminModel } = require('@/models');
-const { AdminRepo } = require('@/models/repository');
-const { getInfoData, createSelectData } = require('@/utils');
 const bcrypt = require('bcrypt');
 
 class AdminBuilder {

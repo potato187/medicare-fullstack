@@ -1,7 +1,13 @@
+const AdminBuilder = require('./_admin.builder');
+const TokenBuilder = require('./_tokens.builder');
+const SpecialtyBuilder = require('./_specialty.builder');
+const DoctorBuilder = require('./_doctor.builder');
+const BookingBuilder = require('./_booking.builder');
+
 module.exports = {
-	AdminBuilder: require('./_admin.builder'),
-	TokenBuilder: require('./_tokens.builder'),
-	SpecialtyBuilder: require('./_specialty.builder'),
-	DoctorBuilder: require('./_doctor.builder'),
-	BookingBuilder: require('./_booking.builder'),
+	AdminBuilder,
+	TokenBuilder,
+	SpecialtyBuilder,
+	DoctorBuilder,
+	BookingBuilder,
 };

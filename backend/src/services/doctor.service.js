@@ -1,8 +1,7 @@
-'use strict';
 const { _DoctorModel } = require('@/models');
 const { ConflictRequestError, NotFoundRequestError, InterServerRequestError } = require('@/core');
 const { DOCTOR_MODEL, GENDER_MODEL, POSITION_MODEL, SPECIALLY_MODEL } = require('@/models/repository/constant');
-const { DoctorBuilder } = require('./builder');
+
 const {
 	getInfoData,
 	convertToObjectIdMongodb,
@@ -11,6 +10,7 @@ const {
 	createSelectData,
 } = require('@/utils');
 const { UtilsRepo } = require('@/models/repository');
+const { DoctorBuilder } = require('./builder');
 
 const FIELDS_ABLE_SEARCH = ['firstName', 'lastName', 'email', 'phone', 'address'];
 
@@ -91,25 +91,29 @@ class DoctorService {
 
 		await DoctorService.checkIsExist(filter);
 
-		return await UtilsRepo.findOneAndUpdate({
+		const result = await UtilsRepo.findOneAndUpdate({
 			model: DOCTOR_MODEL,
 			filter,
 			updateBody,
 			select: Object.keys(updateBody),
 		});
+
+		return result;
 	}
 
 	static async deleteOne({ id }) {
-		return await DoctorService.updateOne({
+		const result = await DoctorService.updateOne({
 			id,
 			updateBody: { isDeleted: true },
 		});
+
+		return result;
 	}
 
 	static async queryByParams({
 		specialtyId = '',
 		positionId = '',
-		key_search = '',
+		key_search: keySearch = '',
 		sort = [],
 		page = 1,
 		pagesize = 25,
@@ -129,8 +133,8 @@ class DoctorService {
 			filter.positionId = convertToObjectIdMongodb(positionId);
 		}
 
-		if (key_search) {
-			filter.$or = createSearchData(FIELDS_ABLE_SEARCH, key_search);
+		if (keySearch) {
+			filter.$or = createSearchData(FIELDS_ABLE_SEARCH, keySearch);
 		}
 
 		const [{ results, total }] = await _DoctorModel
@@ -163,7 +167,7 @@ class DoctorService {
 				page: $page,
 				pagesize: $limit,
 				totalPages: Math.ceil(total / $limit) || 1,
-				key_search,
+				keySearch,
 			},
 		};
 	}
@@ -222,43 +226,49 @@ class DoctorService {
 
 	static async getDoctorsBySpecialty({ specialtyId = '', sort, page = 1, pagesize = 25 }) {
 		const skip = (page - 1) * pagesize;
-		return await _DoctorModel
+		const result = await _DoctorModel
 			.find({ specialtyId: convertToObjectIdMongodb(specialtyId), isDeleted: false })
 			.sort(sort)
 			.skip(skip)
 			.limit(pagesize)
 			.lean();
+
+		return result;
 	}
 
 	static async getDoctorByFilter({ filter, sort, select }) {
-		return await UtilsRepo.getAll({
+		const result = await UtilsRepo.getAll({
 			model: DOCTOR_MODEL,
 			query: filter,
 			sort,
 			select,
 		});
+
+		return result;
 	}
 
 	static async export({ type, sort, ...rest }) {
 		let doctors = [];
-		sort = createSortData(sort);
+		const $sort = createSortData(sort);
 		const select = ['-updatedAt', '-createdAt', '-description', '-appointments', '-__v'];
 		const filter = { isDeleted: false };
 
 		switch (type) {
 			case 'selected':
 				filter._id = { $in: rest.ids };
-				doctors = await DoctorService.getDoctorByFilter({ filter, sort, select });
+				doctors = await DoctorService.getDoctorByFilter({ filter, sort: $sort, select });
 				break;
 			case 'page':
-				doctors = await DoctorService.getDoctorsBySpecialty({ sort, ...rest });
+				doctors = await DoctorService.getDoctorsBySpecialty({ sort: $sort, ...rest });
 				break;
 			default:
-				doctors = await DoctorService.getDoctorByFilter({ filter, sort, select });
+				doctors = await DoctorService.getDoctorByFilter({ filter, sort: $sort, select });
 				break;
 		}
 
-		return await DoctorService.formatterExportData(doctors, rest.languageId);
+		const result = await DoctorService.formatterExportData(doctors, rest.languageId);
+
+		return result;
 	}
 }
 

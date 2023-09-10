@@ -1,4 +1,3 @@
-'use strict';
 const { ObjectIdMongodbValidator } = require('@/validations');
 const Joi = require('joi');
 

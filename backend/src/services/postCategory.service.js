@@ -1,17 +1,16 @@
-'use strict';
 const { NotFoundRequestError } = require('@/core');
-const { _PostCategoryModel } = require('@/models');
 const { UtilsRepo } = require('@/models/repository');
 const { POST_CATEGORY_MODEL } = require('@/models/repository/constant');
 const { getInfoData, convertToObjectIdMongodb, createSlug } = require('@/utils');
 
 class PostCategoryService {
 	static async findByFilter({ filter = {}, select = ['_id'] }) {
-		return await UtilsRepo.findOne({
+		const result = await UtilsRepo.findOne({
 			model: POST_CATEGORY_MODEL,
 			filter,
 			select,
 		});
+		return result;
 	}
 
 	static async checkExist(filter) {
@@ -22,7 +21,7 @@ class PostCategoryService {
 		return true;
 	}
 
-	static async create(body) {
+	static async createOne(body) {
 		const { index, ...category } = body;
 		const model = POST_CATEGORY_MODEL;
 
@@ -41,7 +40,8 @@ class PostCategoryService {
 		});
 	}
 
-	static async updateById({ id, updateBody }) {
+	static async updateOneById({ id, updateBody }) {
+		const { name, ...body } = updateBody;
 		const select = Object.keys(updateBody);
 		if (!select.length) return {};
 		const slug = {};
@@ -49,31 +49,35 @@ class PostCategoryService {
 
 		await PostCategoryService.checkExist(filter);
 
-		if (updateBody.name?.vi) {
-			slug.vi = createSlug(updateBody.name.vi);
+		if (name && name?.vi) {
+			slug.vi = createSlug(name.vi);
 		}
 
-		if (updateBody.name?.en) {
-			slug.en = createSlug(updateBody.name.en);
+		if (name && name?.en) {
+			slug.en = createSlug(name.en);
 		}
 
 		if (Object.keys(slug).length) {
-			updateBody.slug = slug;
+			body.slug = slug;
 		}
 
-		return await UtilsRepo.findOneAndUpdate({
+		const result = await UtilsRepo.findOneAndUpdate({
 			model: POST_CATEGORY_MODEL,
 			filter,
-			updateBody,
+			updateBody: body,
 			select,
 		});
+
+		return result;
 	}
 
-	static async deleteById(id) {
-		return await PostCategoryService.updateById({
+	static async deleteOneById(id) {
+		const result = await PostCategoryService.updateById({
 			id,
 			updateBody: { isDeleted: true },
 		});
+
+		return result;
 	}
 }
 

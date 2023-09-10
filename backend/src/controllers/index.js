@@ -1,10 +1,19 @@
+const AccessController = require('./access.controller');
+const AdminController = require('./admin.controller');
+const DoctorController = require('./doctor.controller');
+const LanguageController = require('./language.controller');
+const ResourceController = require('./resource.controller');
+const SpecialtyController = require('./specialty.controller');
+const BookingController = require('./booking.controller');
+const PostCategoryController = require('./postCategory.controller');
+
 module.exports = {
-	AccessController: require('./access.controller'),
-	AdminController: require('./admin.controller'),
-	DoctorController: require('./doctor.controller'),
-	LanguageController: require('./language.controller'),
-	ResourceController: require('./resource.controller'),
-	SpecialtyController: require('./specialty.controller'),
-	BookingController: require('./booking.controller'),
-	PostCategoryController: require('./postCategory.controller'),
+	AccessController,
+	AdminController,
+	DoctorController,
+	LanguageController,
+	ResourceController,
+	SpecialtyController,
+	BookingController,
+	PostCategoryController,
 };

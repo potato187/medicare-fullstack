@@ -1,23 +1,14 @@
-'use strict';
+const bcrypt = require('bcrypt');
 const { generateToken, getInfoData, convertToObjectIdMongodb } = require('@/utils');
 const { KeyTokenRepo, UtilsRepo } = require('@/models/repository');
 const { UnauthorizedRequestError, ConflictRequestError } = require('@/core');
-const { AdminBuilder } = require('./builder');
-const TokenBuilder = require('./builder/_tokens.builder');
 const { ADMIN_MODEL, KEY_TOKEN_MODEL } = require('@/models/repository/constant');
 const { authUtils } = require('@/auth');
+const TokenBuilder = require('./builder/_tokens.builder');
 
 class AccessService {
-	static async singUp({ firstName, lastName, email, phone, password, role, gender }) {
-		const admin = await new AdminBuilder()
-			.setFirstName(firstName)
-			.setLastName(lastName)
-			.setEmail(email)
-			.setPhone(phone)
-			.setPassword(password)
-			.setRole(role)
-			.setGender(gender)
-			.build();
+	static async singUp(body) {
+		const { email, phone } = body;
 
 		const adminFound = await UtilsRepo.findOne({
 			model: ADMIN_MODEL,
@@ -28,9 +19,9 @@ class AccessService {
 			throw new ConflictRequestError({ code: 200400 });
 		}
 
-		const newUser = new UtilsRepo.createOne({
+		const newUser = await UtilsRepo.createOne({
 			model: ADMIN_MODEL,
-			body: admin,
+			body,
 		});
 
 		return getInfoData({
@@ -40,26 +31,26 @@ class AccessService {
 	}
 
 	static async login({ email, password }) {
-		const accountBuilder = new AdminBuilder().setEmail(email).setPassword(password);
-
-		const account = await UtilsRepo.findOne({
+		const foundAdmin = await UtilsRepo.findOne({
 			model: ADMIN_MODEL,
 			filter: { email },
 			select: ['_id', 'email', 'password', 'firstName', 'lastName', 'role'],
 		});
 
-		if (!account || !accountBuilder.comparePassword(account.password)) {
+		const checKPassword = bcrypt.compareSync(password, foundAdmin.password);
+
+		if (!foundAdmin || !checKPassword) {
 			throw new UnauthorizedRequestError({ code: 200401 });
 		}
 
-		const payload = { userId: account._id, role: account.role };
+		const payload = { userId: foundAdmin._id, role: foundAdmin.role };
 		const accessTokenBuilder = new TokenBuilder().setPayload(payload).setKey(generateToken());
 		const refreshTokenBuilder = new TokenBuilder().setPayload(payload).setKey(generateToken());
 
 		await KeyTokenRepo.createPairToken(payload.userId, accessTokenBuilder.getKey(), refreshTokenBuilder.getKey());
 
 		return {
-			account: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'role'], object: account }),
+			account: getInfoData({ fields: ['_id', 'email', 'firstName', 'lastName', 'phone', 'role'], object: foundAdmin }),
 			tokens: {
 				accessToken: await accessTokenBuilder.buildAccessToken(),
 				refreshToken: await refreshTokenBuilder.buildRefreshToken(),
@@ -68,10 +59,12 @@ class AccessService {
 	}
 
 	static async logout(keyStore) {
-		return await UtilsRepo.removeById({
+		const result = await UtilsRepo.removeById({
 			model: KEY_TOKEN_MODEL,
 			id: keyStore._id,
 		});
+
+		return result;
 	}
 
 	static async refreshTokens({ clientId, refreshToken }) {

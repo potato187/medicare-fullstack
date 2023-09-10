@@ -1,15 +1,15 @@
-'use  strict';
 const { CreatedResponse, OkResponse, InterServerRequestError } = require('@/core');
 const { excelHelper } = require('@/helpers');
 const { DoctorService } = require('@/services');
 
 class DoctorController {
-	async queryByParams(req, res, next) {
+	async queryByParams(req, res) {
 		new OkResponse({
 			metadata: await DoctorService.queryByParams(req.query),
 		}).send(res);
 	}
-	async getOne(req, res, next) {
+
+	async getOne(req, res) {
 		new OkResponse({
 			metadata: await DoctorService.getOne({
 				doctorId: req.params.id,
@@ -18,19 +18,19 @@ class DoctorController {
 		}).send(res);
 	}
 
-	async createOne(req, res, next) {
+	async createOne(req, res) {
 		new CreatedResponse({
 			metadata: await DoctorService.createOne(req.body),
 		}).send(res);
 	}
 
-	async insertMany(req, res, next) {
+	async insertMany(req, res) {
 		new CreatedResponse({
 			metadata: await DoctorService.insertMany(req.body.doctors),
 		}).send(res);
 	}
 
-	async updateOne(req, res, next) {
+	async updateOne(req, res) {
 		new OkResponse({
 			metadata: await DoctorService.updateOne({
 				id: req.params.id,
@@ -39,7 +39,7 @@ class DoctorController {
 		}).send(res);
 	}
 
-	async deleteOne(req, res, next) {
+	async deleteOne(req, res) {
 		new OkResponse({
 			metadata: await DoctorService.deleteOne({
 				id: req.params.id,

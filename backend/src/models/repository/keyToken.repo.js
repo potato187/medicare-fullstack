@@ -1,10 +1,10 @@
-'use strict';
 const { createSelectData, convertToObjectIdMongodb } = require('@/utils');
 const _KeyTokenModel = require('../keyToken.model');
 
 class KeyTokenRepo {
 	static async findOne(filter, select = ['_id']) {
-		return await _KeyTokenModel.findOne(filter).select(createSelectData(select));
+		const _select = createSelectData(select);
+		return _KeyTokenModel.findOne(filter).select(_select);
 	}
 
 	static async createPairToken(userId, publicKey, privateKey) {
@@ -25,7 +25,7 @@ class KeyTokenRepo {
 	}
 
 	static markRefreshTokenUsed = async (id, markRefreshToken) => {
-		return await _KeyTokenModel.updateOne(
+		return _KeyTokenModel.updateOne(
 			{ _id: convertToObjectIdMongodb(id) },
 			{
 				$addToSet: {

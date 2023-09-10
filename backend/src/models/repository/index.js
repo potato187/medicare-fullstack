@@ -1,4 +1,7 @@
+const KeyTokenRepo = require('./keyToken.repo');
+const UtilsRepo = require('./utils.repo');
+
 module.exports = {
-	KeyTokenRepo: require('./keyToken.repo'),
-	UtilsRepo: require('./utils.repo'),
+	KeyTokenRepo,
+	UtilsRepo,
 };

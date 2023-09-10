@@ -1,4 +1,3 @@
-'use strict';
 const {
 	nameValidator,
 	phoneValidator,
@@ -6,7 +5,6 @@ const {
 	genderValidator,
 	addressValidator,
 	isDeletedValidator,
-	isVerify,
 	dateValidator,
 	emptyStringValidator,
 	pageValidator,
@@ -29,7 +27,7 @@ const dateOfBirthValidator = dateValidator.max(new Date().setDate(new Date().get
 
 const sortValidator = Joi.array().items(sortFieldValidator).default(sortDirections);
 
-const bookingSchema = Joi.object({
+const createSchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
 	doctorId: ObjectIdMongodbValidator,
 	workingHourId: ObjectIdMongodbValidator,
@@ -42,7 +40,7 @@ const bookingSchema = Joi.object({
 	note: emptyStringValidator,
 });
 
-const updateBookingSchema = Joi.object({
+const updateSchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
 	doctorId: ObjectIdMongodbValidator,
 	workingHourId: ObjectIdMongodbValidator,
@@ -54,11 +52,10 @@ const updateBookingSchema = Joi.object({
 	address: addressValidator,
 	note: emptyStringValidator,
 	isDeleted: isDeletedValidator,
-	isVerify: isVerify,
 	status: Joi.string().valid(...BookingStatusOptions),
 });
 
-const queryBookingSchema = Joi.object({
+const querySchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
 	doctorId: ObjectIdMongodbValidator,
 	workingHourId: ObjectIdMongodbValidator,
@@ -80,7 +77,7 @@ const queryBookingSchema = Joi.object({
 });
 
 module.exports = {
-	bookingSchema,
-	updateBookingSchema,
-	queryBookingSchema,
+	createSchema,
+	updateSchema,
+	querySchema,
 };

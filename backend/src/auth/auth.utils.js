@@ -1,4 +1,3 @@
-'use strict';
 const JWT = require('jsonwebtoken');
 
 const verifyToken = async (clientId, token, secretKey) => {

@@ -1,9 +1,9 @@
-'use strict';
 const { authMiddleware } = require('@/auth');
 const { AdminController } = require('@/controllers');
-const { tryCatch, handlerValidateRequest, handlerParseParamsToArray } = require('@/middleware');
+const { handlerValidateRequest, handlerParseParamsToArray } = require('@/middleware');
 const express = require('express');
 const { querySchema, updateSchema, paramsSchema } = require('./schema');
+
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
@@ -13,16 +13,16 @@ router.get(
 	'/query',
 	handlerParseParamsToArray(['sort']),
 	handlerValidateRequest(querySchema, 'query'),
-	tryCatch(AdminController.query),
+	AdminController.queryByParams,
 );
 
-router.delete('/delete/:id', handlerValidateRequest(paramsSchema, 'params'), tryCatch(AdminController.deleteAdminById));
+router.delete('/delete/:id', handlerValidateRequest(paramsSchema, 'params'), AdminController.deleteOneById);
 
 router.patch(
 	'/update/:id',
 	handlerValidateRequest(paramsSchema, 'params'),
 	handlerValidateRequest(updateSchema),
-	tryCatch(AdminController.updateAdminById),
+	AdminController.updateOneById,
 );
 
 module.exports = router;

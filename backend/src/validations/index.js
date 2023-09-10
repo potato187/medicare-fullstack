@@ -1,4 +1,3 @@
-'use strict';
 const { POSITIONS } = require('@/constant');
 const Joi = require('joi');
 const { Types } = require('mongoose');
@@ -27,9 +26,9 @@ const genderValidator = Joi.string().pattern(genderRegex).message({
 	'string.pattern.base': 'Gender is invalid',
 });
 
-const ObjectIdMongodbValidator = Joi.string().custom((value, helper) => {
-	return Types.ObjectId.isValid(value) ? value : helper.message('107400');
-});
+const ObjectIdMongodbValidator = Joi.string().custom((value, helper) =>
+	Types.ObjectId.isValid(value) ? value : helper.message('107400'),
+);
 
 const nameValidator = Joi.string().trim().min(3).max(50);
 
@@ -45,9 +44,9 @@ const isDeletedValidator = Joi.boolean();
 
 const isVerify = Joi.boolean();
 
-const positionValidator = Joi.string().custom((value, helper) => {
-	return POSITIONS.includes(value) ? value : helper.message('108400');
-});
+const positionValidator = Joi.string().custom((value, helper) =>
+	POSITIONS.includes(value) ? value : helper.message('108400'),
+);
 
 const dateValidator = Joi.date().iso();
 
@@ -58,6 +57,18 @@ const pageSizeValidator = Joi.number().integer().positive().min(1).max(100).defa
 const keySearchValidator = Joi.string().allow('').default('');
 
 const slugValidator = Joi.string().pattern(slugRegex);
+
+const sortValidator = (fields = []) =>
+	Joi.array().items(
+		Joi.array()
+			.length(2)
+			.ordered(Joi.string().valid(...fields), Joi.string().valid('asc', 'desc')),
+	);
+
+const selectValidator = (fields = []) =>
+	Joi.array()
+		.items(Joi.string().valid(...fields))
+		.default(fields);
 
 module.exports = {
 	addressValidator,
@@ -78,4 +89,6 @@ module.exports = {
 	pageSizeValidator,
 	keySearchValidator,
 	slugValidator,
+	sortValidator,
+	selectValidator,
 };

@@ -1,4 +1,6 @@
-'use strict';
+const { convertToObjectIdMongodb, removeFalsyProperties, flattenObject, getInfoData } = require('@/utils');
+const { ForbiddenRequestError } = require('@/core');
+
 const _AdminModel = require('../admin.model');
 const _GenderModel = require('../gender.model');
 const _KeyTokenModel = require('../keyToken.model');
@@ -10,8 +12,6 @@ const _DoctorModel = require('../doctor.model');
 const _BookingModel = require('../booking.model');
 const _PostCategoryModel = require('../postCategory.model');
 
-const { convertToObjectIdMongodb, removeFalsyProperties, flattenObject, getInfoData } = require('@/utils');
-const { ForbiddenRequestError } = require('@/core');
 const {
 	ADMIN_MODEL,
 	KEY_TOKEN_MODEL,
@@ -27,6 +27,7 @@ const {
 
 class UtilsRepo {
 	static modelsRegister = {};
+
 	static registerModel = (model, modelRef) => {
 		UtilsRepo.modelsRegister[model] = modelRef;
 	};
@@ -41,22 +42,22 @@ class UtilsRepo {
 
 	static async createOne({ model, body }) {
 		const _Model = UtilsRepo.getModel(model);
-		return await _Model.create(body);
+		return _Model.create(body);
 	}
 
 	static async insertMany({ model, dataArray = [] }) {
 		const _Model = UtilsRepo.getModel(model);
-		return await _Model.create(dataArray);
+		return _Model.create(dataArray);
 	}
 
 	static async findOne({ model, filter, select = ['_id'] }) {
 		const _Model = UtilsRepo.getModel(model);
-		return await _Model.findOne(filter).select(select).lean();
+		return _Model.findOne(filter).select(select).lean();
 	}
 
 	static async getAll({ model, query, sort, select = ['_id'] }) {
 		const _Model = UtilsRepo.getModel(model);
-		return await _Model.find(query).sort(sort).select(select).lean().exec();
+		return _Model.find(query).sort(sort).select(select).lean().exec();
 	}
 
 	static async findOneAndUpdate({ model, filter, updateBody, options = { new: true }, select = [] }) {
@@ -75,12 +76,12 @@ class UtilsRepo {
 
 	static async removeById({ model, id }) {
 		const _Model = UtilsRepo.getModel(model);
-		return await _Model.deleteOne({ _id: convertToObjectIdMongodb(id) });
+		return _Model.deleteOne({ _id: convertToObjectIdMongodb(id) });
 	}
 
 	static async countByFilter({ model, filter = {} }) {
 		const _Model = UtilsRepo.getModel(model);
-		return await _Model.countDocuments(filter);
+		return _Model.countDocuments(filter);
 	}
 }
 

@@ -1,3 +1,5 @@
+const mongodConfig = require('./mongod.config');
+
 module.exports = {
-	mongodConfig: require('./mongod.config'),
+	mongodConfig,
 };

@@ -1,7 +1,6 @@
-'use strict';
-const { createSlug } = require('@/utils');
-const { func } = require('joi');
 const { Schema, model } = require('mongoose');
+const { createSlug } = require('@/utils');
+
 const DOCUMENT_NAME = 'PostCategory';
 const COLLECTION_NAME = 'postCategories';
 
@@ -52,7 +51,7 @@ const postCategorySchema = new Schema(
 	{ timestamps: true, collection: COLLECTION_NAME },
 );
 
-postCategorySchema.pre('save', function (next) {
+postCategorySchema.pre('save', function autoAddSlug(next) {
 	this.slug = {
 		vi: createSlug(this.name.vi),
 		en: createSlug(this.name.en),

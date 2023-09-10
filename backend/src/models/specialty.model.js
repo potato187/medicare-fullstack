@@ -1,5 +1,3 @@
-'use strict';
-const { LANGUAGES } = require('@/constant');
 const { createSlug } = require('@/utils');
 const { Schema, model } = require('mongoose');
 
@@ -48,26 +46,9 @@ const specialtySchema = new Schema(
 	},
 );
 
-specialtySchema.pre('save', function (next) {
+specialtySchema.pre('save', function autoAddSlug(next) {
 	this.slug.vi = createSlug(this.name.vi);
 	this.slug.en = createSlug(this.name.en);
-	next();
-});
-
-specialtySchema.pre('findOneAndUpdate', function (next) {
-	const update = this.getUpdate();
-	const updatedSlug = {};
-
-	for (const language of LANGUAGES) {
-		if (update?.[`name.${language}`]) {
-			updatedSlug[language] = createSlug(update[`name.${language}`]);
-		}
-	}
-
-	if (Object.keys(updatedSlug).length) {
-		this._update.$set.slug = updatedSlug;
-	}
-
 	next();
 });
 

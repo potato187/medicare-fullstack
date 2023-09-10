@@ -1,9 +1,11 @@
 {
 	"compilerOptions": {
 		"module": "CommonJS",
-		"baseUrl": "./",
+		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["src/*"],
+			"@middleware": ["./src/middleware/*"]
 		}
-	}
+	},
+	"include": ["src"]
 }

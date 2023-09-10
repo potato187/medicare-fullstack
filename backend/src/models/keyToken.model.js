@@ -1,9 +1,8 @@
-'use strict';
 const { Schema, model } = require('mongoose');
 
 const DOCUMENT_NAME = 'KeyToken';
 
-var keyTokenSchema = new Schema(
+const keyTokenSchema = new Schema(
 	{
 		userId: {
 			type: Schema.Types.ObjectId,

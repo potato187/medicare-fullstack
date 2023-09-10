@@ -1,4 +1,3 @@
-'use strict';
 const { NotFoundRequestError } = require('@/core');
 const fs = require('fs');
 const path = require('path');
@@ -22,8 +21,7 @@ class LanguageService {
 			const filePath = path.join(__dirname, LANGUAGE_PATH, `${language}.json`);
 			const fileContent = fs.readFileSync(filePath, 'utf-8');
 			const parsedContent = JSON.parse(fileContent);
-			obj[language] = parsedContent;
-			return obj;
+			return { ...obj, [language]: parsedContent };
 		}, {});
 
 		return languageFiles;
@@ -34,7 +32,7 @@ class LanguageService {
 		if (!fs.existsSync(filePath)) {
 			throw new NotFoundRequestError();
 		}
-	
+
 		fs.writeFileSync(filePath, JSON.stringify(bodyUpdate));
 		return bodyUpdate;
 	}

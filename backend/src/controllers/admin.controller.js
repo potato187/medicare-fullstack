@@ -1,25 +1,25 @@
-'use strict';
 const { OkResponse } = require('@/core');
+const { tryCatch } = require('@/middleware');
 const { AdminService } = require('@/services');
 
 class AdminController {
-	query = async (req, res, next) => {
+	queryByParams = tryCatch(async (req, res) => {
 		new OkResponse({
-			metadata: await AdminService.query(req.query),
+			metadata: await AdminService.queryByParams(req.query),
 		}).send(res);
-	};
+	});
 
-	updateAdminById = async (req, res, next) => {
+	updateOneById = tryCatch(async (req, res) => {
 		new OkResponse({
-			metadata: await AdminService.updateAdminById({ id: req.params.id, updateBody: req.body }),
+			metadata: await AdminService.updateOneById({ id: req.params.id, updateBody: req.body }),
 		}).send(res);
-	};
+	});
 
-	deleteAdminById = async (req, res, next) => {
+	deleteOneById = tryCatch(async (req, res) => {
 		new OkResponse({
-			metadata: await AdminService.deleteAdminById(req.params.id),
+			metadata: await AdminService.deleteOneById(req.params.id),
 		}).send(res);
-	};
+	});
 }
 
 module.exports = new AdminController();

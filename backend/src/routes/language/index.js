@@ -1,4 +1,3 @@
-'use strict';
 const { authMiddleware } = require('@/auth');
 const { LanguageController } = require('@/controllers');
 const { tryCatch } = require('@/middleware');

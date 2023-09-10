@@ -1,4 +1,3 @@
-'use strict';
 const { ROLES, GENDERS } = require('@/constant');
 const bcrypt = require('bcrypt');
 const { Schema, model } = require('mongoose');
@@ -54,12 +53,12 @@ const adminSchema = new Schema(
 	},
 );
 
-adminSchema.pre('save', function (next) {
+adminSchema.pre('save', function hasPassword(next) {
 	this.password = bcrypt.hashSync(this.password, 10);
 	next();
 });
 
-adminSchema.pre('findOneAndUpdate', function (next) {
+adminSchema.pre('findOneAndUpdate', function hasPassword(next) {
 	if (this._update.password) {
 		this._update.password = bcrypt.hashSync(this._update.password, 10);
 	}

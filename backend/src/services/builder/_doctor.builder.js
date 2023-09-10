@@ -1,4 +1,3 @@
-'use strict';
 const { GENDERS, STATUS, POSITIONS } = require('@/constant');
 const { convertToObjectIdMongodb } = require('@/utils');
 

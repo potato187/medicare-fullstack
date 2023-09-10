@@ -1,5 +1,3 @@
-'use strict';
-
 const codeReason = {
 	/*  Common codes 10xxxx */
 	100400: {

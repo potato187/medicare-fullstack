@@ -1,4 +1,3 @@
-'use strict';
 const { authMiddleware } = require('@/auth');
 const { AccessController } = require('@/controllers');
 const { handlerValidateRequest, tryCatch } = require('@/middleware');

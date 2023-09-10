@@ -1,0 +1,24 @@
+{
+	"root": true,
+	"env": {
+		"es2021": true,
+		"node": true
+	},
+	"extends": ["airbnb-base", "prettier"],
+	"parserOptions": {
+		"ecmaVersion": "latest"
+	},
+	"rules": {
+		"no-console": "error",
+		"no-underscore-dangle": "off",
+		"class-methods-use-this": "off",
+		"max-classes-per-file": "off",
+		"arrow-body-style": "off",
+		"no-unused-vars": "warn"
+	},
+	"settings": {
+		"import/resolver": {
+			"babel-module": {}
+		}
+	}
+}

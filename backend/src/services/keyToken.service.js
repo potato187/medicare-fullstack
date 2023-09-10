@@ -1,6 +1,5 @@
-'use strict';
 const { _KeyTokenModel } = require('@/models');
-const { convertToObjectIdMongodb } = require('@/utils');
+const { convertToObjectIdMongodb, createSelectData } = require('@/utils');
 
 class KeyTokenService {
 	static async createPairToken(userId, publicKey, privateKey) {
@@ -17,15 +16,17 @@ class KeyTokenService {
 	}
 
 	static async findByFilter(filter, select = ['_id']) {
-		return await _KeyTokenModel.findOne(filter).select(createSelectData(select));
+		const result = await _KeyTokenModel.findOne(filter).select(createSelectData(select));
+		return result;
 	}
 
 	static async removeById(id) {
-		return _KeyTokenModel.deleteOne({ _id: convertToObjectIdMongodb(id) });
+		const result = _KeyTokenModel.deleteOne({ _id: convertToObjectIdMongodb(id) });
+		return result;
 	}
 
 	static markRefreshTokenUsed = async (id, newRefreshToken, markRefreshToken) => {
-		return await _KeyTokenModel.updateOne(
+		const result = await _KeyTokenModel.updateOne(
 			{ _id: convertToObjectIdMongodb(id) },
 			{
 				$set: {
@@ -36,6 +37,8 @@ class KeyTokenService {
 				},
 			},
 		);
+
+		return result;
 	};
 }
 

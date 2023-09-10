@@ -1,8 +1,15 @@
+const _AdminModel = require('./admin.model');
+const _KeyTokenModel = require('./keyToken.model');
+const _SpecialtyModel = require('./specialty.model');
+const _DoctorModel = require('./doctor.model');
+const _BookingModel = require('./booking.model');
+const _PostCategoryModel = require('./postCategory.model');
+
 module.exports = {
-	_AdminModel: require('./admin.model'),
-	_KeyTokenModel: require('./keyToken.model'),
-	_SpecialtyModel: require('./specialty.model'),
-	_DoctorModel: require('./doctor.model'),
-	_BookingModel: require('./booking.model'),
-	_PostCategoryModel: require('./postCategory.model'),
+	_AdminModel,
+	_KeyTokenModel,
+	_SpecialtyModel,
+	_DoctorModel,
+	_BookingModel,
+	_PostCategoryModel,
 };

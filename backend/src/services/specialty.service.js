@@ -1,12 +1,12 @@
-'use strict';
 const { UtilsRepo } = require('@/models/repository');
-const { SpecialtyBuilder } = require('./builder');
 const { ConflictRequestError } = require('@/core');
 const { getInfoData, createUnSelectData, convertToObjectIdMongodb } = require('@/utils');
 const { SPECIALLY_MODEL } = require('@/models/repository/constant');
+const { SpecialtyBuilder } = require('./builder');
 
 class SpecialtyService {
 	static IGNORE_FIELDS = ['__v', 'updatedAt', 'createdAt', 'isDeleted', 'isActive'];
+
 	static async checkExists(filter) {
 		const specialtyFound = await UtilsRepo.findOne({
 			model: SPECIALLY_MODEL,
@@ -34,20 +34,24 @@ class SpecialtyService {
 	}
 
 	static async getAll() {
-		return await UtilsRepo.getAll({
+		const result = await UtilsRepo.getAll({
 			model: SPECIALLY_MODEL,
 			filter: { isDeleted: false, isActive: 'active' },
 			sort: { key: 1 },
 			select: createUnSelectData(SpecialtyService.IGNORE_FIELDS),
 		});
+
+		return result;
 	}
 
 	static async getOne(id) {
-		return await UtilsRepo.findOne({
+		const result = await UtilsRepo.findOne({
 			model: SPECIALLY_MODEL,
 			filter: { _id: convertToObjectIdMongodb(id) },
 			select: createUnSelectData(SpecialtyService.IGNORE_FIELDS),
 		});
+
+		return result;
 	}
 
 	static async updateOne({ id, updateBody = {} }) {
@@ -55,12 +59,14 @@ class SpecialtyService {
 			return {};
 		}
 
-		return await UtilsRepo.findOneAndUpdate({
+		const result = await UtilsRepo.findOneAndUpdate({
 			model: SPECIALLY_MODEL,
 			filter: { _id: convertToObjectIdMongodb(id) },
 			updateBody,
 			select: ['_id', 'key', 'name', 'slug', 'description', 'image'],
 		});
+
+		return result;
 	}
 
 	static async deleteOne(id) {

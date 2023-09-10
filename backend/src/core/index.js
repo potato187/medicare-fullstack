@@ -1,5 +1,7 @@
+const errorCore = require('./error.core');
+const successCore = require('./success.core');
+
 module.exports = {
-	...require('./error.core'),
-	...require('./success.core'),
-	...require('./error.core'),
+	...errorCore,
+	...successCore,
 };

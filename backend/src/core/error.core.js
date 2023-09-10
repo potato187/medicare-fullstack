@@ -1,6 +1,5 @@
-'use strict';
+/* eslint-disable max-classes-per-file */
 const { ReasonPhrases, StatusCodes } = require('@/httpStatusCode');
-const codeReason = require('./status.core');
 
 class ErrorResponse extends Error {
 	constructor(message, status, code = 100500) {

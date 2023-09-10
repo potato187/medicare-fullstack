@@ -1,4 +1,3 @@
-'use strict';
 const {
 	genderValidator,
 	emailValidator,

@@ -1,5 +1,9 @@
+const authMiddleware = require('./auth.middleware');
+const authConstant = require('./auth.constant');
+const authUtils = require('./auth.utils');
+
 module.exports = {
-	authMiddleware: require('./auth.middleware'),
-	authConstant: require('./auth.constant'),
-	authUtils: require('./auth.utils'),
+	authMiddleware,
+	authConstant,
+	authUtils,
 };

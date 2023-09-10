@@ -1,4 +1,3 @@
-'use strict';
 const { HEADERS } = require('@/constant');
 const { UnauthorizedRequestError, ForbiddenRequestError } = require('@/core');
 const { tryCatch } = require('@/middleware');
@@ -7,11 +6,11 @@ const { convertToObjectIdMongodb } = require('@/utils');
 const { verifyToken } = require('./auth.utils');
 
 const checkRoles = (roles = []) => {
-	return async (req, res, next) => {
+	return tryCatch(async (req, res, next) => {
 		const { role } = req.user;
 		const isValidRole = role && roles.includes(role);
 		return isValidRole ? next() : next(new ForbiddenRequestError());
-	};
+	});
 };
 
 const authorization = tryCatch(async (req, res, next) => {
@@ -23,8 +22,7 @@ const authorization = tryCatch(async (req, res, next) => {
 	}
 
 	const filter = { userId: convertToObjectIdMongodb(clientId) };
-	const select = ['publicKey', 'refreshTokenUsed'];
-	const keyStore = await KeyTokenRepo.findOne(filter, select);
+	const keyStore = await KeyTokenRepo.findOne(filter, ['publicKey', 'refreshTokenUsed']);
 
 	if (!keyStore) {
 		return next(new UnauthorizedRequestError({ code: 100401 }));

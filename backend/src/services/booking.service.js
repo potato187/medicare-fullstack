@@ -1,4 +1,3 @@
-'use strict';
 const { UtilsRepo } = require('@/models/repository');
 const { BOOKING_MODEL, WORKING_HOUR_MODEL, DOCTOR_MODEL } = require('@/models/repository/constant');
 const {
@@ -10,7 +9,6 @@ const {
 } = require('@/utils');
 const { BadRequestError, NotFoundRequestError } = require('@/core');
 const { _BookingModel } = require('@/models');
-const { Types } = require('mongoose');
 
 const FIELDS_ABLE_SEARCH = ['fullName', 'phone', 'address', 'note'];
 
@@ -35,12 +33,12 @@ class BookingService {
 	static async createOne(body) {
 		const { specialtyId, doctorId, workingHourId } = body;
 
-		const foundDoctor = new UtilsRepo.findOne({
+		const foundDoctor = await UtilsRepo.findOne({
 			model: BOOKING_MODEL,
 			filter: { _id: convertToObjectIdMongodb(doctorId), specialtyId: convertToObjectIdMongodb(specialtyId) },
 		});
 
-		const foundWK = new UtilsRepo.findOne({
+		const foundWK = await UtilsRepo.findOne({
 			model: WORKING_HOUR_MODEL,
 			filter: { _id: convertToObjectIdMongodb(workingHourId) },
 		});
@@ -61,10 +59,11 @@ class BookingService {
 	}
 
 	static async updateOneById({ id, updateBody }) {
+		const { workingHourId, specialtyId, doctorId, dateOfBirth, appointmentDate, ...body } = updateBody;
+
 		const select = Object.keys(updateBody);
 		if (!select.length) return {};
 
-		const { workingHourId, specialtyId, doctorId } = updateBody;
 		const filter = { _id: convertToObjectIdMongodb(id) };
 
 		const foundBooking = await BookingService.findByFilter(filter, BOOKING_MODEL, ['specialtyId']);
@@ -74,8 +73,8 @@ class BookingService {
 		}
 
 		if (workingHourId && workingHourId !== foundBooking.workingHourId) {
-			const filter = { _id: convertToObjectIdMongodb(workingHourId) };
-			await BookingService.checkIsExist(filter, WORKING_HOUR_MODEL);
+			await BookingService.checkIsExist({ _id: convertToObjectIdMongodb(workingHourId) }, WORKING_HOUR_MODEL);
+			body.workingHourId = workingHourId;
 		}
 
 		if (specialtyId && !doctorId) {
@@ -83,33 +82,41 @@ class BookingService {
 		}
 
 		if (specialtyId && doctorId) {
-			const filter = { _id: convertToObjectIdMongodb(doctorId), specialtyId: convertToObjectIdMongodb(specialtyId) };
-			await BookingService.checkIsExist(filter, DOCTOR_MODEL);
+			await BookingService.checkIsExist(
+				{ _id: convertToObjectIdMongodb(doctorId), specialtyId: convertToObjectIdMongodb(specialtyId) },
+				DOCTOR_MODEL,
+			);
+
+			body.specialtyId = specialtyId;
+			body.doctorId = doctorId;
 		}
 
-		if (updateBody.dateOfBirth) {
-			updateBody.dateOfBirth = new Date(updateBody.dateOfBirth);
+		if (dateOfBirth) {
+			body.dateOfBirth = new Date(updateBody.dateOfBirth);
 		}
 
-		if (updateBody.appointmentDate) {
-			updateBody.appointmentDate = new Date(updateBody.appointmentDate);
+		if (appointmentDate) {
+			body.appointmentDate = new Date(updateBody.appointmentDate);
 		}
 
-		return await UtilsRepo.findOneAndUpdate({
+		const result = await UtilsRepo.findOneAndUpdate({
 			model: BOOKING_MODEL,
 			filter,
-			updateBody,
+			updateBody: body,
 			select,
 		});
+
+		return result;
 	}
 
 	static async deleteOneById(id) {
-		return await BookingService.updateOneById({ id, updateBody: { isDeleted: true } });
+		const result = await BookingService.updateOneById({ id, updateBody: { isDeleted: true } });
+		return result;
 	}
 
 	static async queryByParams(parameters) {
 		const {
-			key_search,
+			key_search: keySearch = '',
 			specialtyId,
 			workingHourId,
 			startDate,
@@ -126,8 +133,8 @@ class BookingService {
 		const $skip = (page - 1) * pagesize;
 		const $limit = pagesize;
 
-		if (key_search) {
-			$match.$or = createSearchData(FIELDS_ABLE_SEARCH, key_search);
+		if (keySearch) {
+			$match.$or = createSearchData(FIELDS_ABLE_SEARCH, keySearch);
 		}
 
 		if (specialtyId) {

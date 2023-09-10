@@ -1,4 +1,3 @@
-'use strict';
 const { ACCESS_TOKEN_EXPIRES, REFRESH_TOKEN_EXPIRES } = require('@/auth/auth.constant');
 const JWT = require('jsonwebtoken');
 
@@ -14,6 +13,7 @@ class TokenBuilder {
 		this.data.payload = payload;
 		return this;
 	}
+
 	getPayload() {
 		return this.data.payload;
 	}
@@ -28,11 +28,13 @@ class TokenBuilder {
 	}
 
 	async buildAccessToken(options = { expiresIn: ACCESS_TOKEN_EXPIRES }) {
-		return await JWT.sign(this.data.payload, this.data.key, options);
+		const token = await JWT.sign(this.data.payload, this.data.key, options);
+		return token;
 	}
 
 	async buildRefreshToken(options = { expiresIn: REFRESH_TOKEN_EXPIRES }) {
-		return await JWT.sign(this.data.payload, this.data.key, options);
+		const token = await JWT.sign(this.data.payload, this.data.key, options);
+		return token;
 	}
 }
 

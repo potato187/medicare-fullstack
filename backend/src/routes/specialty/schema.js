@@ -1,4 +1,3 @@
-'use strict';
 const Joi = require('joi');
 
 const keyValidate = Joi.string().min(3).max(255);

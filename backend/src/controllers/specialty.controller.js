@@ -1,27 +1,26 @@
-'use strict';
 const { OkResponse, CreatedResponse } = require('@/core');
 const { SpecialtyService } = require('@/services');
 
 class SpecialtyController {
-	getAll = async (req, res, next) => {
+	getAll = async (req, res) => {
 		new OkResponse({
 			metadata: await SpecialtyService.getAll(),
 		}).send(res);
 	};
 
-	getOne = async (req, res, next) => {
+	getOne = async (req, res) => {
 		new OkResponse({
 			metadata: await SpecialtyService.getOne(req.params.id),
 		}).send(res);
 	};
 
-	createOne = async (req, res, next) => {
+	createOne = async (req, res) => {
 		new CreatedResponse({
 			metadata: await SpecialtyService.createOne({ ...req.body }),
 		}).send(res);
 	};
 
-	updateOne = async (req, res, next) => {
+	updateOne = async (req, res) => {
 		new OkResponse({
 			metadata: await SpecialtyService.updateOne({
 				id: req.params.id,
@@ -30,7 +29,7 @@ class SpecialtyController {
 		}).send(res);
 	};
 
-	deleteOne = async (req, res, next) => {
+	deleteOne = async (req, res) => {
 		new OkResponse({
 			metadata: await SpecialtyService.deleteOne(req.params.id),
 		}).send(res);
