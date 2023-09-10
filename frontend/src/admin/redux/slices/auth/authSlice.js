@@ -1,4 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { showToastMessage } from 'admin/utilities';
 import { authLogin, authLogout, authRefreshTokens } from './authAction';
 
 const initialState = {
@@ -61,14 +62,17 @@ const authSlice = createSlice({
 				state.tokens.accessToken = tokens.accessToken;
 				state.tokens.refreshToken = tokens.refreshToken;
 			})
-			.addMatcher(
-				isAnyOf(authLogout.fulfilled, authLogin.rejected, authLogout.fulfilled, authLogout.rejected),
-				(state) => {
-					state.info = initialState.info;
-					state.tokens = initialState.tokens;
-					state.status = initialState.status;
-				},
-			);
+			.addMatcher(isAnyOf(authLogin.rejected, authLogout.fulfilled, authLogout.rejected), (state, meta) => {
+				state.info = initialState.info;
+				state.tokens = initialState.tokens;
+				state.status = initialState.status;
+			})
+			.addMatcher(isAnyOf(authLogin.rejected), (state, meta) => {
+				const {
+					payload: { message },
+				} = meta;
+				showToastMessage(message, state.info.languageId, 'warning');
+			});
 	},
 });
 

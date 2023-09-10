@@ -18,7 +18,7 @@ axiosClient.interceptors.response.use(
 	(response) => {
 		return response.data ? Promise.resolve(response.data) : Promise.resolve(response);
 	},
-	async (error) => {
+	(error) => {
 		return error.response?.data ? Promise.reject(error.response.data) : Promise.reject(error.response);
 	},
 );

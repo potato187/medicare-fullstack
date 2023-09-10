@@ -33,14 +33,12 @@ class AccessService {
 	static async login({ email, password }) {
 		const foundAdmin = await UtilsRepo.findOne({
 			model: ADMIN_MODEL,
-			filter: { email },
+			filter: { email, isDeleted: false, isActive: 'active' },
 			select: ['_id', 'email', 'password', 'firstName', 'lastName', 'role'],
 		});
 
-		const checKPassword = bcrypt.compareSync(password, foundAdmin.password);
-
-		if (!foundAdmin || !checKPassword) {
-			throw new UnauthorizedRequestError({ code: 200401 });
+		if (!foundAdmin || !bcrypt.compareSync(password, foundAdmin.password)) {
+			throw new UnauthorizedRequestError({ code: 201400 });
 		}
 
 		const payload = { userId: foundAdmin._id, role: foundAdmin.role };
