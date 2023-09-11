@@ -62,7 +62,7 @@ const authSlice = createSlice({
 				state.tokens.accessToken = tokens.accessToken;
 				state.tokens.refreshToken = tokens.refreshToken;
 			})
-			.addMatcher(isAnyOf(authLogin.rejected, authLogout.fulfilled, authLogout.rejected), (state, meta) => {
+			.addMatcher(isAnyOf(authLogin.rejected, authLogout.fulfilled, authLogout.rejected), (state) => {
 				state.info = initialState.info;
 				state.tokens = initialState.tokens;
 				state.status = initialState.status;
