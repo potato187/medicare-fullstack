@@ -1,102 +1,100 @@
-import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { toast } from 'react-toastify';
 import { postCategoryApi } from 'admin/api';
+import produce from 'immer';
 import { Button, ConfirmModal, Container, FormattedDescription, SortableTree, WrapScrollBar } from 'admin/components';
 import { flattenTree, removeItem } from 'admin/components/AdvanceUI/Tree/utilities';
 import { useToggle } from 'admin/hooks';
-import { compose, findPathFromRoot, tryCatch } from 'admin/utilities';
+import { compose, findPathFromRoot, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
-
-import { AddCategoryModal, ModifyCategoryModal } from '../../components';
+import { useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { CreatePostCategoryModal, UpdatePostCategoryModal } from '../../components';
 
 export function CategoryManager() {
-	const { languageId } = useAuth();
-	const [categories, setCategories] = useState([]);
-	const localizedTitle = `title_${languageId}`;
+	const {
+		info: { languageId },
+	} = useAuth();
 
-	const [focusedCategory, setFocusedCategory] = useState({});
+	const [postCategories, setPostCategories] = useState([]);
+	const [isOpenCreateModal, toggleCreateModal] = useToggle();
+	const [isOpenUpdateModal, toggleUpdateModal] = useToggle();
+	const [isOpenSortModal, toggleSortableModal] = useToggle();
+	const [isOpenDeletionModal, toggleDeletionModal] = useToggle();
 
-	const [statusAddModal, toggleAddModal] = useToggle();
-	const [statusModifyModal, toggleModifyModal] = useToggle();
-	const [statusDeletionModal, toggleDeletionModal] = useToggle();
-	const [statusSortModal, toggleSortModal] = useToggle();
+	const [focusedPostCategory, setFocusedPostCategory] = useState(null);
 
 	const handleSelectCategory = (category) => {
-		if (!focusedCategory || category.id !== focusedCategory.id) {
-			setFocusedCategory({ ...category });
+		if (!focusedPostCategory || category.id !== focusedPostCategory.id) {
+			setFocusedPostCategory({ ...category });
 		}
 	};
-
-	const openModifyModal = compose(handleSelectCategory, toggleModifyModal);
+	const openUpdateModal = compose(handleSelectCategory, toggleUpdateModal);
 	const openDeletionModal = compose(handleSelectCategory, toggleDeletionModal);
 
-	const submitAddCategory = async (newCategory) => {
-		try {
-			newCategory.index = categories.length;
-			const { data: dataResponse, message } = await postCategoryApi.createOne(newCategory);
-			setCategories((prevCategories) => [...prevCategories, { ...newCategory, ...dataResponse }]);
-			toast.success(message[languageId]);
-			toggleAddModal();
-		} catch (error) {
-			toast.error(error.message[languageId]);
+	const handleCreatePostCategory = tryCatchAndToast(async (data) => {
+		const { metadata, message } = await postCategoryApi.createOne({ ...data, index: postCategories.length });
+		setPostCategories((postCategories) => {
+			const { _id, ...rest } = metadata;
+			const newPostCategory = { id: _id, ...rest, parentId: null, children: [], depth: 0, collapsed: null };
+			return [...postCategories, newPostCategory];
+		});
+		showToastMessage(message, languageId);
+		toggleCreateModal();
+	}, languageId);
+
+	const handleSortPostCategories = tryCatchAndToast(async () => {
+		const flattenedCategories = flattenTree(postCategories).map(({ id, index, parentId }) => ({
+			id,
+			index,
+			parentId,
+		}));
+		const { message } = await postCategoryApi.sortable(flattenedCategories);
+		showToastMessage(message, languageId);
+		toggleSortableModal();
+	}, languageId);
+
+	const handleConfirmDeletion = tryCatchAndToast(async () => {
+		const listIdPostCategory = flattenTree([focusedPostCategory]).map(({ id }) => ({ id }));
+		const { message } = await postCategoryApi.deleteByIds(listIdPostCategory);
+
+		console.log(listIdPostCategory);
+
+		setPostCategories((postCategories) => {
+			return removeItem(postCategories, listIdPostCategory[0].id);
+		});
+
+		showToastMessage(message, languageId);
+		toggleDeletionModal();
+	}, languageId);
+
+	const handleUpdatePostCategory = tryCatchAndToast(async (updateBody) => {
+		const { metadata, message } = await postCategoryApi.updateOneById(focusedPostCategory.id, updateBody);
+		if (Object.keys(metadata).length) {
+			setPostCategories(
+				produce((draft) => {
+					const path = findPathFromRoot(draft, focusedPostCategory.id);
+					let postCategory = null;
+
+					while (path.length > 0) {
+						const index = path.shift();
+						postCategory = !postCategory ? draft[index] : postCategory.children[index];
+					}
+
+					Object.entries(metadata).forEach(([key, value]) => {
+						postCategory[key] = value;
+					});
+				}),
+			);
 		}
-	};
 
-	const submitUpdateCategory = async (data) => {
-		try {
-			const { data: response, message } = await postCategoryApi.updateOne(data);
-
-			setCategories((prevCategories) => {
-				const path = findPathFromRoot(prevCategories, data.id);
-				let category = null;
-
-				while (path.length > 0) {
-					const index = path.shift();
-					category = !category ? prevCategories[index] : category.children[index];
-				}
-
-				Object.assign(category, response);
-
-				return [...prevCategories];
-			});
-
-			toggleModifyModal();
-			toast.success(message[languageId]);
-		} catch (error) {
-			toast.error(error.message[languageId]);
-		}
-	};
-
-	const submitConfirmDeletionCategory = async () => {
-		try {
-			const deletionData = flattenTree([focusedCategory]).map(({ id }) => ({ id }));
-			const { message } = await postCategoryApi.deleteByIds(deletionData);
-			setCategories((categories) => removeItem(categories, deletionData[0].id));
-			toast.success(message[languageId]);
-			toggleDeletionModal();
-		} catch (error) {
-			toast.error(error.message[languageId]);
-		}
-	};
-
-	const confirmSortCategories = async () => {
-		try {
-			const flattenedCategories = flattenTree(categories).map(({ id, index, parentId }) => ({ id, index, parentId }));
-			const { message } = await postCategoryApi.sortCategories(flattenedCategories);
-			toast.success(message[languageId]);
-			toggleSortModal();
-		} catch (error) {
-			toast.error(error.message[languageId]);
-		}
-	};
+		showToastMessage(message, languageId);
+		toggleUpdateModal();
+	}, languageId);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const { data } = await postCategoryApi.getAll();
-			setCategories(data);
-		};
-		tryCatch(fetchData)();
+		tryCatch(async () => {
+			const { metadata } = await postCategoryApi.getAll();
+			setPostCategories(metadata);
+		})();
 	}, []);
 
 	return (
@@ -107,55 +105,55 @@ export function CategoryManager() {
 						<SortableTree
 							collapsible
 							removable
-							items={categories}
-							setItems={setCategories}
+							items={postCategories}
 							languageId={languageId}
-							handleModifyItem={openModifyModal}
+							setItems={setPostCategories}
 							handleConfirmDeletion={openDeletionModal}
-							localizedTitle={localizedTitle}
+							handleModifyItem={openUpdateModal}
 						/>
 					</WrapScrollBar>
 					<div className='d-flex justify-content-center gap-2 pt-4 border-top border-gray-300'>
-						<Button size='sm' info onClick={toggleSortModal}>
+						<Button size='sm' info onClick={toggleSortableModal}>
 							<FormattedMessage id='dashboard.posts.modal.button_sort' />
 						</Button>
-						<Button size='sm' onClick={toggleAddModal}>
+						<Button size='sm' onClick={toggleCreateModal}>
 							<FormattedMessage id='dashboard.posts.modal.button_add' />
 						</Button>
 					</div>
 				</div>
 			</Container>
-			<AddCategoryModal
-				defaultValues={focusedCategory}
-				isOpen={statusAddModal}
-				toggle={toggleAddModal}
-				onSubmit={submitAddCategory}
-			/>
-			<ModifyCategoryModal
-				defaultValues={focusedCategory}
-				isOpen={statusModifyModal}
-				toggle={toggleModifyModal}
-				onSubmit={submitUpdateCategory}
-			/>
-			<ConfirmModal
-				idTitleIntl='dashboard.posts.modal.category_deletion_confirmation_modal.title'
-				isOpen={statusDeletionModal}
-				onClose={toggleDeletionModal}
-				onSubmit={submitConfirmDeletionCategory}
-			>
-				<FormattedDescription
-					id='dashboard.posts.modal.category_deletion_confirmation_modal.description'
-					values={{ title: focusedCategory?.[localizedTitle] ?? '' }}
-				/>
-			</ConfirmModal>
 			<ConfirmModal
 				idTitleIntl='dashboard.posts.modal.sort_categories_confirmation_modal.title'
-				isOpen={statusSortModal}
-				onClose={toggleSortModal}
-				onSubmit={confirmSortCategories}
+				isOpen={isOpenSortModal}
+				onClose={toggleSortableModal}
+				onSubmit={handleSortPostCategories}
 			>
 				<FormattedMessage id='dashboard.posts.modal.sort_categories_confirmation_modal.description' />
 			</ConfirmModal>
+
+			<ConfirmModal
+				idTitleIntl='dashboard.posts.modal.category_deletion_confirmation_modal.title'
+				isOpen={isOpenDeletionModal}
+				onClose={toggleDeletionModal}
+				onSubmit={handleConfirmDeletion}
+			>
+				<FormattedDescription
+					id='dashboard.posts.modal.category_deletion_confirmation_modal.description'
+					values={{ title: focusedPostCategory?.name?.[languageId] || '' }}
+				/>
+			</ConfirmModal>
+			<UpdatePostCategoryModal
+				postCategory={focusedPostCategory}
+				isOpen={isOpenUpdateModal}
+				toggle={toggleUpdateModal}
+				onSubmit={handleUpdatePostCategory}
+			/>
+
+			<CreatePostCategoryModal
+				isOpen={isOpenCreateModal}
+				toggle={toggleCreateModal}
+				onSubmit={handleCreatePostCategory}
+			/>
 		</>
 	);
 }

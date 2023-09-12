@@ -6,7 +6,14 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { AuthLanguagesProvider } from 'stores';
 import { withAuth } from './hocs';
 import { BaseNotification, Layout } from './components';
-import { AdminManager, BookingManager, LanguageManager, LoginPage, SpecialtyManager } from './features';
+import {
+	AdminManager,
+	BookingManager,
+	CategoryManager,
+	LanguageManager,
+	LoginPage,
+	SpecialtyManager,
+} from './features';
 import { persistor, store } from './redux/store/configureStore';
 import 'shared/styles/style.scss';
 import 'admin/styles/style.scss';
@@ -36,6 +43,11 @@ export default function Admin() {
 									</Route>
 									<Route path='booking/*'>
 										<Route path='manage' element={<BookingManager />} />
+										<Route path='*' element={<Navigate to='manage' replace />} />
+									</Route>
+
+									<Route path='posts/*'>
+										<Route path='categories' element={<CategoryManager />} />
 										<Route path='*' element={<Navigate to='manage' replace />} />
 									</Route>
 								</Route>

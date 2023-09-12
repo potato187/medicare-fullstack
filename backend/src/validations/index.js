@@ -44,6 +44,8 @@ const isDeletedValidator = Joi.boolean();
 
 const isVerify = Joi.boolean();
 
+const booleanValidator = Joi.boolean();
+
 const positionValidator = Joi.string().custom((value, helper) =>
 	POSITIONS.includes(value) ? value : helper.message('108400'),
 );
@@ -89,6 +91,7 @@ module.exports = {
 	pageSizeValidator,
 	keySearchValidator,
 	slugValidator,
+	booleanValidator,
 	sortValidator,
 	selectValidator,
 };

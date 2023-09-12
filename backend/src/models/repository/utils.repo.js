@@ -64,7 +64,7 @@ class UtilsRepo {
 		const _Model = UtilsRepo.getModel(model);
 
 		const flattenObj = flattenObject(updateBody);
-		const cleanedObj = removeFalsyProperties([null, undefined])(flattenObj);
+		const cleanedObj = removeFalsyProperties([undefined])(flattenObj);
 
 		const updated = await _Model.findOneAndUpdate(filter, cleanedObj, options);
 

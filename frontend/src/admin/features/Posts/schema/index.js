@@ -20,12 +20,31 @@ export const postSchema = yup.object().shape({
 });
 
 export const postCategoryDefaultValues = {
-	title_en: '',
-	title_vi: '',
+	name: {
+		vi: '',
+		en: '',
+	},
 	display: true,
 };
 
-export const postCategorySchema = {
-	title_en: requiredValidation,
-	title_vi: requiredValidation,
+export const postCategoryDefault = {
+	name: {
+		vi: '',
+		en: '',
+	},
+	slug: {
+		vi: '',
+		en: '',
+	},
+	url: {
+		vi: '',
+		en: '',
+	},
 };
+
+export const postCategorySchema = yup.object().shape({
+	name: yup.object().shape({
+		vi: requiredValidation,
+		en: requiredValidation,
+	}),
+});

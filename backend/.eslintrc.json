@@ -14,7 +14,8 @@
 		"class-methods-use-this": "off",
 		"max-classes-per-file": "off",
 		"arrow-body-style": "off",
-		"no-unused-vars": "warn"
+		"no-unused-vars": "warn",
+		"no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"]
 	},
 	"settings": {
 		"import/resolver": {

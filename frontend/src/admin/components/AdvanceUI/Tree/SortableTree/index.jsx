@@ -64,7 +64,7 @@ export function SortableTree({
 	indentationWidth = 50,
 	handleModifyItem = () => null,
 	handleConfirmDeletion = () => null,
-	localizedTitle = 'titleEn',
+	languageId = 'en',
 }) {
 	const [activeId, setActiveId] = useState(null);
 	const [overId, setOverId] = useState(null);
@@ -191,7 +191,7 @@ export function SortableTree({
 					<SortableTreeItem
 						key={id}
 						id={id}
-						value={rest[localizedTitle]}
+						value={rest?.name[languageId]}
 						depth={id === activeId && projected ? projected.depth : depth}
 						indentationWidth={indentationWidth}
 						indicator={indicator}
@@ -209,7 +209,7 @@ export function SortableTree({
 								depth={activeItem.depth}
 								clone
 								childCount={getChildCount(items, activeId) + 1}
-								value={activeItem[localizedTitle]}
+								value={activeItem?.name?.[languageId]}
 								indentationWidth={indentationWidth}
 							/>
 						) : null}

@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const { createSlug } = require('@/utils');
 
 const DOCUMENT_NAME = 'PostCategory';
@@ -9,6 +9,11 @@ const postCategorySchema = new Schema(
 		index: {
 			type: Number,
 			required: true,
+		},
+		parentId: {
+			type: Types.ObjectId,
+			ref: DOCUMENT_NAME,
+			default: null,
 		},
 		name: {
 			vi: {
@@ -30,14 +35,6 @@ const postCategorySchema = new Schema(
 		},
 		banner: {
 			type: String,
-		},
-		subCategories: {
-			type: Array,
-			default: [],
-		},
-		posts: {
-			type: Array,
-			default: [],
 		},
 		display: {
 			type: Boolean,

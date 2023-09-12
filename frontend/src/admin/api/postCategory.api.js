@@ -3,26 +3,22 @@ import { POST_CATEGORIES_PATH } from './constant';
 
 export const postCategoryApi = {
 	getAll() {
-		return axiosClient.get(`${POST_CATEGORIES_PATH}/get`);
+		return axiosClient.get(`${POST_CATEGORIES_PATH}`);
 	},
 
-	get() {
-		return axiosClient.get(`${POST_CATEGORIES_PATH}/get-all`);
+	createOne(body) {
+		return axiosClient.post(`${POST_CATEGORIES_PATH}`, body);
 	},
 
-	createOne(newCategory) {
-		return axiosClient.post(`${POST_CATEGORIES_PATH}/create`, { ...newCategory });
+	sortable(body) {
+		return axiosClient.post(`${POST_CATEGORIES_PATH}/sortable`, body);
 	},
 
-	updateOne(category) {
-		return axiosClient.put(`${POST_CATEGORIES_PATH}/update`, { ...category });
+	deleteByIds(body) {
+		return axiosClient.post(`${POST_CATEGORIES_PATH}/delete`, body);
 	},
 
-	deleteByIds(data) {
-		return axiosClient.delete(`${POST_CATEGORIES_PATH}/delete`, { data });
-	},
-
-	sortCategories(flattenedCategories) {
-		return axiosClient.put(`${POST_CATEGORIES_PATH}/sort`, { ...flattenedCategories });
+	updateOneById(id, body) {
+		return axiosClient.patch(`${POST_CATEGORIES_PATH}/${id}`, body);
 	},
 };

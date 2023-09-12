@@ -1,6 +1,7 @@
 import vi from 'date-fns/locale/vi';
 
 export const SERVER_URL = import.meta.env.VITE_REACT_APP_SERVER_URL;
+export const APP_URL = import.meta.env.VITE_REACT_APP_DOMAIN;
 
 export const localeDatePicker = { vi, en: '' };
 export const DATE_FORMAT = 'MM/DD/YYYY';

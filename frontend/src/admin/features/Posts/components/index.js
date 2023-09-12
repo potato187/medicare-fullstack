@@ -1,2 +1,2 @@
-export * from './AddCategoryModal';
-export * from './ModifyCategoryModal';
+export * from './CreatePostCategoryModal';
+export * from './UpdatePostCategoryModal';

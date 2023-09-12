@@ -134,6 +134,7 @@ export const tryCatch = (callback, finallyCallback = null) => {
 
 export const createUpdateBody = (methods, data) => {
 	const { dirtyFields } = methods.formState;
+	console.log(`dirtyFields ::`, dirtyFields);
 	const updateBody = Object.keys(dirtyFields).reduce((hash, key) => {
 		hash[key] = data[key];
 		return hash;
@@ -173,4 +174,25 @@ export const showToastMessage = (message, languageId, type = 'success') => {
 
 export const formatISODate = (dateString) => {
 	return moment(dateString).toISOString();
+};
+
+export const flattenObject = (object = null, prefix = '') => {
+	if (object === null || object === undefined) {
+		return {};
+	}
+
+	return Object.entries(object).reduce((obj, [key, value]) => {
+		const prefixKey = prefix ? `${prefix}.${key}` : key;
+
+		if (typeOf(value) !== 'object') {
+			// eslint-disable-next-line no-param-reassign
+			obj[prefixKey] = value;
+		}
+
+		if (typeOf(value) === 'object') {
+			Object.assign(obj, flattenObject(value, prefixKey));
+		}
+
+		return obj;
+	}, {});
 };

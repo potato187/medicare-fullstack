@@ -1,7 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import * as yup from 'yup';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -11,12 +8,14 @@ import {
 	FieldCheckBox,
 	FloatingLabelInput,
 } from 'admin/components';
-import { postCategorySchema, postDefaultValues } from '../../schema';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
+import { postCategoryDefaultValues, postCategorySchema } from '../../schema';
 
-export function AddCategoryModal({ isOpen = false, toggle = () => false, onSubmit = () => null }) {
+export function CreatePostCategoryModal({ isOpen = false, toggle = () => false, onSubmit = () => null }) {
 	const methods = useForm({
-		defaultValues: postDefaultValues,
-		resolver: yupResolver(yup.object().shape(postCategorySchema)),
+		defaultValues: postCategoryDefaultValues,
+		resolver: yupResolver(postCategorySchema),
 	});
 
 	const handleSubmit = (data) => {
@@ -32,13 +31,10 @@ export function AddCategoryModal({ isOpen = false, toggle = () => false, onSubmi
 					<form onSubmit={methods.handleSubmit(handleSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='title_en' labelIntl='dashboard.posts.modal.titleEn' />
+								<FloatingLabelInput name='name.vi' labelIntl='dashboard.posts.modal.titleEn' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='title_vi' labelIntl='dashboard.posts.modal.titleVi' />
-							</div>
-							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='slug' labelIntl='dashboard.posts.modal.slug' />
+								<FloatingLabelInput name='name.en' labelIntl='dashboard.posts.modal.titleVi' />
 							</div>
 							<div className='col-12'>
 								<FieldCheckBox
