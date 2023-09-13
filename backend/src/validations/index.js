@@ -30,6 +30,8 @@ const ObjectIdMongodbValidator = Joi.string().custom((value, helper) =>
 	Types.ObjectId.isValid(value) ? value : helper.message('107400'),
 );
 
+const summaryValidator = Joi.string().trim().max(100);
+
 const nameValidator = Joi.string().trim().min(3).max(50);
 
 const addressValidator = Joi.string().trim().min(3).max(150);
@@ -92,6 +94,7 @@ module.exports = {
 	keySearchValidator,
 	slugValidator,
 	booleanValidator,
+	summaryValidator,
 	sortValidator,
 	selectValidator,
 };

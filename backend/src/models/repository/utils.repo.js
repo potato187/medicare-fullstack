@@ -11,6 +11,7 @@ const _WorkingHourModel = require('../workingHour.model');
 const _DoctorModel = require('../doctor.model');
 const _BookingModel = require('../booking.model');
 const _PostCategoryModel = require('../postCategory.model');
+const _BlogModel = require('../blog.model');
 
 const {
 	ADMIN_MODEL,
@@ -23,6 +24,7 @@ const {
 	DOCTOR_MODEL,
 	BOOKING_MODEL,
 	POST_CATEGORY_MODEL,
+	BLOG_MODEL,
 } = require('./constant');
 
 class UtilsRepo {
@@ -95,5 +97,6 @@ UtilsRepo.registerModel(WORKING_HOUR_MODEL, _WorkingHourModel);
 UtilsRepo.registerModel(DOCTOR_MODEL, _DoctorModel);
 UtilsRepo.registerModel(BOOKING_MODEL, _BookingModel);
 UtilsRepo.registerModel(POST_CATEGORY_MODEL, _PostCategoryModel);
+UtilsRepo.registerModel(BLOG_MODEL, _BlogModel);
 
 module.exports = UtilsRepo;

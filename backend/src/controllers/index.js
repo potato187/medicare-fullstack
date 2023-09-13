@@ -6,6 +6,7 @@ const ResourceController = require('./resource.controller');
 const SpecialtyController = require('./specialty.controller');
 const BookingController = require('./booking.controller');
 const PostCategoryController = require('./postCategory.controller');
+const blogController = require('./blog.controller');
 
 module.exports = {
 	AccessController,
@@ -16,4 +17,5 @@ module.exports = {
 	SpecialtyController,
 	BookingController,
 	PostCategoryController,
+	blogController,
 };

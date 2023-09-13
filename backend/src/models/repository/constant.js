@@ -10,4 +10,5 @@ module.exports = {
 	PATIENT_MODEL: 'patient',
 	BOOKING_MODEL: 'booking',
 	POST_CATEGORY_MODEL: 'postCategory',
+	BLOG_MODEL: 'blog',
 };
