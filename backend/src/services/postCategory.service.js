@@ -50,7 +50,7 @@ class PostCategoryService {
 		const model = POST_CATEGORY_MODEL;
 
 		if (!index) {
-			category.index = await UtilsRepo.countByFilter({ model });
+			category.index = await UtilsRepo.countByFilter({ model, filter: { parentId: null } });
 		} else {
 			category.index = index;
 		}
@@ -61,7 +61,7 @@ class PostCategoryService {
 		});
 
 		return getInfoData({
-			fields: ['_id', 'parentId', 'name', 'slug'],
+			fields: ['_id', 'parentId', 'name', 'slug', 'index'],
 			object: newCategory,
 		});
 	}
@@ -97,8 +97,8 @@ class PostCategoryService {
 			};
 		});
 
-		updateOperations.forEach(async ({ filter, updateBody }) => {
-			await UtilsRepo.findOneAndUpdate({
+		const promises = updateOperations.map(async ({ filter, updateBody }) => {
+			return UtilsRepo.findOneAndUpdate({
 				model: POST_CATEGORY_MODEL,
 				filter,
 				updateBody,
@@ -106,7 +106,7 @@ class PostCategoryService {
 			});
 		});
 
-		return {};
+		return Promise.all(promises);
 	}
 }
 

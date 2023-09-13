@@ -56,8 +56,6 @@ export function CategoryManager() {
 		const listIdPostCategory = flattenTree([focusedPostCategory]).map(({ id }) => ({ id }));
 		const { message } = await postCategoryApi.deleteByIds(listIdPostCategory);
 
-		console.log(listIdPostCategory);
-
 		setPostCategories((postCategories) => {
 			return removeItem(postCategories, listIdPostCategory[0].id);
 		});
