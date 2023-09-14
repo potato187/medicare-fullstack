@@ -14,6 +14,7 @@ const blogSchema = new Schema(
 				required: true,
 			},
 		},
+		image: String,
 		slug: {
 			vi: String,
 			en: String,
@@ -33,7 +34,7 @@ const blogSchema = new Schema(
 				trim: true,
 			},
 		],
-		postCategories: [
+		postCategoryIds: [
 			{
 				type: Types.ObjectId,
 				ref: 'PostCategory',

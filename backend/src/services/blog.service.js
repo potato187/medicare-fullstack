@@ -1,7 +1,16 @@
 const { NotFoundRequestError } = require('@/core');
+const { _BlogModel } = require('@/models');
 const { UtilsRepo } = require('@/models/repository');
 const { BLOG_MODEL } = require('@/models/repository/constant');
-const { getInfoData, convertToObjectIdMongodb } = require('@/utils');
+const {
+	getInfoData,
+	convertToObjectIdMongodb,
+	createSelectData,
+	createSearchData,
+	createSortData,
+} = require('@/utils');
+
+const SEARCHABLE_FIELDS = ['title.vi', 'title.en'];
 
 class BlogService {
 	static model = BLOG_MODEL;
@@ -38,14 +47,23 @@ class BlogService {
 	static async updateOneById({ id, updateBody }) {
 		const select = Object.keys(updateBody);
 		if (!select.length) return {};
+		const { postCategoryIds, ...body } = updateBody;
 		const filter = { _id: convertToObjectIdMongodb(id), isDeleted: false };
+
+		if (postCategoryIds.length) {
+			postCategoryIds.forEach((postCategoryId, index) => {
+				postCategoryIds[index] = convertToObjectIdMongodb(postCategoryId);
+			});
+
+			body.postCategoryIds = postCategoryIds;
+		}
 
 		await BlogService.checkExist(filter);
 
 		return UtilsRepo.findOneAndUpdate({
 			model: BlogService.model,
 			filter,
-			updateBody,
+			updateBody: body,
 			select,
 		});
 	}
@@ -54,8 +72,57 @@ class BlogService {
 		return BlogService.updateOneById({ id, updateBody: { isDeleted: true, isDisplay: false } });
 	}
 
-	static async queryByParams() {
-		return [];
+	static async queryByParams(queryParams) {
+		const { categoryId, search, sort = [], page = 1, pagesize = 25, select = [] } = queryParams;
+		const $skip = (+page - 1) * pagesize;
+		const $limit = +pagesize;
+		const $sort = sort.length ? createSortData(sort) : { ctime: 1 };
+		const _select = createSelectData(select);
+		const $match = { isDeleted: false };
+
+		if (search) {
+			$match.$or = createSearchData(SEARCHABLE_FIELDS, search);
+		}
+
+		if (categoryId) {
+			$match.postCategoryIds = convertToObjectIdMongodb(categoryId);
+		}
+
+		const [{ results, total }] = await _BlogModel
+			.aggregate()
+			.match($match)
+			.facet({
+				results: [
+					{ $sort },
+					{ $skip },
+					{ $limit },
+					{
+						$project: {
+							id: '$_id',
+							..._select,
+						},
+					},
+				],
+				totalCount: [{ $count: 'count' }],
+			})
+			.addFields({
+				total: {
+					$ifNull: [{ $arrayElemAt: ['$totalCount.count', 0] }, 0],
+				},
+			})
+			.project({
+				results: 1,
+				total: 1,
+			});
+
+		return {
+			data: results,
+			meta: {
+				page: +page,
+				pagesize: $limit,
+				totalPages: Math.ceil(total / $limit) || 1,
+			},
+		};
 	}
 
 	static getOneById({ id, select }) {

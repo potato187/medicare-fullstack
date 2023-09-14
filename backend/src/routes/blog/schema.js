@@ -1,5 +1,27 @@
-const { slugValidator, dateValidator, ObjectIdMongodbValidator } = require('@/validations');
+const {
+	slugValidator,
+	dateValidator,
+	ObjectIdMongodbValidator,
+	pageValidator,
+	pageSizeValidator,
+	sortValidator,
+	selectValidator,
+	keySearchValidator,
+} = require('@/validations');
 const Joi = require('joi');
+
+const SORTABLE_FIELDS = ['title', 'createdAt'];
+const SELECT_FIELDS = [
+	'title',
+	'slug',
+	'image',
+	'summary',
+	'content',
+	'tags',
+	'postCategoryIds',
+	'datePublished',
+	'isDisplay',
+];
 
 const titleValidator = Joi.string().trim().min(3).max(250);
 
@@ -22,7 +44,7 @@ const createSchema = Joi.object({
 	},
 	datePublished: dateValidator,
 	tags: Joi.array().items(Joi.string().min(2).max(20)),
-	postCategories: Joi.array().items(ObjectIdMongodbValidator),
+	postCategoryIds: Joi.array().items(ObjectIdMongodbValidator),
 });
 
 const updateSchema = Joi.object({
@@ -44,12 +66,19 @@ const updateSchema = Joi.object({
 	},
 	datePublished: dateValidator,
 	tags: Joi.array().items(Joi.string().min(2).max(20)),
-	postCategories: Joi.array().items(ObjectIdMongodbValidator),
+	postCategoryIds: Joi.array().items(ObjectIdMongodbValidator),
 	isDeleted: Joi.boolean(),
 	isDisplay: Joi.boolean(),
 });
 
-const querySchema = Joi.object();
+const querySchema = Joi.object({
+	search: keySearchValidator,
+	categoryId: ObjectIdMongodbValidator,
+	page: pageValidator,
+	pagesize: pageSizeValidator,
+	sort: sortValidator(SORTABLE_FIELDS),
+	select: selectValidator(SELECT_FIELDS),
+});
 
 module.exports = {
 	createSchema,

@@ -1,6 +1,6 @@
 const express = require('express');
 const { authMiddleware } = require('@/auth');
-const { handlerValidateRequest } = require('@/middleware');
+const { handlerValidateRequest, handlerParseParamsToArray } = require('@/middleware');
 const { idSchema } = require('@/validations');
 const { blogController } = require('@/controllers');
 const { updateSchema, querySchema, createSchema } = require('./schema');
@@ -10,7 +10,12 @@ const router = express.Router();
 router.use(authMiddleware.authorization);
 router.use(authMiddleware.checkRoles(['admin']));
 
-router.get('/', handlerValidateRequest(querySchema), blogController.queryByParams);
+router.get(
+	'/',
+	handlerParseParamsToArray(['sort']),
+	handlerValidateRequest(querySchema, 'query'),
+	blogController.queryByParams,
+);
 
 router.get('/:id', handlerValidateRequest(idSchema, 'params'), blogController.getOneById);
 

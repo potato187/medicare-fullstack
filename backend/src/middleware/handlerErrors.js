@@ -1,6 +1,7 @@
 const codeReason = require('@/core/status.core');
 
 module.exports = (error, req, res, next) => {
+	// eslint-disable-next-line no-console
 	console.log(error);
 	if (error.name === 'MongoServerError') {
 		return res.status(400).json({
