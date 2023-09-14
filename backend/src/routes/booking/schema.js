@@ -73,7 +73,7 @@ const querySchema = Joi.object({
 	sort: sortValidator,
 	page: pageValidator,
 	pagesize: pageSizeValidator,
-	key_search: keySearchValidator,
+	search: keySearchValidator,
 });
 
 module.exports = {

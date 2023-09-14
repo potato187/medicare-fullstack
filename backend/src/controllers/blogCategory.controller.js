@@ -9,6 +9,12 @@ class BlogCategoryController {
 		}).send(res);
 	});
 
+	getFlattenAll = tryCatch(async (req, res) => {
+		new OkResponse({
+			metadata: await BlogCategoryService.getFlattenAll(),
+		}).send(res);
+	});
+
 	insertMany = tryCatch(async (req, res) => {
 		new OkResponse({
 			metadata: await BlogCategoryService.insertMany(req.body),

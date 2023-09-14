@@ -3,7 +3,7 @@ import moment from 'moment';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { postApi } from 'admin/api';
+import { blogApi } from 'admin/api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -82,7 +82,7 @@ export function BlogEditorModal({
 
 	useEffect(() => {
 		const fetchPost = async () => {
-			const { data = {} } = await postApi.getById(postId);
+			const { data = {} } = await blogApi.getById(postId);
 			const { post = null, categories } = data;
 			if (post) {
 				post.publicDate = moment(post.publicDate).toDate();

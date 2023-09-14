@@ -47,7 +47,7 @@ export default function Admin() {
 
 									<Route path='blogs/*'>
 										<Route path='categories' element={<BlogCategoryManager />} />
-										<Route path='blogs' element={<BlogsManager />} />
+										<Route path='manage' element={<BlogsManager />} />
 										<Route path='*' element={<Navigate to='manage' replace />} />
 									</Route>
 								</Route>

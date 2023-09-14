@@ -6,6 +6,10 @@ export const blogCategoryApi = {
 		return axiosClient.get(`${POST_CATEGORIES_PATH}`);
 	},
 
+	getFlattenAll() {
+		return axiosClient.get(`${POST_CATEGORIES_PATH}/flatten-blog-categories`);
+	},
+
 	createOne(body) {
 		return axiosClient.post(`${POST_CATEGORIES_PATH}`, body);
 	},

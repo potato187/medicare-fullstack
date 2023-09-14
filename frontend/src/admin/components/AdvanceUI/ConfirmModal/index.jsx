@@ -17,10 +17,10 @@ export function ConfirmModal({
 			<BaseModalBody>{children}</BaseModalBody>
 			<BaseModalFooter>
 				<form onSubmit={handleSubmit(onSubmit)} className='d-flex justify-content-end gap-2'>
-					<Button type='button' size='sm' secondary onClick={onClose}>
+					<Button type='button' size='xs' secondary onClick={onClose}>
 						<FormattedMessage id='button.close' />
 					</Button>
-					<Button type='submit' size='sm' danger>
+					<Button type='submit' size='xs' danger>
 						<FormattedMessage id='button.confirm' />
 					</Button>
 				</form>

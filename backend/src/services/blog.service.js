@@ -50,7 +50,7 @@ class BlogService {
 		const { blogCategoryIds, ...body } = updateBody;
 		const filter = { _id: convertToObjectIdMongodb(id), isDeleted: false };
 
-		if (blogCategoryIds.length) {
+		if (blogCategoryIds && blogCategoryIds.length) {
 			blogCategoryIds.forEach((blogCategoryId, index) => {
 				blogCategoryIds[index] = convertToObjectIdMongodb(blogCategoryId);
 			});
@@ -84,7 +84,7 @@ class BlogService {
 			$match.$or = createSearchData(SEARCHABLE_FIELDS, search);
 		}
 
-		if (categoryId) {
+		if (categoryId && categoryId !== 'all') {
 			$match.blogCategoryIds = convertToObjectIdMongodb(categoryId);
 		}
 
@@ -121,6 +121,7 @@ class BlogService {
 				page: +page,
 				pagesize: $limit,
 				totalPages: Math.ceil(total / $limit) || 1,
+				search,
 			},
 		};
 	}

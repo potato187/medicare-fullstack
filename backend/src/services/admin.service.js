@@ -6,7 +6,7 @@ const { createSortData, createSearchData, createSelectData, convertToObjectIdMon
 const SEARCHABLE_FIELDS = ['firstName', 'lastName', 'email', 'phone'];
 
 class AdminService {
-	static async queryByParams({ key_search: keySearch = '', select = ['_id'], sort = [], page = 1, pagesize = 25 }) {
+	static async queryByParams({ search: keySearch = '', select = ['_id'], sort = [], page = 1, pagesize = 25 }) {
 		const searchClause = {};
 		const $page = Math.max(1, page);
 		const $limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;

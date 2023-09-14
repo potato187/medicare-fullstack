@@ -113,7 +113,7 @@ class DoctorService {
 	static async queryByParams({
 		specialtyId = '',
 		positionId = '',
-		key_search: keySearch = '',
+		search: keySearch = '',
 		sort = [],
 		page = 1,
 		pagesize = 25,

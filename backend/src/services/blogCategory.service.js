@@ -37,6 +37,15 @@ class BlogCategoryService {
 		return blogCategories;
 	}
 
+	static getFlattenAll() {
+		return UtilsRepo.getAll({
+			model: BLOG_CATEGORY_MODEL,
+			query: { isDeleted: false },
+			sort: { index: 1 },
+			select: ['_id', 'name', 'parentId', 'index'],
+		});
+	}
+
 	static async checkExist(filter) {
 		const result = await BlogCategoryService.findByFilter({ filter });
 		if (!result) {

@@ -67,8 +67,8 @@ export const useManageBookings = (languageId = 'en') => {
 		(newParams) => {
 			const newQueryParams = { ...queryParams, ...newParams };
 
-			if (!newQueryParams.key_search) {
-				delete newQueryParams.key_search;
+			if (!newQueryParams.search) {
+				delete newQueryParams.search;
 			}
 
 			const newUrl = createURL({ url: locationPathName, query: newQueryParams });
@@ -102,7 +102,7 @@ export const useManageBookings = (languageId = 'en') => {
 	};
 
 	const handleOnChangeSearch = (str) => {
-		setQueryParams({ key_search: str });
+		setQueryParams({ search: str });
 	};
 
 	const handleSelectSpecialty = ({ value }) => {

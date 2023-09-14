@@ -15,7 +15,7 @@ const SELECT_FIELDS = ['_id', 'firstName', 'lastName', 'email', 'phone', 'role']
 const SORTABLE_FIELDS = ['createdAt', 'updatedAt', 'firstName', 'lastName', 'email'];
 
 const querySchema = Joi.object({
-	key_search: Joi.string().allow('').default(''),
+	search: Joi.string().allow('').default(''),
 	page: Joi.number().integer().min(1).max(100).default(1),
 	pagesize: Joi.number().integer().min(1).max(100).default(25),
 	sort: sortValidator(SORTABLE_FIELDS),

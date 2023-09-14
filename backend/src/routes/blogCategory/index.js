@@ -10,6 +10,11 @@ const router = express.Router();
 router.use(authMiddleware.authorization);
 router.use(authMiddleware.checkRoles(['admin']));
 router.get('/', handlerValidateRequest(querySchema, 'query'), BlogCategoryController.getAll);
+router.get(
+	'/flatten-blog-categories',
+	handlerValidateRequest(querySchema, 'query'),
+	BlogCategoryController.getFlattenAll,
+);
 router.post('/', handlerValidateRequest(createSchema), BlogCategoryController.createOne);
 router.post('/sortable', handlerValidateRequest(sortableSchema), BlogCategoryController.sortable);
 router.patch('/:id', handlerValidateRequest(idSchema, 'params'), BlogCategoryController.updateOneById);

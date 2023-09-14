@@ -108,7 +108,7 @@ export function AdminManager() {
 							<UnFieldDebounce
 								delay={500}
 								onChange={handleOnChangeSearch}
-								initialValue={queryParams.key_search || ''}
+								initialValue={queryParams.search || ''}
 								type='text'
 								placeholderIntl='form.search_placeholder'
 								ariallabel='search field'

@@ -72,7 +72,7 @@ const importSchema = Joi.object({
 const querySchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
 	positionId: ObjectIdMongodbValidator,
-	key_search: Joi.string().allow('').default(''),
+	search: Joi.string().allow('').default(''),
 	page: pageValidate,
 	pagesize: pageSizeValidate,
 	sort: sortValidate,

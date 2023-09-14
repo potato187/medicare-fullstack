@@ -7,7 +7,7 @@ import { tryCatch } from 'admin/utilities';
 import { typeOf } from 'utils';
 import { createURL } from '../utilities';
 
-export const useAsyncLocation = ({ getData = () => [], parameters = {}, deps = [] }) => {
+export const useAsyncLocation = ({ getData = () => [], parameters = {} }) => {
 	const { pathname: locationPathName, search: locationSearch } = useLocation();
 	const navigate = useNavigate();
 	const [data, setData] = useState([]);
@@ -28,8 +28,8 @@ export const useAsyncLocation = ({ getData = () => [], parameters = {}, deps = [
 	const setQueryParams = (newParams) => {
 		const newQueryParams = { ...queryParams, ...newParams };
 
-		if (!newQueryParams.key_search) {
-			delete newQueryParams.key_search;
+		if (!newQueryParams.search) {
+			delete newQueryParams.search;
 		}
 
 		const newUrl = createURL({ url: locationPathName, query: newQueryParams });
@@ -37,7 +37,7 @@ export const useAsyncLocation = ({ getData = () => [], parameters = {}, deps = [
 	};
 
 	const handleOnChangeSearch = (str) => {
-		setQueryParams({ key_search: str });
+		setQueryParams({ search: str });
 	};
 
 	const handleOnChangeSort = (key, direction) => {

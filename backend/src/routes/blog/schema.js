@@ -11,17 +11,7 @@ const {
 const Joi = require('joi');
 
 const SORTABLE_FIELDS = ['title', 'createdAt'];
-const SELECT_FIELDS = [
-	'title',
-	'slug',
-	'image',
-	'summary',
-	'content',
-	'tags',
-	'blogCategoryIds',
-	'datePublished',
-	'isDisplay',
-];
+const SELECT_FIELDS = ['title', 'slug', 'image', 'blogCategoryIds', 'datePublished', 'isDisplay'];
 
 const titleValidator = Joi.string().trim().min(3).max(250);
 
@@ -73,7 +63,7 @@ const updateSchema = Joi.object({
 
 const querySchema = Joi.object({
 	search: keySearchValidator,
-	categoryId: ObjectIdMongodbValidator,
+	categoryId: Joi.alternatives(ObjectIdMongodbValidator, Joi.string().valid('all')),
 	page: pageValidator,
 	pagesize: pageSizeValidator,
 	sort: sortValidator(SORTABLE_FIELDS),

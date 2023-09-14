@@ -8,6 +8,6 @@ export const SPECIALTIES_PATH = 'specialties';
 export const DOCTOR_PATH = 'doctor';
 export const BOOKING_PATH = 'booking';
 export const POST_CATEGORIES_PATH = 'blog-category';
-export const POST_PATH = 'post';
+export const BLOG_PATH = 'blog';
 export const HTML_CONTENT_PATH = 'modules/html-content';
 export const RESOURCE_PATH = 'resource';

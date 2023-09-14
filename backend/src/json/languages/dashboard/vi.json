@@ -92,8 +92,8 @@
 			}
 		}
 	},
-	"post": {
-		"thumbnail": "Add Post's Thumbnail"
+	"blog": {
+		"thumbnail": "Add blog's Thumbnail"
 	},
 	"patient": {
 		"fullName": "Patient Full Name"
@@ -192,16 +192,16 @@
 				}
 			}
 		},
-		"posts": {
-			"title": "Posts Manager",
+		"blogs": {
+			"title": "Blogs Manager",
 			"manage": {
-				"title": "Post Manager"
+				"title": "blog Manager"
 			},
 			"categories": {
 				"title": "Category Manager"
 			},
 			"create": {
-				"title": "Create Post"
+				"title": "Create blog"
 			},
 			"modal": {
 				"titleEn": "Title (English)",
@@ -209,7 +209,7 @@
 				"slug": "Category Slug",
 				"url": "Page URL",
 				"display": "Display",
-				"button_create_post": "Create New Post",
+				"button_create_blog": "Create New blog",
 				"button_sort": "Sort Categories",
 				"button_add": "Add New Category",
 				"add_category_modal": {
@@ -226,12 +226,12 @@
 					"title": "Confirm Category Sorting",
 					"description": "Are you sure you want to sort all categories and their children? This action cannot be undone."
 				},
-				"post_editor_modal": {
-					"title": "Post Editor"
+				"blog_editor_modal": {
+					"title": "blog Editor"
 				},
-				"post_deletion_confirmation_modal": {
-					"title": "Confirm Post Deletion",
-					"description": "Are you sure you want to delete the Post with the title <b>{title}</b>? This action cannot be undone."
+				"blog_deletion_confirmation_modal": {
+					"title": "Confirm blog Deletion",
+					"description": "Are you sure you want to delete the blog with the title <b>{title}</b>? This action cannot be undone."
 				}
 			}
 		}

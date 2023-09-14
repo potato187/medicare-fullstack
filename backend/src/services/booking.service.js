@@ -116,7 +116,7 @@ class BookingService {
 
 	static async queryByParams(parameters) {
 		const {
-			key_search: keySearch = '',
+			search: keySearch = '',
 			specialtyId,
 			workingHourId,
 			startDate,
