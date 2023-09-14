@@ -13,13 +13,13 @@ export const postDefaultValues = {
 	publicDate: new Date(),
 };
 
-export const postSchema = yup.object().shape({
+export const blogSchema = yup.object().shape({
 	title_en: requiredValidation,
 	title_vi: requiredValidation,
 	thumbnail: imageValidation,
 });
 
-export const postCategoryDefaultValues = {
+export const blogCategoryDefaultValues = {
 	name: {
 		vi: '',
 		en: '',
@@ -27,7 +27,7 @@ export const postCategoryDefaultValues = {
 	display: true,
 };
 
-export const postCategoryDefault = {
+export const blogCategoryDefault = {
 	name: {
 		vi: '',
 		en: '',
@@ -42,7 +42,7 @@ export const postCategoryDefault = {
 	},
 };
 
-export const postCategorySchema = yup.object().shape({
+export const blogCategorySchema = yup.object().shape({
 	name: yup.object().shape({
 		vi: requiredValidation,
 		en: requiredValidation,

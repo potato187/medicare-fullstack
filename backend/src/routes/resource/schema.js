@@ -13,7 +13,7 @@ const querySchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
 });
 
-const postSchema = Joi.array().items(
+const blogSchema = Joi.array().items(
 	Joi.object({
 		key: Joi.string().alphanum().min(2).max(10),
 		name: Joi.object({
@@ -26,5 +26,5 @@ const postSchema = Joi.array().items(
 module.exports = {
 	modelSchema,
 	querySchema,
-	postSchema,
+	blogSchema,
 };

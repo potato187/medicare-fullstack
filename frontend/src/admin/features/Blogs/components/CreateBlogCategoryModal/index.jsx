@@ -10,12 +10,12 @@ import {
 } from 'admin/components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { postCategoryDefaultValues, postCategorySchema } from '../../schema';
+import { blogCategoryDefaultValues, blogCategorySchema } from '../../schema';
 
-export function CreatePostCategoryModal({ isOpen = false, toggle = () => false, onSubmit = () => null }) {
+export function CreateBlogCategoryModal({ isOpen = false, toggle = () => false, onSubmit = () => null }) {
 	const methods = useForm({
-		defaultValues: postCategoryDefaultValues,
-		resolver: yupResolver(postCategorySchema),
+		defaultValues: blogCategoryDefaultValues,
+		resolver: yupResolver(blogCategorySchema),
 	});
 
 	const handleSubmit = (data) => {
@@ -26,15 +26,15 @@ export function CreatePostCategoryModal({ isOpen = false, toggle = () => false, 
 	return (
 		<FormProvider {...methods}>
 			<BaseModal isOpen={isOpen} onClose={toggle}>
-				<BaseModalHeader idIntl='dashboard.posts.modal.category_update_modal.title' onClose={toggle} />
+				<BaseModalHeader idIntl='dashboard.blogs.modal.category_update_modal.title' onClose={toggle} />
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='name.vi' labelIntl='dashboard.posts.modal.titleEn' />
+								<FloatingLabelInput name='name.vi' labelIntl='dashboard.blogs.modal.titleEn' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='name.en' labelIntl='dashboard.posts.modal.titleVi' />
+								<FloatingLabelInput name='name.en' labelIntl='dashboard.blogs.modal.titleVi' />
 							</div>
 							<div className='col-12'>
 								<FieldCheckBox
@@ -42,7 +42,7 @@ export function CreatePostCategoryModal({ isOpen = false, toggle = () => false, 
 										setValueAs: (v) => !!v,
 									})}
 									type='checkbox'
-									labelIntl='dashboard.posts.modal.display'
+									labelIntl='dashboard.blogs.modal.display'
 								/>
 							</div>
 						</div>

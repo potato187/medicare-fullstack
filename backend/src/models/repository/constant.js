@@ -9,6 +9,6 @@ module.exports = {
 	DOCTOR_MODEL: 'doctor',
 	PATIENT_MODEL: 'patient',
 	BOOKING_MODEL: 'booking',
-	POST_CATEGORY_MODEL: 'postCategory',
+	BLOG_CATEGORY_MODEL: 'blogCategory',
 	BLOG_MODEL: 'blog',
 };

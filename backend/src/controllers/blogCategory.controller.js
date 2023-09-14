@@ -1,29 +1,35 @@
 const { CreatedResponse, OkResponse } = require('@/core');
 const { tryCatch } = require('@/middleware');
-const { PostCategoryService } = require('@/services');
+const { BlogCategoryService } = require('@/services');
 
-class PostCategoryController {
+class BlogCategoryController {
 	getAll = tryCatch(async (req, res) => {
 		new OkResponse({
-			metadata: await PostCategoryService.getAll(null, 0, req.params.select),
+			metadata: await BlogCategoryService.getAll(null, 0, req.query.select),
+		}).send(res);
+	});
+
+	insertMany = tryCatch(async (req, res) => {
+		new OkResponse({
+			metadata: await BlogCategoryService.insertMany(req.body),
 		}).send(res);
 	});
 
 	createOne = tryCatch(async (req, res) => {
 		new CreatedResponse({
-			metadata: await PostCategoryService.createOne(req.body),
+			metadata: await BlogCategoryService.createOne(req.body),
 		}).send(res);
 	});
 
 	sortable = tryCatch(async (req, res) => {
 		new CreatedResponse({
-			metadata: await PostCategoryService.sortable(req.body),
+			metadata: await BlogCategoryService.sortable(req.body),
 		}).send(res);
 	});
 
 	updateOneById = tryCatch(async (req, res) => {
 		new OkResponse({
-			metadata: await PostCategoryService.updateOneById({
+			metadata: await BlogCategoryService.updateOneById({
 				id: req.params.id,
 				updateBody: req.body,
 			}),
@@ -32,9 +38,9 @@ class PostCategoryController {
 
 	deleteByIds = tryCatch(async (req, res) => {
 		new OkResponse({
-			metadata: await PostCategoryService.deleteByIds(req.body),
+			metadata: await BlogCategoryService.deleteByIds(req.body),
 		}).send(res);
 	});
 }
 
-module.exports = new PostCategoryController();
+module.exports = new BlogCategoryController();

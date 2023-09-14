@@ -37,18 +37,18 @@ export const routesConfig = [
 		allowedRoles: [ADMIN_ROLE],
 	},
 	{
-		to: '/admin/dashboard/posts',
-		intl: 'dashboard.posts.title',
+		to: '/admin/dashboard/blogs',
+		intl: 'dashboard.blogs.title',
 		Icon: MdOutlineAdminPanelSettings,
 		allowedRoles: [ADMIN_ROLE],
 		listChildren: [
 			{
-				intl: 'dashboard.posts.categories.title',
-				to: '/admin/dashboard/posts/categories',
+				intl: 'dashboard.blogs.categories.title',
+				to: '/admin/dashboard/blogs/categories',
 			},
 			{
-				intl: 'dashboard.posts.manage.title',
-				to: '/admin/dashboard/posts/manage',
+				intl: 'dashboard.blogs.manage.title',
+				to: '/admin/dashboard/blogs/manage',
 			},
 		],
 	},

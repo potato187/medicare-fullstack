@@ -1,13 +1,13 @@
 const { NotFoundRequestError } = require('@/core');
-const { _PostCategoryModel } = require('@/models');
+const { _BlogCategoryModel } = require('@/models');
 const { UtilsRepo } = require('@/models/repository');
-const { POST_CATEGORY_MODEL } = require('@/models/repository/constant');
+const { BLOG_CATEGORY_MODEL } = require('@/models/repository/constant');
 const { getInfoData, convertToObjectIdMongodb } = require('@/utils');
 
-class PostCategoryService {
+class BlogCategoryService {
 	static async findByFilter({ filter = {}, select = ['_id'] }) {
 		const result = await UtilsRepo.findOne({
-			model: POST_CATEGORY_MODEL,
+			model: BLOG_CATEGORY_MODEL,
 			filter,
 			select,
 		});
@@ -18,27 +18,27 @@ class PostCategoryService {
 		const filter = {
 			parentId,
 			isDeleted: false,
-			display: true,
+			isDisplay: true,
 		};
 
-		const results = await _PostCategoryModel.find(filter).sort({ index: 1 }).select(select).lean();
+		const results = await _BlogCategoryModel.find(filter).sort({ index: 1 }).select(select).lean();
 
-		const postCategories = await Promise.all(
-			results.map(async (postCategory) => {
-				const { _id, ...rest } = postCategory;
+		const blogCategories = await Promise.all(
+			results.map(async (blogCategory) => {
+				const { _id, ...rest } = blogCategory;
 				rest.id = _id;
 				rest.depth = depth;
 				rest.collapsed = false;
-				rest.children = await PostCategoryService.getAll(rest.id, depth + 1, select);
+				rest.children = await BlogCategoryService.getAll(rest.id, depth + 1, select);
 				return rest;
 			}),
 		);
 
-		return postCategories;
+		return blogCategories;
 	}
 
 	static async checkExist(filter) {
-		const result = await PostCategoryService.findByFilter({ filter });
+		const result = await BlogCategoryService.findByFilter({ filter });
 		if (!result) {
 			throw new NotFoundRequestError();
 		}
@@ -47,7 +47,7 @@ class PostCategoryService {
 
 	static async createOne(body) {
 		const { index, ...category } = body;
-		const model = POST_CATEGORY_MODEL;
+		const model = BLOG_CATEGORY_MODEL;
 
 		if (!index) {
 			category.index = await UtilsRepo.countByFilter({ model, filter: { parentId: null } });
@@ -71,10 +71,10 @@ class PostCategoryService {
 		if (!select.length) return {};
 		const filter = { _id: convertToObjectIdMongodb(id) };
 
-		await PostCategoryService.checkExist(filter);
+		await BlogCategoryService.checkExist(filter);
 
 		return UtilsRepo.findOneAndUpdate({
-			model: POST_CATEGORY_MODEL,
+			model: BLOG_CATEGORY_MODEL,
 			filter,
 			updateBody,
 			select,
@@ -83,7 +83,7 @@ class PostCategoryService {
 
 	static async deleteByIds(body) {
 		const promises = body.map(({ id }) =>
-			PostCategoryService.updateOneById({ id, updateBody: { isDeleted: true, display: false } }),
+			BlogCategoryService.updateOneById({ id, updateBody: { isDeleted: true, isDisplay: false } }),
 		);
 
 		return Promise.all(promises);
@@ -99,7 +99,7 @@ class PostCategoryService {
 
 		const promises = updateOperations.map(async ({ filter, updateBody }) => {
 			return UtilsRepo.findOneAndUpdate({
-				model: POST_CATEGORY_MODEL,
+				model: BLOG_CATEGORY_MODEL,
 				filter,
 				updateBody,
 				select: ['index', 'parentId'],
@@ -108,6 +108,10 @@ class PostCategoryService {
 
 		return Promise.all(promises);
 	}
+
+	static async insertMany(body) {
+		return _BlogCategoryModel.insertMany(body);
+	}
 }
 
-module.exports = PostCategoryService;
+module.exports = BlogCategoryService;

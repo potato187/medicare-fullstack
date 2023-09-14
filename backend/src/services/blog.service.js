@@ -47,15 +47,15 @@ class BlogService {
 	static async updateOneById({ id, updateBody }) {
 		const select = Object.keys(updateBody);
 		if (!select.length) return {};
-		const { postCategoryIds, ...body } = updateBody;
+		const { blogCategoryIds, ...body } = updateBody;
 		const filter = { _id: convertToObjectIdMongodb(id), isDeleted: false };
 
-		if (postCategoryIds.length) {
-			postCategoryIds.forEach((postCategoryId, index) => {
-				postCategoryIds[index] = convertToObjectIdMongodb(postCategoryId);
+		if (blogCategoryIds.length) {
+			blogCategoryIds.forEach((blogCategoryId, index) => {
+				blogCategoryIds[index] = convertToObjectIdMongodb(blogCategoryId);
 			});
 
-			body.postCategoryIds = postCategoryIds;
+			body.blogCategoryIds = blogCategoryIds;
 		}
 
 		await BlogService.checkExist(filter);
@@ -85,7 +85,7 @@ class BlogService {
 		}
 
 		if (categoryId) {
-			$match.postCategoryIds = convertToObjectIdMongodb(categoryId);
+			$match.blogCategoryIds = convertToObjectIdMongodb(categoryId);
 		}
 
 		const [{ results, total }] = await _BlogModel

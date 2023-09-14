@@ -18,7 +18,7 @@ const SELECT_FIELDS = [
 	'summary',
 	'content',
 	'tags',
-	'postCategoryIds',
+	'blogCategoryIds',
 	'datePublished',
 	'isDisplay',
 ];
@@ -44,7 +44,7 @@ const createSchema = Joi.object({
 	},
 	datePublished: dateValidator,
 	tags: Joi.array().items(Joi.string().min(2).max(20)),
-	postCategoryIds: Joi.array().items(ObjectIdMongodbValidator),
+	blogCategoryIds: Joi.array().items(ObjectIdMongodbValidator),
 });
 
 const updateSchema = Joi.object({
@@ -66,7 +66,7 @@ const updateSchema = Joi.object({
 	},
 	datePublished: dateValidator,
 	tags: Joi.array().items(Joi.string().min(2).max(20)),
-	postCategoryIds: Joi.array().items(ObjectIdMongodbValidator),
+	blogCategoryIds: Joi.array().items(ObjectIdMongodbValidator),
 	isDeleted: Joi.boolean(),
 	isDisplay: Joi.boolean(),
 });

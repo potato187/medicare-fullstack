@@ -6,7 +6,7 @@ const LanguageService = require('./language.service');
 const ResourceService = require('./resource.service');
 const SpecialtyService = require('./specialty.service');
 const BookingService = require('./booking.service');
-const PostCategoryService = require('./postCategory.service');
+const BlogCategoryService = require('./blogCategory.service');
 const BlogService = require('./blog.service');
 
 module.exports = {
@@ -18,6 +18,6 @@ module.exports = {
 	ResourceService,
 	SpecialtyService,
 	BookingService,
-	PostCategoryService,
+	BlogCategoryService,
 	BlogService,
 };

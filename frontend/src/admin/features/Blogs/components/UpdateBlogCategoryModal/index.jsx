@@ -13,17 +13,17 @@ import { createUpdateBody, setDefaultValues } from 'admin/utilities';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { postCategorySchema } from '../../schema';
+import { blogCategorySchema } from '../../schema';
 
-export function UpdatePostCategoryModal({
-	postCategory = {},
+export function UpdateBlogCategoryModal({
+	blogCategory = {},
 	isOpen = false,
 	toggle = () => false,
 	onSubmit = () => null,
 }) {
 	const methods = useForm({
 		mode: 'onChange',
-		resolver: yupResolver(postCategorySchema),
+		resolver: yupResolver(blogCategorySchema),
 	});
 
 	const watchSlugViField = methods.watch('slug.vi', '');
@@ -36,15 +36,15 @@ export function UpdatePostCategoryModal({
 	};
 
 	useEffect(() => {
-		if (postCategory) {
-			const { children, collapsed, depth, ...values } = postCategory;
+		if (blogCategory) {
+			const { children, collapsed, depth, ...values } = blogCategory;
 			values.url = {
 				vi: `${APP_URL}/${values.slug.vi}`,
 				en: `${APP_URL}/${values.slug.en}`,
 			};
 			setDefaultValues(methods, values);
 		}
-	}, [postCategory, methods]);
+	}, [blogCategory, methods]);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -67,35 +67,35 @@ export function UpdatePostCategoryModal({
 	return (
 		<FormProvider {...methods}>
 			<BaseModal isOpen={isOpen} onClose={toggle}>
-				<BaseModalHeader idIntl='dashboard.posts.modal.category_update_modal.title' onClose={toggle} />
+				<BaseModalHeader idIntl='dashboard.blogs.modal.category_update_modal.title' onClose={toggle} />
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='name.vi' labelIntl='dashboard.posts.modal.titleVi' />
+								<FloatingLabelInput name='name.vi' labelIntl='dashboard.blogs.modal.titleVi' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='name.en' labelIntl='dashboard.posts.modal.titleEn' />
+								<FloatingLabelInput name='name.en' labelIntl='dashboard.blogs.modal.titleEn' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='slug.vi' labelIntl='dashboard.posts.modal.slug' />
+								<FloatingLabelInput name='slug.vi' labelIntl='dashboard.blogs.modal.slug' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='slug.en' labelIntl='dashboard.posts.modal.slug' />
+								<FloatingLabelInput name='slug.en' labelIntl='dashboard.blogs.modal.slug' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='url.vi' labelIntl='dashboard.posts.modal.url' disabled />
+								<FloatingLabelInput name='url.vi' labelIntl='dashboard.blogs.modal.url' disabled />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='url.en' labelIntl='dashboard.posts.modal.url' disabled />
+								<FloatingLabelInput name='url.en' labelIntl='dashboard.blogs.modal.url' disabled />
 							</div>
 							<div className='col-12'>
 								<FieldCheckBox
-									{...methods.register('display', {
+									{...methods.register('isDisplay', {
 										setValueAs: (v) => !!v,
 									})}
 									type='checkbox'
-									labelIntl='dashboard.posts.modal.display'
+									labelIntl='dashboard.blogs.modal.display'
 								/>
 							</div>
 						</div>

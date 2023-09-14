@@ -34,10 +34,10 @@ const blogSchema = new Schema(
 				trim: true,
 			},
 		],
-		postCategoryIds: [
+		blogCategoryIds: [
 			{
 				type: Types.ObjectId,
-				ref: 'PostCategory',
+				ref: 'blogCategory',
 			},
 		],
 		datePublished: {

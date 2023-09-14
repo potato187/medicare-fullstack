@@ -1,7 +1,7 @@
 import { axiosClient } from './axiosClient';
 import { POST_CATEGORIES_PATH } from './constant';
 
-export const postCategoryApi = {
+export const blogCategoryApi = {
 	getAll() {
 		return axiosClient.get(`${POST_CATEGORIES_PATH}`);
 	},

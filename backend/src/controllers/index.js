@@ -5,7 +5,7 @@ const LanguageController = require('./language.controller');
 const ResourceController = require('./resource.controller');
 const SpecialtyController = require('./specialty.controller');
 const BookingController = require('./booking.controller');
-const PostCategoryController = require('./postCategory.controller');
+const BlogCategoryController = require('./blogCategory.controller');
 const blogController = require('./blog.controller');
 
 module.exports = {
@@ -16,6 +16,6 @@ module.exports = {
 	ResourceController,
 	SpecialtyController,
 	BookingController,
-	PostCategoryController,
+	BlogCategoryController,
 	blogController,
 };

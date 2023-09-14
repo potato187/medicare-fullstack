@@ -2,7 +2,7 @@ const { authMiddleware } = require('@/auth');
 const { ResourceController } = require('@/controllers');
 const { handlerValidateRequest } = require('@/middleware');
 const express = require('express');
-const { modelSchema, querySchema, postSchema } = require('./schema');
+const { modelSchema, querySchema, blogSchema } = require('./schema');
 
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.get(
 router.post(
 	'/:model',
 	handlerValidateRequest(modelSchema, 'params'),
-	handlerValidateRequest(postSchema),
+	handlerValidateRequest(blogSchema),
 	ResourceController.insertMany,
 );
 

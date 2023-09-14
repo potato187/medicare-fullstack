@@ -1,26 +1,25 @@
+import 'admin/styles/style.scss';
 import { IntlProviderWrapper } from 'hocs';
-import React from 'react';
 import { Provider } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
+import 'shared/styles/style.scss';
 import { AuthLanguagesProvider } from 'stores';
-import { withAuth } from './hocs';
 import { BaseNotification, Layout } from './components';
 import {
 	AdminManager,
+	BlogCategoryManager,
+	BlogsManager,
 	BookingManager,
-	CategoryManager,
 	LanguageManager,
 	LoginPage,
 	SpecialtyManager,
 } from './features';
 import { persistor, store } from './redux/store/configureStore';
-import 'shared/styles/style.scss';
-import 'admin/styles/style.scss';
-
-const ProtectedRoute = withAuth(Layout);
+import { withAuth } from './hocs';
 
 export default function Admin() {
+	const ProtectedRoute = withAuth(Layout);
 	return (
 		<>
 			<Provider store={store}>
@@ -46,8 +45,9 @@ export default function Admin() {
 										<Route path='*' element={<Navigate to='manage' replace />} />
 									</Route>
 
-									<Route path='posts/*'>
-										<Route path='categories' element={<CategoryManager />} />
+									<Route path='blogs/*'>
+										<Route path='categories' element={<BlogCategoryManager />} />
+										<Route path='blogs' element={<BlogsManager />} />
 										<Route path='*' element={<Navigate to='manage' replace />} />
 									</Route>
 								</Route>

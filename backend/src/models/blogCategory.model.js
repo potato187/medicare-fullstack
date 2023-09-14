@@ -1,10 +1,10 @@
 const { Schema, model, Types } = require('mongoose');
 const { createSlug } = require('@/utils');
 
-const DOCUMENT_NAME = 'PostCategory';
-const COLLECTION_NAME = 'postCategories';
+const DOCUMENT_NAME = 'blogCategory';
+const COLLECTION_NAME = 'blogCategories';
 
-const postCategorySchema = new Schema(
+const blogCategorySchema = new Schema(
 	{
 		index: {
 			type: Number,
@@ -36,7 +36,7 @@ const postCategorySchema = new Schema(
 		banner: {
 			type: String,
 		},
-		display: {
+		isDisplay: {
 			type: Boolean,
 			default: true,
 		},
@@ -48,7 +48,7 @@ const postCategorySchema = new Schema(
 	{ timestamps: true, collection: COLLECTION_NAME },
 );
 
-postCategorySchema.pre('save', function autoAddSlug(next) {
+blogCategorySchema.pre('save', function addSlug(next) {
 	this.slug = {
 		vi: createSlug(this.name.vi),
 		en: createSlug(this.name.en),
@@ -57,4 +57,4 @@ postCategorySchema.pre('save', function autoAddSlug(next) {
 	next();
 });
 
-module.exports = model(DOCUMENT_NAME, postCategorySchema);
+module.exports = model(DOCUMENT_NAME, blogCategorySchema);

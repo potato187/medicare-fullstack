@@ -3,7 +3,7 @@ const _KeyTokenModel = require('./keyToken.model');
 const _SpecialtyModel = require('./specialty.model');
 const _DoctorModel = require('./doctor.model');
 const _BookingModel = require('./booking.model');
-const _PostCategoryModel = require('./postCategory.model');
+const _BlogCategoryModel = require('./blogCategory.model');
 const _BlogModel = require('./blog.model');
 
 module.exports = {
@@ -12,6 +12,6 @@ module.exports = {
 	_SpecialtyModel,
 	_DoctorModel,
 	_BookingModel,
-	_PostCategoryModel,
+	_BlogCategoryModel,
 	_BlogModel,
 };

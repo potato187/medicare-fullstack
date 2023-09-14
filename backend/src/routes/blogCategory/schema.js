@@ -1,7 +1,7 @@
 const { ObjectIdMongodbValidator, selectValidator, booleanValidator, slugValidator } = require('@/validations');
 const Joi = require('joi');
 
-const SELECT_FIELDS = ['_id', 'name', 'slug', 'parentId', 'banner', 'display'];
+const SELECT_FIELDS = ['_id', 'name', 'slug', 'parentId', 'banner', 'isDisplay'];
 const nameValidator = Joi.string().min(3).max(250);
 
 const createSchema = Joi.object({
@@ -11,7 +11,7 @@ const createSchema = Joi.object({
 	}),
 	index: Joi.number().integer().integer().min(0).default(0),
 	parentId: ObjectIdMongodbValidator.allow(null).default(null),
-	display: booleanValidator.default(true),
+	isDisplay: booleanValidator.default(true),
 });
 
 const updateSchema = Joi.object({
@@ -23,7 +23,7 @@ const updateSchema = Joi.object({
 		vi: slugValidator,
 		en: slugValidator,
 	}),
-	display: booleanValidator,
+	isDisplay: booleanValidator,
 });
 
 const querySchema = Joi.object({

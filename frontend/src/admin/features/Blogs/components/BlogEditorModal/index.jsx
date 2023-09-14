@@ -21,7 +21,7 @@ import {
 import { useQuery } from 'admin/hooks';
 import { setDefaultValues, tryCatch } from 'admin/utilities';
 
-import { postDefaultValues, postSchema } from '../../schema';
+import { postDefaultValues, blogSchema } from '../../schema';
 
 const POST_SITE_MAP = {
 	INFORMATION: ['common.title', 'common.information'],
@@ -32,7 +32,7 @@ const POST_SITE_MAP = {
 	CONTENT_EN: ['common.title', 'common.content_en'],
 };
 
-export function PostEditorModal({
+export function BlogEditorModal({
 	languageId = 'en',
 	postId = undefined,
 	isOpen = false,
@@ -42,30 +42,30 @@ export function PostEditorModal({
 	const methods = useForm({
 		defaultValues: postDefaultValues,
 		mode: 'onChange',
-		resolver: yupResolver(postSchema),
+		resolver: yupResolver(blogSchema),
 	});
 
-	const { PostCategories, setPostCategories } = useQuery(
-		'PostCategories',
+	const { blogCategories, setBlogCategories } = useQuery(
+		'blogCategories',
 		{
-			from: 'postCategory',
+			from: 'blogCategory',
 			where: ['display=1'],
 			attributes: ['id', 'index', 'parentId', 'titleEn', 'titleVi'],
 			order: [['index', 'asc']],
 		},
 		(response) => {
-			return response.map((postCategory) => ({
-				id: postCategory.id,
-				parentId: postCategory.parentId,
-				title: postCategory[`title_${languageId}`],
-				isSelected: !!postCategory.isSelected,
+			return response.map((blogCategory) => ({
+				id: blogCategory.id,
+				parentId: blogCategory.parentId,
+				title: blogCategory[`title_${languageId}`],
+				isSelected: !!blogCategory.isSelected,
 			}));
 		},
 		[languageId],
 	);
 
 	const handleOnClose = () => {
-		setPostCategories((prevCategories) => {
+		setBlogCategories((prevCategories) => {
 			return prevCategories.map((category) => ({
 				...category,
 				isSelected: false,
@@ -76,7 +76,7 @@ export function PostEditorModal({
 	};
 
 	const handleOnSubmit = (data) => {
-		const categoryIds = PostCategories.filter((category) => category.isSelected).map(({ id }) => id);
+		const categoryIds = blogCategories.filter((category) => category.isSelected).map(({ id }) => id);
 		onSubmit({ postData: data, categoryIds });
 	};
 
@@ -90,7 +90,7 @@ export function PostEditorModal({
 			}
 
 			if (categories && categories.length) {
-				setPostCategories((prevCategories) => {
+				setBlogCategories((prevCategories) => {
 					return prevCategories.map((category) => ({
 						...category,
 						isSelected: categories.includes(category.id),
@@ -104,12 +104,12 @@ export function PostEditorModal({
 		} else {
 			setDefaultValues(methods, postDefaultValues);
 		}
-	}, [postId, methods, setPostCategories, languageId, isOpen]);
+	}, [postId, methods, setBlogCategories, languageId, isOpen]);
 
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='xl' isOpen={isOpen} onClose={handleOnClose}>
-				<BaseModalHeader idIntl='dashboard.posts.modal.post_editor_modal.title' onClose={handleOnClose} />
+				<BaseModalHeader idIntl='dashboard.blogs.modal.post_editor_modal.title' onClose={handleOnClose} />
 				<BaseModalBody className='scrollbar'>
 					<div className='row'>
 						<div className='col-9'>
@@ -239,7 +239,7 @@ export function PostEditorModal({
 									</Breadcrumb>
 								</div>
 								<div className='block-body'>
-									<SelectorTree name='categories' tree={PostCategories} setTree={setPostCategories} multiple />
+									<SelectorTree name='categories' tree={blogCategories} setTree={setBlogCategories} multiple />
 								</div>
 							</div>
 						</div>
