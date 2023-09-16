@@ -11,29 +11,29 @@ const {
 const Joi = require('joi');
 
 const SORTABLE_FIELDS = ['title', 'createdAt'];
-const SELECT_FIELDS = ['title', 'slug', 'image', 'blogCategoryIds', 'datePublished', 'isDisplay'];
+const SELECT_FIELDS = ['title', 'slug', 'datePublished', 'isDisplay'];
 
 const titleValidator = Joi.string().trim().min(3).max(250);
 
 const createSchema = Joi.object({
-	title: Joi.object({
+	title: {
 		vi: titleValidator.required(),
 		en: titleValidator.required(),
-	}),
+	},
 	slug: {
-		vi: slugValidator.allow(''),
-		en: slugValidator.allow(''),
+		vi: slugValidator.allow('').default(''),
+		en: slugValidator.allow('').default(''),
 	},
 	summary: {
-		vi: Joi.string().max(100).allow(''),
-		en: Joi.string().max(100).allow(''),
+		vi: Joi.string().max(100).allow('').default(''),
+		en: Joi.string().max(100).allow('').default(''),
 	},
 	content: {
-		vi: Joi.string().min(50).allow(''),
-		en: Joi.string().min(50).allow(''),
+		vi: Joi.string().allow('').default(''),
+		en: Joi.string().allow('').default(''),
 	},
+	image: Joi.string().allow('').default(''),
 	datePublished: dateValidator,
-	tags: Joi.array().items(Joi.string().min(2).max(20)),
 	blogCategoryIds: Joi.array().items(ObjectIdMongodbValidator),
 });
 

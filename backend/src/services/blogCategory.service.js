@@ -29,6 +29,7 @@ class BlogCategoryService {
 				rest.id = _id;
 				rest.depth = depth;
 				rest.collapsed = false;
+				rest.isSelected = false;
 				rest.children = await BlogCategoryService.getAll(rest.id, depth + 1, select);
 				return rest;
 			}),

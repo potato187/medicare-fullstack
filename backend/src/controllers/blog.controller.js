@@ -11,10 +11,7 @@ class BlogController {
 
 	getOneById = tryCatch(async (req, res) => {
 		new CreatedResponse({
-			metadata: await BlogService.getOneById({
-				id: req.params.id,
-				select: req.query.select,
-			}),
+			metadata: await BlogService.getOneById(req.params.id),
 		}).send(res);
 	});
 

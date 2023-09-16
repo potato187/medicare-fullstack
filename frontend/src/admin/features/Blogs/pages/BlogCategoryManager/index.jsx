@@ -1,20 +1,21 @@
 import { blogCategoryApi } from 'admin/api';
-import produce from 'immer';
 import { Button, ConfirmModal, Container, FormattedDescription, SortableTree, WrapScrollBar } from 'admin/components';
 import { flattenTree, removeItem } from 'admin/components/AdvanceUI/Tree/utilities';
 import { useToggle } from 'admin/hooks';
-import { compose, findPathFromRoot, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
+import { compose, findPathFromRoot, showToastMessage, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
-import { useEffect, useState } from 'react';
+import produce from 'immer';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { CreateBlogCategoryModal, UpdateBlogCategoryModal } from '../../components';
+import { useFetchBlogCategories } from '../../hooks/useFetchBlogCategories';
 
 export function BlogCategoryManager() {
 	const {
 		info: { languageId },
 	} = useAuth();
 
-	const [blogCategories, setBlogCategories] = useState([]);
+	const [blogCategories, setBlogCategories] = useFetchBlogCategories();
 	const [isOpenCreateModal, toggleCreateModal] = useToggle();
 	const [isOpenUpdateModal, toggleUpdateModal] = useToggle();
 	const [isOpenSortModal, toggleSortableModal] = useToggle();
@@ -34,8 +35,8 @@ export function BlogCategoryManager() {
 		const { metadata, message } = await blogCategoryApi.createOne({ ...data, index: blogCategories.length });
 		setBlogCategories((blogCategories) => {
 			const { _id, ...rest } = metadata;
-			const newblogCategory = { id: _id, ...rest, parentId: null, children: [], depth: 0, collapsed: null };
-			return [...blogCategories, newblogCategory];
+			const newBlogCategory = { id: _id, ...rest, parentId: null, children: [], depth: 0, collapsed: null };
+			return [...blogCategories, newBlogCategory];
 		});
 		showToastMessage(message, languageId);
 		toggleCreateModal();
@@ -87,13 +88,6 @@ export function BlogCategoryManager() {
 		showToastMessage(message, languageId);
 		toggleUpdateModal();
 	}, languageId);
-
-	useEffect(() => {
-		tryCatch(async () => {
-			const { metadata } = await blogCategoryApi.getAll();
-			setBlogCategories(metadata);
-		})();
-	}, []);
 
 	return (
 		<>

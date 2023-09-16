@@ -38,7 +38,7 @@ export function DropdownTree({
 	...props
 }) {
 	const option = options.filter((option) => option.value === value)[0];
-	console.log(options);
+
 
 	const styles = cn(
 		'dropdown',

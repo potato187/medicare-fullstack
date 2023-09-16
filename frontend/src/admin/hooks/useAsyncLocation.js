@@ -7,7 +7,7 @@ import { tryCatch } from 'admin/utilities';
 import { typeOf } from 'utils';
 import { createURL } from '../utilities';
 
-export const useAsyncLocation = ({ getData = () => [], parameters = {} }) => {
+export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 	const { pathname: locationPathName, search: locationSearch } = useLocation();
 	const navigate = useNavigate();
 	const [data, setData] = useState([]);
@@ -70,7 +70,7 @@ export const useAsyncLocation = ({ getData = () => [], parameters = {} }) => {
 
 	useEffect(() => {
 		tryCatch(async () => {
-			const { metadata } = await getData(queryParams);
+			const { metadata } = await fetch(queryParams);
 			setData(metadata.data);
 			setTotalPages(metadata.meta.totalPages);
 		})();

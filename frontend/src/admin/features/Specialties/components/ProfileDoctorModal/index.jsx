@@ -87,8 +87,8 @@ export function ProfileDoctorModal({
 						<Tabs tabIndexActive={0}>
 							<TabNav>
 								<TabNavItem labelIntl='common.profile' index={0} />
-								<TabNavItem labelIntl='common.description_en' index={1} />
-								<TabNavItem labelIntl='common.description_vi' index={2} />
+								<TabNavItem labelIntl='common.description.en' index={1} />
+								<TabNavItem labelIntl='common.description.vi' index={2} />
 							</TabNav>
 							<TabPanel tabPanelIndex={0}>
 								<div className='row'>

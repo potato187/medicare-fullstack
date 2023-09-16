@@ -53,8 +53,8 @@ export function CreateDoctorModal({
 						<Tabs className='tabs' tabIndexActive={0}>
 							<TabNav>
 								<TabNavItem labelIntl='form.profile' index={0} />
-								<TabNavItem labelIntl='common.description_en' index={1} />
-								<TabNavItem labelIntl='common.description_vi' index={2} />
+								<TabNavItem labelIntl='common.description.en' index={1} />
+								<TabNavItem labelIntl='common.description.vi' index={2} />
 							</TabNav>
 							<TabPanel tabPanelIndex={0}>
 								<div className='row'>

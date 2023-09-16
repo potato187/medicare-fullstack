@@ -28,6 +28,7 @@ export function FloatingDatePicker({ name, labelIntl }) {
 		<Controller
 			name={name}
 			control={control}
+			defaultValue=' '
 			render={({ field }) => (
 				<DatePicker
 					locale='en'

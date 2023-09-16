@@ -39,7 +39,7 @@ class BlogService {
 		});
 
 		return getInfoData({
-			fields: ['_id'],
+			fields: ['_id', 'title', 'datePublished', 'isDisplay'],
 			object: newCategory,
 		});
 	}
@@ -98,7 +98,7 @@ class BlogService {
 					{ $limit },
 					{
 						$project: {
-							id: '$_id',
+							_id: 1,
 							..._select,
 						},
 					},
@@ -126,8 +126,11 @@ class BlogService {
 		};
 	}
 
-	static getOneById({ id, select }) {
-		return BlogService.findByFilter({ filter: { _id: convertToObjectIdMongodb(id) }, select });
+	static getOneById(id) {
+		return BlogService.findByFilter({
+			filter: { _id: convertToObjectIdMongodb(id) },
+			select: { __v: 0, updatedAt: 0, createdAt: 0, isDeleted: 0, isDisplay: 0 },
+		});
 	}
 }
 

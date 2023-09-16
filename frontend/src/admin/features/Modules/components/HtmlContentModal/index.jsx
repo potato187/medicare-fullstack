@@ -54,10 +54,10 @@ export function HtmlContentModal({
 					<form onSubmit={methods.handleSubmit(onSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='title_vi' labelIntl='common.title_vi' />
+								<FloatingLabelInput name='title_vi' labelIntl='common.title.vi' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='title_en' labelIntl='common.title_en' />
+								<FloatingLabelInput name='title_en' labelIntl='common.title.en' />
 							</div>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='url' labelIntl='common.link' />
@@ -75,10 +75,10 @@ export function HtmlContentModal({
 								<FloatingLabelFile name='image' labelIntl='common.image' />
 							</div>
 							<div className='col-12 mb-6'>
-								<TextArea rows='5' name='content_vi' labelIntl='common.content_vi' />
+								<TextArea rows='5' name='content_vi' labelIntl='common.content.vi' />
 							</div>
 							<div className='col-12 mb-6'>
-								<TextArea rows='5' name='content_en' labelIntl='common.content_en' />
+								<TextArea rows='5' name='content_en' labelIntl='common.content.en' />
 							</div>
 						</div>
 					</form>

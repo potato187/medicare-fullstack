@@ -1,22 +1,34 @@
-import * as yup from 'yup';
 import { imageValidation, requiredValidation } from 'admin/validation';
+import * as yup from 'yup';
 
-export const postDefaultValues = {
+export const blogDefaultValues = {
 	id: null,
-	title_en: '',
-	title_vi: '',
-	thumbnail: '',
-	shortDescription_vi: '',
-	shortDescription_en: '',
-	content_vi: '',
-	content_en: '',
-	publicDate: new Date(),
+	title: {
+		vi: '',
+		en: '',
+	},
+	summary: {
+		vi: '',
+		en: '',
+	},
+	content: {
+		vi: '',
+		en: '',
+	},
+	slug: {
+		vi: '',
+		en: '',
+	},
+	image: '',
+	datePublished: new Date(),
 };
 
 export const blogSchema = yup.object().shape({
-	title_en: requiredValidation,
-	title_vi: requiredValidation,
-	thumbnail: imageValidation,
+	title: yup.object({
+		vi: requiredValidation,
+		en: requiredValidation,
+	}),
+	image: imageValidation,
 });
 
 export const blogCategoryDefaultValues = {

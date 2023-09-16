@@ -7,6 +7,10 @@ const isValidExcelExtension = isValidExtension(['xlsx']);
 
 export const requiredValidation = yup.string().required('form.message.error.required');
 
+export const maxLengthValidation = yup
+	.string()
+	.test('len', 'form.message.error.maxLength', (value) => value.length <= 100);
+
 export const emailValidation = yup
 	.string()
 	.email('form.message.error.email_format')

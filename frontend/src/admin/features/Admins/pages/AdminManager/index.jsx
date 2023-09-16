@@ -38,7 +38,7 @@ export function AdminManager() {
 		handleOnPageChange,
 		handleOnSelect,
 	} = useAsyncLocation({
-		getData: adminApi.queryAdminByParams,
+		fetch: adminApi.queryAdminByParams,
 	});
 
 	const { page = 1, pagesize = 25 } = queryParams;

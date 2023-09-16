@@ -134,7 +134,6 @@ export const tryCatch = (callback, finallyCallback = null) => {
 
 export const createUpdateBody = (methods, data) => {
 	const { dirtyFields } = methods.formState;
-	console.log(`dirtyFields ::`, dirtyFields);
 	const updateBody = Object.keys(dirtyFields).reduce((hash, key) => {
 		hash[key] = data[key];
 		return hash;

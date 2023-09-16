@@ -119,7 +119,7 @@ export function HtmlContentManager() {
 								<SortableTableHeader
 									sortArray={queryParams.sort}
 									name={localTitle}
-									intl='common.title'
+									intl='common.title.default'
 									onSort={handleOnSort}
 								/>
 								<SortableTableHeader

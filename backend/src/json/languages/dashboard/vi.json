@@ -12,17 +12,32 @@
 		"gender": "Gender",
 		"information": "Information",
 		"note": "Note",
-		"title": "Title",
-		"title_en": "Title (English)",
-		"title_vi": "Title (Vietnamese)",
-		"slug_en": "Slug (English)",
-		"slug_vi": "Slug (Vietnamese)",
-		"content_vi": "Content (Vietnamese)",
-		"content_en": "Content (English)",
-		"short_description_vi": "Short Description (Vietnamese)",
-		"short_description_en": "Short Description (English)",
-		"description_en": "Description (English)",
-		"description_vi": "Description (Vietnamese)",
+		"blog": "Blog",
+		"title": {
+			"default": "Title",
+			"en": "Title (English)",
+			"vi": "Title (Vietnamese)"
+		},
+		"slug": {
+			"default": "Slug",
+			"vi": "Slug (English)",
+			"en": "Slug (Vietnamese)"
+		},
+		"content": {
+			"default": "Content",
+			"vi": "Content  (Vietnamese)",
+			"en": "Content (English)"
+		},
+		"summary": {
+			"default": "Summary",
+			"vi": "Summary  (Vietnamese)",
+			"en": "Summary (English)"
+		},
+		"description": {
+			"default": "Description",
+			"en": "Description (English)",
+			"vi": "Description (Vietnamese)"
+		},
 		"created_at": "Created At",
 		"updated_at": "Updated At",
 		"public_date": "Public Date",
@@ -195,7 +210,7 @@
 		"blogs": {
 			"title": "Blogs Manager",
 			"manage": {
-				"title": "blog Manager"
+				"title": "Blog Manager"
 			},
 			"categories": {
 				"title": "Category Manager"

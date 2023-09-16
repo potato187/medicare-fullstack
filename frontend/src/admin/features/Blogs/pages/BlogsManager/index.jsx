@@ -1,4 +1,4 @@
-import { blogApi, blogCategoryApi } from 'admin/api';
+import { blogApi } from 'admin/api';
 import {
 	Button,
 	ConfirmModal,
@@ -15,12 +15,15 @@ import {
 	UnFieldSwitch,
 } from 'admin/components';
 import { useAsyncLocation, useCurrentIndex, useToggle } from 'admin/hooks';
-import { compose, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
+import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import produce from 'immer';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { formatDate } from 'utils';
+import { MdAdd } from 'react-icons/md';
+import { BlogEditorModal } from '../../components';
+import { useFetchBlogCategories } from '../../hooks/useFetchBlogCategories';
 
 const DEFAULT_OPTION = {
 	value: 'all',
@@ -29,7 +32,7 @@ const DEFAULT_OPTION = {
 		vi: 'Tất cả danh mục',
 	},
 	index: -1,
-	name: 'blogs-categories',
+	name: 'blog-categories',
 };
 
 export function BlogsManager() {
@@ -38,7 +41,19 @@ export function BlogsManager() {
 	} = useAuth();
 	const { currentIndexRef: blogIndexRef, setCurrentIndex: updateBlogIndexRef } = useCurrentIndex();
 
-	const [blogCategories, setBlogCategories] = useState([DEFAULT_OPTION]);
+	const [blogCategories] = useFetchBlogCategories();
+
+	const blogCategoryOptions = useMemo(() => {
+		const formattedData = blogCategories.map(({ _id, index, name }) => ({
+			value: _id,
+			index,
+			label: { ...name },
+			name: 'blog-categories',
+		}));
+
+		return [DEFAULT_OPTION, ...formattedData];
+	}, [blogCategories]);
+
 	const {
 		data: Blogs,
 		queryParams,
@@ -49,14 +64,17 @@ export function BlogsManager() {
 		handleOnSelect,
 		handleOnChangeSearch,
 	} = useAsyncLocation({
-		getData: blogApi.getByQueryParams,
+		fetch: blogApi.getByQueryParams,
 		parameters: {
 			categoryId: 'all',
 		},
 	});
+
 	const [isOpenConfirmModal, toggleConfirmModal] = useToggle();
+	const [isOpenEditorModal, toggleEditorModal] = useToggle();
 
 	const openConfirmModal = compose(updateBlogIndexRef, toggleConfirmModal);
+	const openEditorModal = compose(updateBlogIndexRef, toggleEditorModal);
 
 	const handleSelectCategory = (categoryId) => {
 		setQueryParams({ categoryId });
@@ -75,7 +93,7 @@ export function BlogsManager() {
 
 	const handleDeleteBlog = tryCatchAndToast(async () => {
 		const index = blogIndexRef.current;
-		const { message } = await blogApi.deleteOneById(Blogs[index].id);
+		const { message } = await blogApi.deleteOneById(Blogs[index]._id);
 		updateBlogs(
 			produce((draft) => {
 				draft.splice(index, 1);
@@ -86,20 +104,38 @@ export function BlogsManager() {
 		toggleConfirmModal();
 	}, languageId);
 
-	useEffect(() => {
-		tryCatch(async () => {
-			const { metadata } = await blogCategoryApi.getFlattenAll();
-			if (metadata && metadata.length) {
-				const formattedData = metadata.map(({ _id, index, name }) => ({
-					value: _id,
-					index,
-					label: { ...name },
-					name: 'blogs-categories',
-				}));
-				setBlogCategories([DEFAULT_OPTION, ...formattedData]);
-			}
-		})();
-	}, []);
+	const handleUpdateBlog = tryCatchAndToast(async (data) => {
+		const { blogId, ...updateBody } = data;
+		const { message, metadata } = await blogApi.updateOneById(blogId, updateBody);
+
+		updateBlogs(
+			produce((draft) => {
+				const index = blogIndexRef.current;
+				Object.entries(metadata).forEach(([key, value]) => {
+					if (Object.hasOwn(draft[index], key)) {
+						draft[index][key] = value;
+					}
+				});
+			}),
+		);
+
+		showToastMessage(message, languageId);
+		toggleEditorModal();
+	}, languageId);
+
+	const handleCreateBlog = tryCatchAndToast(async (data) => {
+		const { id, ...body } = data;
+		const { message, metadata } = await blogApi.createOne(body);
+		if (Blogs.length < queryParams.pagesize) {
+			updateBlogs(
+				produce((draft) => {
+					draft.push(metadata);
+				}),
+			);
+		}
+		showToastMessage(message, languageId);
+		toggleEditorModal();
+	}, languageId);
 
 	return (
 		<>
@@ -112,7 +148,7 @@ export function BlogsManager() {
 								languageId={languageId}
 								nameGroup='post-categories'
 								value={queryParams?.categoryId}
-								options={blogCategories}
+								options={blogCategoryOptions}
 								onChange={handleSelectCategory}
 							/>
 							<UnFieldDebounce
@@ -124,6 +160,14 @@ export function BlogsManager() {
 								onChange={handleOnChangeSearch}
 							/>
 						</div>
+						<div className='px-5 d-flex gap-2 ms-auto'>
+							<Button size='sm' onClick={() => openEditorModal(-1)}>
+								<span>
+									<FormattedMessage id='dashboard.blogs.modal.button_create_blog' />
+								</span>
+								<MdAdd size='1.25em' className='ms-2' />
+							</Button>
+						</div>
 					</div>
 					<TableGrid className='scrollbar'>
 						<Table hover striped auto>
@@ -131,7 +175,7 @@ export function BlogsManager() {
 								<th className='text-center'>
 									<FormattedMessage id='table.no' />
 								</th>
-								<SortableTableHeader className='text-start' name={`title.${languageId}`} intl='common.title' />
+								<SortableTableHeader className='text-start' name={`title.${languageId}`} intl='common.title.default' />
 								<SortableTableHeader className='text-center' name='datePublished' intl='common.public_date' />
 								<SortableTableHeader className='text-center' name='isDisplay' intl='form.display' />
 								<th className='text-center'>
@@ -139,7 +183,7 @@ export function BlogsManager() {
 								</th>
 							</TableHeader>
 							<TableBody>
-								{Blogs.map(({ id, title, datePublished, isDisplay }, index) => (
+								{Blogs.map(({ _id: id, title, datePublished, isDisplay }, index) => (
 									<tr key={id}>
 										<td className='text-center'>{index + 1}</td>
 										<td className='text-truncate'>{title[languageId]}</td>
@@ -155,7 +199,7 @@ export function BlogsManager() {
 										</td>
 										<td>
 											<div className='d-flex justify-content-center gap-2'>
-												<Button success size='xs' info>
+												<Button success size='xs' info onClick={() => openEditorModal(index)}>
 													<FormattedMessage id='button.update' />
 												</Button>
 												<Button size='xs' danger onClick={() => openConfirmModal(index)}>
@@ -186,9 +230,18 @@ export function BlogsManager() {
 			>
 				<FormattedDescription
 					id='dashboard.blogs.modal.blog_deletion_confirmation_modal.description'
-					values={{ title: Blogs?.[blogIndexRef.current]?.title[languageId] || '' }}
+					values={{ title: Blogs?.[blogIndexRef.current]?.title?.[languageId] || '' }}
 				/>
 			</ConfirmModal>
+
+			<BlogEditorModal
+				languageId={languageId}
+				blogId={Blogs?.[blogIndexRef.current]?._id}
+				isOpen={isOpenEditorModal}
+				onClose={toggleEditorModal}
+				onSubmitUpdate={handleUpdateBlog}
+				onSubmitCreate={handleCreateBlog}
+			/>
 		</>
 	);
 }
