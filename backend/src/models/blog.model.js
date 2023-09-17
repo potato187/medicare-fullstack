@@ -2,6 +2,7 @@ const { createSlug } = require('@/utils');
 const { Schema, model, Types } = require('mongoose');
 
 const DOCUMENT_NAME = 'Blog';
+
 const blogSchema = new Schema(
 	{
 		title: {

@@ -1,29 +1,22 @@
 const { UtilsRepo } = require('@/models/repository');
-const { ConflictRequestError } = require('@/core');
 const { getInfoData, createUnSelectData, convertToObjectIdMongodb } = require('@/utils');
-const { SPECIALLY_MODEL } = require('@/models/repository/constant');
+const { SPECIALTY_MODEL } = require('@/models/repository/constant');
 const { SpecialtyBuilder } = require('./builder');
 
 class SpecialtyService {
+	static model = SPECIALTY_MODEL;
+
 	static IGNORE_FIELDS = ['__v', 'updatedAt', 'createdAt', 'isDeleted', 'isActive'];
 
-	static async checkExists(filter) {
-		const specialtyFound = await UtilsRepo.findOne({
-			model: SPECIALLY_MODEL,
-			filter,
+	static async createOne({ key, name, description, image }) {
+		await UtilsRepo.checkConflicted({
+			model: this.model,
+			filter: { key },
+			code: 400409,
 		});
 
-		return specialtyFound;
-	}
-
-	static async createOne({ key, name, description, image }) {
-		const specialtyFound = await SpecialtyService.checkExists({ key });
-		if (specialtyFound) {
-			throw new ConflictRequestError({ code: 400409 });
-		}
-
 		const newSpecialty = await UtilsRepo.createOne({
-			model: SPECIALLY_MODEL,
+			model: SPECIALTY_MODEL,
 			body: new SpecialtyBuilder().setKey(key).setName(name).setDescription(description).setImage(image).build(),
 		});
 
@@ -35,7 +28,7 @@ class SpecialtyService {
 
 	static async getAll() {
 		const result = await UtilsRepo.getAll({
-			model: SPECIALLY_MODEL,
+			model: SPECIALTY_MODEL,
 			filter: { isDeleted: false, isActive: 'active' },
 			sort: { key: 1 },
 			select: createUnSelectData(SpecialtyService.IGNORE_FIELDS),
@@ -46,7 +39,7 @@ class SpecialtyService {
 
 	static async getOne(id) {
 		const result = await UtilsRepo.findOne({
-			model: SPECIALLY_MODEL,
+			model: SPECIALTY_MODEL,
 			filter: { _id: convertToObjectIdMongodb(id) },
 			select: createUnSelectData(SpecialtyService.IGNORE_FIELDS),
 		});
@@ -60,7 +53,7 @@ class SpecialtyService {
 		}
 
 		const result = await UtilsRepo.findOneAndUpdate({
-			model: SPECIALLY_MODEL,
+			model: SPECIALTY_MODEL,
 			filter: { _id: convertToObjectIdMongodb(id) },
 			updateBody,
 			select: ['_id', 'key', 'name', 'slug', 'description', 'image'],

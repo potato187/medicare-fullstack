@@ -9,7 +9,7 @@ import {
 	FloatingLabelInput,
 } from 'admin/components';
 import { APP_URL } from 'admin/constant';
-import { createUpdateBody, setDefaultValues } from 'admin/utilities';
+import { setDefaultValues } from 'admin/utilities';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -30,21 +30,21 @@ export function UpdateBlogCategoryModal({
 	const watchSlugEnField = methods.watch('slug.en', '');
 
 	const handleOnSubmit = (data) => {
-		const { url, ...rest } = data;
-		const updateBody = createUpdateBody(methods, rest);
-		onSubmit(updateBody);
+		onSubmit(data);
 	};
 
 	useEffect(() => {
-		if (blogCategory) {
+		if (isOpen && blogCategory) {
 			const { children, collapsed, depth, ...values } = blogCategory;
+			console.log(values);
 			values.url = {
 				vi: `${APP_URL}/${values.slug.vi}`,
 				en: `${APP_URL}/${values.slug.en}`,
 			};
+
 			setDefaultValues(methods, values);
 		}
-	}, [blogCategory, methods]);
+	}, [isOpen, blogCategory, methods]);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -90,23 +90,17 @@ export function UpdateBlogCategoryModal({
 								<FloatingLabelInput name='url.en' labelIntl='dashboard.blogs.modal.url' disabled />
 							</div>
 							<div className='col-12'>
-								<FieldCheckBox
-									{...methods.register('isDisplay', {
-										setValueAs: (v) => !!v,
-									})}
-									type='checkbox'
-									labelIntl='dashboard.blogs.modal.display'
-								/>
+								<FieldCheckBox name='isDisplay' type='checkbox' labelIntl='dashboard.blogs.modal.display' />
 							</div>
 						</div>
 					</form>
 				</BaseModalBody>
 				<BaseModalFooter>
 					<div className='d-flex justify-content-end gap-2'>
-						<Button secondary size='sm' onClick={toggle}>
+						<Button secondary size='xs' onClick={toggle}>
 							<FormattedMessage id='button.cancel' />
 						</Button>
-						<Button size='sm' onClick={methods.handleSubmit(handleOnSubmit)}>
+						<Button size='xs' onClick={methods.handleSubmit(handleOnSubmit)}>
 							<FormattedMessage id='button.update' />
 						</Button>
 					</div>

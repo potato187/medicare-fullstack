@@ -2,20 +2,25 @@ import { blogCategoryApi } from 'admin/api';
 import { Button, ConfirmModal, Container, FormattedDescription, SortableTree, WrapScrollBar } from 'admin/components';
 import { flattenTree, removeItem } from 'admin/components/AdvanceUI/Tree/utilities';
 import { useToggle } from 'admin/hooks';
-import { compose, findPathFromRoot, showToastMessage, tryCatchAndToast } from 'admin/utilities';
+import {
+	compose,
+	getDifferentValues,
+	reformatObject,
+	showToastMessage,
+	tryCatch,
+	tryCatchAndToast,
+} from 'admin/utilities';
 import { useAuth } from 'hooks';
-import produce from 'immer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { CreateBlogCategoryModal, UpdateBlogCategoryModal } from '../../components';
-import { useFetchBlogCategories } from '../../hooks/useFetchBlogCategories';
 
 export function BlogCategoryManager() {
 	const {
 		info: { languageId },
 	} = useAuth();
 
-	const [blogCategories, setBlogCategories] = useFetchBlogCategories();
+	const [blogCategories, setBlogCategories] = useState([]);
 	const [isOpenCreateModal, toggleCreateModal] = useToggle();
 	const [isOpenUpdateModal, toggleUpdateModal] = useToggle();
 	const [isOpenSortModal, toggleSortableModal] = useToggle();
@@ -28,6 +33,7 @@ export function BlogCategoryManager() {
 			setFocusCategory({ ...category });
 		}
 	};
+
 	const openUpdateModal = compose(handleSelectCategory, toggleUpdateModal);
 	const openDeletionModal = compose(handleSelectCategory, toggleDeletionModal);
 
@@ -65,29 +71,26 @@ export function BlogCategoryManager() {
 		toggleDeletionModal();
 	}, languageId);
 
-	const handleUpdateBlogCategory = tryCatchAndToast(async (updateBody) => {
-		const { metadata, message } = await blogCategoryApi.updateOneById(focusedCategory.id, updateBody);
-		if (Object.keys(metadata).length) {
-			setBlogCategories(
-				produce((draft) => {
-					const path = findPathFromRoot(draft, focusedCategory.id);
-					let blogCategory = null;
+	const handleUpdateBlogCategory = tryCatchAndToast(async (data) => {
+		const updatedValues = getDifferentValues(focusedCategory, data);
+		const formattedUpdate = reformatObject(updatedValues);
 
-					while (path.length > 0) {
-						const index = path.shift();
-						blogCategory = !blogCategory ? draft[index] : blogCategory.children[index];
-					}
-
-					Object.entries(metadata).forEach(([key, value]) => {
-						blogCategory[key] = value;
-					});
-				}),
-			);
+		const { metadata, message } = await blogCategoryApi.updateOneById(focusedCategory.id, formattedUpdate);
+		if (metadata) {
+			setBlogCategories(metadata);
+			setFocusCategory({});
 		}
 
 		showToastMessage(message, languageId);
 		toggleUpdateModal();
 	}, languageId);
+
+	useEffect(() => {
+		tryCatch(async () => {
+			const { metadata } = await blogCategoryApi.getAll();
+			setBlogCategories(metadata);
+		})();
+	}, []);
 
 	return (
 		<>

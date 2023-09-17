@@ -13,7 +13,7 @@ router.get(
 	'/query',
 	handlerParseParamsToArray(['sort']),
 	handlerValidateRequest(querySchema, 'query'),
-	AdminController.queryByParams,
+	AdminController.getByQueryParams,
 );
 
 router.delete('/delete/:id', handlerValidateRequest(paramsSchema, 'params'), AdminController.deleteOneById);

@@ -15,9 +15,9 @@ class BlogController {
 		}).send(res);
 	});
 
-	queryByParams = tryCatch(async (req, res) => {
+	getByQueryParams = tryCatch(async (req, res) => {
 		new OkResponse({
-			metadata: await BlogService.queryByParams(req.query),
+			metadata: await BlogService.getByQueryParams(req.query),
 		}).send(res);
 	});
 

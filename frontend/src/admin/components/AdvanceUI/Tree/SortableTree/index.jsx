@@ -191,6 +191,7 @@ export function SortableTree({
 					<SortableTreeItem
 						key={id}
 						id={id}
+						data-display={rest.isDisplay ? 'show' : 'hidden'}
 						value={rest?.name[languageId]}
 						depth={id === activeId && projected ? projected.depth : depth}
 						indentationWidth={indentationWidth}

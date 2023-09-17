@@ -16,7 +16,7 @@ router.get(
 	'/query',
 	handlerParseParamsToArray(['sort']),
 	handlerValidateRequest(querySchema, 'query'),
-	tryCatch(BookingController.queryByParams),
+	tryCatch(BookingController.getByQueryParams),
 );
 
 router.patch(

@@ -1,24 +1,40 @@
-const { NotFoundRequestError } = require('@/core');
 const { _BlogCategoryModel } = require('@/models');
 const { UtilsRepo } = require('@/models/repository');
 const { BLOG_CATEGORY_MODEL } = require('@/models/repository/constant');
-const { getInfoData, convertToObjectIdMongodb } = require('@/utils');
+const { getInfoData, convertToObjectIdMongodb, typeOf } = require('@/utils');
 
 class BlogCategoryService {
-	static async findByFilter({ filter = {}, select = ['_id'] }) {
-		const result = await UtilsRepo.findOne({
-			model: BLOG_CATEGORY_MODEL,
-			filter,
-			select,
+	static model = BLOG_CATEGORY_MODEL;
+
+	static async createOne(body) {
+		const { index, ...category } = body;
+		const model = BLOG_CATEGORY_MODEL;
+
+		if (!index) {
+			category.index = await UtilsRepo.countByFilter({ model, filter: { parentId: null } });
+		} else {
+			category.index = index;
+		}
+
+		const newCategory = await UtilsRepo.createOne({
+			model,
+			body: category,
 		});
-		return result;
+
+		return getInfoData({
+			fields: ['_id', 'parentId', 'name', 'slug', 'index'],
+			object: newCategory,
+		});
+	}
+
+	static async insertMany(body) {
+		return _BlogCategoryModel.insertMany(body);
 	}
 
 	static async getAll(parentId = null, depth = 0, select = []) {
 		const filter = {
 			parentId,
 			isDeleted: false,
-			isDisplay: true,
 		};
 
 		const results = await _BlogCategoryModel.find(filter).sort({ index: 1 }).select(select).lean();
@@ -47,48 +63,48 @@ class BlogCategoryService {
 		});
 	}
 
-	static async checkExist(filter) {
-		const result = await BlogCategoryService.findByFilter({ filter });
-		if (!result) {
-			throw new NotFoundRequestError();
-		}
-		return true;
-	}
+	static async updateChildrenByParentId({ parentId, updateBody }) {
+		const childCategories = await _BlogCategoryModel.find({ parentId: convertToObjectIdMongodb(parentId) });
 
-	static async createOne(body) {
-		const { index, ...category } = body;
-		const model = BLOG_CATEGORY_MODEL;
+		const updatePromises = [];
 
-		if (!index) {
-			category.index = await UtilsRepo.countByFilter({ model, filter: { parentId: null } });
-		} else {
-			category.index = index;
+		for (const blogCategory of childCategories) {
+			Object.entries(updateBody).forEach(([key, value]) => {
+				blogCategory[key] = value;
+			});
+
+			updatePromises.push(blogCategory.save());
+			updatePromises.push(BlogCategoryService.updateChildrenByParentId({ parentId: blogCategory._id, updateBody }));
 		}
 
-		const newCategory = await UtilsRepo.createOne({
-			model,
-			body: category,
-		});
-
-		return getInfoData({
-			fields: ['_id', 'parentId', 'name', 'slug', 'index'],
-			object: newCategory,
-		});
+		return Promise.all(updatePromises);
 	}
 
 	static async updateOneById({ id, updateBody }) {
 		const select = Object.keys(updateBody);
-		if (!select.length) return {};
+		if (!select.length) return null;
 		const filter = { _id: convertToObjectIdMongodb(id) };
 
-		await BlogCategoryService.checkExist(filter);
+		await UtilsRepo.checkIsExist({
+			model: this.model,
+			filter,
+		});
 
-		return UtilsRepo.findOneAndUpdate({
+		await UtilsRepo.findOneAndUpdate({
 			model: BLOG_CATEGORY_MODEL,
 			filter,
 			updateBody,
 			select,
 		});
+
+		if (typeOf(updateBody.isDisplay) === 'boolean') {
+			await BlogCategoryService.updateChildrenByParentId({
+				parentId: id,
+				updateBody: { isDisplay: updateBody.isDisplay },
+			});
+		}
+
+		return BlogCategoryService.getAll();
 	}
 
 	static async deleteByIds(body) {
@@ -117,10 +133,6 @@ class BlogCategoryService {
 		});
 
 		return Promise.all(promises);
-	}
-
-	static async insertMany(body) {
-		return _BlogCategoryModel.insertMany(body);
 	}
 }
 

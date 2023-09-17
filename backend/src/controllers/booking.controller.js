@@ -2,9 +2,9 @@ const { CreatedResponse, OkResponse } = require('@/core');
 const { BookingService } = require('@/services');
 
 class BookingController {
-	queryByParams = async (req, res) => {
+	getByQueryParams = async (req, res) => {
 		new OkResponse({
-			metadata: await BookingService.queryByParams(req.query),
+			metadata: await BookingService.getByQueryParams(req.query),
 		}).send(res);
 	};
 

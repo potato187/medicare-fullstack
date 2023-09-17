@@ -14,7 +14,7 @@ router.get(
 	'/',
 	handlerParseParamsToArray(['sort']),
 	handlerValidateRequest(querySchema, 'query'),
-	blogController.queryByParams,
+	blogController.getByQueryParams,
 );
 
 router.get('/:id', handlerValidateRequest(idSchema, 'params'), blogController.getOneById);

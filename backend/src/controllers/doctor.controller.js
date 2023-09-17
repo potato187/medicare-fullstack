@@ -3,9 +3,9 @@ const { excelHelper } = require('@/helpers');
 const { DoctorService } = require('@/services');
 
 class DoctorController {
-	async queryByParams(req, res) {
+	async getByQueryParams(req, res) {
 		new OkResponse({
-			metadata: await DoctorService.queryByParams(req.query),
+			metadata: await DoctorService.getByQueryParams(req.query),
 		}).send(res);
 	}
 

@@ -41,8 +41,8 @@ export const findPathFromRoot = (items = [], targetId = null, path = []) => {
 export const setDefaultValues = (methods = null, defaultValues = {}) => {
 	if (!methods || !defaultValues) return;
 
-	Object.keys(defaultValues).forEach((key) => {
-		methods?.setValue(key, defaultValues[key]);
+	Object.entries(defaultValues).forEach(([key, value]) => {
+		methods.setValue(key, value);
 	});
 };
 
@@ -142,39 +142,6 @@ export const createUpdateBody = (methods, data) => {
 	return updateBody;
 };
 
-export const getDifferentValues = (beforeObject, afterObject) => {
-	return Object.entries(afterObject).reduce((hash, [key, value]) => {
-		if (typeOf(value) !== 'object' && value !== beforeObject[key]) {
-			hash[key] = value;
-		}
-		if (JSON.stringify(value) !== JSON.stringify(beforeObject[key])) {
-			hash[key] = value;
-		}
-
-		if (!beforeObject[key]) {
-			hash[key] = value;
-		}
-
-		return hash;
-	}, {});
-};
-
-export const extractFirstNameLastName = (fullName) => {
-	const names = fullName.split(' ');
-	const lastName = names.slice(-1).join('').trim();
-	const firstName = names.slice(0, -1).join(' ').trim();
-	return { firstName, lastName };
-};
-
-export const showToastMessage = (message, languageId, type = 'success') => {
-	toast[type](message[languageId]);
-	return true;
-};
-
-export const formatISODate = (dateString) => {
-	return moment(dateString).toISOString();
-};
-
 export const flattenObject = (object = null, prefix = '') => {
 	if (object === null || object === undefined) {
 		return {};
@@ -194,4 +161,52 @@ export const flattenObject = (object = null, prefix = '') => {
 
 		return obj;
 	}, {});
+};
+
+export const getDifferentValues = (beforeObject, afterObject) => {
+	const flattenedBeforeObject = flattenObject(beforeObject);
+	const flattenedAfterObject = flattenObject(afterObject);
+	console.log(flattenedBeforeObject, flattenedBeforeObject);
+	return Object.entries(flattenedAfterObject).reduce((hash, [key, value]) => {
+		if (Object.hasOwn(flattenedBeforeObject, key) && flattenedBeforeObject[key] !== value) {
+			hash[key] = value;
+		}
+		return hash;
+	}, {});
+};
+
+export const reformatObject = (flattenObject = {}) => {
+	const result = {};
+
+	Object.entries(flattenObject).forEach(([key, value]) => {
+		let temp = result;
+		const keys = key.split('.');
+
+		for (let i = 0; i < keys.length - 1; i++) {
+			if (!temp[keys[i]]) {
+				temp[keys[i]] = {};
+			}
+			temp = temp[keys[i]];
+		}
+
+		temp[keys[keys.length - 1]] = value;
+	});
+
+	return result;
+};
+
+export const extractFirstNameLastName = (fullName) => {
+	const names = fullName.split(' ');
+	const lastName = names.slice(-1).join('').trim();
+	const firstName = names.slice(0, -1).join(' ').trim();
+	return { firstName, lastName };
+};
+
+export const showToastMessage = (message, languageId, type = 'success') => {
+	toast[type](message[languageId]);
+	return true;
+};
+
+export const formatISODate = (dateString) => {
+	return moment(dateString).toISOString();
 };

@@ -14,7 +14,7 @@ router.get(
 	'/query',
 	handlerParseParamsToArray(['sort']),
 	handlerValidateRequest(querySchema, 'query'),
-	tryCatch(DoctorController.queryByParams),
+	tryCatch(DoctorController.getByQueryParams),
 );
 
 router.get(

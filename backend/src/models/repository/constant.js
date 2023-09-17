@@ -3,7 +3,7 @@ module.exports = {
 	ROLE_MODEL: 'role',
 	GENDER_MODEL: 'gender',
 	KEY_TOKEN_MODEL: 'keyToken',
-	SPECIALLY_MODEL: 'specialty',
+	SPECIALTY_MODEL: 'specialty',
 	POSITION_MODEL: 'position',
 	WORKING_HOUR_MODEL: 'workingHour',
 	DOCTOR_MODEL: 'doctor',
@@ -11,4 +11,5 @@ module.exports = {
 	BOOKING_MODEL: 'booking',
 	BLOG_CATEGORY_MODEL: 'blogCategory',
 	BLOG_MODEL: 'blog',
+	HTML_CONTENT_MODEL: 'htmlContent',
 };

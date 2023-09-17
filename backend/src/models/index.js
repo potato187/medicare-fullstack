@@ -5,6 +5,7 @@ const _DoctorModel = require('./doctor.model');
 const _BookingModel = require('./booking.model');
 const _BlogCategoryModel = require('./blogCategory.model');
 const _BlogModel = require('./blog.model');
+const _HtmlContentModel = require('./htmlContent.model');
 
 module.exports = {
 	_AdminModel,
@@ -14,4 +15,5 @@ module.exports = {
 	_BookingModel,
 	_BlogCategoryModel,
 	_BlogModel,
+	_HtmlContentModel,
 };

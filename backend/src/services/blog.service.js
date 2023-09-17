@@ -1,35 +1,35 @@
-const { NotFoundRequestError } = require('@/core');
-const { _BlogModel } = require('@/models');
 const { UtilsRepo } = require('@/models/repository');
 const { BLOG_MODEL } = require('@/models/repository/constant');
-const {
-	getInfoData,
-	convertToObjectIdMongodb,
-	createSelectData,
-	createSearchData,
-	createSortData,
-} = require('@/utils');
+const { getInfoData, convertToObjectIdMongodb, createSearchData } = require('@/utils');
 
 const SEARCHABLE_FIELDS = ['title.vi', 'title.en'];
 
 class BlogService {
 	static model = BLOG_MODEL;
 
-	static async findByFilter({ filter = {}, select = ['_id'] }) {
-		const result = await UtilsRepo.findOne({
-			model: BlogService.model,
-			filter,
-			select,
+	static getOneById(id) {
+		return UtilsRepo.findOne({
+			model: this.model,
+			filter: { _id: convertToObjectIdMongodb(id) },
+			select: { __v: 0, updatedAt: 0, createdAt: 0, isDeleted: 0, isDisplay: 0 },
 		});
-		return result;
 	}
 
-	static async checkExist(filter) {
-		const result = await BlogService.findByFilter({ filter });
-		if (!result) {
-			throw new NotFoundRequestError();
+	static async getByQueryParams(queryParams) {
+		const { categoryId, search, ...params } = queryParams;
+		const match = { isDeleted: false };
+		if (search) {
+			match.$or = createSearchData(SEARCHABLE_FIELDS, search);
 		}
-		return true;
+
+		if (categoryId && categoryId !== 'all') {
+			match.blogCategoryIds = convertToObjectIdMongodb(categoryId);
+		}
+
+		return UtilsRepo.getByQueryParams({
+			model: this.model,
+			queryParams: { match, ...params },
+		});
 	}
 
 	static async createOne(body) {
@@ -46,11 +46,17 @@ class BlogService {
 
 	static async updateOneById({ id, updateBody }) {
 		const select = Object.keys(updateBody);
-		if (!select.length) return {};
 		const { blogCategoryIds, ...body } = updateBody;
 		const filter = { _id: convertToObjectIdMongodb(id), isDeleted: false };
 
-		if (blogCategoryIds && blogCategoryIds.length) {
+		if (!select.length) return {};
+
+		await UtilsRepo.checkIsExist({
+			model: this.model,
+			filter,
+		});
+
+		if (blogCategoryIds) {
 			blogCategoryIds.forEach((blogCategoryId, index) => {
 				blogCategoryIds[index] = convertToObjectIdMongodb(blogCategoryId);
 			});
@@ -58,10 +64,8 @@ class BlogService {
 			body.blogCategoryIds = blogCategoryIds;
 		}
 
-		await BlogService.checkExist(filter);
-
 		return UtilsRepo.findOneAndUpdate({
-			model: BlogService.model,
+			model: this.model,
 			filter,
 			updateBody: body,
 			select,
@@ -70,67 +74,6 @@ class BlogService {
 
 	static async deleteOneById(id) {
 		return BlogService.updateOneById({ id, updateBody: { isDeleted: true, isDisplay: false } });
-	}
-
-	static async queryByParams(queryParams) {
-		const { categoryId, search, sort = [], page = 1, pagesize = 25, select = [] } = queryParams;
-		const $skip = (+page - 1) * pagesize;
-		const $limit = +pagesize;
-		const $sort = sort.length ? createSortData(sort) : { ctime: 1 };
-		const _select = createSelectData(select);
-		const $match = { isDeleted: false };
-
-		if (search) {
-			$match.$or = createSearchData(SEARCHABLE_FIELDS, search);
-		}
-
-		if (categoryId && categoryId !== 'all') {
-			$match.blogCategoryIds = convertToObjectIdMongodb(categoryId);
-		}
-
-		const [{ results, total }] = await _BlogModel
-			.aggregate()
-			.match($match)
-			.facet({
-				results: [
-					{ $sort },
-					{ $skip },
-					{ $limit },
-					{
-						$project: {
-							_id: 1,
-							..._select,
-						},
-					},
-				],
-				totalCount: [{ $count: 'count' }],
-			})
-			.addFields({
-				total: {
-					$ifNull: [{ $arrayElemAt: ['$totalCount.count', 0] }, 0],
-				},
-			})
-			.project({
-				results: 1,
-				total: 1,
-			});
-
-		return {
-			data: results,
-			meta: {
-				page: +page,
-				pagesize: $limit,
-				totalPages: Math.ceil(total / $limit) || 1,
-				search,
-			},
-		};
-	}
-
-	static getOneById(id) {
-		return BlogService.findByFilter({
-			filter: { _id: convertToObjectIdMongodb(id) },
-			select: { __v: 0, updatedAt: 0, createdAt: 0, isDeleted: 0, isDisplay: 0 },
-		});
 	}
 }
 

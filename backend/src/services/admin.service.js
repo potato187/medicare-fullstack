@@ -1,53 +1,24 @@
-const { _AdminModel } = require('@/models');
 const { UtilsRepo, KeyTokenRepo } = require('@/models/repository');
 const { ADMIN_MODEL } = require('@/models/repository/constant');
-const { createSortData, createSearchData, createSelectData, convertToObjectIdMongodb } = require('@/utils');
+const { createSearchData, convertToObjectIdMongodb } = require('@/utils');
 
 const SEARCHABLE_FIELDS = ['firstName', 'lastName', 'email', 'phone'];
 
 class AdminService {
-	static async queryByParams({ search: keySearch = '', select = ['_id'], sort = [], page = 1, pagesize = 25 }) {
-		const searchClause = {};
-		const $page = Math.max(1, page);
-		const $limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
-		const $skip = ($page - 1) * $limit;
-		const $sort = sort.length ? createSortData(sort) : { ctime: 1 };
-		const $project = createSelectData(select);
+	static model = ADMIN_MODEL;
 
-		if (keySearch) {
-			searchClause.$or = createSearchData(SEARCHABLE_FIELDS, keySearch);
+	static async getByQueryParams(queryParams) {
+		const { search, ...params } = queryParams;
+		const match = { isActive: 'active', isDeleted: false };
+
+		if (search) {
+			match.$or = createSearchData(SEARCHABLE_FIELDS, search);
 		}
 
-		const [{ results, total }] = await _AdminModel
-			.aggregate()
-			.match({
-				isActive: 'active',
-				isDeleted: false,
-				...searchClause,
-			})
-			.facet({
-				results: [{ $sort }, { $skip }, { $limit }, { $project }],
-				totalCount: [{ $count: 'count' }],
-			})
-			.addFields({
-				total: {
-					$ifNull: [{ $arrayElemAt: ['$totalCount.count', 0] }, 0],
-				},
-			})
-			.project({
-				results: 1,
-				total: 1,
-			});
-
-		return {
-			data: results,
-			meta: {
-				page: $page,
-				pagesize: $limit,
-				totalPages: Math.ceil(total / $limit) || 1,
-				keySearch,
-			},
-		};
+		return UtilsRepo.getByQueryParams({
+			model: this.model,
+			queryParams: { match, ...params },
+		});
 	}
 
 	static async updateOneById({ id, updateBody }) {
@@ -58,7 +29,7 @@ class AdminService {
 		}
 
 		const updatedAdmin = await UtilsRepo.findOneAndUpdate({
-			model: ADMIN_MODEL,
+			model: this.model,
 			filter: { _id: convertToObjectIdMongodb(id) },
 			updateBody,
 			select,

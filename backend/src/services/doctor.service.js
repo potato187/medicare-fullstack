@@ -1,41 +1,25 @@
 const { _DoctorModel } = require('@/models');
-const { ConflictRequestError, NotFoundRequestError, InterServerRequestError } = require('@/core');
-const { DOCTOR_MODEL, GENDER_MODEL, POSITION_MODEL, SPECIALLY_MODEL } = require('@/models/repository/constant');
-
-const {
-	getInfoData,
-	convertToObjectIdMongodb,
-	createSortData,
-	createSearchData,
-	createSelectData,
-} = require('@/utils');
+const { ConflictRequestError, InterServerRequestError } = require('@/core');
+const { DOCTOR_MODEL, GENDER_MODEL, POSITION_MODEL, SPECIALTY_MODEL } = require('@/models/repository/constant');
+const { getInfoData, convertToObjectIdMongodb, createSortData, createSearchData } = require('@/utils');
 const { UtilsRepo } = require('@/models/repository');
 const { DoctorBuilder } = require('./builder');
 
 const FIELDS_ABLE_SEARCH = ['firstName', 'lastName', 'email', 'phone', 'address'];
 
 class DoctorService {
-	static async findByFilter(filter) {
+	static model = DOCTOR_MODEL;
+
+	static async checkConflicted(filter) {
 		const doctor = await UtilsRepo.findOne({
-			model: DOCTOR_MODEL,
+			model: this.model,
 			filter,
 		});
-		return doctor !== null;
-	}
 
-	static async checkIsExist(filter) {
-		const doctor = await DoctorService.findByFilter(filter);
-		if (!doctor) {
-			throw new NotFoundRequestError({ code: 500404 });
-		}
-		return true;
-	}
-
-	static async checkIsConflict(filter) {
-		const doctor = await DoctorService.findByFilter(filter);
 		if (doctor) {
 			throw new ConflictRequestError({ code: 500409 });
 		}
+
 		return true;
 	}
 
@@ -51,7 +35,7 @@ class DoctorService {
 			.setSpecialtyId(specialtyId)
 			.setPosition(positionId);
 
-		await DoctorService.checkIsConflict({
+		await DoctorService.checkConflicted({
 			$or: [{ email: doctorBuilder.data.email }, { phone: doctorBuilder.data.phone }],
 		});
 
@@ -89,7 +73,10 @@ class DoctorService {
 	static async updateOne({ id, updateBody }) {
 		const filter = { _id: convertToObjectIdMongodb(id) };
 
-		await DoctorService.checkIsExist(filter);
+		await UtilsRepo.checkIsExist({
+			model: this.model,
+			filter,
+		});
 
 		const result = await UtilsRepo.findOneAndUpdate({
 			model: DOCTOR_MODEL,
@@ -110,66 +97,26 @@ class DoctorService {
 		return result;
 	}
 
-	static async queryByParams({
-		specialtyId = '',
-		positionId = '',
-		search: keySearch = '',
-		sort = [],
-		page = 1,
-		pagesize = 25,
-		select = [],
-	}) {
-		const filter = { isDeleted: false, isActive: 'active' };
-		const $page = Math.max(1, +page);
-		const $limit = pagesize > 0 && pagesize < 100 ? pagesize : 25;
-		const $skip = ($page - 1) * $limit;
-		const $sort = sort.length ? createSortData(sort) : { updateAt: 1 };
+	static async getByQueryParams(queryParams) {
+		const { specialtyId = '', positionId = '', search, ...params } = queryParams;
+		const match = { isDeleted: false, isActive: 'active' };
 
 		if (specialtyId) {
-			filter.specialtyId = convertToObjectIdMongodb(specialtyId);
+			match.specialtyId = convertToObjectIdMongodb(specialtyId);
 		}
 
 		if (positionId) {
-			filter.positionId = convertToObjectIdMongodb(positionId);
+			match.positionId = convertToObjectIdMongodb(positionId);
 		}
 
-		if (keySearch) {
-			filter.$or = createSearchData(FIELDS_ABLE_SEARCH, keySearch);
+		if (search) {
+			match.$or = createSearchData(FIELDS_ABLE_SEARCH, search);
 		}
 
-		const [{ results, total }] = await _DoctorModel
-			.aggregate()
-			.match(filter)
-			.facet({
-				results: [
-					{ $sort },
-					{ $skip },
-					{ $limit },
-					{
-						$project: createSelectData(select),
-					},
-				],
-				totalCount: [{ $count: 'count' }],
-			})
-			.addFields({
-				total: {
-					$ifNull: [{ $arrayElemAt: ['$totalCount.count', 0] }, 0],
-				},
-			})
-			.project({
-				results: 1,
-				total: 1,
-			});
-
-		return {
-			data: results,
-			meta: {
-				page: $page,
-				pagesize: $limit,
-				totalPages: Math.ceil(total / $limit) || 1,
-				keySearch,
-			},
-		};
+		return UtilsRepo.getByQueryParams({
+			model: DOCTOR_MODEL,
+			queryParams: { match, ...params },
+		});
 	}
 
 	static async getOne({ doctorId, select = ['_id'] }) {
@@ -186,7 +133,7 @@ class DoctorService {
 		try {
 			const [specialtiesResolve, gendersResolve, positionsResolve] = await Promise.all([
 				UtilsRepo.getAll({
-					model: SPECIALLY_MODEL,
+					model: SPECIALTY_MODEL,
 					select: ['_id', 'name'],
 				}),
 				UtilsRepo.getAll({

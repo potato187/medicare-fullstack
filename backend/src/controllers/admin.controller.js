@@ -3,9 +3,9 @@ const { tryCatch } = require('@/middleware');
 const { AdminService } = require('@/services');
 
 class AdminController {
-	queryByParams = tryCatch(async (req, res) => {
+	getByQueryParams = tryCatch(async (req, res) => {
 		new OkResponse({
-			metadata: await AdminService.queryByParams(req.query),
+			metadata: await AdminService.getByQueryParams(req.query),
 		}).send(res);
 	});
 

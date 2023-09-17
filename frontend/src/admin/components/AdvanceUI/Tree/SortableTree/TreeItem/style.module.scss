@@ -4,6 +4,10 @@
 	padding-left: var(--spacing);
 	margin-bottom: -1px;
 
+	&[data-display='hidden'] {
+		opacity: 0.65;
+	}
+
 	&.clone {
 		display: inline-block;
 		pointer-events: none;

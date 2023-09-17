@@ -36,7 +36,7 @@ export const blogCategoryDefaultValues = {
 		vi: '',
 		en: '',
 	},
-	display: true,
+	isDisplay: true,
 };
 
 export const blogCategoryDefault = {
@@ -48,10 +48,7 @@ export const blogCategoryDefault = {
 		vi: '',
 		en: '',
 	},
-	url: {
-		vi: '',
-		en: '',
-	},
+	isDisplay: true,
 };
 
 export const blogCategorySchema = yup.object().shape({
