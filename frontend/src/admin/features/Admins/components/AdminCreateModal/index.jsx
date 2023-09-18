@@ -65,10 +65,10 @@ export function AdminCreateModal({
 						</div>
 					</BaseModalBody>
 					<BaseModalFooter className='d-flex justify-content-end gap-2'>
-						<Button type='button' size='sm' secondary onClick={handleOnClose}>
+						<Button type='button' size='xs' secondary onClick={handleOnClose}>
 							<FormattedMessage id='button.close' />
 						</Button>
-						<Button type='submit' size='sm' info>
+						<Button type='submit' size='xs' info>
 							<FormattedMessage id='button.create' />
 						</Button>
 					</BaseModalFooter>

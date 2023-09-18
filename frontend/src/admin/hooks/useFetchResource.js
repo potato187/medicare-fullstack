@@ -8,8 +8,8 @@ export const useFetchResource = ({ endpoint, languageId, formatter }) => {
 	const dataMemorized = useMemo(() => {
 		const formattedData = formatter
 			? formatter(data)
-			: data.map(({ _id, name, key }) => {
-					return { label: name[languageId], value: _id, key };
+			: data.map(({ name, key }) => {
+					return { label: name[languageId], value: key };
 			  });
 		return formattedData;
 	}, [data, languageId, formatter]);

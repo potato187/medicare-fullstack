@@ -18,9 +18,9 @@ import { toast } from 'react-toastify';
 
 import { adminApi } from 'admin/api';
 import { useAsyncLocation, useCurrentIndex, useFetchResource, useToggle } from 'admin/hooks';
-import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
+import { compose, getObjectDiff, showToastMessage, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
-import { AdminCreateModal, AdminEditModal } from '../../components';
+import { AdminCreateModal, AdminUpdateModal } from '../../components';
 
 export function AdminManager() {
 	const {
@@ -84,9 +84,11 @@ export function AdminManager() {
 		toggleConfirmDeletionModal();
 	}, languageId);
 
-	const handleUpdateAdmin = tryCatchAndToast(async (updateBody) => {
+	const handleUpdateAdmin = tryCatchAndToast(async (data) => {
 		const index = adminIndexRef.current;
 		const id = Admins[index]._id;
+		const updateBody = getObjectDiff(Admins[index], data);
+
 		const { message, metadata } = await adminApi.updateById(id, updateBody);
 
 		setAdmins(
@@ -180,9 +182,9 @@ export function AdminManager() {
 				positions={AdminRoles}
 			/>
 
-			<AdminEditModal
+			<AdminUpdateModal
 				isOpen={statusProfileModal}
-				defaultValues={Admins[adminIndexRef.current]}
+				admin={Admins[adminIndexRef.current]}
 				genders={Genders}
 				positions={AdminRoles}
 				onSubmit={handleUpdateAdmin}

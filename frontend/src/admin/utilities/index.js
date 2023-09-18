@@ -166,7 +166,7 @@ export const flattenObject = (object = null, prefix = '') => {
 export const getDifferentValues = (beforeObject, afterObject) => {
 	const flattenedBeforeObject = flattenObject(beforeObject);
 	const flattenedAfterObject = flattenObject(afterObject);
-	console.log(flattenedBeforeObject, flattenedBeforeObject);
+
 	return Object.entries(flattenedAfterObject).reduce((hash, [key, value]) => {
 		if (Object.hasOwn(flattenedBeforeObject, key) && flattenedBeforeObject[key] !== value) {
 			hash[key] = value;

@@ -1,38 +1,37 @@
 const bcrypt = require('bcrypt');
 const { generateToken, getInfoData, convertToObjectIdMongodb } = require('@/utils');
 const { KeyTokenRepo, UtilsRepo } = require('@/models/repository');
-const { UnauthorizedRequestError, ConflictRequestError } = require('@/core');
+const { UnauthorizedRequestError } = require('@/core');
 const { ADMIN_MODEL, KEY_TOKEN_MODEL } = require('@/models/repository/constant');
 const { authUtils } = require('@/auth');
 const TokenBuilder = require('./builder/_tokens.builder');
 
 class AccessService {
+	static model = ADMIN_MODEL;
+
 	static async singUp(body) {
 		const { email, phone } = body;
 
-		const adminFound = await UtilsRepo.findOne({
-			model: ADMIN_MODEL,
+		await UtilsRepo.checkConflicted({
+			model: this.model,
 			filter: { $or: [{ email }, { phone }] },
+			code: 200400,
 		});
 
-		if (adminFound) {
-			throw new ConflictRequestError({ code: 200400 });
-		}
-
 		const newUser = await UtilsRepo.createOne({
-			model: ADMIN_MODEL,
+			model: this.model,
 			body,
 		});
 
 		return getInfoData({
-			fields: ['_id', 'email', 'firstName', 'lastName', 'role'],
+			fields: ['_id', 'email', 'firstName', 'lastName', 'role', 'phone'],
 			object: newUser,
 		});
 	}
 
 	static async login({ email, password }) {
 		const foundAdmin = await UtilsRepo.findOne({
-			model: ADMIN_MODEL,
+			model: this.model,
 			filter: { email, isDeleted: false, isActive: 'active' },
 			select: ['_id', 'email', 'password', 'firstName', 'lastName', 'role'],
 		});

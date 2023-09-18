@@ -14,9 +14,9 @@ import {
 } from 'admin/components';
 import { adminValidation } from '../../validation';
 
-export function AdminEditModal({
+export function AdminUpdateModal({
 	isOpen = false,
-	defaultValues = {},
+	admin,
 	genders = [],
 	positions = [],
 	onSubmit = () => null,
@@ -24,7 +24,6 @@ export function AdminEditModal({
 }) {
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues,
 		resolver: yupResolver(adminValidation),
 	});
 
@@ -33,26 +32,18 @@ export function AdminEditModal({
 		onClose();
 	};
 
-	const handleOnSubmit = (data) => {
-		const { dirtyFields } = methods.formState;
-		const updateBody = Object.keys(dirtyFields).reduce((hash, key) => {
-			hash[key] = data[key];
-			return hash;
-		}, {});
-
-		onSubmit(updateBody);
-	};
-
 	useEffect(() => {
-		setDefaultValues(methods, defaultValues);
-	}, [defaultValues, methods]);
+		if (isOpen && admin) {
+			setDefaultValues(methods, admin);
+		}
+	}, [isOpen, admin, methods]);
 
 	return (
 		<FormProvider {...methods}>
 			<BaseModal isOpen={isOpen} onClose={handleOnClose}>
 				<BaseModalHeader idIntl='dashboard.admin.modal.update_admin.title' onClose={handleOnClose} />
 				<BaseModalBody>
-					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
+					<form onSubmit={methods.handleSubmit(onSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='firstName' labelIntl='form.firstName' />
@@ -76,10 +67,10 @@ export function AdminEditModal({
 					</form>
 				</BaseModalBody>
 				<BaseModalFooter className='d-flex justify-content-end gap-2'>
-					<Button size='sm' type='button' secondary onClick={handleOnClose}>
+					<Button size='xs' type='button' secondary onClick={handleOnClose}>
 						<FormattedMessage id='button.cancel' />
 					</Button>
-					<Button size='sm' info onClick={methods.handleSubmit(handleOnSubmit)}>
+					<Button size='xs' info onClick={methods.handleSubmit(onSubmit)}>
 						<FormattedMessage id='button.update' />
 					</Button>
 				</BaseModalFooter>

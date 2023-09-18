@@ -10,19 +10,6 @@ const FIELDS_ABLE_SEARCH = ['firstName', 'lastName', 'email', 'phone', 'address'
 class DoctorService {
 	static model = DOCTOR_MODEL;
 
-	static async checkConflicted(filter) {
-		const doctor = await UtilsRepo.findOne({
-			model: this.model,
-			filter,
-		});
-
-		if (doctor) {
-			throw new ConflictRequestError({ code: 500409 });
-		}
-
-		return true;
-	}
-
 	static async createOne(body) {
 		const { firstName, lastName, gender, address, email, phone, specialtyId, positionId } = body;
 		const doctorBuilder = new DoctorBuilder()
@@ -35,8 +22,10 @@ class DoctorService {
 			.setSpecialtyId(specialtyId)
 			.setPosition(positionId);
 
-		await DoctorService.checkConflicted({
-			$or: [{ email: doctorBuilder.data.email }, { phone: doctorBuilder.data.phone }],
+		await UtilsRepo.checkConflicted({
+			model: this.model,
+			filter: { $or: [{ email: doctorBuilder.data.email }, { phone: doctorBuilder.data.phone }] },
+			code: 500409,
 		});
 
 		const newDoctor = await UtilsRepo.createOne({

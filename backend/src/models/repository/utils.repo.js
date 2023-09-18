@@ -64,13 +64,10 @@ class UtilsRepo {
 		return true;
 	}
 
-	static async checkConflicted(filter, model = BOOKING_MODEL, code = 100400) {
-		const result = await UtilsRepo.findOne({
-			model,
-			filter,
-			select: ['_id'],
-		});
-		if (!result) {
+	static async checkConflicted({ model, filter, code = 100400 }) {
+		const result = await UtilsRepo.findOne({ model, filter });
+
+		if (result) {
 			throw new ConflictRequestError({ code });
 		}
 
