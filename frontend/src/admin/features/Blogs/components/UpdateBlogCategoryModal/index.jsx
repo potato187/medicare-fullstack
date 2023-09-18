@@ -36,7 +36,6 @@ export function UpdateBlogCategoryModal({
 	useEffect(() => {
 		if (isOpen && blogCategory) {
 			const { children, collapsed, depth, ...values } = blogCategory;
-			console.log(values);
 			values.url = {
 				vi: `${APP_URL}/${values.slug.vi}`,
 				en: `${APP_URL}/${values.slug.en}`,

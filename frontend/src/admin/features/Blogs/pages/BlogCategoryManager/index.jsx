@@ -2,14 +2,7 @@ import { blogCategoryApi } from 'admin/api';
 import { Button, ConfirmModal, Container, FormattedDescription, SortableTree, WrapScrollBar } from 'admin/components';
 import { flattenTree, removeItem } from 'admin/components/AdvanceUI/Tree/utilities';
 import { useToggle } from 'admin/hooks';
-import {
-	compose,
-	getDifferentValues,
-	reformatObject,
-	showToastMessage,
-	tryCatch,
-	tryCatchAndToast,
-} from 'admin/utilities';
+import { compose, getObjectDiff, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -72,10 +65,8 @@ export function BlogCategoryManager() {
 	}, languageId);
 
 	const handleUpdateBlogCategory = tryCatchAndToast(async (data) => {
-		const updatedValues = getDifferentValues(focusedCategory, data);
-		const formattedUpdate = reformatObject(updatedValues);
-
-		const { metadata, message } = await blogCategoryApi.updateOneById(focusedCategory.id, formattedUpdate);
+		const updatedValues = getObjectDiff(focusedCategory, data);
+		const { metadata, message } = await blogCategoryApi.updateOneById(focusedCategory.id, updatedValues);
 		if (metadata) {
 			setBlogCategories(metadata);
 			setFocusCategory({});

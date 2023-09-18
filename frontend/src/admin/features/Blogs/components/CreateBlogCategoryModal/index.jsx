@@ -37,13 +37,7 @@ export function CreateBlogCategoryModal({ isOpen = false, toggle = () => false, 
 								<FloatingLabelInput name='name.en' labelIntl='dashboard.blogs.modal.titleVi' />
 							</div>
 							<div className='col-12'>
-								<FieldCheckBox
-									{...methods.register('display', {
-										setValueAs: (v) => !!v,
-									})}
-									type='checkbox'
-									labelIntl='dashboard.blogs.modal.display'
-								/>
+								<FieldCheckBox name='isDisplay' type='checkbox' labelIntl='dashboard.blogs.modal.display' />
 							</div>
 						</div>
 					</form>

@@ -195,6 +195,13 @@ export const reformatObject = (flattenObject = {}) => {
 	return result;
 };
 
+export const getObjectDiff = (object1, object2) => {
+	const flatten1 = flattenObject(object1);
+	const flatten2 = flattenObject(object2);
+	const diff = getDifferentValues(flatten1, flatten2);
+	return reformatObject(diff);
+};
+
 export const extractFirstNameLastName = (fullName) => {
 	const names = fullName.split(' ');
 	const lastName = names.slice(-1).join('').trim();
