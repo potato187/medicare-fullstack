@@ -1,21 +1,21 @@
-import React, { useEffect, useMemo } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { useLanguages } from 'stores';
+import { languageApi } from 'admin/api';
 import {
+	Breadcrumb,
 	Button,
 	Container,
 	ContainerMain,
 	ContainerTitle,
 	FloatingInput,
-	Breadcrumb,
 	WrapScrollBar,
 } from 'admin/components';
-import { languageApi } from 'admin/api';
+import { showToastMessage, tryCatchAndToast } from 'admin/utilities';
+import React, { useEffect, useMemo } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
+import { useParams } from 'react-router-dom';
+import { useLanguages } from 'stores';
+import * as yup from 'yup';
 import { convertData, convertName } from '../../utilities';
 
 export function LanguageManager() {
@@ -25,21 +25,16 @@ export function LanguageManager() {
 
 	const methods = useForm({
 		mode: 'onChange',
-		resolver: yupResolver(yup.object().shape(validationForm)),
+		resolver: yupResolver(yup.object().shape({ ...validationForm })),
 	});
 
-	const handleOnSubmit = async (data) => {
-		try {
-			const { data: dataResponse, message } = await languageApi.updateLanguageById({ languageId, data });
-			updateLanguage(languageId, dataResponse);
-			toast.success(message[languageId]);
-		} catch (error) {
-			toast.error(error.message[languageId]);
-		}
-	};
+	const handleOnSubmit = tryCatchAndToast(async (data) => {
+		const { metadata, message } = await languageApi.updateLanguageById({ languageId, body: data });
+		updateLanguage(languageId, metadata);
+		showToastMessage(message, languageId);
+	}, languageId);
 
 	useEffect(() => {
-		methods.clearErrors();
 		Object.entries(language).forEach(([prefix, { fields }]) => {
 			Object.keys(fields).forEach((key) => {
 				methods.setValue(`${prefix}.${key}`, fields[key]);
@@ -77,7 +72,7 @@ export function LanguageManager() {
 							</React.Fragment>
 						))}
 						<div className='p-5 text-center'>
-							<Button size='sm' isLoading={methods.formState.isSubmitting}>
+							<Button type='submit' size='xs' onClick={methods.handleSubmit(handleOnSubmit)}>
 								<FormattedMessage id='button.update' />
 							</Button>
 						</div>

@@ -5,3 +5,4 @@ export * from './useFetchSpecialty';
 export * from './useManageSpecialties';
 export * from './useQuery';
 export * from './useToggle';
+export * from './useFetch';

@@ -21,7 +21,7 @@ import { bookingValidation } from '../../validation';
 export function BookingModel({
 	idTitleIntl = '',
 	isOpen = false,
-	defaultValues = {},
+	booking,
 	specialtyId = '',
 	specialties = [],
 	workingHours = [],
@@ -39,25 +39,12 @@ export function BookingModel({
 
 	const watchSpecialtyId = methods.watch('specialtyId', specialtyId);
 
-	const handleOnClose = () => {
-		methods.reset();
-		onClose();
-	};
-
-	const handleOnSubmit = (data) => {
-		const { dirtyFields } = methods.formState;
-		const updateBody = Object.keys(dirtyFields).reduce((hash, key) => {
-			hash[key] = data[key];
-			return hash;
-		}, {});
-
-		onSubmit(updateBody);
-	};
-
 	useEffect(() => {
-		setDefaultValues(methods, defaultValues);
-		methods.setValue('specialtyId', specialtyId);
-	}, [defaultValues, specialtyId, methods]);
+		if (isOpen && booking) {
+			setDefaultValues(methods, booking);
+			methods.setValue('specialtyId', specialtyId);
+		}
+	}, [isOpen, booking, specialtyId, methods]);
 
 	useEffect(() => {
 		(async () => {
@@ -87,9 +74,9 @@ export function BookingModel({
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='md' isOpen={isOpen}>
-				<BaseModalHeader idIntl={idTitleIntl} onClose={handleOnClose} />
+				<BaseModalHeader idIntl={idTitleIntl} onClose={onClose} />
 				<BaseModalBody>
-					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
+					<form onSubmit={methods.handleSubmit(onSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='fullName' labelIntl='form.fullName' />
@@ -128,7 +115,7 @@ export function BookingModel({
 								<FloatingLabelSelect
 									name='doctorId'
 									labelIntl='common.doctor'
-									value={defaultValues.doctorId}
+									value={booking.doctorId}
 									options={doctors}
 									disabled={!doctors.length}
 								/>
@@ -140,16 +127,10 @@ export function BookingModel({
 					</form>
 				</BaseModalBody>
 				<BaseModalFooter className='d-flex justify-content-end  align-items-center gap-2'>
-					<Button size='xs' type='button' secondary onClick={handleOnClose}>
+					<Button size='xs' type='button' secondary onClick={onClose}>
 						<FormattedMessage id='button.cancel' />
 					</Button>
-					<Button
-						isLoading={methods.formState.isSubmitting}
-						size='xs'
-						type='submit'
-						info
-						onClick={methods.handleSubmit(handleOnSubmit)}
-					>
+					<Button size='xs' type='submit' info onClick={methods.handleSubmit(onSubmit)}>
 						<FormattedMessage id='button.update' />
 					</Button>
 				</BaseModalFooter>

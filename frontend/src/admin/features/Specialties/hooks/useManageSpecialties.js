@@ -1,32 +1,38 @@
-import { bookingApi } from 'admin/api';
-import { DATE_FORMAT, ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
-import { useCurrentIndex, useFetch } from 'admin/hooks';
+import { doctorApi } from 'admin/api';
+import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
+import { useFetch } from 'admin/hooks';
 import { createURL, tryCatch } from 'admin/utilities';
-import moment from 'moment';
 import queryString from 'query-string';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { typeOf } from 'utils';
 
-export const useManageBookings = () => {
-	const Specialties = useFetch({
+export const useManageSpecialties = (languageId = 'en') => {
+	const specialtiesData = useFetch({
 		endpoint: 'specialty',
 	});
 
-	const WorkingHours = useFetch({
-		endpoint: 'workingHour',
+	const Specialties = useMemo(() => {
+		return specialtiesData.reduce((hash, { _id, name, key }) => {
+			hash.push({ value: _id, label: name[languageId], key });
+			return hash;
+		}, []);
+	}, [languageId, specialtiesData]);
+
+	const positionsData = useFetch({
+		endpoint: 'position',
 	});
 
-	const Genders = useFetch({
-		endpoint: 'gender',
-	});
+	const Positions = useMemo(() => {
+		return positionsData.reduce((hash, { name, key }) => {
+			hash.push({ value: key, label: name[languageId] });
+			return hash;
+		}, []);
+	}, [languageId, positionsData]);
 
-	const [bookings, setBookings] = useState([]);
+	const [doctors, setDoctors] = useState([]);
 	const [specialtyIndex, setSpecialtyIndex] = useState(0);
-	const [workingHourIndex, setWorkingHourIndex] = useState(0);
-
 	const [totalPages, setTotalPages] = useState(1);
-	const { currentIndexRef, setCurrentIndex } = useCurrentIndex(0);
 
 	const { pathname: locationPathName, search: locationSearch } = useLocation();
 	const navigate = useNavigate();
@@ -34,20 +40,8 @@ export const useManageBookings = () => {
 	const queryParams = useMemo(() => {
 		const { sort, page = 1, pagesize = PAGINATION_NUMBER_DEFAULT, ...params } = queryString.parse(locationSearch);
 
-		if (Specialties?.[specialtyIndex]?._id) {
-			params.specialtyId = Specialties[specialtyIndex]._id;
-		}
-
-		if (WorkingHours?.[workingHourIndex]?._id) {
-			params.workingHourId = WorkingHours[workingHourIndex]._id;
-		}
-
-		if (!params.startDate) {
-			params.startDate = moment().format(DATE_FORMAT);
-		}
-
-		if (params.endDate) {
-			params.endDate = moment(new Date(params.endDate)).format(DATE_FORMAT);
+		if (Specialties?.[specialtyIndex]?.value) {
+			params.specialtyId = Specialties[specialtyIndex].value;
 		}
 
 		return {
@@ -56,7 +50,7 @@ export const useManageBookings = () => {
 			page,
 			pagesize,
 		};
-	}, [locationSearch, Specialties, specialtyIndex, WorkingHours, workingHourIndex]);
+	}, [locationSearch, Specialties, specialtyIndex]);
 
 	const setQueryParams = useCallback(
 		(newParams) => {
@@ -101,29 +95,8 @@ export const useManageBookings = () => {
 	};
 
 	const handleSelectSpecialty = ({ value }) => {
-		const index = Specialties.findIndex((specialty) => specialty._id === value);
-		if (index > -1) {
-			setSpecialtyIndex(index);
-		}
-	};
-
-	const handleSelectWorkingHour = ({ value }) => {
-		const index = WorkingHours.findIndex((workingHour) => workingHour._id === value);
-		if (index > -1) {
-			setWorkingHourIndex(index);
-		}
-	};
-
-	const handleSelectRangeDates = (dates) => {
-		const [start, end] = dates;
-		const startDate = start ? moment(start, DATE_FORMAT) : moment();
-		const endDate = end ? moment(end, DATE_FORMAT) : null;
-		const isSameDate = endDate && endDate.isSame(startDate);
-
-		setQueryParams({
-			startDate: startDate.format(DATE_FORMAT),
-			endDate: !isSameDate && endDate ? endDate.format(DATE_FORMAT) : '',
-		});
+		const index = Specialties.findIndex((specialty) => specialty.value === value);
+		setSpecialtyIndex(index);
 	};
 
 	useEffect(() => {
@@ -133,35 +106,24 @@ export const useManageBookings = () => {
 	useEffect(() => {
 		tryCatch(async () => {
 			if (Specialties.length) {
-				const { metadata } = await bookingApi.queryByParameters({ ...queryParams });
-				setBookings(metadata.data.map((data) => ({ ...data })));
+				const { metadata } = await doctorApi.queryByParameters(queryParams);
+				setDoctors(metadata.data.map((data) => ({ ...data, isSelected: false })));
 				setTotalPages(metadata.meta.totalPages);
 			}
 		})();
 	}, [queryParams, Specialties]);
 
-	useEffect(() => {
-		if (queryParams.page > totalPages) {
-			setQueryParams({ page: 1 });
-		}
-	}, [totalPages, queryParams, setQueryParams]);
-
 	return {
 		Specialties,
-		WorkingHours,
-		Genders,
-		Bookings: bookings,
-		currentBookingIndex: currentIndexRef.current,
-		queryParams,
+		Doctors: doctors,
+		setDoctors,
+		Positions,
 		totalPages,
-		handleSelectRangeDates,
-		setBookings,
-		setBookingIndex: setCurrentIndex,
+		queryParams,
 		handleOnSelect,
 		handleOnPageChange,
 		handleOnChangeSort,
 		handleOnChangeSearch,
 		handleSelectSpecialty,
-		handleSelectWorkingHour,
 	};
 };

@@ -11,30 +11,21 @@ class DoctorService {
 	static model = DOCTOR_MODEL;
 
 	static async createOne(body) {
-		const { firstName, lastName, gender, address, email, phone, specialtyId, positionId } = body;
-		const doctorBuilder = new DoctorBuilder()
-			.setFirstName(firstName)
-			.setLastName(lastName)
-			.setGender(gender)
-			.setAddress(address)
-			.setEmail(email)
-			.setPhone(phone)
-			.setSpecialtyId(specialtyId)
-			.setPosition(positionId);
+		const { email, phone } = body;
 
 		await UtilsRepo.checkConflicted({
 			model: this.model,
-			filter: { $or: [{ email: doctorBuilder.data.email }, { phone: doctorBuilder.data.phone }] },
+			filter: { $or: [{ email }, { phone }] },
 			code: 500409,
 		});
 
 		const newDoctor = await UtilsRepo.createOne({
 			model: DOCTOR_MODEL,
-			body: doctorBuilder.build(),
+			body,
 		});
 
 		return getInfoData({
-			fields: doctorBuilder.getKeys(),
+			fields: [...Object.keys(body), '_id'],
 			object: newDoctor,
 		});
 	}

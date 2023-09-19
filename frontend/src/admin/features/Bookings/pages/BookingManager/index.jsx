@@ -15,10 +15,12 @@ import {
 	TableHeader,
 	UnFieldDebounce,
 } from 'admin/components';
+import { BOOKING_STATUS } from 'admin/constant';
 import { useToggle } from 'admin/hooks';
-import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
+import { compose, getObjectDiff, isDateInRange, showToastMessage, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import produce from 'immer';
+import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 import { formatPhone } from 'utils';
@@ -34,7 +36,6 @@ export function BookingManager() {
 		Bookings,
 		Specialties,
 		WorkingHours,
-		Statuses,
 		Genders,
 		currentBookingIndex,
 		queryParams,
@@ -48,6 +49,20 @@ export function BookingManager() {
 		handleOnPageChange,
 		handleOnChangeSearch,
 	} = useManageBookings(languageId);
+
+	const SpecialtyOptions = useMemo(() => {
+		return Specialties.map(({ _id, name }) => ({ value: _id, label: name[languageId] }));
+	}, [Specialties, languageId]);
+
+	const GenderOptions = useMemo(() => {
+		return Genders.map(({ key, name }) => ({ value: key, label: name[languageId] }));
+	}, [Genders, languageId]);
+
+	const WorkingHourOptions = useMemo(() => {
+		return WorkingHours.map(({ _id, name }) => ({ value: _id, label: name[languageId] }));
+	}, [WorkingHours, languageId]);
+
+	const Statuses = BOOKING_STATUS.map((status) => ({ ...status, label: status.label[languageId] }));
 
 	const currentBooking = Bookings.length ? Bookings[currentBookingIndex] : {};
 	const statusLabels = Statuses.reduce((hash, { label, value }) => ({ ...hash, [value]: label }), {});
@@ -73,11 +88,26 @@ export function BookingManager() {
 	}, languageId);
 
 	const handleUpdateBooking = tryCatchAndToast(async (body) => {
-		const { metadata, message } = await bookingApi.updateOne(currentBooking._id, body);
+		const updateBody = getObjectDiff(currentBooking, body);
+		const { metadata, message } = await bookingApi.updateOne(currentBooking._id, updateBody);
+
+		const { status, workingHourId, specialtyId, appointmentDate } = metadata;
+		const checkDateInRange = appointmentDate
+			? isDateInRange(appointmentDate, queryParams.startDate, queryParams.endDate)
+			: true;
+
+		const shouldRemove =
+			(status && status !== queryParams.status) ||
+			(workingHourId && workingHourId !== queryParams.workingHourId) ||
+			(specialtyId && specialtyId !== queryParams.specialtyId);
 
 		setBookings(
 			produce((draft) => {
-				draft[currentBookingIndex] = { ...draft[currentBookingIndex], ...metadata };
+				if (shouldRemove || !checkDateInRange) {
+					draft.splice(currentBooking, 1);
+				} else {
+					draft[currentBookingIndex] = { ...draft[currentBookingIndex], ...metadata };
+				}
 			}),
 		);
 
@@ -96,7 +126,7 @@ export function BookingManager() {
 									size='md'
 									name='specialtyId'
 									value={queryParams.specialtyId}
-									options={Specialties}
+									options={SpecialtyOptions}
 									onSelect={handleSelectSpecialty}
 								/>
 								<div className='d-flex'>
@@ -123,7 +153,7 @@ export function BookingManager() {
 									size='md'
 									name='workingHourId'
 									value={queryParams.workingHourId}
-									options={WorkingHours}
+									options={WorkingHourOptions}
 									onSelect={handleSelectWorkingHour}
 								/>
 								<Dropdown name='status' options={Statuses} value={queryParams.status} onSelect={handleOnSelect} />
@@ -188,13 +218,13 @@ export function BookingManager() {
 
 			<BookingModel
 				idTitleIntl='dashboard.booking.modal.update_booking.title'
-				defaultValues={currentBooking}
+				booking={currentBooking}
 				languageId={languageId}
 				specialtyId={queryParams.specialtyId}
-				specialties={Specialties}
-				workingHours={WorkingHours}
+				specialties={SpecialtyOptions}
+				workingHours={WorkingHourOptions}
 				statuses={Statuses}
-				genders={Genders}
+				genders={GenderOptions}
 				isOpen={statusModalBooking}
 				onClose={toggleModalBooking}
 				onSubmit={handleUpdateBooking}

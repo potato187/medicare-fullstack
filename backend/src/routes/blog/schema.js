@@ -10,7 +10,7 @@ const {
 } = require('@/validations');
 const Joi = require('joi');
 
-const SORTABLE_FIELDS = ['title', 'createdAt'];
+const SORTABLE_FIELDS = ['title', 'isDisplay', 'datePublished', 'createdAt'];
 const SELECT_FIELDS = ['title', 'slug', 'datePublished', 'isDisplay'];
 
 const titleValidator = Joi.string().trim().min(3).max(250);

@@ -215,5 +215,16 @@ export const showToastMessage = (message, languageId, type = 'success') => {
 };
 
 export const formatISODate = (dateString) => {
-	return moment(dateString).toISOString();
+	return moment(new Date(dateString)).toISOString();
+};
+
+export const isDateInRange = (date, startDate, endDate = null) => {
+	const cDate = moment(date);
+	const sDate = moment(startDate);
+	const eDate = endDate ? moment(endDate) : null;
+	if (eDate) {
+		return cDate.isBetween(sDate, eDate, null, []);
+	}
+
+	return cDate.isSameOrAfter(sDate, 'day');
 };

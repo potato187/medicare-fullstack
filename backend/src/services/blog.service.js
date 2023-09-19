@@ -28,7 +28,7 @@ class BlogService {
 
 		return UtilsRepo.getByQueryParams({
 			model: this.model,
-			queryParams: { match, ...params },
+			queryParams: { match, search, ...params },
 		});
 	}
 

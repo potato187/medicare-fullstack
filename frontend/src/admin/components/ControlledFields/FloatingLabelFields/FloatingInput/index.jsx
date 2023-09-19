@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { FormattedDescription } from 'admin/components/BaseUI';
 import module from '../style.module.scss';
 
-export function FloatingInput({ name, label, ...props }) {
+export function FloatingInput({ name, label }) {
 	const id = useId();
 	const { control, errors } = useFormContext();
 	const { 'form-group': formGroupCln, 'form-label': labelCln, 'form-control': inputCln } = module;
@@ -15,9 +15,7 @@ export function FloatingInput({ name, label, ...props }) {
 				control={control}
 				name={name}
 				defaultValue=''
-				render={({ field }) => (
-					<input id={id} className={inputCln} {...field} {...props} placeholder=' ' autoComplete='nope' />
-				)}
+				render={({ field }) => <input id={id} className={inputCln} placeholder=' ' autoComplete='nope' {...field} />}
 			/>
 			<ErrorMessage
 				errors={errors}

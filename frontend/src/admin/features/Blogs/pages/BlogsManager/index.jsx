@@ -63,6 +63,7 @@ export function BlogsManager() {
 		handleOnPageChange,
 		handleOnSelect,
 		handleOnChangeSearch,
+		handleOnChangeSort,
 	} = useAsyncLocation({
 		fetch: blogApi.getByQueryParams,
 		parameters: {
@@ -175,9 +176,24 @@ export function BlogsManager() {
 								<th className='text-center'>
 									<FormattedMessage id='table.no' />
 								</th>
-								<SortableTableHeader className='text-start' name={`title.${languageId}`} intl='common.title.default' />
-								<SortableTableHeader className='text-center' name='datePublished' intl='common.public_date' />
-								<SortableTableHeader className='text-center' name='isDisplay' intl='form.display' />
+								<SortableTableHeader
+									className='text-start'
+									name={`title.${languageId}`}
+									intl='common.title.default'
+									onChange={handleOnChangeSort}
+								/>
+								<SortableTableHeader
+									className='text-center'
+									name='datePublished'
+									intl='common.public_date'
+									onChange={handleOnChangeSort}
+								/>
+								<SortableTableHeader
+									className='text-center'
+									name='isDisplay'
+									intl='form.display'
+									onChange={handleOnChangeSort}
+								/>
 								<th className='text-center'>
 									<FormattedMessage id='table.actions' />
 								</th>

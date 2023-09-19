@@ -10,7 +10,7 @@ export const languageApi = {
 		return axiosClient.get(`${LANGUAGES_PATH}`);
 	},
 
-	async updateLanguageById({ languageId, data }) {
-		return axiosClient.put(`${LANGUAGES_PATH}/${languageId}`, { data });
+	async updateLanguageById({ languageId, body }) {
+		return axiosClient.put(`${LANGUAGES_PATH}/${languageId}`, body);
 	},
 };

@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { doctorApi } from 'admin/api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -13,16 +14,16 @@ import {
 	TabPanel,
 	Tabs,
 } from 'admin/components';
-import { createUpdateBody, getDifferentValues, setDefaultValues, tryCatch } from 'admin/utilities';
+import { setDefaultValues, tryCatch } from 'admin/utilities';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { doctorApi } from 'admin/api';
 import { doctorValidation } from '../../validation';
+import { doctorDefaultValue } from '../ImportExcelModal/constant';
 
 export function ProfileDoctorModal({
 	isOpen = false,
-	defaultValues = {},
+	doctor,
 	genders = [],
 	positions = [],
 	specialties = [],
@@ -31,6 +32,7 @@ export function ProfileDoctorModal({
 }) {
 	const methods = useForm({
 		mode: 'onChange',
+		defaultValues: doctorDefaultValue,
 		resolver: yupResolver(doctorValidation),
 	});
 
@@ -40,43 +42,37 @@ export function ProfileDoctorModal({
 	};
 
 	const handleOnSubmit = (data) => {
-		let updateBody = createUpdateBody(methods, data);
-		updateBody = getDifferentValues(defaultValues, updateBody);
-		onSubmit({
-			id: defaultValues._id,
-			updateBody,
-		});
+		onSubmit({ id: doctor._id, data });
 	};
 
 	useEffect(() => {
-		setDefaultValues(methods, defaultValues);
-	}, [defaultValues, methods]);
+		if (isOpen && doctor) {
+			setDefaultValues(methods, doctor);
+		}
+	}, [isOpen, doctor, methods]);
 
 	useEffect(() => {
-		const fetchDescription = async (id) => {
-			const {
-				metadata: { description },
-			} = await doctorApi.getOne({
-				id,
-				params: {
-					select: ['description'],
-				},
-			});
-
-			if (description) {
-				Object.keys(description).forEach((key) => {
-					methods.setValue(`description.${key}`, description[key], {
-						shouldDirty: false,
-						shouldTouch: false,
-					});
+		tryCatch(async () => {
+			if (isOpen && doctor?._id) {
+				const { metadata } = await doctorApi.getOne({
+					id: doctor._id,
+					params: {
+						select: ['description'],
+					},
 				});
-			}
-		};
 
-		if (defaultValues._id) {
-			tryCatch(fetchDescription)(defaultValues._id);
-		}
-	}, [isOpen, defaultValues._id, methods]);
+				if (metadata?.description) {
+					const { description } = metadata;
+					Object.keys(description).forEach((key) => {
+						methods.setValue(`description.${key}`, description[key], {
+							shouldDirty: false,
+							shouldTouch: false,
+						});
+					});
+				}
+			}
+		})();
+	}, [isOpen, doctor, methods]);
 
 	return (
 		<FormProvider {...methods}>
@@ -128,10 +124,10 @@ export function ProfileDoctorModal({
 					</form>
 				</BaseModalBody>
 				<BaseModalFooter className='d-flex justify-content-end gap-2'>
-					<Button size='sm' type='button' secondary onClick={handleOnClose}>
+					<Button size='xs' type='button' secondary onClick={handleOnClose}>
 						<FormattedMessage id='button.cancel' />
 					</Button>
-					<Button size='sm' type='submit' info onClick={methods.handleSubmit(handleOnSubmit)}>
+					<Button size='xs' type='submit' info onClick={methods.handleSubmit(handleOnSubmit)}>
 						<FormattedMessage id='button.update' />
 					</Button>
 				</BaseModalFooter>

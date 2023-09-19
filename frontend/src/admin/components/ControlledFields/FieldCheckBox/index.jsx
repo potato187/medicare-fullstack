@@ -7,7 +7,7 @@ export function FieldCheckBox({ labelIntl, name }) {
 	const { control } = useFormContext();
 
 	return (
-		<label aria-hidden className='field-input-check' htmlFor={domId}>
+		<label className='field-input-check' htmlFor={domId}>
 			<Controller
 				control={control}
 				name={name}

@@ -13,5 +13,9 @@ export const doctorDefaultValue = {
 	gender: '',
 	position: '',
 	specialtyId: '',
+	description: {
+		vi: '',
+		en: '',
+	},
 	importStatus: IMPORT_STATUS.PREPARE,
 };

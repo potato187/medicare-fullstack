@@ -22,7 +22,7 @@ export const bookingApi = {
 	updateOne(id, updateBody) {
 		const { dateOfBirth, appointmentDate, ...body } = updateBody;
 		if (dateOfBirth) {
-			body.appointmentDate = formatISODate(dateOfBirth);
+			body.dateOfBirth = formatISODate(dateOfBirth);
 		}
 		if (appointmentDate) {
 			body.appointmentDate = formatISODate(appointmentDate);

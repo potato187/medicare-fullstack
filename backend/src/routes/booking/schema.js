@@ -53,6 +53,7 @@ const updateSchema = Joi.object({
 	note: emptyStringValidator,
 	isDeleted: isDeletedValidator,
 	status: Joi.string().valid(...BookingStatusOptions),
+	description: Joi.string().allow(''),
 });
 
 const querySchema = Joi.object({
