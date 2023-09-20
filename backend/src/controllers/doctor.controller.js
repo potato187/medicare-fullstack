@@ -1,53 +1,54 @@
 const { CreatedResponse, OkResponse, InterServerRequestError } = require('@/core');
 const { excelHelper } = require('@/helpers');
+const { tryCatch } = require('@/middleware');
 const { DoctorService } = require('@/services');
 
 class DoctorController {
-	async getByQueryParams(req, res) {
+	getByQueryParams = tryCatch(async (req, res, next) => {
 		new OkResponse({
 			metadata: await DoctorService.getByQueryParams(req.query),
 		}).send(res);
-	}
+	});
 
-	async getOne(req, res) {
+	getOne = tryCatch(async (req, res, next) => {
 		new OkResponse({
 			metadata: await DoctorService.getOne({
 				doctorId: req.params.id,
 				select: req.query.select,
 			}),
 		}).send(res);
-	}
+	});
 
-	async createOne(req, res) {
+	createOne = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
 			metadata: await DoctorService.createOne(req.body),
 		}).send(res);
-	}
+	});
 
-	async insertMany(req, res) {
+	insertMany = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
 			metadata: await DoctorService.insertMany(req.body.doctors),
 		}).send(res);
-	}
+	});
 
-	async updateOne(req, res) {
+	updateOne = tryCatch(async (req, res, next) => {
 		new OkResponse({
 			metadata: await DoctorService.updateOne({
 				id: req.params.id,
 				updateBody: req.body,
 			}),
 		}).send(res);
-	}
+	});
 
-	async deleteOne(req, res) {
+	deleteOne = tryCatch(async (req, res, next) => {
 		new OkResponse({
 			metadata: await DoctorService.deleteOne({
 				id: req.params.id,
 			}),
 		}).send(res);
-	}
+	});
 
-	async export(req, res, next) {
+	export = tryCatch(async (req, res, next) => {
 		const data = await DoctorService.export(req.body);
 		const workbook = excelHelper.exportWorkbook(data, req.body.languageId);
 
@@ -62,6 +63,6 @@ class DoctorController {
 			.catch(() => {
 				next(new InterServerRequestError());
 			});
-	}
+	});
 }
 module.exports = new DoctorController();

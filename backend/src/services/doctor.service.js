@@ -1,9 +1,8 @@
 const { _DoctorModel } = require('@/models');
-const { ConflictRequestError, InterServerRequestError } = require('@/core');
+const { InterServerRequestError } = require('@/core');
 const { DOCTOR_MODEL, GENDER_MODEL, POSITION_MODEL, SPECIALTY_MODEL } = require('@/models/repository/constant');
 const { getInfoData, convertToObjectIdMongodb, createSortData, createSearchData } = require('@/utils');
 const { UtilsRepo } = require('@/models/repository');
-const { DoctorBuilder } = require('./builder');
 
 const FIELDS_ABLE_SEARCH = ['firstName', 'lastName', 'email', 'phone', 'address'];
 

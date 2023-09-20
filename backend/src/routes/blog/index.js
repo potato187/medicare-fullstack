@@ -2,7 +2,7 @@ const express = require('express');
 const { authMiddleware } = require('@/auth');
 const { handlerValidateRequest, handlerParseParamsToArray } = require('@/middleware');
 const { idSchema } = require('@/validations');
-const { blogController } = require('@/controllers');
+const { BlogController } = require('@/controllers');
 const { updateSchema, querySchema, createSchema } = require('./schema');
 
 const router = express.Router();
@@ -14,20 +14,20 @@ router.get(
 	'/',
 	handlerParseParamsToArray(['sort']),
 	handlerValidateRequest(querySchema, 'query'),
-	blogController.getByQueryParams,
+	BlogController.getByQueryParams,
 );
 
-router.get('/:id', handlerValidateRequest(idSchema, 'params'), blogController.getOneById);
+router.get('/:id', handlerValidateRequest(idSchema, 'params'), BlogController.getOneById);
 
-router.post('', handlerValidateRequest(createSchema), blogController.createOne);
+router.post('', handlerValidateRequest(createSchema), BlogController.createOne);
 
 router.patch(
 	'/:id',
 	handlerValidateRequest(idSchema, 'params'),
 	handlerValidateRequest(updateSchema),
-	blogController.updateOneById,
+	BlogController.updateOneById,
 );
 
-router.delete('/:id', handlerValidateRequest(idSchema, 'params'), blogController.deleteOneById);
+router.delete('/:id', handlerValidateRequest(idSchema, 'params'), BlogController.deleteOneById);
 
 module.exports = router;

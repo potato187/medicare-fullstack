@@ -1,18 +1,19 @@
+const { PAGES, PAGE_POSITIONS } = require('@/constant');
 const { Schema, model } = require('mongoose');
 
-const DOCUMENT_MODEL = 'htmlContent';
+const DOCUMENT_MODEL = 'HtmlContent';
 
 const htmlContentSchema = new Schema(
 	{
 		pageType: {
 			type: String,
-			enum: ['home', 'blog', 'blog_category', 'contact'],
+			enum: PAGES,
 			default: 'home',
 			required: true,
 		},
 		positionType: {
 			type: String,
-			enum: ['header', 'main', 'footer', 'top', 'left', 'bottom', 'right'],
+			enum: PAGE_POSITIONS,
 			default: 'main',
 			required: true,
 		},

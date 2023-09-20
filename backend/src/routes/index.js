@@ -11,5 +11,6 @@ router.use('/specialty', require('./specialty'));
 router.use('/booking', require('./booking'));
 router.use('/blog-category', require('./blogCategory'));
 router.use('/blog', require('./blog'));
+router.use('/html-content', require('./htmlContent'));
 
 module.exports = router;

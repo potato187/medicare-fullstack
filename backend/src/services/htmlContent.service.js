@@ -14,7 +14,7 @@ class HtmlContentService {
 		});
 	}
 
-	static async updateOneById(id, updateBody) {
+	static async updateOneById({ id, updateBody }) {
 		await UtilsRepo.checkIsExist({ _id: convertToObjectIdMongodb(id), model: this.model });
 		return UtilsRepo.updateOneById({ id, updateBody });
 	}
@@ -42,6 +42,14 @@ class HtmlContentService {
 		return UtilsRepo.getByQueryParams({
 			model: this.model,
 			queryParams: { search, match, ...params },
+		});
+	}
+
+	static async getById({ id, select }) {
+		return UtilsRepo.findOne({
+			model: this.model,
+			filter: { _id: convertToObjectIdMongodb(id) },
+			select,
 		});
 	}
 }

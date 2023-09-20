@@ -62,6 +62,14 @@ const keySearchValidator = Joi.string().allow('').default('');
 
 const slugValidator = Joi.string().pattern(slugRegex);
 
+const stringAllowEmpty = Joi.string().allow('');
+
+const enumWithDefaultValidator = (fields = [], defaultValue = '') => {
+	return Joi.string()
+		.valid(...fields)
+		.default(defaultValue || fields[0]);
+};
+
 const sortValidator = (fields = []) =>
 	Joi.array().items(
 		Joi.array()
@@ -95,6 +103,8 @@ module.exports = {
 	slugValidator,
 	booleanValidator,
 	summaryValidator,
+	stringAllowEmpty,
+	enumWithDefaultValidator,
 	sortValidator,
 	selectValidator,
 };
