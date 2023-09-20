@@ -14,26 +14,26 @@ router.get(
 	'/query',
 	handlerParseParamsToArray(['sort']),
 	handlerValidateRequest(querySchema, 'query'),
-	tryCatch(DoctorController.getByQueryParams),
+	DoctorController.getByQueryParams,
 );
 
 router.get(
 	'/:id',
 	handlerValidateRequest(idSchema, 'params'),
 	handlerValidateRequest(getOneSchema, 'query'),
-	tryCatch(DoctorController.getOne),
+	DoctorController.getOne,
 );
 
 router.patch(
 	'/:id',
 	handlerValidateRequest(idSchema, 'params'),
 	handlerValidateRequest(updateSchema),
-	tryCatch(DoctorController.updateOne),
+	DoctorController.updateOne,
 );
 
-router.delete('/:id', handlerValidateRequest(idSchema, 'params'), tryCatch(DoctorController.deleteOne));
+router.delete('/:id', handlerValidateRequest(idSchema, 'params'), DoctorController.deleteOne);
 
-router.post('/', handlerValidateRequest(createSchema), tryCatch(DoctorController.createOne));
+router.post('/', handlerValidateRequest(createSchema), DoctorController.createOne);
 
 router.post(
 	'/export',

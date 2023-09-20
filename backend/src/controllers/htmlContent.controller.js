@@ -28,7 +28,7 @@ class HtmlContentController {
 		new OkResponse({
 			metadata: await HtmlContentService.updateOneById({
 				id: req.params.id,
-				updateBody: req.bdy,
+				updateBody: req.body,
 			}),
 		}).send(res);
 	});

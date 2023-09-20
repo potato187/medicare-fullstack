@@ -1,16 +1,15 @@
 const { authMiddleware } = require('@/auth');
 const { LanguageController } = require('@/controllers');
-const { tryCatch } = require('@/middleware');
 const express = require('express');
 
 const router = express.Router();
 
-router.get('', tryCatch(LanguageController.getAll));
-router.get('/:id', tryCatch(LanguageController.getById));
+router.get('', LanguageController.getAll);
+router.get('/:id', LanguageController.getById);
 
 router.use(authMiddleware.authorization);
 router.use(authMiddleware.checkRoles(['admin']));
 
-router.put('/:id', tryCatch(LanguageController.updateById));
+router.put('/:id', LanguageController.updateById);
 
 module.exports = router;

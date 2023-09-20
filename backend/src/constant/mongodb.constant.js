@@ -1,7 +1,7 @@
 const BOOKING_STATUS = ['pending', 'confirmed', 'completed', 'cancelled'];
 const GENDERS = ['GF', 'GM', 'GO'];
 const GENDER_DEFAULT = 'GF';
-const MONGODB_EXCLUDE_FIELDS = ['_id', '__v', 'createdAt', 'updatedAt'];
+const MONGODB_EXCLUDE_FIELDS = ['__v', 'createdAt', 'updatedAt'];
 const POSITIONS = ['P01', 'P02', 'P03', 'P04', 'P05', 'P06'];
 const ROLES = ['admin', 'mod'];
 const STATUS = ['active', 'inactive'];

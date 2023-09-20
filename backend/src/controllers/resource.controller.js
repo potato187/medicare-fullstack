@@ -1,4 +1,4 @@
-const { OkResponse, CreatedResponse, BadRequestError } = require('@/core');
+const { OkResponse, CreatedResponse } = require('@/core');
 const { tryCatch } = require('@/middleware');
 const { ResourceService } = require('@/services');
 

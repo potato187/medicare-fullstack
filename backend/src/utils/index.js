@@ -50,6 +50,11 @@ const generateToken = (length = 64, format = 'hex') => crypto.randomBytes(length
 
 const getInfoData = ({ fields = [], object = {} }) => _.pick(object, fields);
 
+const pickFields = ({ object = {}, excludeFields = [] }) => {
+	const includedFields = Object.keys(object).filter((k) => !excludeFields.includes(k));
+	return _.pick(object, includedFields);
+};
+
 const isEmpty = (value) => {
 	const type = typeOf(value);
 	return type !== 'null' && type !== 'undefined';
@@ -86,4 +91,5 @@ module.exports = {
 	isEmpty,
 	removeFalsyProperties,
 	typeOf,
+	pickFields,
 };

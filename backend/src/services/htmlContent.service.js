@@ -1,6 +1,7 @@
+const { MONGODB_EXCLUDE_FIELDS } = require('@/constant');
 const { UtilsRepo } = require('@/models/repository');
 const { HTML_CONTENT_MODEL } = require('@/models/repository/constant');
-const { convertToObjectIdMongodb, createSearchData } = require('@/utils');
+const { convertToObjectIdMongodb, createSearchData, getInfoData } = require('@/utils');
 
 const FIELDS_ABLE_SEARCH = ['title'];
 
@@ -8,15 +9,30 @@ class HtmlContentService {
 	static model = HTML_CONTENT_MODEL;
 
 	static async createOne(body) {
-		return UtilsRepo.createOne({
+		const newHtmlContent = await UtilsRepo.createOne({
 			model: this.model,
 			body,
+		});
+
+		return getInfoData({
+			object: newHtmlContent,
+			fields: ['_id', ...Object.keys(body)],
 		});
 	}
 
 	static async updateOneById({ id, updateBody }) {
-		await UtilsRepo.checkIsExist({ _id: convertToObjectIdMongodb(id), model: this.model });
-		return UtilsRepo.updateOneById({ id, updateBody });
+		if (!Object.keys(updateBody).length) return {};
+
+		const filter = { _id: convertToObjectIdMongodb(id) };
+
+		await UtilsRepo.checkIsExist({ filter, model: this.model });
+
+		return UtilsRepo.findOneAndUpdate({
+			model: this.model,
+			filter,
+			updateBody,
+			select: Object.keys(updateBody),
+		});
 	}
 
 	static async deleteOneById(id) {

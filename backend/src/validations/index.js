@@ -65,9 +65,8 @@ const slugValidator = Joi.string().pattern(slugRegex);
 const stringAllowEmpty = Joi.string().allow('');
 
 const enumWithDefaultValidator = (fields = [], defaultValue = '') => {
-	return Joi.string()
-		.valid(...fields)
-		.default(defaultValue || fields[0]);
+	const validator = Joi.string().valid(...fields);
+	return defaultValue ? validator.default(defaultValue) : validator;
 };
 
 const sortValidator = (fields = []) =>

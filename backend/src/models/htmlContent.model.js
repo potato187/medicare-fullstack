@@ -22,16 +22,37 @@ const htmlContentSchema = new Schema(
 			default: 0,
 		},
 		title: {
-			vi: String,
-			en: String,
+			vi: {
+				type: String,
+				required: true,
+			},
+			en: {
+				type: String,
+				required: true,
+			},
 		},
 		content: {
-			vi: String,
-			en: String,
+			vi: {
+				type: String,
+				default: '',
+			},
+			en: {
+				type: String,
+				default: '',
+			},
 		},
-		url: String,
-		image: String,
-		icon: String,
+		url: {
+			type: String,
+			default: '',
+		},
+		image: {
+			type: String,
+			default: '',
+		},
+		icon: {
+			type: String,
+			default: '',
+		},
 		isDisplay: {
 			type: Boolean,
 			default: true,
