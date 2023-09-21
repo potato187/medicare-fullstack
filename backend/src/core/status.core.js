@@ -4,6 +4,10 @@ const codeReason = {
 		vi: 'Yêu cầu không hợp lệ.',
 		en: 'Invalid request.',
 	},
+	102400: {
+		vi: 'Yêu cầu không hợp lệ.',
+		en: 'Invalid query params.',
+	},
 	100200: {
 		vi: 'Ok!',
 		en: 'Ok!',

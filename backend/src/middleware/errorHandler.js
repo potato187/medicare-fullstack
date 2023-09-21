@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 const codeReason = require('@/core/status.core');
 
 module.exports = (error, req, res, next) => {
-	// eslint-disable-next-line no-console
-	console.log(error);
+	console.log('errorHandler', error);
+
 	if (error.name === 'MongoServerError') {
 		return res.status(400).json({
 			status: 'error',

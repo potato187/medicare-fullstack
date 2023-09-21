@@ -9,12 +9,11 @@ module.exports = (schema, type = 'body') => {
 
 		if (error) {
 			// eslint-disable-next-line no-console
-			console.log(error.details);
-			return next(new BadRequestError({ code: 100400, message: error.details[0].message }));
+			throw new BadRequestError({ code: 100400, message: error.details[0].message });
 		}
 
 		req[type] = value;
 
-		return next();
+		next();
 	});
 };

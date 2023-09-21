@@ -1,17 +1,17 @@
 const { authMiddleware } = require('@/auth');
 const { AccessController } = require('@/controllers');
-const { handlerValidateRequest } = require('@/middleware');
+const { validateRequest } = require('@/middleware');
 const express = require('express');
 const { signUpSchema, loginSchema } = require('./schema');
 
 const router = express.Router();
 
-router.post('/login', handlerValidateRequest(loginSchema), AccessController.login);
+router.post('/login', validateRequest(loginSchema), AccessController.login);
 router.get('/refresh-tokens/:id', AccessController.refreshTokens);
 
 router.use(authMiddleware.authorization);
 
 router.get('/logout', AccessController.logout);
-router.post('/sign-up', handlerValidateRequest(signUpSchema), AccessController.signUp);
+router.post('/sign-up', validateRequest(signUpSchema), AccessController.signUp);
 
 module.exports = router;

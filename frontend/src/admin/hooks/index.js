@@ -3,6 +3,6 @@ export * from './useCurrentIndex';
 export * from './useFetchResource';
 export * from './useFetchSpecialty';
 export * from './useManageSpecialties';
-export * from './useQuery';
+export * from './useGet';
 export * from './useToggle';
 export * from './useFetch';

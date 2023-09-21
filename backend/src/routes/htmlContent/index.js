@@ -1,6 +1,6 @@
 const express = require('express');
 const { authMiddleware } = require('@/auth');
-const { handlerParseParamsToArray, handlerValidateRequest } = require('@/middleware');
+const { processQueryParams, validateRequest } = require('@/middleware');
 const { HtmlContentController } = require('@/controllers');
 const { idSchema } = require('@/validations');
 const { createSchema, querySchema, updateSchema } = require('./schema');
@@ -10,29 +10,26 @@ const router = express.Router();
 router.use(authMiddleware.authorization);
 router.use(authMiddleware.checkRoles(['admin']));
 
+router.get('/configs', HtmlContentController.getConfigs);
+
 router.get(
 	'/',
-	handlerParseParamsToArray(['sort']),
-	handlerValidateRequest(querySchema),
+	processQueryParams(['sort']),
+	validateRequest(querySchema, 'query'),
 	HtmlContentController.getByQueryParams,
 );
 
-router.get(
-	'/:id',
-	handlerValidateRequest(idSchema, 'params'),
-	handlerValidateRequest(querySchema),
-	HtmlContentController.getById,
-);
+router.get('/:id', validateRequest(idSchema, 'params'), validateRequest(querySchema), HtmlContentController.getById);
 
-router.post('/', handlerValidateRequest(createSchema), HtmlContentController.createOne);
+router.post('/', validateRequest(createSchema), HtmlContentController.createOne);
 
 router.patch(
 	'/:id',
-	handlerValidateRequest(idSchema, 'params'),
-	handlerValidateRequest(updateSchema),
+	validateRequest(idSchema, 'params'),
+	validateRequest(updateSchema),
 	HtmlContentController.UpdateOneById,
 );
 
-router.patch('/:id', handlerValidateRequest(idSchema, 'params'), HtmlContentController.deleteOneById);
+router.patch('/:id', validateRequest(idSchema, 'params'), HtmlContentController.deleteOneById);
 
 module.exports = router;

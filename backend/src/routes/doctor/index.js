@@ -1,7 +1,7 @@
 const express = require('express');
 const { authMiddleware } = require('@/auth');
 const { DoctorController } = require('@/controllers');
-const { handlerValidateRequest, tryCatch, handlerParseParamsToArray } = require('@/middleware');
+const { validateRequest, tryCatch, processQueryParams } = require('@/middleware');
 const { idSchema } = require('@/validations');
 const { createSchema, updateSchema, importSchema, querySchema, getOneSchema, exportSchema } = require('./schema');
 
@@ -12,36 +12,31 @@ router.use(authMiddleware.checkRoles(['admin']));
 
 router.get(
 	'/query',
-	handlerParseParamsToArray(['sort']),
-	handlerValidateRequest(querySchema, 'query'),
+	processQueryParams(['sort']),
+	validateRequest(querySchema, 'query'),
 	DoctorController.getByQueryParams,
 );
 
 router.get(
 	'/:id',
-	handlerValidateRequest(idSchema, 'params'),
-	handlerValidateRequest(getOneSchema, 'query'),
+	validateRequest(idSchema, 'params'),
+	validateRequest(getOneSchema, 'query'),
 	DoctorController.getOne,
 );
 
-router.patch(
-	'/:id',
-	handlerValidateRequest(idSchema, 'params'),
-	handlerValidateRequest(updateSchema),
-	DoctorController.updateOne,
-);
+router.patch('/:id', validateRequest(idSchema, 'params'), validateRequest(updateSchema), DoctorController.updateOne);
 
-router.delete('/:id', handlerValidateRequest(idSchema, 'params'), DoctorController.deleteOne);
+router.delete('/:id', validateRequest(idSchema, 'params'), DoctorController.deleteOne);
 
-router.post('/', handlerValidateRequest(createSchema), DoctorController.createOne);
+router.post('/', validateRequest(createSchema), DoctorController.createOne);
 
 router.post(
 	'/export',
-	handlerParseParamsToArray(['sort'], 'body'),
-	handlerValidateRequest(exportSchema),
+	processQueryParams(['sort'], 'body'),
+	validateRequest(exportSchema),
 	tryCatch(DoctorController.export),
 );
 
-router.post('/import', handlerValidateRequest(importSchema), tryCatch(DoctorController.insertMany));
+router.post('/import', validateRequest(importSchema), tryCatch(DoctorController.insertMany));
 
 module.exports = router;

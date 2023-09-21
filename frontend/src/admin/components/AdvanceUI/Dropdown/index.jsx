@@ -4,7 +4,7 @@ import React from 'react';
 import { RxCaretDown } from 'react-icons/rx';
 
 export function Dropdown({ name = '', options = [], value = '', className = '', size = '', onSelect = () => {} }) {
-	if (!options.length) return null;
+	const option = options.find((option) => option.value === value) ?? options[0];
 
 	const styles = cn(
 		'dropdown',
@@ -15,13 +15,11 @@ export function Dropdown({ name = '', options = [], value = '', className = '', 
 		className,
 	);
 
-	const option = options.find((option) => option.value === value) ?? options[0];
-
 	return (
 		<BaseDropdown>
 			<div className={styles}>
 				<DropdownHeader className='dropdown__header'>
-					<span className='no-wrap-ellipsis'>{option.label}</span>
+					<span className='no-wrap-ellipsis'>{option?.label || ''}</span>
 					<RxCaretDown size='1.5em' />
 				</DropdownHeader>
 				<DropdownBody className='dropdown__list'>

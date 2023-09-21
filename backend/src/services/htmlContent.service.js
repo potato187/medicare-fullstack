@@ -1,9 +1,11 @@
-const { MONGODB_EXCLUDE_FIELDS } = require('@/constant');
+const fs = require('fs');
+const path = require('path');
 const { UtilsRepo } = require('@/models/repository');
 const { HTML_CONTENT_MODEL } = require('@/models/repository/constant');
 const { convertToObjectIdMongodb, createSearchData, getInfoData } = require('@/utils');
 
 const FIELDS_ABLE_SEARCH = ['title'];
+const CONFIGS_PATH = '../json/modules/htmlContent.config.json';
 
 class HtmlContentService {
 	static model = HTML_CONTENT_MODEL;
@@ -40,7 +42,7 @@ class HtmlContentService {
 	}
 
 	static async getByQueryParams(queryParams) {
-		const { search, pageType, positionType, ...params } = queryParams;
+		const { search, page_type: pageType, page_position: positionType, ...params } = queryParams;
 		const match = { isDeleted: false };
 
 		if (pageType !== 'all') {
@@ -67,6 +69,12 @@ class HtmlContentService {
 			filter: { _id: convertToObjectIdMongodb(id) },
 			select,
 		});
+	}
+
+	static getConfigs() {
+		const filePath = path.join(__dirname, CONFIGS_PATH);
+		const file = fs.readFileSync(filePath, 'utf8');
+		return JSON.parse(file);
 	}
 }
 

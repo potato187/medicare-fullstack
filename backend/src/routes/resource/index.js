@@ -1,6 +1,6 @@
 const { authMiddleware } = require('@/auth');
 const { ResourceController } = require('@/controllers');
-const { handlerValidateRequest } = require('@/middleware');
+const { validateRequest } = require('@/middleware');
 const express = require('express');
 const { modelSchema, querySchema, blogSchema } = require('./schema');
 
@@ -11,15 +11,15 @@ router.use(authMiddleware.checkRoles(['admin']));
 
 router.get(
 	'/:model',
-	handlerValidateRequest(modelSchema, 'params'),
-	handlerValidateRequest(querySchema, 'query'),
+	validateRequest(modelSchema, 'params'),
+	validateRequest(querySchema, 'query'),
 	ResourceController.getAll,
 );
 
 router.post(
 	'/:model',
-	handlerValidateRequest(modelSchema, 'params'),
-	handlerValidateRequest(blogSchema),
+	validateRequest(modelSchema, 'params'),
+	validateRequest(blogSchema),
 	ResourceController.insertMany,
 );
 

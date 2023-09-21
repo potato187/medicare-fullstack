@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { CreatedResponse, OkResponse, InterServerRequestError } = require('@/core');
 const { excelHelper } = require('@/helpers');
 const { tryCatch } = require('@/middleware');

@@ -1,6 +1,6 @@
 const { authMiddleware } = require('@/auth');
 const { AdminController } = require('@/controllers');
-const { handlerValidateRequest, handlerParseParamsToArray } = require('@/middleware');
+const { validateRequest, processQueryParams } = require('@/middleware');
 const express = require('express');
 const { querySchema, updateSchema, paramsSchema } = require('./schema');
 
@@ -11,17 +11,17 @@ router.use(authMiddleware.checkRoles(['admin']));
 
 router.get(
 	'/query',
-	handlerParseParamsToArray(['sort']),
-	handlerValidateRequest(querySchema, 'query'),
+	processQueryParams(['sort']),
+	validateRequest(querySchema, 'query'),
 	AdminController.getByQueryParams,
 );
 
-router.delete('/delete/:id', handlerValidateRequest(paramsSchema, 'params'), AdminController.deleteOneById);
+router.delete('/delete/:id', validateRequest(paramsSchema, 'params'), AdminController.deleteOneById);
 
 router.patch(
 	'/update/:id',
-	handlerValidateRequest(paramsSchema, 'params'),
-	handlerValidateRequest(updateSchema),
+	validateRequest(paramsSchema, 'params'),
+	validateRequest(updateSchema),
 	AdminController.updateOneById,
 );
 

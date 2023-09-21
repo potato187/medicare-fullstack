@@ -11,6 +11,7 @@ import {
 	BlogCategoryManager,
 	BlogsManager,
 	BookingManager,
+	HtmlContentManager,
 	LanguageManager,
 	LoginPage,
 	SpecialtyManager,
@@ -48,6 +49,11 @@ export default function Admin() {
 									<Route path='blogs/*'>
 										<Route path='categories' element={<BlogCategoryManager />} />
 										<Route path='manage' element={<BlogsManager />} />
+										<Route path='*' element={<Navigate to='manage' replace />} />
+									</Route>
+
+									<Route path='modules/*'>
+										<Route path='html_content' element={<HtmlContentManager />} />
 										<Route path='*' element={<Navigate to='manage' replace />} />
 									</Route>
 								</Route>

@@ -1,4 +1,5 @@
-const { OkResponse, CreatedResponse } = require('@/core');
+/* eslint-disable no-unused-vars */
+const { OkResponse, CreatedResponse, BadRequestError } = require('@/core');
 const { tryCatch } = require('@/middleware');
 const { HtmlContentService } = require('@/services');
 
@@ -10,17 +11,23 @@ class HtmlContentController {
 	});
 
 	getByQueryParams = tryCatch(async (req, res, next) => {
-		new CreatedResponse({
+		new OkResponse({
 			metadata: await HtmlContentService.getByQueryParams(req.query),
 		}).send(res);
 	});
 
 	getById = tryCatch(async (req, res, next) => {
-		new CreatedResponse({
+		new OkResponse({
 			metadata: await HtmlContentService.getById({
 				id: req.params.id,
 				select: req.query.select,
 			}),
+		}).send(res);
+	});
+
+	getConfigs = tryCatch((req, res, next) => {
+		new OkResponse({
+			metadata: HtmlContentService.getConfigs(),
 		}).send(res);
 	});
 

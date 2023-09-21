@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const path = require('path');
 require('dotenv').config();
 
-const { handlerErrors, handlerRouteException } = require('@/middleware');
+const { errorHandler, notFoundHandler } = require('@/middleware');
 
 const app = express();
 
@@ -33,8 +33,8 @@ require('@/dbs/mongodb.init').getInstance();
 app.use('/v1/api', require('@/routes'));
 
 // handling errors
-app.use('*', handlerRouteException);
+app.use('*', notFoundHandler);
 
-app.use(handlerErrors);
+app.use(errorHandler);
 
 module.exports = app;

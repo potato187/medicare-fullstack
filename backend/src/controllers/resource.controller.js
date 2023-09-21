@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { OkResponse, CreatedResponse } = require('@/core');
 const { tryCatch } = require('@/middleware');
 const { ResourceService } = require('@/services');

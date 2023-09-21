@@ -1,13 +1,13 @@
 const tryCatch = require('./tryCatch');
-const handlerErrors = require('./handlerErrors');
-const handlerValidateRequest = require('./handlerValidateRequest');
-const handlerRouteException = require('./handlerRouteException');
-const handlerParseParamsToArray = require('./handlerParseParamsToArray');
+const errorHandler = require('./errorHandler');
+const validateRequest = require('./validateRequest');
+const notFoundHandler = require('./routeException');
+const processQueryParams = require('./processQueryParams');
 
 module.exports = {
 	tryCatch,
-	handlerErrors,
-	handlerValidateRequest,
-	handlerRouteException,
-	handlerParseParamsToArray,
+	errorHandler,
+	validateRequest,
+	notFoundHandler,
+	processQueryParams,
 };

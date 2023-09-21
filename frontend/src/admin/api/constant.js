@@ -9,5 +9,5 @@ export const DOCTOR_PATH = 'doctor';
 export const BOOKING_PATH = 'booking';
 export const POST_CATEGORIES_PATH = 'blog-category';
 export const BLOG_PATH = 'blog';
-export const HTML_CONTENT_PATH = 'modules/html-content';
+export const HTML_CONTENT_PATH = 'html-content';
 export const RESOURCE_PATH = 'resource';

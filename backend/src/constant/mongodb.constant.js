@@ -7,7 +7,7 @@ const ROLES = ['admin', 'mod'];
 const STATUS = ['active', 'inactive'];
 const SORT_DIRECTIONS = ['asc', 'desc'];
 const PAGES = ['home', 'blog', 'blog_category', 'contact'];
-const PAGE_POSITIONS = ['header', 'main', 'footer', 'top', 'left', 'bottom', 'right'];
+const PAGE_POSITIONS = ['all', 'header', 'main', 'footer', 'top', 'left', 'bottom', 'right'];
 
 module.exports = {
 	BOOKING_STATUS,

@@ -12,11 +12,11 @@ const Joi = require('joi');
 const SORTABLE_FIELDS = [];
 const SELECT_FIELDS = [];
 
-const typePageValidator = enumWithDefaultValidator(PAGES);
+const pageTypesValidator = enumWithDefaultValidator(PAGES);
 const pagePotionsValidator = enumWithDefaultValidator(PAGE_POSITIONS);
 
 const createSchema = Joi.object({
-	pageType: typePageValidator.default(PAGES[0]),
+	pageType: pageTypesValidator.default(PAGES[0]),
 	positionType: pagePotionsValidator.default(PAGE_POSITIONS[0]),
 	index: Joi.number().integer().min(0).default(0),
 	title: Joi.object({
@@ -33,7 +33,7 @@ const createSchema = Joi.object({
 });
 
 const updateSchema = Joi.object({
-	pageType: typePageValidator,
+	pageType: pageTypesValidator,
 	positionType: pagePotionsValidator,
 	index: Joi.number().integer().min(0),
 	title: {
@@ -50,12 +50,12 @@ const updateSchema = Joi.object({
 });
 
 const querySchema = Joi.object({
-	pageType: typePageValidator.required(),
-	positionType: pagePotionsValidator.required(),
+	page_type: pageTypesValidator.required(),
+	page_position: pagePotionsValidator.required(),
 	sort: sortValidator(SORTABLE_FIELDS),
 	select: selectValidator(SELECT_FIELDS),
 	page: pageValidator,
-	pageSize: pageSizeValidator,
+	pagesize: pageSizeValidator,
 });
 
 module.exports = {

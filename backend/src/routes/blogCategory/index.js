@@ -1,6 +1,6 @@
 const { authMiddleware } = require('@/auth');
 const { BlogCategoryController } = require('@/controllers');
-const { handlerValidateRequest } = require('@/middleware');
+const { validateRequest } = require('@/middleware');
 const express = require('express');
 const { idSchema } = require('@/validations');
 const { createSchema, querySchema, deleteSchema, sortableSchema } = require('./schema');
@@ -10,17 +10,13 @@ const router = express.Router();
 router.use(authMiddleware.authorization);
 router.use(authMiddleware.checkRoles(['admin']));
 
-router.get('/', handlerValidateRequest(querySchema, 'query'), BlogCategoryController.getAll);
-router.get(
-	'/flatten-blog-categories',
-	handlerValidateRequest(querySchema, 'query'),
-	BlogCategoryController.getFlattenAll,
-);
+router.get('/', validateRequest(querySchema, 'query'), BlogCategoryController.getAll);
+router.get('/flatten-blog-categories', validateRequest(querySchema, 'query'), BlogCategoryController.getFlattenAll);
 
-router.post('/', handlerValidateRequest(createSchema), BlogCategoryController.createOne);
-router.post('/sortable', handlerValidateRequest(sortableSchema), BlogCategoryController.sortable);
-router.post('/delete', handlerValidateRequest(deleteSchema), BlogCategoryController.deleteByIds);
+router.post('/', validateRequest(createSchema), BlogCategoryController.createOne);
+router.post('/sortable', validateRequest(sortableSchema), BlogCategoryController.sortable);
+router.post('/delete', validateRequest(deleteSchema), BlogCategoryController.deleteByIds);
 
-router.patch('/:id', handlerValidateRequest(idSchema, 'params'), BlogCategoryController.updateOneById);
+router.patch('/:id', validateRequest(idSchema, 'params'), BlogCategoryController.updateOneById);
 
 module.exports = router;
