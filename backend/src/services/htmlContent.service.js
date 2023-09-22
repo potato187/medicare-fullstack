@@ -53,7 +53,7 @@ class HtmlContentService {
 			match.positionType = positionType;
 		}
 
-		if (!search) {
+		if (search) {
 			match.$or = createSearchData(FIELDS_ABLE_SEARCH, search);
 		}
 
@@ -63,11 +63,11 @@ class HtmlContentService {
 		});
 	}
 
-	static async getById({ id, select }) {
+	static async getById(id) {
 		return UtilsRepo.findOne({
 			model: this.model,
 			filter: { _id: convertToObjectIdMongodb(id) },
-			select,
+			select: ['title', 'content', 'pageType', 'positionType', 'icon', 'url', 'index', 'image'],
 		});
 	}
 

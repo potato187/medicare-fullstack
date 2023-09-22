@@ -6,9 +6,9 @@ const DOCUMENT_MODEL = 'HtmlContent';
 const htmlContentSchema = new Schema(
 	{
 		pageType: {
-			type: String,
+			type: [String],
 			enum: PAGES,
-			default: 'home',
+			default: ['home'],
 			required: true,
 		},
 		positionType: {

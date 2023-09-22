@@ -14,12 +14,12 @@ router.get('/configs', HtmlContentController.getConfigs);
 
 router.get(
 	'/',
-	processQueryParams(['sort']),
+	processQueryParams(['sort', 'select']),
 	validateRequest(querySchema, 'query'),
 	HtmlContentController.getByQueryParams,
 );
 
-router.get('/:id', validateRequest(idSchema, 'params'), validateRequest(querySchema), HtmlContentController.getById);
+router.get('/:id', validateRequest(idSchema, 'params'), HtmlContentController.getById);
 
 router.post('/', validateRequest(createSchema), HtmlContentController.createOne);
 

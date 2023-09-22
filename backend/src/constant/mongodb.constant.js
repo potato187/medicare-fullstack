@@ -6,7 +6,7 @@ const POSITIONS = ['P01', 'P02', 'P03', 'P04', 'P05', 'P06'];
 const ROLES = ['admin', 'mod'];
 const STATUS = ['active', 'inactive'];
 const SORT_DIRECTIONS = ['asc', 'desc'];
-const PAGES = ['home', 'blog', 'blog_category', 'contact'];
+const PAGES = ['all', 'home', 'blog', 'blog_category', 'contact'];
 const PAGE_POSITIONS = ['all', 'header', 'main', 'footer', 'top', 'left', 'bottom', 'right'];
 
 module.exports = {

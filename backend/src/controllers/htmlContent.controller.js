@@ -18,18 +18,15 @@ class HtmlContentController {
 
 	getById = tryCatch(async (req, res, next) => {
 		new OkResponse({
-			metadata: await HtmlContentService.getById({
-				id: req.params.id,
-				select: req.query.select,
-			}),
+			metadata: await HtmlContentService.getById(req.params.id),
 		}).send(res);
 	});
 
-	getConfigs = tryCatch((req, res, next) => {
+	getConfigs = (req, res, next) => {
 		new OkResponse({
 			metadata: HtmlContentService.getConfigs(),
 		}).send(res);
-	});
+	};
 
 	UpdateOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({

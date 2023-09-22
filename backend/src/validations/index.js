@@ -69,17 +69,30 @@ const enumWithDefaultValidator = (fields = [], defaultValue = '') => {
 	return defaultValue ? validator.default(defaultValue) : validator;
 };
 
-const sortValidator = (fields = []) =>
-	Joi.array().items(
-		Joi.array()
-			.length(2)
-			.ordered(Joi.string().valid(...fields), Joi.string().valid('asc', 'desc')),
-	);
+const sortValidator = (fields = [], defaultValues = []) => {
+	return Joi.array()
+		.items(
+			Joi.array()
+				.length(2)
+				.ordered(Joi.string().valid(...fields), Joi.string().valid('asc', 'desc')),
+		)
+		.empty(Joi.array().length(0))
+		.default(defaultValues);
+};
 
-const selectValidator = (fields = []) =>
-	Joi.array()
+const selectValidator = (fields = []) => {
+	return Joi.array()
 		.items(Joi.string().valid(...fields))
+		.empty(Joi.array().length(0))
 		.default(fields);
+};
+
+const fieldsValidator = (fields = [], defaultValue = []) => {
+	return Joi.array()
+		.items(Joi.string().valid(...fields))
+		.empty(Joi.array().length(0))
+		.default(defaultValue);
+};
 
 module.exports = {
 	addressValidator,
@@ -106,4 +119,5 @@ module.exports = {
 	enumWithDefaultValidator,
 	sortValidator,
 	selectValidator,
+	fieldsValidator,
 };

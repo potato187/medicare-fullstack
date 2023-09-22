@@ -113,7 +113,7 @@ class UtilsRepo {
 		const { search, match, sort = [], page = 1, pagesize = 25, select = [] } = queryParams;
 		const $skip = (+page - 1) * pagesize;
 		const $limit = +pagesize;
-		const $sort = sort.length ? createSortData(sort) : { index: 1 };
+		const $sort = sort.length ? createSortData(sort) : { ctime: 1 };
 		const $select = createSelectData(select);
 
 		const [{ results, total }] = await _Model

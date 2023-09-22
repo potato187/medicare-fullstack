@@ -1,17 +1,19 @@
 {
 	"PAGE_TYPES": [
-		{ "value": "home", "label": { "vi": "Trang chủ", "en": "Home" } },
-		{ "value": "blog", "label": { "vi": "Blog", "en": "Blog" } },
-		{ "value": "blog_category", "label": { "vi": "Danh mục blog", "en": "Blog Category" } },
-		{ "value": "contact", "label": { "vi": "Liên hệ", "en": "Contact" } }
+		{ "value": "all", "label": "All" },
+		{ "value": "home", "label": "Home" },
+		{ "value": "blog", "label": "Blog" },
+		{ "value": "blog_category", "label": "Blog Category" },
+		{ "value": "contact", "label": "Contact" }
 	],
 	"PAGE_POSITIONS": [
-		{ "value": "header", "label": { "vi": "Đầu trang", "en": "Header" } },
-		{ "value": "main", "label": { "vi": "Trang chính", "en": "Main" } },
-		{ "value": "footer", "label": { "vi": "Cuối trang", "en": "Footer" } },
-		{ "value": "top", "label": { "vi": "Trên cùng", "en": "Top" } },
-		{ "value": "left", "label": { "vi": "Bên trái", "en": "Left" } },
-		{ "value": "bottom", "label": { "vi": "Dưới cùng", "en": "Bottom" } },
-		{ "value": "right", "label": { "vi": "Bên phải", "en": "Right" } }
+		{ "value": "all", "label": "All" },
+		{ "value": "header", "label": "Header" },
+		{ "value": "main", "label": "Main" },
+		{ "value": "footer", "label": "Footer" },
+		{ "value": "top", "label": "Top" },
+		{ "value": "left", "label": "Left" },
+		{ "value": "bottom", "label": "Bottom" },
+		{ "value": "right", "label": "Right" }
 	]
 }
