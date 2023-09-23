@@ -1,7 +1,7 @@
 const { PAGES, PAGE_POSITIONS } = require('@/constant');
 const { Schema, model } = require('mongoose');
 
-const DOCUMENT_MODEL = 'HtmlContent';
+const DOCUMENT_NAME = 'HtmlContent';
 
 const htmlContentSchema = new Schema(
 	{
@@ -67,4 +67,4 @@ const htmlContentSchema = new Schema(
 	},
 );
 
-module.exports = model(DOCUMENT_MODEL, htmlContentSchema);
+module.exports = model(DOCUMENT_NAME, htmlContentSchema);

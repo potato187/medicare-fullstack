@@ -21,4 +21,8 @@ export const htmlContentApi = {
 	async updateOneById(id, body) {
 		return axiosClient.patch(`${HTML_CONTENT_PATH}/${id}`, body);
 	},
+
+	async deleteOneById(id) {
+		return axiosClient.delete(`${HTML_CONTENT_PATH}/${id}`);
+	},
 };

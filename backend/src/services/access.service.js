@@ -13,13 +13,13 @@ class AccessService {
 		const { email, phone } = body;
 
 		await UtilsRepo.checkConflicted({
-			model: this.model,
+			model: AccessService.model,
 			filter: { $or: [{ email }, { phone }] },
 			code: 200400,
 		});
 
 		const newUser = await UtilsRepo.createOne({
-			model: this.model,
+			model: AccessService.model,
 			body,
 		});
 
@@ -31,7 +31,7 @@ class AccessService {
 
 	static async login({ email, password }) {
 		const foundAdmin = await UtilsRepo.findOne({
-			model: this.model,
+			model: AccessService.model,
 			filter: { email, isDeleted: false, isActive: 'active' },
 			select: ['_id', 'email', 'password', 'firstName', 'lastName', 'role'],
 		});

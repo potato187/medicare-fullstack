@@ -8,7 +8,7 @@ class BlogCategoryService {
 
 	static async createOne(body) {
 		const { index, ...category } = body;
-		const model = BLOG_CATEGORY_MODEL;
+		const { model } = BlogCategoryService;
 
 		if (!index) {
 			category.index = await UtilsRepo.countByFilter({ model, filter: { parentId: null } });
@@ -86,7 +86,7 @@ class BlogCategoryService {
 		const filter = { _id: convertToObjectIdMongodb(id) };
 
 		await UtilsRepo.checkIsExist({
-			model: this.model,
+			model: BlogCategoryService.model,
 			filter,
 		});
 

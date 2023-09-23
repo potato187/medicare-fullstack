@@ -12,7 +12,7 @@ class HtmlContentService {
 
 	static async createOne(body) {
 		const newHtmlContent = await UtilsRepo.createOne({
-			model: this.model,
+			model: HtmlContentService.model,
 			body,
 		});
 
@@ -23,14 +23,16 @@ class HtmlContentService {
 	}
 
 	static async updateOneById({ id, updateBody }) {
-		if (!Object.keys(updateBody).length) return {};
+		const select = Object.keys(updateBody);
 
+		if (!select.length) return {};
+		const { model } = HtmlContentService;
 		const filter = { _id: convertToObjectIdMongodb(id) };
 
-		await UtilsRepo.checkIsExist({ filter, model: this.model });
+		await UtilsRepo.checkIsExist({ filter, model });
 
 		return UtilsRepo.findOneAndUpdate({
-			model: this.model,
+			model,
 			filter,
 			updateBody,
 			select: Object.keys(updateBody),
@@ -38,7 +40,16 @@ class HtmlContentService {
 	}
 
 	static async deleteOneById(id) {
-		return HtmlContentService.updateOneById(id, { isDeleted: true });
+		const result = await HtmlContentService.updateOneById({
+			id,
+			updateBody: { isDeleted: true },
+		});
+
+		if (result.isDeleted) {
+			return { _id: id };
+		}
+
+		return result;
 	}
 
 	static async getByQueryParams(queryParams) {
@@ -58,14 +69,14 @@ class HtmlContentService {
 		}
 
 		return UtilsRepo.getByQueryParams({
-			model: this.model,
+			model: HtmlContentService.model,
 			queryParams: { search, match, ...params },
 		});
 	}
 
 	static async getById(id) {
 		return UtilsRepo.findOne({
-			model: this.model,
+			model: HtmlContentService.model,
 			filter: { _id: convertToObjectIdMongodb(id) },
 			select: ['title', 'content', 'pageType', 'positionType', 'icon', 'url', 'index', 'image'],
 		});

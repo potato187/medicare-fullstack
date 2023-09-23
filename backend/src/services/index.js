@@ -9,6 +9,7 @@ const KeyTokenService = require('./keyToken.service');
 const LanguageService = require('./language.service');
 const ResourceService = require('./resource.service');
 const SpecialtyService = require('./specialty.service');
+const LinkService = require('./link.service');
 
 module.exports = {
 	AccessService,
@@ -22,4 +23,5 @@ module.exports = {
 	LanguageService,
 	ResourceService,
 	SpecialtyService,
+	LinkService,
 };

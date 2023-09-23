@@ -9,14 +9,15 @@ class SpecialtyService {
 	static IGNORE_FIELDS = ['__v', 'updatedAt', 'createdAt', 'isDeleted', 'isActive'];
 
 	static async createOne({ key, name, description, image }) {
+		const { model } = SpecialtyService;
 		await UtilsRepo.checkConflicted({
-			model: this.model,
+			model,
 			filter: { key },
 			code: 400409,
 		});
 
 		const newSpecialty = await UtilsRepo.createOne({
-			model: SPECIALTY_MODEL,
+			model,
 			body: new SpecialtyBuilder().setKey(key).setName(name).setDescription(description).setImage(image).build(),
 		});
 
@@ -28,7 +29,7 @@ class SpecialtyService {
 
 	static async getAll() {
 		const result = await UtilsRepo.getAll({
-			model: SPECIALTY_MODEL,
+			model: SpecialtyService.model,
 			filter: { isDeleted: false, isActive: 'active' },
 			sort: { key: 1 },
 			select: createUnSelectData(SpecialtyService.IGNORE_FIELDS),
@@ -39,7 +40,7 @@ class SpecialtyService {
 
 	static async getOne(id) {
 		const result = await UtilsRepo.findOne({
-			model: SPECIALTY_MODEL,
+			model: SpecialtyService.model,
 			filter: { _id: convertToObjectIdMongodb(id) },
 			select: createUnSelectData(SpecialtyService.IGNORE_FIELDS),
 		});
@@ -48,12 +49,13 @@ class SpecialtyService {
 	}
 
 	static async updateOne({ id, updateBody = {} }) {
-		if (!Object.keys(updateBody).length) {
+		const select = Object.keys(updateBody);
+		if (!select.length) {
 			return {};
 		}
 
 		const result = await UtilsRepo.findOneAndUpdate({
-			model: SPECIALTY_MODEL,
+			model: SpecialtyService.model,
 			filter: { _id: convertToObjectIdMongodb(id) },
 			updateBody,
 			select: ['_id', 'key', 'name', 'slug', 'description', 'image'],

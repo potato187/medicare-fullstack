@@ -11,15 +11,16 @@ class DoctorService {
 
 	static async createOne(body) {
 		const { email, phone } = body;
+		const { model } = DoctorService;
 
 		await UtilsRepo.checkConflicted({
-			model: this.model,
+			model,
 			filter: { $or: [{ email }, { phone }] },
 			code: 500409,
 		});
 
 		const newDoctor = await UtilsRepo.createOne({
-			model: DOCTOR_MODEL,
+			model,
 			body,
 		});
 
@@ -53,12 +54,12 @@ class DoctorService {
 		const filter = { _id: convertToObjectIdMongodb(id) };
 
 		await UtilsRepo.checkIsExist({
-			model: this.model,
+			model: DoctorService.model,
 			filter,
 		});
 
 		const result = await UtilsRepo.findOneAndUpdate({
-			model: DOCTOR_MODEL,
+			model: DoctorService.model,
 			filter,
 			updateBody,
 			select: Object.keys(updateBody),
@@ -93,14 +94,14 @@ class DoctorService {
 		}
 
 		return UtilsRepo.getByQueryParams({
-			model: DOCTOR_MODEL,
+			model: DoctorService.model,
 			queryParams: { match, ...params },
 		});
 	}
 
 	static async getOne({ doctorId, select = ['_id'] }) {
 		const doctor = await UtilsRepo.findOne({
-			model: DOCTOR_MODEL,
+			model: DoctorService.model,
 			filter: { _id: convertToObjectIdMongodb(doctorId) },
 			select,
 		});
@@ -164,7 +165,7 @@ class DoctorService {
 
 	static async getDoctorByFilter({ filter, sort, select }) {
 		const result = await UtilsRepo.getAll({
-			model: DOCTOR_MODEL,
+			model: DoctorService.model,
 			query: filter,
 			sort,
 			select,

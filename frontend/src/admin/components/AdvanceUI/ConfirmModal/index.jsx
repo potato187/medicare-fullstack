@@ -5,9 +5,9 @@ import { FormattedMessage } from 'react-intl';
 export function ConfirmModal({
 	idTitleIntl = '',
 	isOpen = false,
-	onClose = () => false,
-	onSubmit = () => null,
 	children = null,
+	onClose = (f) => f,
+	onSubmit = (f) => f,
 }) {
 	const { handleSubmit } = useForm();
 

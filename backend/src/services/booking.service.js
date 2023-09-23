@@ -60,7 +60,7 @@ class BookingService {
 		}
 
 		return UtilsRepo.getByQueryParams({
-			model: this.model,
+			model: BookingService.model,
 			queryParams: { match, ...params },
 		});
 	}
@@ -70,11 +70,11 @@ class BookingService {
 
 		const select = Object.keys(updateBody);
 		if (!select.length) return {};
-
+		const { model } = BookingService;
 		const filter = { _id: convertToObjectIdMongodb(id) };
 
 		const foundBooking = await UtilsRepo.findOne({
-			model: this.model,
+			model,
 			filter,
 			select: ['specialtyId'],
 		});
@@ -114,7 +114,7 @@ class BookingService {
 		}
 
 		const result = await UtilsRepo.findOneAndUpdate({
-			model: BOOKING_MODEL,
+			model,
 			filter,
 			updateBody: body,
 			select,

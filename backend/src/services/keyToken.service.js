@@ -1,7 +1,10 @@
 const { _KeyTokenModel } = require('@/models');
+const { KEY_TOKEN_MODEL } = require('@/models/repository/constant');
 const { convertToObjectIdMongodb, createSelectData } = require('@/utils');
 
 class KeyTokenService {
+	static model = KEY_TOKEN_MODEL;
+
 	static async createPairToken(userId, publicKey, privateKey) {
 		const filter = { userId: convertToObjectIdMongodb(userId) };
 		const updateBody = {

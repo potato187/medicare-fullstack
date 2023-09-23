@@ -9,7 +9,7 @@ class BlogService {
 
 	static getOneById(id) {
 		return UtilsRepo.findOne({
-			model: this.model,
+			model: BlogService.model,
 			filter: { _id: convertToObjectIdMongodb(id) },
 			select: { __v: 0, updatedAt: 0, createdAt: 0, isDeleted: 0, isDisplay: 0 },
 		});
@@ -27,7 +27,7 @@ class BlogService {
 		}
 
 		return UtilsRepo.getByQueryParams({
-			model: this.model,
+			model: BlogService.model,
 			queryParams: { match, search, ...params },
 		});
 	}
@@ -47,12 +47,13 @@ class BlogService {
 	static async updateOneById({ id, updateBody }) {
 		const select = Object.keys(updateBody);
 		const { blogCategoryIds, ...body } = updateBody;
+		const { model } = BlogService;
 		const filter = { _id: convertToObjectIdMongodb(id), isDeleted: false };
 
 		if (!select.length) return {};
 
 		await UtilsRepo.checkIsExist({
-			model: this.model,
+			model,
 			filter,
 		});
 
@@ -65,7 +66,7 @@ class BlogService {
 		}
 
 		return UtilsRepo.findOneAndUpdate({
-			model: this.model,
+			model,
 			filter,
 			updateBody: body,
 			select,

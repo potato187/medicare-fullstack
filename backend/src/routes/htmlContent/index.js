@@ -30,6 +30,6 @@ router.patch(
 	HtmlContentController.UpdateOneById,
 );
 
-router.patch('/:id', validateRequest(idSchema, 'params'), HtmlContentController.deleteOneById);
+router.delete('/:id', validateRequest(idSchema, 'params'), HtmlContentController.deleteOneById);
 
 module.exports = router;

@@ -2,9 +2,11 @@ import { htmlContentApi } from 'admin/api';
 import { HTML_CONTENT_PATH } from 'admin/api/constant';
 import {
 	Button,
+	ConfirmModal,
 	Container,
 	Dropdown,
 	FooterContainer,
+	FormattedDescription,
 	SortableTableHeader,
 	Table,
 	TableBody,
@@ -52,7 +54,9 @@ export function HtmlContentManager() {
 
 	const { index: htmlContentIndex, setIndex: setHtmlContentIndex } = useIndex();
 	const [isOpenContentModal, toggleHtmlContentModal] = useToggle();
+	const [isOpenConfirmModal, toggleConfirmModal] = useToggle();
 	const handleOpenHtmlContentModal = compose(setHtmlContentIndex, toggleHtmlContentModal);
+	const handleOpenConfirmModal = compose(setHtmlContentIndex, toggleConfirmModal);
 
 	const htmlContentCurrent = HtmlContents.length ? HtmlContents[htmlContentIndex] : {};
 
@@ -94,9 +98,26 @@ export function HtmlContentManager() {
 		toggleHtmlContentModal(-1);
 	}, languageId);
 
+	const handleDeleteHtmlContent = tryCatchAndToast(async () => {
+		if (htmlContentCurrent._id) {
+			const { message, metadata } = await htmlContentApi.deleteOneById(htmlContentCurrent._id);
+
+			if (htmlContentCurrent?._id === metadata._id) {
+				updateHtmlContents(
+					produce((draft) => {
+						draft.splice(htmlContentIndex, 1);
+					}),
+				);
+			}
+
+			showToastMessage(message, languageId);
+			toggleConfirmModal();
+		}
+	}, languageId);
+
 	return (
 		<>
-			<Container>
+			<Container id='page-main'>
 				<div className='d-flex flex-column h-100 py-5'>
 					<div className='d-flex pb-4'>
 						<div className='d-flex gap-2'>
@@ -166,7 +187,7 @@ export function HtmlContentManager() {
 												<Button success size='xs' info onClick={() => handleOpenHtmlContentModal(index)}>
 													<FormattedMessage id='button.update' />
 												</Button>
-												<Button size='xs' danger>
+												<Button size='xs' danger onClick={() => handleOpenConfirmModal(index)}>
 													<FormattedMessage id='button.delete' />
 												</Button>
 											</div>
@@ -194,6 +215,17 @@ export function HtmlContentManager() {
 				onUpdate={handleUpdateHtmlContent}
 				onCreate={handleCreateHtmlContent}
 			/>
+			<ConfirmModal
+				isOpen={isOpenConfirmModal}
+				idTitleIntl='html_content.modal.html_content_deletion_confirmation_modal.title'
+				onClose={toggleConfirmModal}
+				onSubmit={handleDeleteHtmlContent}
+			>
+				<FormattedDescription
+					id='html_content.modal.html_content_deletion_confirmation_modal.description'
+					values={{ title: htmlContentCurrent?.title?.[languageId] || '' }}
+				/>
+			</ConfirmModal>
 		</>
 	);
 }

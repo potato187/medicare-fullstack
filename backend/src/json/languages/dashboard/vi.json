@@ -182,5 +182,13 @@
 				}
 			}
 		}
+	},
+	"html_content": {
+		"modal": {
+			"html_content_deletion_confirmation_modal": {
+				"title": "Confirm Html Content Deletion",
+				"description": "Are you sure you want to delete the html content with the title <b>{title}</b>? This action cannot be undone."
+			}
+		}
 	}
 }

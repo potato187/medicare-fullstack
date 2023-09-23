@@ -12,4 +12,5 @@ module.exports = {
 	BLOG_CATEGORY_MODEL: 'blogCategory',
 	BLOG_MODEL: 'blog',
 	HTML_CONTENT_MODEL: 'htmlContent',
+	LINK_MODEL: 'link',
 };

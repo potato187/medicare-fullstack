@@ -16,7 +16,7 @@ class AdminService {
 		}
 
 		return UtilsRepo.getByQueryParams({
-			model: this.model,
+			model: AdminService.model,
 			queryParams: { match, ...params },
 		});
 	}
@@ -29,7 +29,7 @@ class AdminService {
 		}
 
 		const updatedAdmin = await UtilsRepo.findOneAndUpdate({
-			model: this.model,
+			model: AdminService.model,
 			filter: { _id: convertToObjectIdMongodb(id) },
 			updateBody,
 			select,
