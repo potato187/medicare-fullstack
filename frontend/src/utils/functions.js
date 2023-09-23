@@ -120,3 +120,7 @@ export const parseParamToArray = (param = []) => {
 	if (typeOf(param) === 'string') return [param.split(',')];
 	return param.map(parseParamToArray);
 };
+
+export const capitalizeFirstLetter = (str) => {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+};

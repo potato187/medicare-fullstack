@@ -87,7 +87,11 @@ const selectValidator = (fields = []) => {
 		.default(fields);
 };
 
-const fieldsValidator = (fields = [], defaultValue = []) => {
+const fieldsValidator = (fields = [], defaultValue = null) => {
+	if (!defaultValue) {
+		return Joi.array().items(Joi.string().valid(...fields));
+	}
+
 	return Joi.array()
 		.items(Joi.string().valid(...fields))
 		.empty(Joi.array().length(0))

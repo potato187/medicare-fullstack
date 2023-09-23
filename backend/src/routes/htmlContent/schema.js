@@ -34,7 +34,7 @@ const createSchema = Joi.object({
 });
 
 const updateSchema = Joi.object({
-	pageType: pageTypesValidator,
+	pageType: fieldsValidator(PAGES),
 	positionType: pagePotionsValidator,
 	index: Joi.number().integer().min(0),
 	title: {

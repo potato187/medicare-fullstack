@@ -6,3 +6,4 @@ export * from './FloatingLabelInput';
 export * from './FloatingLabelPassword';
 export * from './FloatingLabelSelect';
 export * from './TextArea';
+export * from './FloatingLabelMultiSelect';

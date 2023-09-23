@@ -1,21 +1,27 @@
 import * as yup from 'yup';
-import { imageValidation, requiredValidation } from 'admin/validation';
+import { requiredValidation } from 'admin/validation';
 
 export const htmlContentDefaults = {
-	title_vi: '',
-	title_en: '',
-	content_vi: '',
-	content_en: '',
+	_id: '',
+	title: {
+		vi: '',
+		en: '',
+	},
+	content: {
+		vi: '',
+		en: '',
+	},
+	pageType: ['home'],
+	positionType: 'main',
+	index: 0,
 	image: '',
 	url: '',
-	pageId: 'HMP',
-	typePositionId: 'TP',
-	index: 0,
 };
 
 export const htmlContentValidation = yup.object().shape({
-	title_vi: requiredValidation,
-	title_en: requiredValidation,
-	index: requiredValidation,
-	image: imageValidation,
+	title: yup.object().shape({
+		vi: requiredValidation,
+		en: requiredValidation,
+	}),
+	pageType: yup.array().min(1, 'form.message.error.select_required').required(),
 });

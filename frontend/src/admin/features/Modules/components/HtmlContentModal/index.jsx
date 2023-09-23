@@ -1,7 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
+import { htmlContentApi } from 'admin/api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -10,13 +8,14 @@ import {
 	Button,
 	FloatingLabelFile,
 	FloatingLabelInput,
+	FloatingLabelMultiSelect,
 	FloatingLabelSelect,
 	TextArea,
 } from 'admin/components';
-
-import { htmlContentApi } from 'admin/api';
-import { setDefaultValues, tryCatch } from 'admin/utilities';
-
+import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
+import { useEffect, useRef } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import { htmlContentDefaults, htmlContentValidation } from '../../schema';
 
 export function HtmlContentModal({
@@ -24,40 +23,59 @@ export function HtmlContentModal({
 	htmlContentId = null,
 	pages = [],
 	typePositions = [],
-	onClose = () => false,
-	onSubmit = () => null,
+	onClose = (f) => f,
+	onCreate = (f) => f,
+	onUpdate = (f) => f,
 }) {
+	const clone = useRef(null);
 	const methods = useForm({
-		defaultValues: htmlContentDefaults,
 		mode: 'onChange',
+		defaultValues: htmlContentDefaults,
 		resolver: yupResolver(htmlContentValidation),
 	});
 
-	useEffect(() => {
-		const fetchHtmlContent = async () => {
-			const { data } = await htmlContentApi.getById(htmlContentId);
-			setDefaultValues(methods, data);
-		};
-
-		if (htmlContentId) {
-			tryCatch(fetchHtmlContent)();
+	const handleOnSubmit = (data) => {
+		if (clone.current) {
+			const updateBody = getObjectDiff(clone.current, data);
+			onUpdate(updateBody);
 		} else {
-			methods.reset();
+			onCreate(data);
 		}
-	}, [htmlContentId, methods]);
+	};
+
+	const handleOnClose = () => {
+		clone.current = null;
+		onClose();
+	};
+
+	useEffect(() => {
+		tryCatch(async () => {
+			if (isOpen && htmlContentId) {
+				const { metadata } = await htmlContentApi.getById(htmlContentId);
+				setDefaultValues(methods, metadata);
+				clone.current = metadata;
+			} else {
+				clone.current = null;
+				setDefaultValues(methods, htmlContentDefaults);
+			}
+		})();
+	}, [isOpen, htmlContentId, methods]);
 
 	return (
 		<FormProvider {...methods}>
-			<BaseModal isOpen={isOpen} onClose={onClose}>
-				<BaseModalHeader idIntl='dashboard.modules.html_content.modal.create_html_content.title' onClose={onClose} />
+			<BaseModal isOpen={isOpen} onClose={handleOnClose}>
+				<BaseModalHeader
+					idIntl='dashboard.modules.html_content.modal.create_html_content.title'
+					onClose={handleOnClose}
+				/>
 				<BaseModalBody className='scrollbar'>
-					<form onSubmit={methods.handleSubmit(onSubmit)}>
+					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='title_vi' labelIntl='common.title.vi' />
+								<FloatingLabelInput name='title.vi' labelIntl='common.title.vi' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='title_en' labelIntl='common.title.en' />
+								<FloatingLabelInput name='title.en' labelIntl='common.title.en' />
 							</div>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='url' labelIntl='common.link' />
@@ -66,34 +84,29 @@ export function HtmlContentModal({
 								<FloatingLabelInput name='index' labelIntl='common.index' />
 							</div>
 							<div className='col-6 mb-6 z-index-2'>
-								<FloatingLabelSelect name='pageId' labelIntl='common.pages' options={pages} />
+								<FloatingLabelMultiSelect name='pageType' labelIntl='common.pages' options={pages} />
 							</div>
 							<div className='col-6 mb-6 z-index-2'>
-								<FloatingLabelSelect name='typePositionId' labelIntl='common.position' options={typePositions} />
+								<FloatingLabelSelect name='positionType' labelIntl='common.position' options={typePositions} />
 							</div>
 							<div className='col-6 mb-6'>
 								<FloatingLabelFile name='image' labelIntl='common.image' />
 							</div>
 							<div className='col-12 mb-6'>
-								<TextArea rows='5' name='content_vi' labelIntl='common.content.vi' />
+								<TextArea rows='5' name='content.vi' labelIntl='common.content.vi' />
 							</div>
-							<div className='col-12 mb-6'>
-								<TextArea rows='5' name='content_en' labelIntl='common.content.en' />
+							<div className='col-12'>
+								<TextArea rows='5' name='content.en' labelIntl='common.content.en' />
 							</div>
 						</div>
 					</form>
 				</BaseModalBody>
 				<BaseModalFooter className='d-flex justify-content-end gap-2'>
-					<Button type='button' size='sm' secondary onClick={onClose}>
+					<Button type='button' size='xs' secondary onClick={handleOnClose}>
 						<FormattedMessage id='button.close' />
 					</Button>
-					<Button
-						isLoading={methods.formState.isSubmitting}
-						type='submit'
-						size='sm'
-						onClick={methods.handleSubmit(onSubmit)}
-					>
-						<FormattedMessage id='button.create' />
+					<Button type='submit' size='xs' onClick={methods.handleSubmit(handleOnSubmit)}>
+						<FormattedMessage id={`button.${clone.current ? 'update' : 'create'}`} />
 					</Button>
 				</BaseModalFooter>
 			</BaseModal>

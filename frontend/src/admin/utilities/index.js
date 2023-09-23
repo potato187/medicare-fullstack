@@ -163,12 +163,25 @@ export const flattenObject = (object = null, prefix = '') => {
 	}, {});
 };
 
+export const compareValues = (valueA, valueB) => {
+	const typeA = typeof valueA;
+	const typeB = typeof valueB;
+
+	if (typeA !== typeB) return false;
+
+	if (typeA === 'object' && typeB === 'object') {
+		return JSON.stringify(valueA) === JSON.stringify(valueB);
+	}
+
+	return valueA === valueB;
+};
+
 export const getDifferentValues = (beforeObject, afterObject) => {
 	const flattenedBeforeObject = flattenObject(beforeObject);
 	const flattenedAfterObject = flattenObject(afterObject);
 
 	return Object.entries(flattenedAfterObject).reduce((hash, [key, value]) => {
-		if (Object.hasOwn(flattenedBeforeObject, key) && flattenedBeforeObject[key] !== value) {
+		if (Object.hasOwn(flattenedBeforeObject, key) && !compareValues(flattenedBeforeObject[key], value)) {
 			hash[key] = value;
 		}
 		return hash;

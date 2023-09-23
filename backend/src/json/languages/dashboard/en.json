@@ -83,8 +83,12 @@
 				"email_format": "Your email is in an invalid format",
 				"phone_format": "Your phone number is in an invalid format",
 				"password": "Your password is weak",
-				"media_extension": "Invalid file media extension"
+				"media_extension": "Invalid file media extension",
+				"select_required": "<span>{label}</span> should have at least 1 option selected."
 			}
+		},
+		"multi_select": {
+			"empty_options": "No choices to choose from"
 		}
 	},
 	"blog": { "thumbnail": "Add blog's Thumbnail" },

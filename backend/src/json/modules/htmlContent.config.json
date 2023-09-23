@@ -1,6 +1,5 @@
 {
 	"PAGE_TYPES": [
-		{ "value": "all", "label": "All" },
 		{ "value": "home", "label": "Home" },
 		{ "value": "blog", "label": "Blog" },
 		{ "value": "blog_category", "label": "Blog Category" },
