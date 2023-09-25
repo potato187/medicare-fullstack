@@ -8,3 +8,4 @@ export * from './htmlContent.api';
 export * from './language.api';
 export * from './resource.api';
 export * from './specialties.api';
+export * from './link.api';

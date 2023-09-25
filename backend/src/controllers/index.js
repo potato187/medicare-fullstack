@@ -8,6 +8,7 @@ const HtmlContentController = require('./htmlContent.controller');
 const LanguageController = require('./language.controller');
 const ResourceController = require('./resource.controller');
 const SpecialtyController = require('./specialty.controller');
+const LinkController = require('./link.controller');
 
 module.exports = {
 	AccessController,
@@ -20,4 +21,5 @@ module.exports = {
 	LanguageController,
 	ResourceController,
 	SpecialtyController,
+	LinkController,
 };

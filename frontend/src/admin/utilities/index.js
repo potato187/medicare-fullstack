@@ -39,8 +39,7 @@ export const findPathFromRoot = (items = [], targetId = null, path = []) => {
 };
 
 export const setDefaultValues = (methods = null, defaultValues = {}) => {
-	if (!methods || !defaultValues) return;
-
+	if (!methods || !Object.keys(defaultValues).length) return;
 	Object.entries(defaultValues).forEach(([key, value]) => {
 		methods.setValue(key, value);
 	});

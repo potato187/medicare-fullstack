@@ -99,11 +99,40 @@
 		"languages": { "title": "Languages", "en": { "title": "English" }, "vi": { "title": "Vietnamese" } },
 		"modules": {
 			"title": "Modules",
-			"html_content": {
-				"title": "HTML Content Manager",
+			"setting": {
+				"title": "Setting Website Manager"
+			},
+			"header": {
+				"title": "Header Manager",
 				"modal": {
-					"create_html_content": { "title": "Create Html Content" },
-					"update_html_content": { "title": "Update Html Content" }
+					"deletion_modal": {
+						"title": "Confirm Link Deletion",
+						"description": "Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."
+					},
+					"create_modal": {
+						"title": "Create new Link"
+					},
+					"update_modal": {
+						"title": "Edit Link"
+					},
+					"sort_modal": {
+						"title": "Confirm Sorting",
+						"description": "Are you sure you want to sort all links and their children? This action cannot be undone."
+					},
+					"button_sort": "Sort Links",
+					"button_add": "Add New Link"
+				}
+			},
+			"footer": {
+				"title": "Footer Manager"
+			},
+			"html_content": {
+				"title": "Html Content Manager",
+				"modal": {
+					"html_content_deletion_confirmation_modal": {
+						"title": "Confirm Html Content Deletion",
+						"description": "Are you sure you want to delete the html content with the <b>{title}</b>? This action cannot be undone."
+					}
 				}
 			}
 		},
@@ -180,14 +209,6 @@
 					"title": "Confirm blog Deletion",
 					"description": "Are you sure you want to delete the blog with the title <b> {title} </b>? This action cannot be undone."
 				}
-			}
-		}
-	},
-	"html_content": {
-		"modal": {
-			"html_content_deletion_confirmation_modal": {
-				"title": "Confirm Html Content Deletion",
-				"description": "Are you sure you want to delete the html content with the <b>{title}</b>? This action cannot be undone."
 			}
 		}
 	}

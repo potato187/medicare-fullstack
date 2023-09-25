@@ -25,3 +25,23 @@ export const htmlContentValidation = yup.object().shape({
 	}),
 	pageType: yup.array().min(1, 'form.message.error.select_required').required(),
 });
+
+export const linkDefault = {
+	name: {
+		vi: '',
+		en: '',
+	},
+	type: '',
+	url: '',
+	parentId: null,
+	index: 0,
+	isDisplay: false,
+};
+
+export const linkValidation = yup.object({
+	name: yup.object().shape({
+		vi: requiredValidation,
+		en: requiredValidation,
+	}),
+	url: requiredValidation,
+});

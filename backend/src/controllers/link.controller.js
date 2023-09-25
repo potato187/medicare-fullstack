@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-const { CreatedResponse } = require('@/core');
+const { CreatedResponse, OkResponse } = require('@/core');
 const { tryCatch } = require('@/middleware');
 const { LinkService } = require('@/services');
 
@@ -10,18 +10,36 @@ class LinkController {
 		}).send(res);
 	});
 
+	getAll = tryCatch(async (req, res, next) => {
+		new OkResponse({
+			metadata: await LinkService.getAll(null, 0, req.query),
+		}).send(res);
+	});
+
+	getOneById = tryCatch(async (req, res, next) => {
+		new OkResponse({
+			metadata: await LinkService.getOneById(req.params.id),
+		}).send(res);
+	});
+
 	updateOneById = tryCatch(async (req, res, next) => {
-		new CreatedResponse({
+		new OkResponse({
 			metadata: await LinkService.updateOneById({
 				id: req.params.id,
-				updateBody: req.bod,
+				updateBody: req.body,
 			}),
 		}).send(res);
 	});
 
-	deleteOneById = tryCatch(async (req, res, next) => {
-		new CreatedResponse({
-			metadata: await LinkService.deleteOneById(req.params.id),
+	sortable = tryCatch(async (req, res, next) => {
+		new OkResponse({
+			metadata: await LinkService.sortable(req.body),
+		}).send(res);
+	});
+
+	deleteByIds = tryCatch(async (req, res, next) => {
+		new OkResponse({
+			metadata: await LinkService.deleteByIds(req.body),
 		}).send(res);
 	});
 }

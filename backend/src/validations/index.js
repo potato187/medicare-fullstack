@@ -48,9 +48,9 @@ const isVerify = Joi.boolean();
 
 const booleanValidator = Joi.boolean();
 
-const positionValidator = Joi.string().custom((value, helper) =>
-	POSITIONS.includes(value) ? value : helper.message('108400'),
-);
+const positionValidator = Joi.string().custom((value, helper) => {
+	return POSITIONS.includes(value) ? value : helper.message('108400');
+});
 
 const dateValidator = Joi.date().iso();
 

@@ -8,6 +8,7 @@ const STATUS = ['active', 'inactive'];
 const SORT_DIRECTIONS = ['asc', 'desc'];
 const PAGES = ['all', 'home', 'blog', 'blog_category', 'contact'];
 const PAGE_POSITIONS = ['all', 'header', 'main', 'footer', 'top', 'left', 'bottom', 'right'];
+const LINK_TYPES = ['header', 'footer'];
 
 module.exports = {
 	BOOKING_STATUS,
@@ -20,4 +21,5 @@ module.exports = {
 	SORT_DIRECTIONS,
 	PAGES,
 	PAGE_POSITIONS,
+	LINK_TYPES,
 };

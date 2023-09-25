@@ -1,10 +1,11 @@
+const { LINK_TYPES } = require('@/constant');
 const { Schema, Types, model } = require('mongoose');
 
 const DOCUMENT_NAME = 'Link';
 
 const linkSchema = new Schema(
 	{
-		title: {
+		name: {
 			vi: {
 				type: String,
 				required: true,
@@ -16,7 +17,7 @@ const linkSchema = new Schema(
 		},
 		type: {
 			type: String,
-			enum: ['header', 'footer'],
+			enum: LINK_TYPES,
 			required: true,
 		},
 		url: {

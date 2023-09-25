@@ -57,14 +57,14 @@ const dropAnimationConfig = {
 
 export function SortableTree({
 	items = [],
-	setItems = () => [],
+	languageId = 'en',
 	collapsible = false,
 	indicator = false,
 	removable = false,
 	indentationWidth = 50,
-	handleModifyItem = () => null,
-	handleConfirmDeletion = () => null,
-	languageId = 'en',
+	setItems = () => [],
+	handleModifyItem = (f) => f,
+	handleConfirmDeletion = (f) => f,
 }) {
 	const [activeId, setActiveId] = useState(null);
 	const [overId, setOverId] = useState(null);

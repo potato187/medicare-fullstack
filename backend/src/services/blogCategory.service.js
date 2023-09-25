@@ -56,7 +56,7 @@ class BlogCategoryService {
 
 	static getFlattenAll() {
 		return UtilsRepo.getAll({
-			model: BLOG_CATEGORY_MODEL,
+			model: BlogCategoryService.model,
 			query: { isDeleted: false },
 			sort: { index: 1 },
 			select: ['_id', 'name', 'parentId', 'index'],
@@ -91,7 +91,7 @@ class BlogCategoryService {
 		});
 
 		await UtilsRepo.findOneAndUpdate({
-			model: BLOG_CATEGORY_MODEL,
+			model: BlogCategoryService.model,
 			filter,
 			updateBody,
 			select,
@@ -125,7 +125,7 @@ class BlogCategoryService {
 
 		const promises = updateOperations.map(async ({ filter, updateBody }) => {
 			return UtilsRepo.findOneAndUpdate({
-				model: BLOG_CATEGORY_MODEL,
+				model: BlogCategoryService.model,
 				filter,
 				updateBody,
 				select: ['index', 'parentId'],

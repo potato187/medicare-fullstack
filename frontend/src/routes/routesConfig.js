@@ -19,6 +19,22 @@ export const routesConfig = [
 		],
 	},
 	{
+		to: '/admin/dashboard/modules',
+		intl: 'dashboard.modules.title',
+		Icon: MdOutlineAdminPanelSettings,
+		allowedRoles: [ADMIN_ROLE],
+		listChildren: [
+			{
+				intl: 'dashboard.modules.html_content.title',
+				to: '/admin/dashboard/modules/header',
+			},
+			{
+				intl: 'dashboard.modules.html_content.title',
+				to: '/admin/dashboard/modules/html_content',
+			},
+		],
+	},
+	{
 		to: '/admin/dashboard/admin',
 		intl: 'dashboard.admin.title',
 		Icon: MdOutlineAdminPanelSettings,
@@ -49,18 +65,6 @@ export const routesConfig = [
 			{
 				intl: 'dashboard.blogs.manage.title',
 				to: '/admin/dashboard/blogs/manage',
-			},
-		],
-	},
-	{
-		to: '/admin/dashboard/modules',
-		intl: 'dashboard.modules.title',
-		Icon: MdOutlineAdminPanelSettings,
-		allowedRoles: [ADMIN_ROLE],
-		listChildren: [
-			{
-				intl: 'dashboard.modules.html_content.title',
-				to: '/admin/dashboard/modules/html_content',
 			},
 		],
 	},
