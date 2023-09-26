@@ -10,6 +10,8 @@ const {
 	pageValidator,
 	pageSizeValidator,
 	keySearchValidator,
+	enumWithDefaultValidator,
+	selectValidator,
 } = require('@/validations');
 const Joi = require('joi');
 const { BookingStatusOptions, BookingStatusDefault, SelectFields, SortFields } = require('./constant');
@@ -52,7 +54,7 @@ const updateSchema = Joi.object({
 	address: addressValidator,
 	note: emptyStringValidator,
 	isDeleted: isDeletedValidator,
-	status: Joi.string().valid(...BookingStatusOptions),
+	status: enumWithDefaultValidator(BookingStatusOptions),
 	description: Joi.string().allow(''),
 });
 
@@ -65,12 +67,8 @@ const querySchema = Joi.object({
 		is: Joi.exist(),
 		then: dateValidator.greater(Joi.ref('startDate')).allow(''),
 	}),
-	select: Joi.array()
-		.items(...SelectFields)
-		.default(SelectFields),
-	status: Joi.string()
-		.valid(...BookingStatusOptions)
-		.default(BookingStatusDefault),
+	select: selectValidator(SelectFields),
+	status: enumWithDefaultValidator(BookingStatusOptions, BookingStatusDefault),
 	sort: sortValidator,
 	page: pageValidator,
 	pagesize: pageSizeValidator,
