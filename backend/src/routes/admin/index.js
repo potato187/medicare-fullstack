@@ -1,8 +1,9 @@
+const express = require('express');
 const { authMiddleware } = require('@/auth');
 const { AdminController } = require('@/controllers');
 const { validateRequest, processQueryParams } = require('@/middleware');
-const express = require('express');
-const { querySchema, updateSchema, paramsSchema } = require('./schema');
+const { idSchema } = require('@/validations');
+const { querySchema, updateSchema, getOneSchema } = require('./schema');
 
 const router = express.Router();
 
@@ -16,11 +17,13 @@ router.get(
 	AdminController.getByQueryParams,
 );
 
-router.delete('/delete/:id', validateRequest(paramsSchema, 'params'), AdminController.deleteOneById);
+router.get('/:id', validateRequest(getOneSchema, 'query'), AdminController.getOneById);
+
+router.delete('/delete/:id', validateRequest(idSchema, 'params'), AdminController.deleteOneById);
 
 router.patch(
 	'/update/:id',
-	validateRequest(paramsSchema, 'params'),
+	validateRequest(idSchema, 'params'),
 	validateRequest(updateSchema),
 	AdminController.updateOneById,
 );

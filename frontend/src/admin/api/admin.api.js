@@ -6,6 +6,10 @@ export const adminApi = {
 		return axiosClient.get(`${ADMIN_PATH}/query`, { params });
 	},
 
+	async getOneById(id, params) {
+		return axiosClient.get(`${ADMIN_PATH}/${id}`, { params });
+	},
+
 	async updateById(id, data) {
 		return axiosClient.patch(`${ADMIN_PATH}/update/${id}`, data);
 	},

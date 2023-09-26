@@ -21,6 +21,14 @@ class AdminService {
 		});
 	}
 
+	static async getOneById({ id, select }) {
+		return UtilsRepo.findOne({
+			model: AdminService.model,
+			filter: { _id: convertToObjectIdMongodb(id) },
+			select,
+		});
+	}
+
 	static async updateOneById({ id, updateBody }) {
 		const select = Object.keys(updateBody);
 

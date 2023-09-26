@@ -1,2 +1,1 @@
-export * from './AdminUpdateModal';
-export * from './AdminCreateModal';
+export * from './AdminModal';

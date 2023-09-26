@@ -1,3 +1,4 @@
+import { adminApi } from 'admin/api';
 import {
 	Button,
 	ConfirmModal,
@@ -11,22 +12,19 @@ import {
 	TableHeader,
 	UnFieldDebounce,
 } from 'admin/components';
+import { useAsyncLocation, useFetchResource, useIndex, useToggle } from 'admin/hooks';
+import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
+import { useAuth } from 'hooks';
 import produce from 'immer';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
-import { toast } from 'react-toastify';
-
-import { adminApi } from 'admin/api';
-import { useAsyncLocation, useCurrentIndex, useFetchResource, useToggle } from 'admin/hooks';
-import { compose, getObjectDiff, showToastMessage, tryCatchAndToast } from 'admin/utilities';
-import { useAuth } from 'hooks';
-import { AdminCreateModal, AdminUpdateModal } from '../../components';
+import { AdminModal } from '../../components';
 
 export function AdminManager() {
 	const {
 		info: { languageId },
 	} = useAuth();
-	const { currentIndexRef: adminIndexRef, setCurrentIndex: updateAdminIndex } = useCurrentIndex(0);
+	const { index: adminIndex, setIndex: updateAdminIndex } = useIndex(0);
 
 	const {
 		data: Admins,
@@ -53,14 +51,14 @@ export function AdminManager() {
 		languageId,
 	});
 
-	const [statusCreateModal, toggleCreateModal] = useToggle();
-	const [statusProfileModal, toggleProfile] = useToggle();
+	const [statusModal, toggleModal] = useToggle();
+
 	const [statusConfirmModal, toggleConfirmDeletionModal] = useToggle();
 
-	const openProfileModal = compose(updateAdminIndex, toggleProfile);
+	const openAdminModal = compose(updateAdminIndex, toggleModal);
 	const openConfirmModal = compose(updateAdminIndex, toggleConfirmDeletionModal);
 
-	const handleCreateAdmin = tryCatchAndToast(async (newAdmin) => {
+	const handleOnCreate = tryCatchAndToast(async (newAdmin) => {
 		const { message, metadata } = await adminApi.createOne(newAdmin);
 		if (totalPages === +page && +pagesize > Admins.length) {
 			setAdmins(
@@ -69,36 +67,39 @@ export function AdminManager() {
 				}),
 			);
 		}
-		toast.success(message);
-		toggleCreateModal();
+		showToastMessage(message, languageId);
+		toggleModal();
 	}, languageId);
 
 	const handleConfirmDeletion = tryCatchAndToast(async () => {
-		const { message } = await adminApi.deleteById(Admins[adminIndexRef.current]._id);
+		const { message } = await adminApi.deleteById(Admins[adminIndex]._id);
 		setAdmins(
 			produce((draft) => {
-				draft.splice(adminIndexRef.current, 1);
+				draft.splice(adminIndex, 1);
 			}),
 		);
 		showToastMessage(message, languageId);
 		toggleConfirmDeletionModal();
 	}, languageId);
 
-	const handleUpdateAdmin = tryCatchAndToast(async (data) => {
-		const index = adminIndexRef.current;
-		const id = Admins[index]._id;
-		const updateBody = getObjectDiff(Admins[index], data);
+	const handleOnUpdate = tryCatchAndToast(async (data) => {
+		if (Object.keys(data).length) {
+			const { message, metadata } = await adminApi.updateById(Admins[adminIndex]._id, data);
 
-		const { message, metadata } = await adminApi.updateById(id, updateBody);
+			setAdmins(
+				produce((draft) => {
+					Object.entries(metadata).forEach(([key, value]) => {
+						if (Object.hasOwn(draft[adminIndex], key)) {
+							draft[adminIndex][key] = value;
+						}
+					});
+				}),
+			);
 
-		setAdmins(
-			produce((draft) => {
-				draft[index] = { ...draft[index], ...metadata };
-			}),
-		);
+			showToastMessage(message, languageId);
+		}
 
-		showToastMessage(message, languageId);
-		toggleProfile();
+		toggleModal();
 	}, languageId);
 
 	return (
@@ -118,7 +119,7 @@ export function AdminManager() {
 							/>
 						</div>
 						<div className='px-5 d-flex gap-2 ms-auto'>
-							<Button size='sm' onClick={toggleCreateModal}>
+							<Button size='sm' onClick={openAdminModal}>
 								<span>
 									<FormattedMessage id='button.create_user' />
 								</span>
@@ -152,7 +153,7 @@ export function AdminManager() {
 										<td className='text-start'>{phone}</td>
 										<td>
 											<div className='d-flex justify-content-center gap-2'>
-												<Button size='xs' success onClick={() => openProfileModal(index)}>
+												<Button size='xs' success onClick={() => openAdminModal(index)}>
 													<FormattedMessage id='button.update' />
 												</Button>
 												<Button size='xs' danger onClick={() => openConfirmModal(index)}>
@@ -174,21 +175,14 @@ export function AdminManager() {
 				</div>
 			</Container>
 
-			<AdminCreateModal
-				isOpen={statusCreateModal}
-				onClose={toggleCreateModal}
-				onSubmit={handleCreateAdmin}
+			<AdminModal
+				isOpen={statusModal}
+				adminId={Admins[adminIndex]?._id}
 				genders={Genders}
 				positions={AdminRoles}
-			/>
-
-			<AdminUpdateModal
-				isOpen={statusProfileModal}
-				admin={Admins[adminIndexRef.current]}
-				genders={Genders}
-				positions={AdminRoles}
-				onSubmit={handleUpdateAdmin}
-				onClose={toggleProfile}
+				onClose={toggleModal}
+				onCreate={handleOnCreate}
+				onUpdate={handleOnUpdate}
 			/>
 
 			<ConfirmModal
@@ -199,7 +193,7 @@ export function AdminManager() {
 			>
 				<FormattedDescription
 					id='dashboard.admin.modal.confirm_deletion_admin.description'
-					values={{ email: Admins[adminIndexRef.current]?.email ?? '' }}
+					values={{ email: Admins[adminIndex]?.email ?? '' }}
 				/>
 			</ConfirmModal>
 		</>

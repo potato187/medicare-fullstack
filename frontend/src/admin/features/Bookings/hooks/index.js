@@ -1,1 +1,1 @@
-export * from './useManageBookings';
+export * from './useFetchBookings';

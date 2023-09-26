@@ -18,7 +18,7 @@ import {
 } from 'admin/components';
 import { bookingValidation } from '../../validation';
 
-export function BookingModel({
+export function BookingModal({
 	idTitleIntl = '',
 	isOpen = false,
 	booking,

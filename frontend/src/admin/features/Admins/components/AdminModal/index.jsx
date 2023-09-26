@@ -1,8 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import { setDefaultValues } from 'admin/utilities';
+import { adminApi } from 'admin/api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -12,38 +9,63 @@ import {
 	FloatingLabelInput,
 	FloatingLabelSelect,
 } from 'admin/components';
-import { adminValidation } from '../../validation';
+import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
+import { useEffect, useRef } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
+import { adminDefaultValues, adminValidation } from '../../validation';
 
-export function AdminUpdateModal({
+export function AdminModal({
 	isOpen = false,
-	admin,
+	adminId,
 	genders = [],
 	positions = [],
-	onSubmit = () => null,
-	onClose = () => false,
+	onClose = (f) => f,
+	onCreate = (f) => f,
+	onUpdate = (f) => f,
 }) {
 	const methods = useForm({
 		mode: 'onChange',
+		defaultValues: adminDefaultValues,
 		resolver: yupResolver(adminValidation),
 	});
 
+	const clone = useRef(null);
+
 	const handleOnClose = () => {
-		methods.clearErrors();
+		methods.reset();
 		onClose();
 	};
 
-	useEffect(() => {
-		if (isOpen && admin) {
-			setDefaultValues(methods, admin);
+	const handleOnSubmit = (data) => {
+		if (adminId) {
+			onUpdate(getObjectDiff(clone.current, data));
+		} else {
+			onCreate(data);
 		}
-	}, [isOpen, admin, methods]);
+	};
+
+	useEffect(() => {
+		if (isOpen && adminId) {
+			tryCatch(async () => {
+				const { metadata } = await adminApi.getOneById(adminId);
+				setDefaultValues(methods, metadata);
+				clone.current = metadata;
+			})();
+		} else {
+			clone.current = null;
+		}
+	}, [isOpen, adminId, methods]);
 
 	return (
 		<FormProvider {...methods}>
 			<BaseModal isOpen={isOpen} onClose={handleOnClose}>
-				<BaseModalHeader idIntl='dashboard.admin.modal.update_admin.title' onClose={handleOnClose} />
+				<BaseModalHeader
+					idIntl={`dashboard.admin.modal.${adminId ? 'update_admin' : 'create_admin'}.title`}
+					onClose={handleOnClose}
+				/>
 				<BaseModalBody>
-					<form onSubmit={methods.handleSubmit(onSubmit)}>
+					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='firstName' labelIntl='form.firstName' />
@@ -70,8 +92,8 @@ export function AdminUpdateModal({
 					<Button size='xs' type='button' secondary onClick={handleOnClose}>
 						<FormattedMessage id='button.cancel' />
 					</Button>
-					<Button size='xs' info onClick={methods.handleSubmit(onSubmit)}>
-						<FormattedMessage id='button.update' />
+					<Button size='xs' info onClick={methods.handleSubmit(handleOnSubmit)}>
+						<FormattedMessage id={`button.${adminId ? 'update' : 'create'}`} />
 					</Button>
 				</BaseModalFooter>
 			</BaseModal>

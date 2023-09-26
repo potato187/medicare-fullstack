@@ -1,5 +1,4 @@
 import { htmlContentApi } from 'admin/api';
-import { HTML_CONTENT_PATH } from 'admin/api/constant';
 import {
 	Button,
 	ConfirmModal,
@@ -13,10 +12,11 @@ import {
 	TableGrid,
 	TableHeader,
 } from 'admin/components';
-import { useAsyncLocation, useGet, useIndex, useToggle } from 'admin/hooks';
-import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
+import { useAsyncLocation, useIndex, useToggle } from 'admin/hooks';
+import { compose, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import produce from 'immer';
+import { useEffect, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { firstCapitalize, formatDate } from 'utils';
@@ -43,9 +43,7 @@ export function HtmlContentManager() {
 		},
 	});
 
-	const configs = useGet({
-		endPoint: `${HTML_CONTENT_PATH}/configs`,
-	});
+	const [configs, setConfigs] = useState({});
 
 	const pageTypes = configs?.PAGE_TYPES || [];
 
@@ -114,6 +112,13 @@ export function HtmlContentManager() {
 			toggleConfirmModal();
 		}
 	}, languageId);
+
+	useEffect(() => {
+		tryCatch(async () => {
+			const { metadata } = await htmlContentApi.getConfigs();
+			setConfigs(metadata);
+		})();
+	}, []);
 
 	return (
 		<>

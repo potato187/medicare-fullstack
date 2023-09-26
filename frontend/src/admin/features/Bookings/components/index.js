@@ -1,1 +1,1 @@
-export * from './BookingModel';
+export * from './BookingModal';

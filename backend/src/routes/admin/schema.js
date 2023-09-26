@@ -5,21 +5,26 @@ const {
 	passwordValidator,
 	adminRoleValidator,
 	genderValidator,
-	ObjectIdMongodbValidator,
+	pageValidator,
+	pageSizeValidator,
 	sortValidator,
-	selectValidator,
+	fieldsValidator,
 } = require('@/validations');
 const Joi = require('joi');
 
-const SELECT_FIELDS = ['_id', 'firstName', 'lastName', 'email', 'phone', 'role'];
+const SELECT_FIELDS = ['_id', 'firstName', 'lastName', 'email', 'phone', 'role', 'address', 'gender'];
 const SORTABLE_FIELDS = ['createdAt', 'updatedAt', 'firstName', 'lastName', 'email'];
 
 const querySchema = Joi.object({
-	search: Joi.string().allow('').default(''),
-	page: Joi.number().integer().min(1).max(100).default(1),
-	pagesize: Joi.number().integer().min(1).max(100).default(25),
-	sort: sortValidator(SORTABLE_FIELDS),
-	select: selectValidator(SELECT_FIELDS),
+	search: Joi.string().default(''),
+	page: pageValidator,
+	pagesize: pageSizeValidator,
+	sort: sortValidator(SORTABLE_FIELDS, [['createdAt', 'asc']]),
+	select: fieldsValidator(SELECT_FIELDS, ['_id', 'firstName', 'lastName', 'phone']),
+});
+
+const getOneSchema = Joi.object({
+	select: fieldsValidator(SELECT_FIELDS, SELECT_FIELDS),
 });
 
 const updateSchema = Joi.object({
@@ -32,12 +37,8 @@ const updateSchema = Joi.object({
 	gender: genderValidator,
 });
 
-const paramsSchema = Joi.object({
-	id: ObjectIdMongodbValidator,
-});
-
 module.exports = {
-	paramsSchema,
 	querySchema,
+	getOneSchema,
 	updateSchema,
 };

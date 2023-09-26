@@ -1,6 +1,6 @@
 import { bookingApi } from 'admin/api';
 import { DATE_FORMAT, ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
-import { useCurrentIndex, useFetch } from 'admin/hooks';
+import { useFetch, useIndex } from 'admin/hooks';
 import { createURL, tryCatch } from 'admin/utilities';
 import moment from 'moment';
 import queryString from 'query-string';
@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { typeOf } from 'utils';
 
-export const useManageBookings = () => {
+export const useFetchBookings = () => {
 	const Specialties = useFetch({
 		endpoint: 'specialty',
 	});
@@ -26,7 +26,7 @@ export const useManageBookings = () => {
 	const [workingHourIndex, setWorkingHourIndex] = useState(0);
 
 	const [totalPages, setTotalPages] = useState(1);
-	const { currentIndexRef, setCurrentIndex } = useCurrentIndex(0);
+	const { index: currentIndex, setIndex: setCurrentIndex } = useIndex(0);
 
 	const { pathname: locationPathName, search: locationSearch } = useLocation();
 	const navigate = useNavigate();
@@ -151,7 +151,7 @@ export const useManageBookings = () => {
 		WorkingHours,
 		Genders,
 		Bookings: bookings,
-		currentBookingIndex: currentIndexRef.current,
+		currentIndex,
 		queryParams,
 		totalPages,
 		handleSelectRangeDates,

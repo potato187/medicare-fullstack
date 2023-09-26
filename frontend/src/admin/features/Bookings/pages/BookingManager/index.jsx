@@ -24,8 +24,8 @@ import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 import { formatPhone } from 'utils';
-import { BookingModel } from '../../components';
-import { useManageBookings } from '../../hooks';
+import { BookingModal } from '../../components';
+import { useFetchBookings } from '../../hooks/useFetchBookings';
 
 export function BookingManager() {
 	const {
@@ -37,7 +37,7 @@ export function BookingManager() {
 		Specialties,
 		WorkingHours,
 		Genders,
-		currentBookingIndex,
+		currentIndex,
 		queryParams,
 		totalPages,
 		handleSelectRangeDates,
@@ -48,7 +48,7 @@ export function BookingManager() {
 		handleSelectWorkingHour,
 		handleOnPageChange,
 		handleOnChangeSearch,
-	} = useManageBookings(languageId);
+	} = useFetchBookings(languageId);
 
 	const SpecialtyOptions = useMemo(() => {
 		return Specialties.map(({ _id, name }) => ({ value: _id, label: name[languageId] }));
@@ -64,7 +64,7 @@ export function BookingManager() {
 
 	const Statuses = BOOKING_STATUS.map((status) => ({ ...status, label: status.label[languageId] }));
 
-	const currentBooking = Bookings.length ? Bookings[currentBookingIndex] : {};
+	const currentBooking = Bookings.length ? Bookings[currentIndex] : {};
 	const statusLabels = Statuses.reduce((hash, { label, value }) => ({ ...hash, [value]: label }), {});
 
 	const [statusConfirmModal, toggleConfirmDeletion] = useToggle();
@@ -74,11 +74,11 @@ export function BookingManager() {
 	const openModalBooking = compose(setBookingIndex, toggleModalBooking);
 
 	const handleConfirmDeletionBooking = tryCatchAndToast(async () => {
-		const { message } = await bookingApi.deleteOne(Bookings[currentBookingIndex]._id);
+		const { message } = await bookingApi.deleteOne(Bookings[currentIndex]._id);
 
 		setBookings(
 			produce((draft) => {
-				draft.splice(currentBookingIndex, 1);
+				draft.splice(currentIndex, 1);
 			}),
 		);
 
@@ -106,7 +106,7 @@ export function BookingManager() {
 				if (shouldRemove || !checkDateInRange) {
 					draft.splice(currentBooking, 1);
 				} else {
-					draft[currentBookingIndex] = { ...draft[currentBookingIndex], ...metadata };
+					draft[currentIndex] = { ...draft[currentIndex], ...metadata };
 				}
 			}),
 		);
@@ -216,7 +216,7 @@ export function BookingManager() {
 				</div>
 			</Container>
 
-			<BookingModel
+			<BookingModal
 				idTitleIntl='dashboard.booking.modal.update_booking.title'
 				booking={currentBooking}
 				languageId={languageId}

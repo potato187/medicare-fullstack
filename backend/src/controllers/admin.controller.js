@@ -10,6 +10,15 @@ class AdminController {
 		}).send(res);
 	});
 
+	getOneById = tryCatch(async (req, res, next) => {
+		new OkResponse({
+			metadata: await AdminService.getOneById({
+				id: req.params.id,
+				select: req.query.select,
+			}),
+		}).send(res);
+	});
+
 	updateOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
 			metadata: await AdminService.updateOneById({ id: req.params.id, updateBody: req.body }),
