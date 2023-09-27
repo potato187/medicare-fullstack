@@ -11,6 +11,8 @@ import {
 	BlogCategoryManager,
 	BlogsManager,
 	BookingManager,
+	FooterManager,
+	HeaderManager,
 	HtmlContentManager,
 	LanguageManager,
 	LoginPage,
@@ -18,7 +20,6 @@ import {
 } from './features';
 import { persistor, store } from './redux/store/configureStore';
 import { withAuth } from './hocs';
-import { HeaderManager } from './features/Modules/pages/HeaderManager';
 
 export default function Admin() {
 	const ProtectedRoute = withAuth(Layout);
@@ -55,6 +56,7 @@ export default function Admin() {
 
 									<Route path='modules/*'>
 										<Route path='header' element={<HeaderManager />} />
+										<Route path='footer' element={<FooterManager />} />
 										<Route path='html_content' element={<HtmlContentManager />} />
 										<Route path='*' element={<Navigate to='manage' replace />} />
 									</Route>

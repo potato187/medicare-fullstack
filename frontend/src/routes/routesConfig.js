@@ -25,8 +25,12 @@ export const routesConfig = [
 		allowedRoles: [ADMIN_ROLE],
 		listChildren: [
 			{
-				intl: 'dashboard.modules.html_content.title',
+				intl: 'dashboard.modules.header.title',
 				to: '/admin/dashboard/modules/header',
+			},
+			{
+				intl: 'dashboard.modules.footer.title',
+				to: '/admin/dashboard/modules/footer',
 			},
 			{
 				intl: 'dashboard.modules.html_content.title',

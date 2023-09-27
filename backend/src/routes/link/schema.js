@@ -1,5 +1,10 @@
 const { LINK_TYPES } = require('@/constant');
-const { enumWithDefaultValidator, ObjectIdMongodbValidator, selectValidator } = require('@/validations');
+const {
+	enumWithDefaultValidator,
+	ObjectIdMongodbValidator,
+	selectValidator,
+	booleanValidator,
+} = require('@/validations');
 const Joi = require('joi');
 
 const SELECT_FIELDS = ['name', 'type', 'url', 'parentId', 'index', 'isDisplay'];
@@ -13,6 +18,7 @@ const createSchema = Joi.object({
 	type: enumWithDefaultValidator(LINK_TYPES).required(),
 	index: Joi.number().integer().min(0).required(),
 	parentId: ObjectIdMongodbValidator.allow(null).default(null),
+	isDisplay: booleanValidator.default(false),
 });
 
 const querySchema = Joi.object({
