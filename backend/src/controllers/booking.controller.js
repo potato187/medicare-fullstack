@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { CreatedResponse, OkResponse } = require('@/core');
 const { tryCatch } = require('@/middleware');
 const { BookingService } = require('@/services');
@@ -6,6 +7,12 @@ class BookingController {
 	getByQueryParams = tryCatch(async (req, res, next) => {
 		new OkResponse({
 			metadata: await BookingService.getByQueryParams(req.query),
+		}).send(res);
+	});
+
+	getOneById = tryCatch(async (req, res, next) => {
+		new OkResponse({
+			metadata: await BookingService.getOneById(req.params),
 		}).send(res);
 	});
 

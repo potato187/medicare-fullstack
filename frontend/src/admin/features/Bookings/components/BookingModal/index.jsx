@@ -1,10 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { setDefaultValues } from 'admin/utilities';
-import { useEffect, useState } from 'react';
+import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
+import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { resourceApi } from 'admin/api';
+import { bookingApi, resourceApi } from 'admin/api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -16,38 +16,48 @@ import {
 	FloatingLabelSelect,
 	TextArea,
 } from 'admin/components';
-import { bookingValidation } from '../../validation';
+import { bookingDefaultValues, bookingValidation } from '../../validation';
 
 export function BookingModal({
-	idTitleIntl = '',
 	isOpen = false,
-	booking,
-	specialtyId = '',
+	bookingId,
 	specialties = [],
 	workingHours = [],
 	statuses = [],
 	genders = [],
-	onClose = () => false,
-	onSubmit = () => null,
+	onClose = (f) => f,
+	onSubmit = (f) => f,
 }) {
+	const [doctors, setDoctors] = useState([]);
+	const clone = useRef(null);
 	const methods = useForm({
 		mode: 'onChange',
+		defaultValues: bookingDefaultValues,
 		resolver: yupResolver(bookingValidation),
 	});
 
-	const [doctors, setDoctors] = useState([]);
+	const watchSpecialtyId = methods.watch('specialtyId', '');
 
-	const watchSpecialtyId = methods.watch('specialtyId', specialtyId);
+	const handleOnSubmit = (data) => {
+		onSubmit({ _id: bookingId, ...getObjectDiff(clone.current, data) });
+	};
 
 	useEffect(() => {
-		if (isOpen && booking) {
-			setDefaultValues(methods, booking);
-			methods.setValue('specialtyId', specialtyId);
+		if (isOpen && bookingId) {
+			tryCatch(async () => {
+				const { metadata } = await bookingApi.getOneById(bookingId);
+				setDefaultValues(methods, metadata);
+				clone.current = { ...metadata };
+			})();
 		}
-	}, [isOpen, booking, specialtyId, methods]);
+
+		if (!isOpen || !bookingId) {
+			clone.current = null;
+		}
+	}, [isOpen, bookingId, methods]);
 
 	useEffect(() => {
-		(async () => {
+		tryCatch(async () => {
 			if (watchSpecialtyId) {
 				const { metadata } = await resourceApi.getAll({
 					model: 'doctor',
@@ -68,18 +78,18 @@ export function BookingModal({
 	}, [watchSpecialtyId]);
 
 	useEffect(() => {
-		(() => {
+		if (doctors.length) {
 			const doctorId = doctors.length ? doctors[0].value : '';
 			methods.setValue('doctorId', doctorId, { shouldValidate: !!doctorId });
-		})();
+		}
 	}, [watchSpecialtyId, doctors, methods]);
 
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='md' isOpen={isOpen}>
-				<BaseModalHeader idIntl={idTitleIntl} onClose={onClose} />
+				<BaseModalHeader idIntl='dashboard.booking.modal.update_booking.title' onClose={onClose} />
 				<BaseModalBody>
-					<form onSubmit={methods.handleSubmit(onSubmit)}>
+					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
 								<FloatingLabelInput name='fullName' labelIntl='form.fullName' />
@@ -118,7 +128,6 @@ export function BookingModal({
 								<FloatingLabelSelect
 									name='doctorId'
 									labelIntl='common.doctor'
-									value={booking.doctorId}
 									options={doctors}
 									disabled={!doctors.length}
 								/>
@@ -133,7 +142,7 @@ export function BookingModal({
 					<Button size='xs' type='button' secondary onClick={onClose}>
 						<FormattedMessage id='button.cancel' />
 					</Button>
-					<Button size='xs' type='submit' info onClick={methods.handleSubmit(onSubmit)}>
+					<Button size='xs' type='submit' info onClick={methods.handleSubmit(handleOnSubmit)}>
 						<FormattedMessage id='button.update' />
 					</Button>
 				</BaseModalFooter>

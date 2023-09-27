@@ -12,22 +12,13 @@ const {
 	keySearchValidator,
 	enumWithDefaultValidator,
 	selectValidator,
+	sortValidator,
 } = require('@/validations');
 const Joi = require('joi');
-const { BookingStatusOptions, BookingStatusDefault, SelectFields, SortFields } = require('./constant');
-
-const sortDirections = ['asc', 'desc'];
-
-const sortFieldValidator = Joi.array().ordered(
-	Joi.string().valid(...SortFields),
-	Joi.string().valid(...sortDirections),
-);
+const { BookingStatusOptions, BookingStatusDefault, SelectFields, SortFields, SortDefaults } = require('./constant');
 
 const appointmentDateValidator = dateValidator.min(new Date().setDate(new Date().getDate() + 1));
-
 const dateOfBirthValidator = dateValidator.max(new Date().setDate(new Date().getDate() - 1));
-
-const sortValidator = Joi.array().items(sortFieldValidator).default(sortDirections);
 
 const createSchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
@@ -69,7 +60,7 @@ const querySchema = Joi.object({
 	}),
 	select: selectValidator(SelectFields),
 	status: enumWithDefaultValidator(BookingStatusOptions, BookingStatusDefault),
-	sort: sortValidator,
+	sort: sortValidator(SortFields, SortDefaults),
 	page: pageValidator,
 	pagesize: pageSizeValidator,
 	search: keySearchValidator,

@@ -19,6 +19,8 @@ router.get(
 	BookingController.getByQueryParams,
 );
 
+router.get('/:id', validateRequest(idSchema, 'params'), BookingController.getOneById);
+
 router.patch(
 	'/:id',
 	validateRequest(idSchema, 'params'),

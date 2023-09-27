@@ -15,17 +15,15 @@ import {
 	TableHeader,
 	UnFieldDebounce,
 } from 'admin/components';
-import { BOOKING_STATUS } from 'admin/constant';
 import { useToggle } from 'admin/hooks';
-import { compose, getObjectDiff, isDateInRange, showToastMessage, tryCatchAndToast } from 'admin/utilities';
+import { compose, isDateInRange, showToastMessage, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import produce from 'immer';
-import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
-import { formatPhone } from 'utils';
+import { formatDateToDDMMYYYY, formatPhone } from 'utils';
 import { BookingModal } from '../../components';
-import { useFetchBookings } from '../../hooks/useFetchBookings';
+import { useBookings } from '../../hooks/useBookings';
 
 export function BookingManager() {
 	const {
@@ -34,38 +32,22 @@ export function BookingManager() {
 
 	const {
 		Bookings,
+		bookingIndex,
 		Specialties,
 		WorkingHours,
+		Statuses,
+		StatusLabels,
 		Genders,
-		currentIndex,
 		queryParams,
 		totalPages,
+		handleOnChangeSort,
 		handleSelectRangeDates,
 		setBookings,
 		setBookingIndex,
 		handleOnSelect,
-		handleSelectSpecialty,
-		handleSelectWorkingHour,
 		handleOnPageChange,
 		handleOnChangeSearch,
-	} = useFetchBookings(languageId);
-
-	const SpecialtyOptions = useMemo(() => {
-		return Specialties.map(({ _id, name }) => ({ value: _id, label: name[languageId] }));
-	}, [Specialties, languageId]);
-
-	const GenderOptions = useMemo(() => {
-		return Genders.map(({ key, name }) => ({ value: key, label: name[languageId] }));
-	}, [Genders, languageId]);
-
-	const WorkingHourOptions = useMemo(() => {
-		return WorkingHours.map(({ _id, name }) => ({ value: _id, label: name[languageId] }));
-	}, [WorkingHours, languageId]);
-
-	const Statuses = BOOKING_STATUS.map((status) => ({ ...status, label: status.label[languageId] }));
-
-	const currentBooking = Bookings.length ? Bookings[currentIndex] : {};
-	const statusLabels = Statuses.reduce((hash, { label, value }) => ({ ...hash, [value]: label }), {});
+	} = useBookings({ languageId });
 
 	const [statusConfirmModal, toggleConfirmDeletion] = useToggle();
 	const [statusModalBooking, toggleModalBooking] = useToggle();
@@ -74,22 +56,22 @@ export function BookingManager() {
 	const openModalBooking = compose(setBookingIndex, toggleModalBooking);
 
 	const handleConfirmDeletionBooking = tryCatchAndToast(async () => {
-		const { message } = await bookingApi.deleteOne(Bookings[currentIndex]._id);
+		const { message } = await bookingApi.deleteOne(Bookings[bookingIndex]._id);
 
 		setBookings(
 			produce((draft) => {
-				draft.splice(currentIndex, 1);
+				draft.splice(bookingIndex, 1);
 			}),
 		);
 
-		setBookingIndex(0);
+		setBookingIndex(-1);
 		toast.success(message[languageId]);
 		toggleConfirmDeletion(false);
 	}, languageId);
 
 	const handleUpdateBooking = tryCatchAndToast(async (body) => {
-		const updateBody = getObjectDiff(currentBooking, body);
-		const { metadata, message } = await bookingApi.updateOne(currentBooking._id, updateBody);
+		const { _id, ...updateBody } = body;
+		const { metadata, message } = await bookingApi.updateOne(_id, updateBody);
 
 		const { status, workingHourId, specialtyId, appointmentDate } = metadata;
 		const checkDateInRange = appointmentDate
@@ -104,9 +86,9 @@ export function BookingManager() {
 		setBookings(
 			produce((draft) => {
 				if (shouldRemove || !checkDateInRange) {
-					draft.splice(currentBooking, 1);
+					draft.splice(bookingIndex, 1);
 				} else {
-					draft[currentIndex] = { ...draft[currentIndex], ...metadata };
+					draft[bookingIndex] = { ...draft[bookingIndex], ...metadata };
 				}
 			}),
 		);
@@ -126,8 +108,8 @@ export function BookingManager() {
 									size='md'
 									name='specialtyId'
 									value={queryParams.specialtyId}
-									options={SpecialtyOptions}
-									onSelect={handleSelectSpecialty}
+									options={Specialties}
+									onSelect={handleOnSelect}
 								/>
 								<div className='d-flex'>
 									<UnFieldDebounce
@@ -153,8 +135,8 @@ export function BookingManager() {
 									size='md'
 									name='workingHourId'
 									value={queryParams.workingHourId}
-									options={WorkingHourOptions}
-									onSelect={handleSelectWorkingHour}
+									options={WorkingHours}
+									onSelect={handleOnSelect}
 								/>
 								<Dropdown name='status' options={Statuses} value={queryParams.status} onSelect={handleOnSelect} />
 							</div>
@@ -166,13 +148,24 @@ export function BookingManager() {
 								<th className='text-center'>
 									<FormattedMessage id='table.no' />
 								</th>
-								<SortableTableHeader className='text-start' name='fullName' intl='form.fullName' />
+								<SortableTableHeader
+									className='text-start'
+									name='fullName'
+									intl='form.fullName'
+									onChange={handleOnChangeSort}
+								/>
 								<th className='text-start'>
 									<FormattedMessage id='form.phone' />
 								</th>
 								<th className='text-start'>
 									<FormattedMessage id='form.address' />
 								</th>
+								<SortableTableHeader
+									className='text-center'
+									name='appointmentDate'
+									intl='common.appointmentDate'
+									onChange={handleOnChangeSort}
+								/>
 								<th className='text-center'>
 									<FormattedMessage id='table.status' />
 								</th>
@@ -181,14 +174,15 @@ export function BookingManager() {
 								</th>
 							</TableHeader>
 							<TableBody>
-								{Bookings.map(({ _id, fullName, phone, address, status }, index) => (
+								{Bookings.map(({ _id, fullName, phone, address, status, appointmentDate }, index) => (
 									<tr key={_id}>
 										<td className='text-center'>{index + 1}</td>
 										<td>{fullName}</td>
 										<td>{formatPhone(phone)}</td>
 										<td>{address}</td>
+										<td className='text-center'>{formatDateToDDMMYYYY(new Date(appointmentDate))}</td>
 										<td className='text-center'>
-											<Badge color={status}>{statusLabels[status]}</Badge>
+											<Badge color={status}>{StatusLabels[status]}</Badge>
 										</td>
 										<td>
 											<div className='d-flex justify-content-center gap-2'>
@@ -217,15 +211,13 @@ export function BookingManager() {
 			</Container>
 
 			<BookingModal
-				idTitleIntl='dashboard.booking.modal.update_booking.title'
-				booking={currentBooking}
-				languageId={languageId}
-				specialtyId={queryParams.specialtyId}
-				specialties={SpecialtyOptions}
-				workingHours={WorkingHourOptions}
-				statuses={Statuses}
-				genders={GenderOptions}
 				isOpen={statusModalBooking}
+				bookingId={Bookings[bookingIndex]?._id}
+				languageId={languageId}
+				specialties={Specialties}
+				workingHours={WorkingHours}
+				statuses={Statuses}
+				genders={Genders}
 				onClose={toggleModalBooking}
 				onSubmit={handleUpdateBooking}
 			/>
@@ -238,7 +230,7 @@ export function BookingManager() {
 			>
 				<FormattedDescription
 					id='dashboard.booking.modal.confirm_deletion_booking.message'
-					values={{ phone: currentBooking?.phone || '' }}
+					values={{ phone: Bookings[bookingIndex]?.phone || '' }}
 				/>
 			</ConfirmModal>
 		</>

@@ -16,7 +16,7 @@ const getIconDirection = (order) => {
 	}
 };
 
-export function SortableTableHeader({ name = '', intl, className = '', orders = [], onChange = () => null, ...props }) {
+export function SortableTableHeader({ name = '', intl, className = '', orders = [], onChange = (f) => f, ...props }) {
 	const [order, setOrder] = useState(() => {
 		const temp = Array.isArray(orders) ? orders.find((order) => order.includes(name)) : orders;
 		return temp ? temp.split(',')[1] : ORDER_NONE;

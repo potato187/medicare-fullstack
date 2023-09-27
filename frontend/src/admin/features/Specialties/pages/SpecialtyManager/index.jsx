@@ -15,7 +15,6 @@ import {
 	UnFieldDebounce,
 } from 'admin/components';
 import { useIndex, useToggle } from 'admin/hooks';
-import { useSpecialtiesManage } from 'admin/hooks/useManageSpecialties';
 import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import produce from 'immer';
@@ -24,6 +23,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 import { downloadExcelFile, formatPhone } from 'utils';
 import { DoctorModal, ExportModal, ImportExcelModal } from '../../components';
+import { useSpecialties } from '../../hooks';
 import { getHandleExport } from '../../utils/export.strategy';
 
 export function SpecialtyManager() {
@@ -46,7 +46,7 @@ export function SpecialtyManager() {
 		handleOnChangeSearch,
 		handleOnPageChange,
 		handleSelectSpecialty,
-	} = useSpecialtiesManage(languageId);
+	} = useSpecialties(languageId);
 
 	const [statusModal, toggleModal] = useToggle();
 	const [statusConfirmModal, toggleConfirmModal] = useToggle();

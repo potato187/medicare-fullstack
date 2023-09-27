@@ -65,6 +65,26 @@ class BookingService {
 		});
 	}
 
+	static async getOneById(id) {
+		return UtilsRepo.findOne({
+			model: BookingService.model,
+			filter: { _id: convertToObjectIdMongodb(id) },
+			select: [
+				'fullName',
+				'phone',
+				'address',
+				'gender',
+				'dateOfBirth',
+				'note',
+				'specialtyId',
+				'doctorId',
+				'workingHourId',
+				'appointmentDate',
+				'status',
+			],
+		});
+	}
+
 	static async updateOneById({ id, updateBody }) {
 		const { workingHourId, specialtyId, doctorId, dateOfBirth, appointmentDate, ...body } = updateBody;
 

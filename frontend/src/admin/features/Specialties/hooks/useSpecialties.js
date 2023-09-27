@@ -1,38 +1,39 @@
-import { doctorApi } from 'admin/api';
+import { doctorApi, resourceApi } from 'admin/api';
 import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
-import { useFetch } from 'admin/hooks';
 import { createURL, tryCatch } from 'admin/utilities';
 import queryString from 'query-string';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { typeOf } from 'utils';
 
-export const useSpecialtiesManage = (languageId = 'en') => {
-	const specialtiesData = useFetch({
-		endpoint: 'specialty',
-	});
+const mapData = (data, languageId) => {
+	return data.map(({ _id, name }) => ({ label: name[languageId], value: _id }));
+};
 
-	const Specialties = useMemo(() => {
-		return specialtiesData.reduce((hash, { _id, name, key }) => {
-			hash.push({ value: _id, label: name[languageId], key });
-			return hash;
-		}, []);
-	}, [languageId, specialtiesData]);
-
-	const positionsData = useFetch({
-		endpoint: 'position',
-	});
-
-	const Positions = useMemo(() => {
-		return positionsData.reduce((hash, { name, key }) => {
-			hash.push({ value: key, label: name[languageId] });
-			return hash;
-		}, []);
-	}, [languageId, positionsData]);
-
+export const useSpecialties = (languageId = 'en') => {
+	const [totalPages, setTotalPages] = useState(1);
 	const [doctors, setDoctors] = useState([]);
 	const [specialtyIndex, setSpecialtyIndex] = useState(0);
-	const [totalPages, setTotalPages] = useState(1);
+	const [specialtyData, setSpecialtyData] = useState([]);
+	const [positionData, setPositionData] = useState([]);
+	const [genderData, setGenderData] = useState([]);
+
+	const Specialties = useMemo(() => {
+		return mapData(specialtyData, languageId);
+	}, [languageId, specialtyData]);
+
+	const Positions = useMemo(() => {
+		return positionData.map(({ key, name }) => ({ label: name[languageId], value: key }));
+	}, [languageId, positionData]);
+
+	const PositionLabels = positionData.reduce((obj, { key, name }) => {
+		obj[key] = name[languageId];
+		return obj;
+	}, {});
+
+	const Genders = useMemo(() => {
+		return genderData.map(({ key, name }) => ({ label: name[languageId], value: key }));
+	}, [languageId, genderData]);
 
 	const { pathname: locationPathName, search: locationSearch } = useLocation();
 	const navigate = useNavigate();
@@ -105,18 +106,49 @@ export const useSpecialtiesManage = (languageId = 'en') => {
 
 	useEffect(() => {
 		tryCatch(async () => {
-			if (Specialties.length) {
-				const { metadata } = await doctorApi.queryByParameters(queryParams);
-				setDoctors(metadata.data.map((data) => ({ ...data, isSelected: false })));
-				setTotalPages(metadata.meta.totalPages);
+			const { metadata } = await doctorApi.queryByParameters(queryParams);
+			setDoctors(metadata.data.map((data) => ({ ...data, isSelected: false })));
+			setTotalPages(metadata.meta.totalPages);
+		})();
+	}, [queryParams]);
+
+	useEffect(() => {
+		tryCatch(async () => {
+			const promises = [
+				resourceApi.getAll({
+					model: 'specialty',
+				}),
+				resourceApi.getAll({
+					model: 'position',
+				}),
+				resourceApi.getAll({
+					model: 'gender',
+				}),
+			];
+
+			const response = await Promise.allSettled(promises);
+			const [specialties, positions, genders] = response.map((response) => {
+				return response.status === 'fulfilled' ? response.value.metadata : [];
+			});
+
+			if (specialties.length) {
+				setSpecialtyData(specialties);
+			}
+			if (positions.length) {
+				setPositionData(positions);
+			}
+			if (genders.length) {
+				setGenderData(genders);
 			}
 		})();
-	}, [queryParams, Specialties]);
+	}, []);
 
 	return {
 		Specialties,
-		Doctors: doctors,
 		Positions,
+		PositionLabels,
+		Doctors: doctors,
+		Genders,
 		totalPages,
 		queryParams,
 		setDoctors,

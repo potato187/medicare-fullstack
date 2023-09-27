@@ -15,8 +15,12 @@ export const bookingApi = {
 		return axiosClient.get(`${BOOKING_PATH}/query`, { params: restParams });
 	},
 
-	deleteOne(bookingId) {
-		return axiosClient.delete(`${BOOKING_PATH}/${bookingId}`);
+	getOneById(id) {
+		return axiosClient.get(`${BOOKING_PATH}/${id}`);
+	},
+
+	deleteOne(id) {
+		return axiosClient.delete(`${BOOKING_PATH}/${id}`);
 	},
 
 	updateOne(id, updateBody) {
