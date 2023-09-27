@@ -14,21 +14,22 @@ import {
 	TabPanel,
 	Tabs,
 } from 'admin/components';
-import { setDefaultValues, tryCatch } from 'admin/utilities';
-import { useEffect } from 'react';
+import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
+import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { doctorValidation } from '../../validation';
 import { doctorDefaultValue } from '../ImportExcelModal/constant';
 
-export function ProfileDoctorModal({
+export function DoctorModal({
 	isOpen = false,
-	doctor,
+	doctorId,
 	genders = [],
 	positions = [],
 	specialties = [],
-	onSubmit = () => null,
-	onClose = () => null,
+	onClose = (f) => f,
+	onCreate = (f) => f,
+	onUpdate = (f) => f,
 }) {
 	const methods = useForm({
 		mode: 'onChange',
@@ -36,48 +37,45 @@ export function ProfileDoctorModal({
 		resolver: yupResolver(doctorValidation),
 	});
 
+	const clone = useRef(null);
+
 	const handleOnClose = () => {
-		methods.clearErrors();
+		methods.reset();
 		onClose();
 	};
 
 	const handleOnSubmit = (data) => {
-		onSubmit({ id: doctor._id, data });
+		if (doctorId) {
+			onUpdate({ id: doctorId, data: getObjectDiff(clone.current, data) });
+		} else {
+			onCreate(data);
+		}
 	};
 
 	useEffect(() => {
-		if (isOpen && doctor) {
-			setDefaultValues(methods, doctor);
-		}
-	}, [isOpen, doctor, methods]);
-
-	useEffect(() => {
 		tryCatch(async () => {
-			if (isOpen && doctor?._id) {
-				const { metadata } = await doctorApi.getOne({
-					id: doctor._id,
-					params: {
-						select: ['description'],
-					},
-				});
-
-				if (metadata?.description) {
-					const { description } = metadata;
-					Object.keys(description).forEach((key) => {
-						methods.setValue(`description.${key}`, description[key], {
-							shouldDirty: false,
-							shouldTouch: false,
-						});
-					});
+			if (isOpen && doctorId) {
+				const { metadata } = await doctorApi.getOne({ id: doctorId });
+				if (Object.keys(metadata).length) {
+					setDefaultValues(methods, metadata);
+					clone.current = { ...metadata };
 				}
 			}
+
+			if (!isOpen || !doctorId) {
+				setDefaultValues(methods, doctorDefaultValue);
+				clone.current = null;
+			}
 		})();
-	}, [isOpen, doctor, methods]);
+	}, [isOpen, doctorId, methods]);
 
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='lg' isOpen={isOpen} onClose={handleOnClose}>
-				<BaseModalHeader idIntl='dashboard.specialty.modal.update_doctor.title' onClose={handleOnClose} />
+				<BaseModalHeader
+					idIntl={`dashboard.specialty.modal.${doctorId ? 'update' : 'create'}_doctor.title`}
+					onClose={handleOnClose}
+				/>
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<Tabs tabIndexActive={0}>
@@ -128,7 +126,7 @@ export function ProfileDoctorModal({
 						<FormattedMessage id='button.cancel' />
 					</Button>
 					<Button size='xs' type='submit' info onClick={methods.handleSubmit(handleOnSubmit)}>
-						<FormattedMessage id='button.update' />
+						<FormattedMessage id={`button.${doctorId ? 'update' : 'create'}`} />
 					</Button>
 				</BaseModalFooter>
 			</BaseModal>

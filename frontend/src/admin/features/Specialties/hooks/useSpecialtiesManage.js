@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { typeOf } from 'utils';
 
-export const useManageSpecialties = (languageId = 'en') => {
+export const useSpecialtiesManage = (languageId = 'en') => {
 	const specialtiesData = useFetch({
 		endpoint: 'specialty',
 	});
@@ -116,10 +116,10 @@ export const useManageSpecialties = (languageId = 'en') => {
 	return {
 		Specialties,
 		Doctors: doctors,
-		setDoctors,
 		Positions,
 		totalPages,
 		queryParams,
+		setDoctors,
 		handleOnSelect,
 		handleOnPageChange,
 		handleOnChangeSort,

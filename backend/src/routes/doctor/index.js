@@ -30,13 +30,8 @@ router.delete('/:id', validateRequest(idSchema, 'params'), DoctorController.dele
 
 router.post('/', validateRequest(createSchema), DoctorController.createOne);
 
-router.post(
-	'/export',
-	processQueryParams(['sort'], 'body'),
-	validateRequest(exportSchema),
-	tryCatch(DoctorController.export),
-);
+router.post('/export', processQueryParams(['sort'], 'body'), validateRequest(exportSchema), DoctorController.export);
 
-router.post('/import', validateRequest(importSchema), tryCatch(DoctorController.insertMany));
+router.post('/import', validateRequest(importSchema), DoctorController.insertMany);
 
 module.exports = router;

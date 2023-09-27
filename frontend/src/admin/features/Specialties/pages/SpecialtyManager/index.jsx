@@ -14,28 +14,31 @@ import {
 	UnFieldCheckBox,
 	UnFieldDebounce,
 } from 'admin/components';
-import { useCurrentIndex, useFetchResource, useToggle } from 'admin/hooks';
-import { compose, getObjectDiff, tryCatchAndToast } from 'admin/utilities';
+import { useIndex, useToggle } from 'admin/hooks';
+import { useSpecialtiesManage } from 'admin/hooks/useManageSpecialties';
+import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import produce from 'immer';
 import { MdAdd, MdImportExport } from 'react-icons/md';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-import { CreateDoctorModal, ExportModal, ImportExcelModal, ProfileDoctorModal } from '../../components';
-import { useManageSpecialties } from '../../hooks';
+import { downloadExcelFile, formatPhone } from 'utils';
+import { DoctorModal, ExportModal, ImportExcelModal } from '../../components';
 import { getHandleExport } from '../../utils/export.strategy';
 
 export function SpecialtyManager() {
 	const {
 		info: { languageId },
 	} = useAuth();
-
-	const { currentIndexRef: doctorIndexRef, setCurrentIndex: setDoctorIndex } = useCurrentIndex();
+	const intl = useIntl();
+	const { index: doctorIndex, setIndex: setDoctorIndex } = useIndex();
 
 	const {
 		Specialties,
-		Doctors,
 		Positions,
+		PositionLabels,
+		Genders,
+		Doctors,
 		queryParams,
 		setDoctors,
 		handleOnSelect,
@@ -43,56 +46,42 @@ export function SpecialtyManager() {
 		handleOnChangeSearch,
 		handleOnPageChange,
 		handleSelectSpecialty,
-	} = useManageSpecialties(languageId);
+	} = useSpecialtiesManage(languageId);
 
-	const positionLabels = Positions.reduce((obj, { value, label }) => {
-		obj[value] = label;
-		return obj;
-	}, {});
+	const [statusModal, toggleModal] = useToggle();
+	const [statusConfirmModal, toggleConfirmModal] = useToggle();
+	const [statusExportModal, toggleExportModal] = useToggle();
+	const [statusImportModal, toggleImportModal] = useToggle();
 
-	const Genders = useFetchResource({
-		endpoint: 'gender',
-		languageId,
-		formatter: (genders) =>
-			genders.map(({ key, name }) => {
-				return { label: name[languageId], value: key };
-			}),
-	});
+	const handleToggleModal = compose(setDoctorIndex, toggleModal);
+	const handleToggleConfirmModal = compose(setDoctorIndex, toggleConfirmModal);
 
-	const [isOpenCreateModal, toggleCreateModal] = useToggle();
-	const [isOpenProfileModal, toggleProfileModal] = useToggle();
-	const [isOpenConfirmModal, toggleConfirmModal] = useToggle();
-	const [isOpenExportModal, toggleExportModal] = useToggle();
-	const [isOpenImportModal, toggleImportModal] = useToggle();
-
-	const handleOpenProfileModal = compose(setDoctorIndex, toggleProfileModal);
-	const handleOpenConfirmDeletionModal = compose(setDoctorIndex, toggleConfirmModal);
-
-	const handleUpdateDoctor = tryCatchAndToast(async ({ id, data }) => {
-		const updateBody = getObjectDiff(Doctors[doctorIndexRef.current], data);
-
-		const { message, metadata } = await doctorApi.updateOne({ id, updateBody });
-
-		if (Object.keys(metadata).length) {
-			setDoctors(
-				produce((draft) => {
-					Object.keys(metadata).forEach((key) => {
-						if (key !== '_id' && key !== 'description') {
-							draft[doctorIndexRef.current][key] = metadata[key];
+	const handleOnUpdate = tryCatchAndToast(async ({ id, data }) => {
+		if (Object.keys(data).length) {
+			const { message, metadata } = await doctorApi.updateOne({ id, updateBody: data });
+			if (Object.keys(metadata).length) {
+				setDoctors(
+					produce((draft) => {
+						const { specialtyId, ...data } = metadata;
+						if (specialtyId && specialtyId !== queryParams.specialtyId) {
+							draft.splice(doctorIndex, 1);
+						} else {
+							Object.entries(data).forEach(([key, value]) => {
+								if (Object.hasOwn(draft[doctorIndex], key)) {
+									draft[doctorIndex][key] = value;
+								}
+							});
 						}
-					});
-				}),
-			);
+					}),
+				);
+				showToastMessage(message, languageId);
+			}
 		}
-
-		toast.success(message[languageId]);
-		toggleProfileModal();
+		handleToggleModal(-1);
 	}, languageId);
 
-	const handleCreateDoctor = tryCatchAndToast(async (newDoctor) => {
+	const handleOnCreate = tryCatchAndToast(async (newDoctor) => {
 		const { metadata, message } = await doctorApi.createOne(newDoctor);
-		toast.success(message[languageId]);
-
 		if (Doctors.length < +queryParams.pagesize) {
 			setDoctors(
 				produce((draft) => {
@@ -101,21 +90,22 @@ export function SpecialtyManager() {
 				}),
 			);
 		}
-		toggleCreateModal();
+		showToastMessage(message, languageId);
+		handleToggleModal(-1);
 	}, languageId);
 
-	const handleDeleteDoctor = tryCatchAndToast(async () => {
-		const doctor = Doctors[doctorIndexRef.current] || {};
-		if (doctor && doctor._id) {
+	const handleOnSubmitDeletion = tryCatchAndToast(async () => {
+		const doctor = Doctors[doctorIndex] || {};
+		if (doctor?._id) {
 			const { message } = await doctorApi.deleteOne(doctor._id);
 			setDoctors(
 				produce((draft) => {
-					draft.splice(doctorIndexRef.current, 1);
+					draft.splice(doctorIndex, 1);
 				}),
 			);
-			toggleConfirmModal();
-			toast.success(message[languageId]);
+			showToastMessage(message, languageId);
 		}
+		toggleConfirmModal();
 	}, languageId);
 
 	const toggleSelect = (index) => {
@@ -137,13 +127,24 @@ export function SpecialtyManager() {
 		);
 	};
 
-	const handleExportDoctor = tryCatchAndToast(async (data) => {
-		const body = getHandleExport(data.type, Doctors, queryParams);
+	const handleOnExport = tryCatchAndToast(async (data) => {
+		const { type } = data;
+		const body = getHandleExport(type, { Doctors, queryParams });
+		if (type === 'selected' && !body?.ids?.length) {
+			toast.warning(
+				intl.formatMessage({ id: 'dashboard.specialty.modal.export_modal.warning_message.export_selected' }),
+			);
+			return false;
+		}
 
-		console.log(body);
+		const response = await doctorApi.export({ ...data, ...body });
+		const fileName = 'doctors';
+		downloadExcelFile(response, fileName);
+
+		return true;
 	}, languageId);
 
-	const handleImportDoctor = async (doctors) => {
+	const handleOnImport = async (doctors) => {
 		const formattedData = doctors.map(({ importStatus, ...rest }) => rest);
 		return await doctorApi.import(formattedData);
 	};
@@ -174,7 +175,7 @@ export function SpecialtyManager() {
 							</div>
 						</div>
 						<div className='px-5 d-flex gap-2 ms-auto'>
-							<Button size='sm' onClick={toggleCreateModal}>
+							<Button size='sm' onClick={() => handleToggleModal(-1)}>
 								<span>
 									<FormattedMessage id='button.create_doctor' />
 								</span>
@@ -248,15 +249,15 @@ export function SpecialtyManager() {
 										<td className='text-center'>{index + 1}</td>
 										<td className='text-start'>{firstName}</td>
 										<td className='text-start'>{lastName}</td>
-										<td className='text-start'>{phone}</td>
+										<td className='text-start'>{formatPhone(phone)}</td>
 										<td className='text-start'>{email}</td>
-										<td className='text-start'>{positionLabels[position]}</td>
+										<td className='text-start'>{PositionLabels[position]}</td>
 										<td>
 											<div className='d-flex justify-content-center gap-2'>
-												<Button success size='xs' info onClick={() => handleOpenProfileModal(index)}>
+												<Button success size='xs' info onClick={() => handleToggleModal(index)}>
 													<FormattedMessage id='button.update' />
 												</Button>
-												<Button size='xs' danger onClick={() => handleOpenConfirmDeletionModal(index)}>
+												<Button size='xs' danger onClick={() => handleToggleConfirmModal(index)}>
 													<FormattedMessage id='button.delete' />
 												</Button>
 											</div>
@@ -276,55 +277,41 @@ export function SpecialtyManager() {
 				</div>
 			</Container>
 
-			<CreateDoctorModal
-				specialtyId={queryParams.specialtyId}
-				isOpen={isOpenCreateModal}
-				genders={Genders}
+			<DoctorModal
+				isOpen={statusModal}
 				specialties={Specialties}
-				positions={Positions}
-				onClose={toggleCreateModal}
-				onSubmit={handleCreateDoctor}
-			/>
-
-			<ProfileDoctorModal
-				isOpen={isOpenProfileModal}
-				specialties={Specialties}
-				doctor={Doctors[doctorIndexRef.current]}
+				doctorId={Doctors[doctorIndex]?._id}
 				genders={Genders}
 				positions={Positions}
-				onClose={toggleProfileModal}
-				onSubmit={handleUpdateDoctor}
+				onClose={toggleModal}
+				onUpdate={handleOnUpdate}
+				onCreate={handleOnCreate}
 			/>
 
-			<ConfirmModal
-				idTitleIntl='dashboard.specialty.modal.confirm_deletion.title'
-				isOpen={isOpenConfirmModal}
-				onClose={toggleConfirmModal}
-				onSubmit={handleDeleteDoctor}
-			>
-				<FormattedDescription
-					id='dashboard.specialty.modal.confirm_deletion.description'
-					values={{ email: Doctors[doctorIndexRef.current]?.email || '' }}
-				/>
-			</ConfirmModal>
-
-			<ExportModal
-				titleIntl='dashboard.specialty.modal.export_modal.title'
-				isOpen={isOpenExportModal}
-				onClose={toggleExportModal}
-				onSubmit={handleExportDoctor}
-			/>
+			<ExportModal isOpen={statusExportModal} onClose={toggleExportModal} onSubmit={handleOnExport} />
 
 			<ImportExcelModal
-				isOpen={isOpenImportModal}
+				isOpen={statusImportModal}
 				languageId={languageId}
 				specialtyId={queryParams.specialtyId}
 				genders={Genders}
 				specialties={Specialties}
 				positions={Positions}
 				onClose={toggleImportModal}
-				onSubmit={handleImportDoctor}
+				onSubmit={handleOnImport}
 			/>
+
+			<ConfirmModal
+				idTitleIntl='dashboard.specialty.modal.confirm_deletion.title'
+				isOpen={statusConfirmModal}
+				onClose={toggleConfirmModal}
+				onSubmit={handleOnSubmitDeletion}
+			>
+				<FormattedDescription
+					id='dashboard.specialty.modal.confirm_deletion.description'
+					values={{ email: Doctors[doctorIndex]?.email || '' }}
+				/>
+			</ConfirmModal>
 		</>
 	);
 }

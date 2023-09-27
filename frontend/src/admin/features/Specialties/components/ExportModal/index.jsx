@@ -2,25 +2,20 @@ import { BaseModal, BaseModalBody, BaseModalFooter, BaseModalHeader, Button, Fie
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-export function ExportModal({ titleIntl = '', isOpen = false, onClose = () => false, onSubmit = () => null }) {
+export function ExportModal({ isOpen = false, onClose = (f) => f, onSubmit = (f) => f }) {
 	const methods = useForm({
+		mode: 'onChange',
 		defaultValues: {
 			type: 'all',
 		},
 	});
 
-	const handleOnSubmit = (data) => {
-		console.log(data);
-		/* 		onSubmit(data);
-		 */
-	};
-
 	return (
 		<BaseModal size='sm' isOpen={isOpen}>
-			<BaseModalHeader idIntl={titleIntl} onClose={onClose} />
+			<BaseModalHeader idIntl='dashboard.specialty.modal.export_modal.title' onClose={onClose} />
 			<BaseModalBody>
 				<FormProvider {...methods}>
-					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
+					<form onSubmit={methods.handleSubmit(onSubmit)}>
 						<div className='d-flex flex-column gap-2'>
 							<FieldRadio
 								labelIntl='dashboard.specialty.modal.export_modal.export_all'
@@ -45,7 +40,7 @@ export function ExportModal({ titleIntl = '', isOpen = false, onClose = () => fa
 				<Button size='xs' type='button' secondary onClick={onClose}>
 					<FormattedMessage id='button.cancel' />
 				</Button>
-				<Button size='xs' type='submit' onClick={methods.handleSubmit(handleOnSubmit)}>
+				<Button size='xs' type='submit' onClick={methods.handleSubmit(onSubmit)}>
 					<FormattedMessage id='button.export' />
 				</Button>
 			</BaseModalFooter>

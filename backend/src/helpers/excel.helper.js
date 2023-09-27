@@ -56,10 +56,8 @@ const exportWorkbook = (data, languageId) => {
 	const workbook = new ExcelJS.Workbook();
 	const worksheet = workbook.addWorksheet('sheet 1');
 
-	const columns = data.reduce((acc, obj) => {
-		const keys = Object.getOwnPropertyNames(obj);
-		acc.push(...keys);
-		return acc;
+	const columns = data.reduce((_, obj) => {
+		return Object.getOwnPropertyNames(obj);
 	}, []);
 
 	worksheet.columns = columns.map((el) => ({

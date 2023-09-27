@@ -49,9 +49,12 @@ export function BookingModal({
 	useEffect(() => {
 		(async () => {
 			if (watchSpecialtyId) {
-				const { metadata } = await resourceApi.getAll('doctor', {
-					specialtyId: watchSpecialtyId,
-					select: ['_id', 'firstName', 'lastName'],
+				const { metadata } = await resourceApi.getAll({
+					model: 'doctor',
+					params: {
+						specialtyId: watchSpecialtyId,
+						select: ['_id', 'firstName', 'lastName'],
+					},
 				});
 
 				const doctors = metadata.map(({ _id, firstName, lastName }) => ({

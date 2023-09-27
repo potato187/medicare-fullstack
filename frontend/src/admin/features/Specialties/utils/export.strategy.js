@@ -1,6 +1,9 @@
-const exportAllPage = () => {};
+const exportAllPage = () => {
+	return {};
+};
 
-const exportPerPage = ({ queryParams = {} }) => {
+const exportPerPage = (args) => {
+	const { queryParams } = args;
 	return {
 		pagesize: queryParams.pagesize || 25,
 		page: queryParams.page || 1,
@@ -8,14 +11,16 @@ const exportPerPage = ({ queryParams = {} }) => {
 	};
 };
 
-const exportBySelected = ({ Doctors = [] }) => {
-	/* 	return Doctors.reduce((hash, { _id, isSelected }) => {
+const exportBySelected = (args) => {
+	const { Doctors } = args;
+	const ids = Doctors.reduce((hash, { _id, isSelected }) => {
 		if (isSelected) {
 			hash.push(_id);
 		}
 		return hash;
-	}, []); */
-	return [];
+	}, []);
+
+	return { ids };
 };
 
 const exportStrategies = {
@@ -24,6 +29,6 @@ const exportStrategies = {
 	selected: exportBySelected,
 };
 
-export const getHandleExport = (type, ...rest) => {
-	return Object.hasOwn(exportStrategies, type) ? exportStrategies[type]({ ...rest }) : null;
+export const getHandleExport = (type, args = {}) => {
+	return Object.hasOwn(exportStrategies, type) ? exportStrategies[type](args) : null;
 };

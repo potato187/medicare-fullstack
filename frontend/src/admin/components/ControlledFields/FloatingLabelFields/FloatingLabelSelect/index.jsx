@@ -11,10 +11,11 @@ import module from '../style.module.scss';
 
 export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = false, className = '' }) {
 	const domId = useId();
-	const { control, errors, getValues, setValue } = useFormContext();
 	const intl = useIntl();
 	const labelText = intl.formatMessage({ id: labelIntl });
+	const { control, errors, watch, setValue } = useFormContext();
 	const [isOpen, toggleDropdown] = useToggle();
+
 	const nodeRef = useClickOutside(() => {
 		toggleDropdown(false);
 	});
@@ -28,7 +29,7 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 		'item-active': activeCln,
 	} = module;
 
-	const value = getValues(name);
+	const value = watch(name);
 	const currentOption = options.find((option) => option.value === value) || options[0];
 
 	const handleOnSelect = (option) => {

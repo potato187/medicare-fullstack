@@ -14,7 +14,7 @@ import {
 	TdSelect,
 	TrStatus,
 } from 'admin/components';
-import { extractFirstNameLastName, tryCatchAndToast } from 'admin/utilities';
+import { extractFirstNameLastName, tryCatch, tryCatchAndToast } from 'admin/utilities';
 import { emailValidation, fileExcelValidation, phoneValidation, requiredValidation } from 'admin/validation';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
@@ -25,13 +25,13 @@ import * as yup from 'yup';
 import { IMPORT_STATUS, doctorDefaultValue } from './constant';
 
 export function ImportExcelModal({
+	isOpen = false,
 	specialtyId = '',
 	languageId = 'en',
 	genders = [],
 	positions = [],
-	isOpen = false,
-	onClose = () => false,
-	onSubmit = () => null,
+	onClose = (f) => f,
+	onSubmit = (f) => f,
 }) {
 	const methodsFileExcel = useForm({
 		mode: 'onChange',
@@ -78,7 +78,7 @@ export function ImportExcelModal({
 		insert(fields.length + 1, { ...doctorDefaultValue });
 	};
 
-	const handleUploadExcelFile = async ({ fileExcel }) => {
+	const handleUploadExcelFile = tryCatchAndToast(async ({ fileExcel }) => {
 		const jsonData = await readFileExcel(fileExcel);
 		const doctors = jsonData.map((doctor) => {
 			const { fullName, email, phone, address, position, gender } = doctor;
@@ -99,7 +99,7 @@ export function ImportExcelModal({
 			};
 		});
 		methods.setValue('doctors', doctors);
-	};
+	}, languageId);
 
 	const removeDoctorsWithFailedImport = (doctors) => {
 		const doctorsFilter = doctors.filter(({ importStatus }) => importStatus !== IMPORT_STATUS.SUCCESS);
@@ -206,13 +206,13 @@ export function ImportExcelModal({
 			</BaseModalBody>
 			<BaseModalFooter>
 				<div className='d-flex justify-content-end gap-2'>
-					<Button size='XS' type='button' secondary onClick={onClose}>
+					<Button size='xs' type='button' secondary onClick={onClose}>
 						<FormattedMessage id='button.cancel' />
 					</Button>
-					<Button size='XS' type='button' success onClick={handleInsertItem}>
+					<Button size='xs' type='button' success onClick={handleInsertItem}>
 						<FormattedMessage id='button.add' />
 					</Button>
-					<Button size='XS' type='submit' onClick={methods.handleSubmit(handleOnSubmit)}>
+					<Button size='xs' type='submit' onClick={methods.handleSubmit(handleOnSubmit)}>
 						<FormattedMessage id='button.import' />
 					</Button>
 				</div>

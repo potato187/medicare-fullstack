@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const {
 	genderValidator,
 	emailValidator,
@@ -5,40 +6,20 @@ const {
 	ObjectIdMongodbValidator,
 	nameValidator,
 	positionValidator,
+	pageValidator,
+	pageSizeValidator,
+	sortValidator,
+	selectValidator,
+	enumWithDefaultValidator,
 } = require('@/validations');
-const Joi = require('joi');
+const { LANGUAGES } = require('@/constant');
+const { SELECT_FIELDS, SORTABLE_FIELDS, EXPORT_TYPES } = require('./constant');
 
-const descriptionValidate = Joi.object({
+const selectValidate = selectValidator(SELECT_FIELDS);
+const descriptionValidator = Joi.object({
 	vi: Joi.string().allow(''),
 	en: Joi.string().allow(''),
 });
-
-const pageSizeValidate = Joi.number().integer().min(1).max(100).default(25);
-const pageValidate = Joi.number().integer().min(1).max(100).default(1);
-
-const doctorFieldValidate = Joi.string().valid(
-	'_id',
-	'firstName',
-	'lastName',
-	'email',
-	'phone',
-	'description',
-	'gender',
-	'position',
-	'address',
-	'specialtyId',
-);
-
-const selectValidate = Joi.alternatives()
-	.try(doctorFieldValidate, Joi.array().items(doctorFieldValidate))
-	.default(['_id', 'firstName', 'lastName', 'email', 'phone', 'specialtyId', 'position', 'gender', 'address']);
-
-const sortValidate = Joi.array().items(
-	Joi.array().ordered(
-		Joi.string().valid('createdAt', 'updatedAt', 'firstName', 'lastName', 'email', 'position'),
-		Joi.string().valid('asc', 'desc'),
-	),
-);
 
 const createSchema = Joi.object({
 	firstName: nameValidator.required(),
@@ -49,7 +30,7 @@ const createSchema = Joi.object({
 	phone: phoneValidator,
 	specialtyId: ObjectIdMongodbValidator.required(),
 	position: positionValidator,
-	description: descriptionValidate,
+	description: descriptionValidator,
 });
 
 const updateSchema = Joi.object({
@@ -61,7 +42,7 @@ const updateSchema = Joi.object({
 	phone: phoneValidator,
 	specialtyId: ObjectIdMongodbValidator,
 	position: positionValidator,
-	description: descriptionValidate,
+	description: descriptionValidator,
 	isActive: Joi.string().valid('active', 'inactive'),
 });
 
@@ -73,9 +54,9 @@ const querySchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
 	positionId: ObjectIdMongodbValidator,
 	search: Joi.string().allow('').default(''),
-	page: pageValidate,
-	pagesize: pageSizeValidate,
-	sort: sortValidate,
+	page: pageSizeValidator,
+	pagesize: pageSizeValidator,
+	sort: sortValidator(SORTABLE_FIELDS, [['position', 'asc']]),
 	select: selectValidate,
 });
 
@@ -84,8 +65,8 @@ const getOneSchema = Joi.object({
 });
 
 const exportSchema = Joi.object({
-	type: Joi.string().valid('all', 'selected', 'page'),
-	languageId: Joi.string().valid('en', 'vi').default('en'),
+	type: enumWithDefaultValidator(EXPORT_TYPES, 'all'),
+	languageId: enumWithDefaultValidator(LANGUAGES, 'en'),
 	specialtyId: Joi.when('type', {
 		is: 'page',
 		then: ObjectIdMongodbValidator,
@@ -93,11 +74,11 @@ const exportSchema = Joi.object({
 	}),
 	page: Joi.when('type', {
 		is: 'page',
-		then: pageValidate,
+		then: pageValidator,
 	}),
 	pagesize: Joi.when('type', {
 		is: 'page',
-		then: pageSizeValidate,
+		then: pageSizeValidator,
 	}),
 
 	ids: Joi.when('type', {
@@ -105,7 +86,7 @@ const exportSchema = Joi.object({
 		then: Joi.array().items(ObjectIdMongodbValidator).min(1),
 		otherwise: Joi.forbidden(),
 	}),
-	sort: sortValidate,
+	sort: selectValidate,
 });
 
 module.exports = {

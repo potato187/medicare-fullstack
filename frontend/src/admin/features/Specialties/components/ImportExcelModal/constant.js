@@ -10,8 +10,8 @@ export const doctorDefaultValue = {
 	email: '',
 	phone: '',
 	address: '',
-	gender: '',
-	position: '',
+	gender: 'GM',
+	position: 'P01',
 	specialtyId: '',
 	description: {
 		vi: '',
