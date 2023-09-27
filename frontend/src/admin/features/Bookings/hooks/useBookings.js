@@ -1,17 +1,13 @@
 import { bookingApi, resourceApi } from 'admin/api';
 import { BOOKING_STATUS, DATE_FORMAT, ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
 import { useIndex } from 'admin/hooks';
-import { createURL, tryCatch } from 'admin/utilities';
+import { createURL, mapData, tryCatch } from 'admin/utilities';
 import produce from 'immer';
 import moment from 'moment';
 import queryString from 'query-string';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { typeOf } from 'utils';
-
-const mapData = (data, languageId) => {
-	return data.map(({ _id, name }) => ({ value: _id, label: name[languageId] }));
-};
 
 export const useBookings = ({ languageId = 'en' }) => {
 	const [bookings, setBookings] = useState([]);

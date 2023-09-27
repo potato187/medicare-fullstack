@@ -1,4 +1,4 @@
-import { adminApi } from 'admin/api';
+import { adminApi, resourceApi } from 'admin/api';
 import {
 	Button,
 	ConfirmModal,
@@ -12,10 +12,11 @@ import {
 	TableHeader,
 	UnFieldDebounce,
 } from 'admin/components';
-import { useAsyncLocation, useFetchResource, useIndex, useToggle } from 'admin/hooks';
-import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
+import { useAsyncLocation, useIndex, useToggle } from 'admin/hooks';
+import { compose, mapData, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import produce from 'immer';
+import { useEffect, useMemo, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { AdminModal } from '../../components';
@@ -38,21 +39,21 @@ export function AdminManager() {
 	} = useAsyncLocation({
 		fetch: adminApi.queryAdminByParams,
 	});
+	const [data, setData] = useState({
+		AdminRoles: [],
+		Genders: [],
+	});
+
+	const Genders = useMemo(() => {
+		return mapData(data.Genders, languageId);
+	}, [data, languageId]);
+
+	const AdminRoles = useMemo(() => {
+		return mapData(data.AdminRoles, languageId);
+	}, [data, languageId]);
 
 	const { page = 1, pagesize = 25 } = queryParams;
-
-	const Genders = useFetchResource({
-		endpoint: 'gender',
-		languageId,
-	});
-
-	const AdminRoles = useFetchResource({
-		endpoint: 'role',
-		languageId,
-	});
-
 	const [statusModal, toggleModal] = useToggle();
-
 	const [statusConfirmModal, toggleConfirmDeletionModal] = useToggle();
 
 	const openAdminModal = compose(updateAdminIndex, toggleModal);
@@ -101,6 +102,27 @@ export function AdminManager() {
 
 		toggleModal();
 	}, languageId);
+
+	useEffect(() => {
+		tryCatch(async () => {
+			const promises = [
+				resourceApi.getAll({
+					model: 'gender',
+				}),
+				resourceApi.getAll({
+					model: 'role',
+				}),
+			];
+			const response = await Promise.allSettled(promises);
+			const [genders, roles] = response.map((res) => (res.status === 'fulfilled' ? res.value.metadata : []));
+			setData(
+				produce((draft) => {
+					draft.AdminRoles = [...roles];
+					draft.Genders = [...genders];
+				}),
+			);
+		})();
+	}, []);
 
 	return (
 		<>

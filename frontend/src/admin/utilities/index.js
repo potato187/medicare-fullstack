@@ -240,3 +240,7 @@ export const isDateInRange = (date, startDate, endDate = null) => {
 
 	return cDate.isSameOrAfter(sDate, 'day');
 };
+
+export const mapData = (data = [], languageId = 'en') => {
+	return data.map(({ _id, name }) => ({ value: _id, label: name[languageId] }));
+};

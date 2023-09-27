@@ -14,14 +14,14 @@ import {
 	UnFieldDebounce,
 	UnFieldSwitch,
 } from 'admin/components';
-import { useAsyncLocation, useCurrentIndex, useToggle } from 'admin/hooks';
+import { useAsyncLocation, useIndex, useToggle } from 'admin/hooks';
 import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import produce from 'immer';
 import { useMemo } from 'react';
+import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { formatDate } from 'utils';
-import { MdAdd } from 'react-icons/md';
 import { BlogModal } from '../../components';
 import { useFetchBlogCategories } from '../../hooks/useFetchBlogCategories';
 
@@ -39,7 +39,7 @@ export function BlogsManager() {
 	const {
 		info: { languageId },
 	} = useAuth();
-	const { currentIndexRef: blogIndexRef, setCurrentIndex: updateBlogIndexRef } = useCurrentIndex();
+	const { index: blogIndex, setCurrentIndex: setBlogIndex } = useIndex();
 
 	const [blogCategories] = useFetchBlogCategories();
 
@@ -74,8 +74,8 @@ export function BlogsManager() {
 	const [isOpenConfirmModal, toggleConfirmModal] = useToggle();
 	const [isOpenEditorModal, toggleEditorModal] = useToggle();
 
-	const openConfirmModal = compose(updateBlogIndexRef, toggleConfirmModal);
-	const openEditorModal = compose(updateBlogIndexRef, toggleEditorModal);
+	const openConfirmModal = compose(setBlogIndex, toggleConfirmModal);
+	const openEditorModal = compose(setBlogIndex, toggleEditorModal);
 
 	const handleSelectCategory = (categoryId) => {
 		setQueryParams({ categoryId });
@@ -93,14 +93,14 @@ export function BlogsManager() {
 	}, languageId);
 
 	const handleDeleteBlog = tryCatchAndToast(async () => {
-		const index = blogIndexRef.current;
+		const index = blogIndex;
 		const { message } = await blogApi.deleteOneById(Blogs[index]._id);
 		updateBlogs(
 			produce((draft) => {
 				draft.splice(index, 1);
 			}),
 		);
-		updateBlogIndexRef(-1);
+		setBlogIndex(-1);
 		showToastMessage(message, languageId);
 		toggleConfirmModal();
 	}, languageId);
@@ -111,7 +111,7 @@ export function BlogsManager() {
 
 		updateBlogs(
 			produce((draft) => {
-				const index = blogIndexRef.current;
+				const index = blogIndex;
 				Object.entries(metadata).forEach(([key, value]) => {
 					if (Object.hasOwn(draft[index], key)) {
 						draft[index][key] = value;
@@ -246,13 +246,13 @@ export function BlogsManager() {
 			>
 				<FormattedDescription
 					id='dashboard.blogs.modal.blog_deletion_confirmation_modal.description'
-					values={{ title: Blogs?.[blogIndexRef.current]?.title?.[languageId] || '' }}
+					values={{ title: Blogs?.[blogIndex]?.title?.[languageId] || '' }}
 				/>
 			</ConfirmModal>
 
 			<BlogModal
 				languageId={languageId}
-				blogId={Blogs?.[blogIndexRef.current]?._id}
+				blogId={Blogs?.[blogIndex]?._id}
 				isOpen={isOpenEditorModal}
 				onClose={toggleEditorModal}
 				onSubmitUpdate={handleUpdateBlog}
