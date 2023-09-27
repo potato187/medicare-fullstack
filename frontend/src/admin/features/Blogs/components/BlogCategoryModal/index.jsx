@@ -13,29 +13,32 @@ import { setDefaultValues } from 'admin/utilities';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { blogCategorySchema } from '../../schema';
+import { blogCategoryDefaultValues, blogCategorySchema } from '../../schema';
 
-export function UpdateBlogCategoryModal({
-	blogCategory = {},
+export function BlogCategoryModal({
 	isOpen = false,
-	toggle = () => false,
-	onSubmit = () => null,
+	blogCategory,
+	toggle = (f) => f,
+	onCreate = (f) => f,
+	onUpdate = (f) => f,
 }) {
 	const methods = useForm({
-		mode: 'onChange',
+		defaultValues: blogCategoryDefaultValues,
 		resolver: yupResolver(blogCategorySchema),
 	});
 
-	const watchSlugViField = methods.watch('slug.vi', '');
-	const watchSlugEnField = methods.watch('slug.en', '');
-
 	const handleOnSubmit = (data) => {
-		onSubmit(data);
+		if (blogCategory) {
+			onUpdate(data);
+		} else {
+			onCreate(data);
+		}
 	};
 
 	useEffect(() => {
 		if (isOpen && blogCategory) {
 			const { children, collapsed, depth, ...values } = blogCategory;
+
 			values.url = {
 				vi: `${APP_URL}/${values.slug.vi}`,
 				en: `${APP_URL}/${values.slug.en}`,
@@ -43,51 +46,38 @@ export function UpdateBlogCategoryModal({
 
 			setDefaultValues(methods, values);
 		}
+
+		if (!isOpen || !blogCategory) {
+			setDefaultValues(methods, blogCategoryDefaultValues);
+		}
 	}, [isOpen, blogCategory, methods]);
-
-	useEffect(() => {
-		if (isOpen) {
-			methods.setValue('url.vi', `${APP_URL}/${methods.getValues('slug.vi') || ''}`, {
-				shouldDirty: false,
-				shouldTouch: false,
-			});
-		}
-	}, [isOpen, watchSlugViField, methods]);
-
-	useEffect(() => {
-		if (isOpen) {
-			methods.setValue('url.en', `${APP_URL}/${methods.getValues('slug.en') || ''}`, {
-				shouldDirty: false,
-				shouldTouch: false,
-			});
-		}
-	}, [isOpen, watchSlugEnField, methods]);
 
 	return (
 		<FormProvider {...methods}>
 			<BaseModal isOpen={isOpen} onClose={toggle}>
-				<BaseModalHeader idIntl='dashboard.blogs.modal.category_update_modal.title' onClose={toggle} />
+				<BaseModalHeader
+					idIntl={`dashboard.blogs.modal.category_${blogCategory ? 'update' : 'create'}_modal.title`}
+					onClose={toggle}
+				/>
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='name.vi' labelIntl='dashboard.blogs.modal.titleVi' />
+								<FloatingLabelInput name='name.vi' labelIntl='dashboard.blogs.modal.titleEn' />
 							</div>
 							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='name.en' labelIntl='dashboard.blogs.modal.titleEn' />
+								<FloatingLabelInput name='name.en' labelIntl='dashboard.blogs.modal.titleVi' />
 							</div>
-							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='slug.vi' labelIntl='dashboard.blogs.modal.slug' />
-							</div>
-							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='slug.en' labelIntl='dashboard.blogs.modal.slug' />
-							</div>
-							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='url.vi' labelIntl='dashboard.blogs.modal.url' disabled />
-							</div>
-							<div className='col-6 mb-6'>
-								<FloatingLabelInput name='url.en' labelIntl='dashboard.blogs.modal.url' disabled />
-							</div>
+							{blogCategory && isOpen ? (
+								<>
+									<div className='col-6 mb-6'>
+										<FloatingLabelInput name='url.vi' labelIntl='dashboard.blogs.modal.url' disabled />
+									</div>
+									<div className='col-6 mb-6'>
+										<FloatingLabelInput name='url.en' labelIntl='dashboard.blogs.modal.url' disabled />
+									</div>
+								</>
+							) : null}
 							<div className='col-12'>
 								<FieldCheckBox name='isDisplay' type='checkbox' labelIntl='dashboard.blogs.modal.display' />
 							</div>
@@ -100,7 +90,7 @@ export function UpdateBlogCategoryModal({
 							<FormattedMessage id='button.cancel' />
 						</Button>
 						<Button size='xs' onClick={methods.handleSubmit(handleOnSubmit)}>
-							<FormattedMessage id='button.update' />
+							<FormattedMessage id={`button.${blogCategory ? 'update' : 'create'}`} />
 						</Button>
 					</div>
 				</BaseModalFooter>

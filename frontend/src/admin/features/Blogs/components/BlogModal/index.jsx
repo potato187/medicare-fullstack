@@ -31,7 +31,7 @@ const BLOG_SITE_MAP = {
 	CONTENT_EN: ['common.blog', 'common.content.en'],
 };
 
-export function BlogEditorModal({
+export function BlogModal({
 	blogId,
 	languageId = 'en',
 	isOpen = false,

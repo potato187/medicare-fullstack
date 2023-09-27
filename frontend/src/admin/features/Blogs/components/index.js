@@ -1,3 +1,2 @@
-export * from './CreateBlogCategoryModal';
-export * from './UpdateBlogCategoryModal';
-export * from './BlogEditorModal';
+export * from './BlogModal';
+export * from './BlogCategoryModal';

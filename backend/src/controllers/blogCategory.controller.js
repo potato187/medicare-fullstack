@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { CreatedResponse, OkResponse } = require('@/core');
 const { tryCatch } = require('@/middleware');
 const { BlogCategoryService } = require('@/services');
@@ -28,7 +29,7 @@ class BlogCategoryController {
 	});
 
 	sortable = tryCatch(async (req, res, next) => {
-		new CreatedResponse({
+		new OkResponse({
 			metadata: await BlogCategoryService.sortable(req.body),
 		}).send(res);
 	});

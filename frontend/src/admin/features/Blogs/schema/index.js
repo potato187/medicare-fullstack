@@ -39,18 +39,6 @@ export const blogCategoryDefaultValues = {
 	isDisplay: true,
 };
 
-export const blogCategoryDefault = {
-	name: {
-		vi: '',
-		en: '',
-	},
-	slug: {
-		vi: '',
-		en: '',
-	},
-	isDisplay: true,
-};
-
 export const blogCategorySchema = yup.object().shape({
 	name: yup.object().shape({
 		vi: requiredValidation,

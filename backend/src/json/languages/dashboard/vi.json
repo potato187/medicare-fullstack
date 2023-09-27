@@ -196,6 +196,7 @@
 				"button_add": "Add New Category",
 				"add_category_modal": { "title": "Add Category" },
 				"category_update_modal": { "title": "Update Category" },
+				"category_create_modal": { "title": "Update Category" },
 				"category_deletion_confirmation_modal": {
 					"title": "Confirm Category Deletion",
 					"description": "Are you sure you want to delete the category and its children with the title <b>{title}</b>? This action cannot be undone."

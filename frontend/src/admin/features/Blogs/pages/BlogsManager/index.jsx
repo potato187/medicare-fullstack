@@ -22,7 +22,7 @@ import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { formatDate } from 'utils';
 import { MdAdd } from 'react-icons/md';
-import { BlogEditorModal } from '../../components';
+import { BlogModal } from '../../components';
 import { useFetchBlogCategories } from '../../hooks/useFetchBlogCategories';
 
 const DEFAULT_OPTION = {
@@ -250,7 +250,7 @@ export function BlogsManager() {
 				/>
 			</ConfirmModal>
 
-			<BlogEditorModal
+			<BlogModal
 				languageId={languageId}
 				blogId={Blogs?.[blogIndexRef.current]?._id}
 				isOpen={isOpenEditorModal}

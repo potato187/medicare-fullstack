@@ -4,33 +4,28 @@ import { flattenTree, removeItem } from 'admin/components/AdvanceUI/Tree/utiliti
 import { useToggle } from 'admin/hooks';
 import { compose, getObjectDiff, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { CreateBlogCategoryModal, UpdateBlogCategoryModal } from '../../components';
+import { BlogCategoryModal } from '../../components';
 
 export function BlogCategoryManager() {
 	const {
 		info: { languageId },
 	} = useAuth();
-
+	const focusedCategory = useRef(null);
 	const [blogCategories, setBlogCategories] = useState([]);
-	const [isOpenCreateModal, toggleCreateModal] = useToggle();
-	const [isOpenUpdateModal, toggleUpdateModal] = useToggle();
+	const [statusModal, toggleModal] = useToggle();
 	const [isOpenSortModal, toggleSortableModal] = useToggle();
 	const [isOpenDeletionModal, toggleDeletionModal] = useToggle();
 
-	const [focusedCategory, setFocusCategory] = useState(null);
-
-	const handleSelectCategory = (category) => {
-		if (!focusedCategory || category.id !== focusedCategory.id) {
-			setFocusCategory({ ...category });
-		}
+	const handleSelectCategory = (category = null) => {
+		focusedCategory.current = category;
 	};
 
-	const openUpdateModal = compose(handleSelectCategory, toggleUpdateModal);
+	const handleToggleModal = compose(handleSelectCategory, toggleModal);
 	const openDeletionModal = compose(handleSelectCategory, toggleDeletionModal);
 
-	const handleCreateBlogCategory = tryCatchAndToast(async (data) => {
+	const handleOnCreate = tryCatchAndToast(async (data) => {
 		const { metadata, message } = await blogCategoryApi.createOne({ ...data, index: blogCategories.length });
 		setBlogCategories((blogCategories) => {
 			const { _id, ...rest } = metadata;
@@ -38,10 +33,10 @@ export function BlogCategoryManager() {
 			return [...blogCategories, newBlogCategory];
 		});
 		showToastMessage(message, languageId);
-		toggleCreateModal();
+		handleToggleModal();
 	}, languageId);
 
-	const handleSortBlogCategories = tryCatchAndToast(async () => {
+	const handleOnSort = tryCatchAndToast(async () => {
 		const flattenedCategories = flattenTree(blogCategories).map(({ id, index, parentId }) => ({
 			id,
 			index,
@@ -53,9 +48,8 @@ export function BlogCategoryManager() {
 	}, languageId);
 
 	const handleConfirmDeletion = tryCatchAndToast(async () => {
-		const listId = flattenTree([focusedCategory]).map(({ id }) => ({ id }));
+		const listId = flattenTree([focusedCategory.current]).map(({ id }) => ({ id }));
 		const { message } = await blogCategoryApi.deleteByIds(listId);
-
 		setBlogCategories((blogCategories) => {
 			return removeItem(blogCategories, listId[0].id);
 		});
@@ -64,16 +58,15 @@ export function BlogCategoryManager() {
 		toggleDeletionModal();
 	}, languageId);
 
-	const handleUpdateBlogCategory = tryCatchAndToast(async (data) => {
-		const updatedValues = getObjectDiff(focusedCategory, data);
-		const { metadata, message } = await blogCategoryApi.updateOneById(focusedCategory.id, updatedValues);
+	const handleOnUpdate = tryCatchAndToast(async (data) => {
+		const body = getObjectDiff(focusedCategory.current, data);
+		const { metadata, message } = await blogCategoryApi.updateOneById(focusedCategory.current.id, body);
 		if (metadata) {
 			setBlogCategories(metadata);
-			setFocusCategory({});
+			focusedCategory.current = null;
 		}
-
 		showToastMessage(message, languageId);
-		toggleUpdateModal();
+		toggleModal();
 	}, languageId);
 
 	useEffect(() => {
@@ -95,14 +88,14 @@ export function BlogCategoryManager() {
 							languageId={languageId}
 							setItems={setBlogCategories}
 							handleConfirmDeletion={openDeletionModal}
-							handleModifyItem={openUpdateModal}
+							handleModifyItem={handleToggleModal}
 						/>
 					</WrapScrollBar>
 					<div className='d-flex justify-content-center gap-2 pt-4 border-top border-gray-300'>
 						<Button size='sm' info onClick={toggleSortableModal}>
 							<FormattedMessage id='dashboard.blogs.modal.button_sort' />
 						</Button>
-						<Button size='sm' onClick={toggleCreateModal}>
+						<Button size='sm' onClick={() => handleToggleModal()}>
 							<FormattedMessage id='dashboard.blogs.modal.button_add' />
 						</Button>
 					</div>
@@ -112,7 +105,7 @@ export function BlogCategoryManager() {
 				idTitleIntl='dashboard.blogs.modal.sort_categories_confirmation_modal.title'
 				isOpen={isOpenSortModal}
 				onClose={toggleSortableModal}
-				onSubmit={handleSortBlogCategories}
+				onSubmit={handleOnSort}
 			>
 				<FormattedMessage id='dashboard.blogs.modal.sort_categories_confirmation_modal.description' />
 			</ConfirmModal>
@@ -125,21 +118,16 @@ export function BlogCategoryManager() {
 			>
 				<FormattedDescription
 					id='dashboard.blogs.modal.category_deletion_confirmation_modal.description'
-					values={{ title: focusedCategory?.name?.[languageId] || '' }}
+					values={{ title: focusedCategory.current?.name?.[languageId] || '' }}
 				/>
 			</ConfirmModal>
 
-			<UpdateBlogCategoryModal
-				blogCategory={focusedCategory}
-				isOpen={isOpenUpdateModal}
-				toggle={toggleUpdateModal}
-				onSubmit={handleUpdateBlogCategory}
-			/>
-
-			<CreateBlogCategoryModal
-				isOpen={isOpenCreateModal}
-				toggle={toggleCreateModal}
-				onSubmit={handleCreateBlogCategory}
+			<BlogCategoryModal
+				blogCategory={focusedCategory.current}
+				isOpen={statusModal}
+				toggle={toggleModal}
+				onCreate={handleOnCreate}
+				onUpdate={handleOnUpdate}
 			/>
 		</>
 	);
