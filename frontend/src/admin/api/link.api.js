@@ -1,27 +1,28 @@
 import { axiosClient } from './axiosClient';
+import { LINK_ENDPOINT } from './constant';
 
 export const linkApi = {
 	createOne(body) {
-		return axiosClient.post(`link`, body);
+		return axiosClient.post(LINK_ENDPOINT, body);
 	},
 
 	getAll(params) {
-		return axiosClient.get(`link`, { params });
+		return axiosClient.get(LINK_ENDPOINT, { params });
 	},
 
 	getOneById(id) {
-		return axiosClient.get(`link/${id}`);
+		return axiosClient.get(`${LINK_ENDPOINT}/${id}`);
 	},
 
 	updateOneById(id, body) {
-		return axiosClient.patch(`link/${id}`, body);
+		return axiosClient.patch(`${LINK_ENDPOINT}/${id}`, body);
 	},
 
 	sortable(body) {
-		return axiosClient.patch(`link/sortable`, body);
+		return axiosClient.patch(`${LINK_ENDPOINT}/sortable`, body);
 	},
 
 	deleteByIds(body) {
-		return axiosClient.post(`link/delete`, body);
+		return axiosClient.post(`${LINK_ENDPOINT}/delete`, body);
 	},
 };

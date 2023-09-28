@@ -1,8 +1,8 @@
 import { axiosClient } from './axiosClient';
-import { RESOURCE_PATH } from './constant';
+import { RESOURCE_ENDPOINT } from './constant';
 
 export const resourceApi = {
 	async getAll({ model, params = {} }) {
-		return axiosClient.get(`${RESOURCE_PATH}/${model}`, { params });
+		return axiosClient.get(`${RESOURCE_ENDPOINT}/${model}`, { params });
 	},
 };

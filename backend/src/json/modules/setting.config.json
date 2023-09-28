@@ -1,0 +1,24 @@
+{
+	"common_information": {
+		"logo_header": { "type": "text", "label": "Logo Header", "value": "logo_header" },
+		"logo_footer": { "type": "text", "label": "Logo Footer", "value": "logo_footer" },
+		"og_image": { "type": "text", "label": "Og Image", "value": "og_image" },
+		"favicon": { "type": "text", "label": "Favicon", "value": "favicon" },
+		"phone": { "type": "text", "label": "Phone", "value": "0799645822" },
+		"email": { "type": "email", "label": "Email", "value": "dhtai97@gmail.com" },
+		"address": { "type": "text", "label": "Address", "value": "add" },
+		"description_vi": { "type": "text", "label": "Description vi", "value": "" },
+		"description_en": { "type": "text", "label": "Description en", "value": "" }
+	},
+	"social_media": {
+		"facebook": { "type": "text", "label": "Facebook", "value": "" },
+		"messenger": { "type": "text", "label": "Messenger", "value": "" },
+		"instagram": { "type": "text", "label": "Instagram", "value": "" },
+		"youtube": { "type": "text", "label": "Youtube", "value": "" },
+		"google": { "type": "text", "label": "Google", "value": "" }
+	},
+	"mail_server": {
+		"email": { "type": "email", "label": "Email", "value": "dhtai97@gmail.com" },
+		"password": { "type": "password", "label": "Password", "value": "S3cur3P@ssword" }
+	}
+}

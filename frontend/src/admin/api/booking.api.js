@@ -1,6 +1,6 @@
 import { formatISODate } from 'admin/utilities';
 import { axiosClient } from './axiosClient';
-import { BOOKING_PATH } from './constant';
+import { BOOKING_ENDPOINT } from './constant';
 
 export const bookingApi = {
 	queryByParameters(params) {
@@ -12,15 +12,15 @@ export const bookingApi = {
 			restParams.endDate = formatISODate(endDate);
 		}
 
-		return axiosClient.get(`${BOOKING_PATH}/query`, { params: restParams });
+		return axiosClient.get(`${BOOKING_ENDPOINT}/query`, { params: restParams });
 	},
 
 	getOneById(id) {
-		return axiosClient.get(`${BOOKING_PATH}/${id}`);
+		return axiosClient.get(`${BOOKING_ENDPOINT}/${id}`);
 	},
 
 	deleteOne(id) {
-		return axiosClient.delete(`${BOOKING_PATH}/${id}`);
+		return axiosClient.delete(`${BOOKING_ENDPOINT}/${id}`);
 	},
 
 	updateOne(id, updateBody) {
@@ -32,6 +32,6 @@ export const bookingApi = {
 			body.appointmentDate = formatISODate(appointmentDate);
 		}
 
-		return axiosClient.patch(`${BOOKING_PATH}/${id}`, body);
+		return axiosClient.patch(`${BOOKING_ENDPOINT}/${id}`, body);
 	},
 };

@@ -1,8 +1,8 @@
 import { axiosClient } from './axiosClient';
-import { AUTH_PATH } from './constant';
+import { AUTH_ENDPOINT } from './constant';
 
 export const authService = {
 	async signUp(body) {
-		return axiosClient.post(`${AUTH_PATH}/sign-up`, body);
+		return axiosClient.post(`${AUTH_ENDPOINT}/sign-up`, body);
 	},
 };

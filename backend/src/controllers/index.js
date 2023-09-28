@@ -9,6 +9,7 @@ const LanguageController = require('./language.controller');
 const ResourceController = require('./resource.controller');
 const SpecialtyController = require('./specialty.controller');
 const LinkController = require('./link.controller');
+const SettingConfigController = require('./settingConfig.controller');
 
 module.exports = {
 	AccessController,
@@ -22,4 +23,5 @@ module.exports = {
 	ResourceController,
 	SpecialtyController,
 	LinkController,
+	SettingConfigController,
 };

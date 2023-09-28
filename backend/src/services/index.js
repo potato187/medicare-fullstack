@@ -10,6 +10,7 @@ const LanguageService = require('./language.service');
 const ResourceService = require('./resource.service');
 const SpecialtyService = require('./specialty.service');
 const LinkService = require('./link.service');
+const SettingConfigService = require('./settingConfig.service');
 
 module.exports = {
 	AccessService,
@@ -24,4 +25,5 @@ module.exports = {
 	ResourceService,
 	SpecialtyService,
 	LinkService,
+	SettingConfigService,
 };

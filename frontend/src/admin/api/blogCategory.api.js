@@ -1,28 +1,28 @@
 import { axiosClient } from './axiosClient';
-import { POST_CATEGORIES_PATH } from './constant';
+import { POST_CATEGORIES_ENDPOINT } from './constant';
 
 export const blogCategoryApi = {
 	getAll() {
-		return axiosClient.get(`${POST_CATEGORIES_PATH}`);
+		return axiosClient.get(`${POST_CATEGORIES_ENDPOINT}`);
 	},
 
 	getFlattenAll() {
-		return axiosClient.get(`${POST_CATEGORIES_PATH}/flatten-blog-categories`);
+		return axiosClient.get(`${POST_CATEGORIES_ENDPOINT}/flatten-blog-categories`);
 	},
 
 	createOne(body) {
-		return axiosClient.post(`${POST_CATEGORIES_PATH}`, body);
+		return axiosClient.post(`${POST_CATEGORIES_ENDPOINT}`, body);
 	},
 
 	sortable(body) {
-		return axiosClient.post(`${POST_CATEGORIES_PATH}/sortable`, body);
+		return axiosClient.post(`${POST_CATEGORIES_ENDPOINT}/sortable`, body);
 	},
 
 	deleteByIds(body) {
-		return axiosClient.post(`${POST_CATEGORIES_PATH}/delete`, body);
+		return axiosClient.post(`${POST_CATEGORIES_ENDPOINT}/delete`, body);
 	},
 
 	updateOneById(id, body) {
-		return axiosClient.patch(`${POST_CATEGORIES_PATH}/${id}`, body);
+		return axiosClient.patch(`${POST_CATEGORIES_ENDPOINT}/${id}`, body);
 	},
 };

@@ -16,6 +16,7 @@ import {
 	HtmlContentManager,
 	LanguageManager,
 	LoginPage,
+	SettingConfigManager,
 	SpecialtyManager,
 } from './features';
 import { persistor, store } from './redux/store/configureStore';
@@ -55,6 +56,7 @@ export default function Admin() {
 									</Route>
 
 									<Route path='modules/*'>
+										<Route path='setting' element={<SettingConfigManager />} />
 										<Route path='header' element={<HeaderManager />} />
 										<Route path='footer' element={<FooterManager />} />
 										<Route path='html_content' element={<HtmlContentManager />} />

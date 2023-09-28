@@ -1,24 +1,24 @@
 import { axiosClient } from './axiosClient';
-import { ADMIN_PATH, AUTH_PATH } from './constant';
+import { ADMIN_ENDPOINT, AUTH_ENDPOINT } from './constant';
 
 export const adminApi = {
 	async queryAdminByParams(params) {
-		return axiosClient.get(`${ADMIN_PATH}/query`, { params });
+		return axiosClient.get(`${ADMIN_ENDPOINT}/query`, { params });
 	},
 
 	async getOneById(id, params) {
-		return axiosClient.get(`${ADMIN_PATH}/${id}`, { params });
+		return axiosClient.get(`${ADMIN_ENDPOINT}/${id}`, { params });
 	},
 
 	async updateById(id, data) {
-		return axiosClient.patch(`${ADMIN_PATH}/update/${id}`, data);
+		return axiosClient.patch(`${ADMIN_ENDPOINT}/update/${id}`, data);
 	},
 
 	async deleteById(id) {
-		return axiosClient.delete(`${ADMIN_PATH}/delete/${id}`);
+		return axiosClient.delete(`${ADMIN_ENDPOINT}/delete/${id}`);
 	},
 
 	async createOne(body) {
-		return axiosClient.post(`${AUTH_PATH}/sign-up`, body);
+		return axiosClient.post(`${AUTH_ENDPOINT}/sign-up`, body);
 	},
 };
