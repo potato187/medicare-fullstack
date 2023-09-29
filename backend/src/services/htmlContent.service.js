@@ -56,11 +56,11 @@ class HtmlContentService {
 		const { search, page_type: pageType, page_position: positionType, ...params } = queryParams;
 		const match = { isDeleted: false };
 
-		if (pageType !== 'all') {
+		if (pageType && pageType !== 'all') {
 			match.pageType = pageType;
 		}
 
-		if (positionType !== 'all') {
+		if (positionType && positionType !== 'all') {
 			match.positionType = positionType;
 		}
 

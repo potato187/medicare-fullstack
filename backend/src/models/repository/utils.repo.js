@@ -21,6 +21,7 @@ const _BlogCategoryModel = require('../blogCategory.model');
 const _BlogModel = require('../blog.model');
 const _HtmlContentModel = require('../htmlContent.model');
 const _LinkModel = require('../link.model');
+const _NewsModel = require('../news.model');
 
 const {
 	ADMIN_MODEL,
@@ -36,6 +37,7 @@ const {
 	BLOG_MODEL,
 	HTML_CONTENT_MODEL,
 	LINK_MODEL,
+	NEWS_MODEL,
 } = require('./constant');
 
 class UtilsRepo {
@@ -180,5 +182,6 @@ UtilsRepo.registerModel(BLOG_CATEGORY_MODEL, _BlogCategoryModel);
 UtilsRepo.registerModel(BLOG_MODEL, _BlogModel);
 UtilsRepo.registerModel(HTML_CONTENT_MODEL, _HtmlContentModel);
 UtilsRepo.registerModel(LINK_MODEL, _LinkModel);
+UtilsRepo.registerModel(NEWS_MODEL, _NewsModel);
 
 module.exports = UtilsRepo;

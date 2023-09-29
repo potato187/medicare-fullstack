@@ -7,6 +7,7 @@ const _BlogCategoryModel = require('./blogCategory.model');
 const _BlogModel = require('./blog.model');
 const _HtmlContentModel = require('./htmlContent.model');
 const _LinKModel = require('./link.model');
+const _NewsModel = require('./news.model');
 
 module.exports = {
 	_AdminModel,
@@ -18,4 +19,5 @@ module.exports = {
 	_BlogModel,
 	_HtmlContentModel,
 	_LinKModel,
+	_NewsModel,
 };

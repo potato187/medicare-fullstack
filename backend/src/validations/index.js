@@ -69,7 +69,7 @@ const enumWithDefaultValidator = (fields = [], defaultValue = '') => {
 	return defaultValue ? validator.default(defaultValue) : validator;
 };
 
-const sortValidator = (fields = [], defaultValues = []) => {
+const sortValidator = (fields = [], defaultValues = [['createdAt', 'asc']]) => {
 	return Joi.array()
 		.items(
 			Joi.array()

@@ -14,5 +14,6 @@ router.use('/blog', require('./blog'));
 router.use('/html-content', require('./htmlContent'));
 router.use('/link', require('./link'));
 router.use('/setting-config', require('./settingConfig'));
+router.use('/news', require('./news'));
 
 module.exports = router;

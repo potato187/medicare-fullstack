@@ -1,0 +1,18 @@
+{
+	"PAGE_TYPES": [
+		{ "value": "home", "label": "Home" },
+		{ "value": "blog", "label": "Blog" },
+		{ "value": "blog_category", "label": "Blog Category" },
+		{ "value": "contact", "label": "Contact" }
+	],
+	"PAGE_POSITIONS": [
+		{ "value": "all", "label": "All" },
+		{ "value": "header", "label": "Header" },
+		{ "value": "main", "label": "Main" },
+		{ "value": "footer", "label": "Footer" },
+		{ "value": "top", "label": "Top" },
+		{ "value": "left", "label": "Left" },
+		{ "value": "bottom", "label": "Bottom" },
+		{ "value": "right", "label": "Right" }
+	]
+}

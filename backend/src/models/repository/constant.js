@@ -13,4 +13,5 @@ module.exports = {
 	BLOG_MODEL: 'blog',
 	HTML_CONTENT_MODEL: 'htmlContent',
 	LINK_MODEL: 'link',
+	NEWS_MODEL: 'news',
 };
