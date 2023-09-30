@@ -14,7 +14,15 @@ export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 	const [totalPages, setTotalPages] = useState(1);
 
 	const queryParams = useMemo(() => {
-		const { sort, page = 1, pagesize = PAGINATION_NUMBER_DEFAULT, ...params } = queryString.parse(locationSearch);
+		let { sort, page = 1, pagesize = PAGINATION_NUMBER_DEFAULT, ...params } = queryString.parse(locationSearch);
+
+		if (+page < 1) {
+			page = 1;
+		}
+
+		if (+pagesize < 1 || +pagesize > 500) {
+			pagesize = 25;
+		}
 
 		return {
 			...parameters,
@@ -36,11 +44,11 @@ export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 		navigate(newUrl);
 	};
 
-	const handleOnChangeSearch = (str) => {
+	const handleChangeSearch = (str) => {
 		setQueryParams({ search: str });
 	};
 
-	const handleOnChangeSort = (key, direction) => {
+	const handleChangeSort = (key, direction) => {
 		const sortItem = `${key},${direction}`;
 		const sortList = typeOf(queryParams.sort) === 'string' ? [queryParams.sort] : queryParams.sort;
 		const sortItemIndex = sortList.findIndex((item) => {
@@ -56,11 +64,11 @@ export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 		setQueryParams({ sort: sortList });
 	};
 
-	const handleOnPageChange = ({ selected }) => {
+	const handlePageChange = ({ selected }) => {
 		setQueryParams({ page: selected + 1 });
 	};
 
-	const handleOnSelect = ({ key, value }) => {
+	const handleSelect = ({ key, value }) => {
 		setQueryParams({ [key]: value });
 	};
 
@@ -82,9 +90,9 @@ export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 		totalPages,
 		setData,
 		setQueryParams,
-		handleOnSelect,
-		handleOnChangeSearch,
-		handleOnChangeSort,
-		handleOnPageChange,
+		handleSelect,
+		handleChangeSearch,
+		handleChangeSort,
+		handlePageChange,
 	};
 };

@@ -32,9 +32,9 @@ export function HtmlContentManager() {
 		queryParams,
 		totalPages,
 		setData: updateHtmlContents,
-		handleOnPageChange,
-		handleOnChangeSort,
-		handleOnSelect,
+		handlePageChange,
+		handleChangeSort,
+		handleSelect,
 	} = useAsyncLocation({
 		fetch: htmlContentApi.getByQueryParams,
 		parameters: {
@@ -131,14 +131,14 @@ export function HtmlContentManager() {
 								size='md'
 								name='page_type'
 								options={pageTypes}
-								onSelect={handleOnSelect}
+								onSelect={handleSelect}
 							/>
 							<Dropdown
 								value={queryParams?.page_position}
 								size='md'
 								name='page_position'
 								options={pagePositions}
-								onSelect={handleOnSelect}
+								onSelect={handleSelect}
 							/>
 						</div>
 						<div className='px-5 d-flex gap-2 ms-auto'>
@@ -156,24 +156,24 @@ export function HtmlContentManager() {
 								<th className='text-center'>
 									<FormattedMessage id='table.no' />
 								</th>
-								<SortableTableHeader name='title' intl='common.title.default' onChange={handleOnChangeSort} />
+								<SortableTableHeader name='title' intl='common.title.default' onChange={handleChangeSort} />
 								<SortableTableHeader
 									className='text-center'
 									name='index'
 									intl='table.index'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<SortableTableHeader
 									name='positionType'
 									intl='common.position'
 									className='text-center'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<SortableTableHeader
 									name='createdAt'
 									intl='common.created_at'
 									className='text-center'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<th className='text-center'>
 									<FormattedMessage id='table.actions' />
@@ -206,8 +206,8 @@ export function HtmlContentManager() {
 						pagesize={queryParams.pagesize || 25}
 						totalPages={totalPages}
 						currentPage={+queryParams.page - 1}
-						handleOnPageChange={handleOnPageChange}
-						handleOnSelect={handleOnSelect}
+						handlePageChange={handlePageChange}
+						handleSelect={handleSelect}
 					/>
 				</div>
 			</Container>

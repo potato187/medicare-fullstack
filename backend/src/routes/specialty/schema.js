@@ -5,7 +5,7 @@ const nameValidate = Joi.string().min(3).max(255);
 const descriptionValidate = Joi.string().min(3).max(255);
 const imageValidate = Joi.string().min(3).max(255);
 
-const createSchema = Joi.object({
+const createSchema = Joi.object().keys({
 	key: keyValidate.required(),
 	name: Joi.object({
 		vi: nameValidate.required(),

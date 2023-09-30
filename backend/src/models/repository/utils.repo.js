@@ -115,8 +115,10 @@ class UtilsRepo {
 	static async getByQueryParams({ model, queryParams }) {
 		const _Model = UtilsRepo.getModel(model);
 		const { search, match, sort = [], page = 1, pagesize = 25, select = [] } = queryParams;
-		const $skip = (+page - 1) * pagesize;
-		const $limit = +pagesize;
+		const _pagesize = Math.max(1, +pagesize);
+		const _page = Math.max(1, +page);
+		const $skip = (_page - 1) * _pagesize;
+		const $limit = _pagesize;
 		const $sort = sort.length ? createSortData(sort) : { ctime: 1 };
 		const $select = createSelectData(select);
 
@@ -150,7 +152,7 @@ class UtilsRepo {
 		return {
 			data: results,
 			meta: {
-				page: +page,
+				page: _page,
 				pagesize: $limit,
 				totalPages: Math.ceil(total / $limit) || 1,
 				search,

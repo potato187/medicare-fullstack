@@ -44,9 +44,9 @@ export function NewsManager() {
 		queryParams,
 		totalPages,
 		setData: updateNews,
-		handleOnPageChange,
-		handleOnSelect,
-		handleOnChangeSort,
+		handlePageChange,
+		handleSelect,
+		handleChangeSort,
 	} = useAsyncLocation({
 		fetch: newsApi.getByQueryParams,
 	});
@@ -135,14 +135,14 @@ export function NewsManager() {
 								name='page_type'
 								value={queryParams.page_type}
 								options={configs.pageTypes}
-								onSelect={handleOnSelect}
+								onSelect={handleSelect}
 							/>
 							<Dropdown
 								size='md'
 								name='page_position'
 								value={queryParams.page_position}
 								options={configs.positionTypes}
-								onSelect={handleOnSelect}
+								onSelect={handleSelect}
 							/>
 						</div>
 						<div className='px-5 d-flex gap-2 ms-auto'>
@@ -167,19 +167,19 @@ export function NewsManager() {
 									className='text-center'
 									name='index'
 									intl='table.index'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<SortableTableHeader
 									name='positionType'
 									intl='common.position'
 									className='text-center'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<SortableTableHeader
 									name='isDisplay'
 									intl='common.display'
 									className='text-center'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<th className='text-center'>
 									<FormattedMessage id='table.actions' />
@@ -218,8 +218,8 @@ export function NewsManager() {
 						pagesize={queryParams.pagesize || 25}
 						totalPages={totalPages}
 						currentPage={+queryParams.page - 1}
-						handleOnPageChange={handleOnPageChange}
-						handleOnSelect={handleOnSelect}
+						handlePageChange={handlePageChange}
+						handleSelect={handleSelect}
 					/>
 				</div>
 			</Container>

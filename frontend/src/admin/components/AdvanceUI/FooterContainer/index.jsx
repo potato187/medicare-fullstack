@@ -7,8 +7,8 @@ export function FooterContainer({
 	pagesize = 25,
 	currentPage = 0,
 	totalPages = 1,
-	handleOnSelect = () => null,
-	handleOnPageChange = () => null,
+	handleSelect = () => null,
+	handlePageChange = () => null,
 }) {
 	return (
 		<div className='d-flex justify-content-between pt-6'>
@@ -22,13 +22,13 @@ export function FooterContainer({
 					size='sm'
 					paginationNumbers={PAGINATION_OPTIONS}
 					perPage={+pagesize || 25}
-					onSelect={handleOnSelect}
+					onSelect={handleSelect}
 				/>
 				<span className='text-size-xs'>
 					<FormattedMessage id='table.entries' />
 				</span>
 			</div>
-			<BasePagination forcePage={currentPage} pageCount={+totalPages} onPageChange={handleOnPageChange} />
+			<BasePagination forcePage={currentPage} pageCount={+totalPages} onPageChange={handlePageChange} />
 		</div>
 	);
 }

@@ -20,7 +20,7 @@ const { BookingStatusOptions, BookingStatusDefault, SelectFields, SortFields, So
 const appointmentDateValidator = dateValidator.min(new Date().setDate(new Date().getDate() + 1));
 const dateOfBirthValidator = dateValidator.max(new Date().setDate(new Date().getDate() - 1));
 
-const createSchema = Joi.object({
+const createSchema = Joi.object().keys({
 	specialtyId: ObjectIdMongodbValidator,
 	doctorId: ObjectIdMongodbValidator,
 	workingHourId: ObjectIdMongodbValidator,

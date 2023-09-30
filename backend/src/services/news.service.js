@@ -3,7 +3,6 @@ const fs = require('fs');
 const { UtilsRepo } = require('@/models/repository');
 const { NEWS_MODEL } = require('@/models/repository/constant');
 const { getInfoData, convertToObjectIdMongodb } = require('@/utils');
-const { SELECT_FIELDS } = require('@/constant/news.constant');
 
 class NewsService {
 	static model = NEWS_MODEL;

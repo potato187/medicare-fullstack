@@ -1,8 +1,11 @@
 const { UtilsRepo } = require('@/models/repository');
 const { BLOG_MODEL } = require('@/models/repository/constant');
 const { getInfoData, convertToObjectIdMongodb, createSearchData } = require('@/utils');
+const fs = require('fs');
+const path = require('path');
 
 const SEARCHABLE_FIELDS = ['title.vi', 'title.en'];
+const BLOG_IMAGE_PATH = 'public/uploads/blogs';
 
 class BlogService {
 	static model = BLOG_MODEL;
@@ -32,11 +35,22 @@ class BlogService {
 		});
 	}
 
-	static async createOne(body) {
+	static async createOne({ file, body }) {
 		const newCategory = await UtilsRepo.createOne({
 			model: BlogService.model,
 			body,
 		});
+
+		if (file) {
+			const oldPath = file.path;
+			const newPath = path.join(BLOG_IMAGE_PATH, `${newCategory._id}${path.extname(file.originalname)}`);
+			fs.rename(oldPath, newPath, async (error) => {
+				if (!error) {
+					newCategory.image = newPath;
+					await newCategory.save();
+				}
+			});
+		}
 
 		return getInfoData({
 			fields: ['_id', 'title', 'datePublished', 'isDisplay'],

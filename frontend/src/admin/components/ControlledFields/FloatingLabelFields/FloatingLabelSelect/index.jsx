@@ -32,7 +32,7 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 	const value = watch(name);
 	const currentOption = options.find((option) => option.value === value) || options[0];
 
-	const handleOnSelect = (option) => {
+	const handleSelect = (option) => {
 		setValue(name, option.value, { shouldDirty: true, shouldTouch: true });
 		toggleDropdown(false);
 	};
@@ -72,7 +72,7 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 								className={cn({
 									[activeCln]: option.value === currentOption.value,
 								})}
-								onClick={() => handleOnSelect(option)}
+								onClick={() => handleSelect(option)}
 							>
 								{option.label}
 							</div>

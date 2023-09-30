@@ -9,7 +9,7 @@ const Joi = require('joi');
 
 const SELECT_FIELDS = ['name', 'type', 'url', 'parentId', 'index', 'isDisplay'];
 
-const createSchema = Joi.object({
+const createSchema = Joi.object().keys({
 	name: Joi.object({
 		vi: Joi.string().required(),
 		en: Joi.string().required(),

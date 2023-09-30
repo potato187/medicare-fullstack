@@ -4,7 +4,7 @@ const Joi = require('joi');
 const SELECT_FIELDS = ['_id', 'name', 'slug', 'parentId', 'banner', 'isDisplay'];
 const nameValidator = Joi.string().min(3).max(250);
 
-const createSchema = Joi.object({
+const createSchema = Joi.object().keys({
 	name: Joi.object({
 		vi: nameValidator.required(),
 		en: nameValidator.required(),

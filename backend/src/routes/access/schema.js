@@ -8,7 +8,7 @@ const {
 } = require('@/validations');
 const Joi = require('joi');
 
-const signUpSchema = Joi.object({
+const signUpSchema = Joi.object().keys({
 	firstName: nameValidator.required(),
 	lastName: nameValidator.required(),
 	email: emailValidator,
@@ -18,7 +18,7 @@ const signUpSchema = Joi.object({
 	gender: genderValidator,
 });
 
-const loginSchema = Joi.object({
+const loginSchema = Joi.object().keys({
 	email: emailValidator,
 	password: passwordValidator,
 });

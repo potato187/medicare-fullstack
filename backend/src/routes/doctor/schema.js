@@ -21,7 +21,7 @@ const descriptionValidator = Joi.object({
 	en: Joi.string().allow(''),
 });
 
-const createSchema = Joi.object({
+const createSchema = Joi.object().keys({
 	firstName: nameValidator.required(),
 	lastName: nameValidator.required(),
 	address: Joi.string().default(''),

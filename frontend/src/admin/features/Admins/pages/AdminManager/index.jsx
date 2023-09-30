@@ -32,10 +32,10 @@ export function AdminManager() {
 		setData: setAdmins,
 		queryParams,
 		totalPages,
-		handleOnChangeSort,
-		handleOnChangeSearch,
-		handleOnPageChange,
-		handleOnSelect,
+		handleChangeSort,
+		handleChangeSearch,
+		handlePageChange,
+		handleSelect,
 	} = useAsyncLocation({
 		fetch: adminApi.queryAdminByParams,
 	});
@@ -132,7 +132,7 @@ export function AdminManager() {
 						<div className='d-flex'>
 							<UnFieldDebounce
 								delay={500}
-								onChange={handleOnChangeSearch}
+								onChange={handleChangeSearch}
 								initialValue={queryParams.search || ''}
 								type='text'
 								placeholderIntl='form.search_placeholder'
@@ -155,9 +155,9 @@ export function AdminManager() {
 								<th className='text-center'>
 									<FormattedMessage id='table.no' />
 								</th>
-								<SortableTableHeader name='firstName' intl='form.firstName' onChange={handleOnChangeSort} />
-								<SortableTableHeader name='lastName' intl='form.lastName' onChange={handleOnChangeSort} />
-								<SortableTableHeader name='email' intl='form.email' onChange={handleOnChangeSort} />
+								<SortableTableHeader name='firstName' intl='form.firstName' onChange={handleChangeSort} />
+								<SortableTableHeader name='lastName' intl='form.lastName' onChange={handleChangeSort} />
+								<SortableTableHeader name='email' intl='form.email' onChange={handleChangeSort} />
 								<th className='text-start'>
 									<FormattedMessage id='form.phone' />
 								</th>
@@ -191,8 +191,8 @@ export function AdminManager() {
 					<FooterContainer
 						pagesize={queryParams.pagesize}
 						totalPages={totalPages}
-						handleOnSelect={handleOnSelect}
-						handleOnPageChange={handleOnPageChange}
+						handleSelect={handleSelect}
+						handlePageChange={handlePageChange}
 					/>
 				</div>
 			</Container>

@@ -3,6 +3,7 @@ const { authMiddleware } = require('@/auth');
 const { validateRequest, processQueryParams } = require('@/middleware');
 const { idSchema } = require('@/validations');
 const { BlogController } = require('@/controllers');
+const { upload } = require('@/storage');
 const { updateSchema, querySchema, createSchema } = require('./schema');
 
 const router = express.Router();
@@ -14,7 +15,7 @@ router.get('/', processQueryParams(['sort']), validateRequest(querySchema, 'quer
 
 router.get('/:id', validateRequest(idSchema, 'params'), BlogController.getOneById);
 
-router.post('', validateRequest(createSchema), BlogController.createOne);
+router.post('', upload.single('image[0]'), validateRequest(createSchema), BlogController.createOne);
 
 router.patch('/:id', validateRequest(idSchema, 'params'), validateRequest(updateSchema), BlogController.updateOneById);
 

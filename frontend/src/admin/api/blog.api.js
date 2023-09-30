@@ -1,3 +1,5 @@
+import { HEADERS_CONTENT } from 'admin/constant';
+import { buildFormData } from 'admin/utilities';
 import { axiosClient } from './axiosClient';
 import { BLOG_ENDPOINT } from './constant';
 
@@ -6,8 +8,10 @@ export const blogApi = {
 		return axiosClient.get(`${BLOG_ENDPOINT}/${id}`);
 	},
 
-	createOne(body) {
-		return axiosClient.post(`${BLOG_ENDPOINT}`, body);
+	createOne(data) {
+		const formData = new FormData();
+		buildFormData(formData, data);
+		return axiosClient.post(`${BLOG_ENDPOINT}`, formData, { headers: HEADERS_CONTENT.formData });
 	},
 
 	getByQueryParams(params) {

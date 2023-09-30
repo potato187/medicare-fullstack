@@ -34,7 +34,7 @@ const getOneSchema = Joi.object({
 	select: fieldsValidator(SELECT_FIELDS, SELECT_FIELDS),
 });
 
-const createSchema = Joi.object({
+const createSchema = Joi.object().keys({
 	name: Joi.object({
 		vi: Joi.string().required(),
 		en: Joi.string().required(),

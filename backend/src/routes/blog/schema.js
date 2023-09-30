@@ -15,7 +15,7 @@ const SELECT_FIELDS = ['title', 'slug', 'datePublished', 'isDisplay'];
 
 const titleValidator = Joi.string().trim().min(3).max(250);
 
-const createSchema = Joi.object({
+const createSchema = Joi.object().keys({
 	title: {
 		vi: titleValidator.required(),
 		en: titleValidator.required(),
@@ -32,7 +32,6 @@ const createSchema = Joi.object({
 		vi: Joi.string().allow('').default(''),
 		en: Joi.string().allow('').default(''),
 	},
-	image: Joi.string().allow('').default(''),
 	datePublished: dateValidator,
 	blogCategoryIds: Joi.array().items(ObjectIdMongodbValidator),
 });

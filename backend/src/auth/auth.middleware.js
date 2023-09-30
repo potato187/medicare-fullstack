@@ -23,7 +23,7 @@ const authorization = tryCatch(async (req, _, next) => {
 	const accessToken = req.headers[HEADERS.AUTHORIZATION]?.split(' ')[1];
 
 	if (!clientId || !accessToken) {
-		throw new UnauthorizedRequestError({ code: 100401 })();
+		throw new UnauthorizedRequestError({ code: 100401 });
 	}
 
 	const filter = { userId: convertToObjectIdMongodb(clientId) };

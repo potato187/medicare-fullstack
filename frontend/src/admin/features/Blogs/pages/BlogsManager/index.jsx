@@ -15,7 +15,7 @@ import {
 	UnFieldSwitch,
 } from 'admin/components';
 import { useAsyncLocation, useIndex, useToggle } from 'admin/hooks';
-import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
+import { compose, formatISODate, showToastMessage, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import produce from 'immer';
 import { useMemo } from 'react';
@@ -60,10 +60,10 @@ export function BlogsManager() {
 		totalPages,
 		setData: updateBlogs,
 		setQueryParams,
-		handleOnPageChange,
-		handleOnSelect,
-		handleOnChangeSearch,
-		handleOnChangeSort,
+		handlePageChange,
+		handleSelect,
+		handleChangeSearch,
+		handleChangeSort,
 	} = useAsyncLocation({
 		fetch: blogApi.getByQueryParams,
 		parameters: {
@@ -124,9 +124,9 @@ export function BlogsManager() {
 		toggleEditorModal();
 	}, languageId);
 
-	const handleCreateBlog = tryCatchAndToast(async (data) => {
-		const { id, ...body } = data;
-		const { message, metadata } = await blogApi.createOne(body);
+	const handleCreate = tryCatchAndToast(async (data) => {
+		const { id, slug, datePublished, ...body } = data;
+		const { message, metadata } = await blogApi.createOne({ datePublished: formatISODate(datePublished), ...body });
 		if (Blogs.length < queryParams.pagesize) {
 			updateBlogs(
 				produce((draft) => {
@@ -158,7 +158,7 @@ export function BlogsManager() {
 								placeholderIntl='form.search_placeholder'
 								ariallabel='search field'
 								id='form-search'
-								onChange={handleOnChangeSearch}
+								onChange={handleChangeSearch}
 							/>
 						</div>
 						<div className='px-5 d-flex gap-2 ms-auto'>
@@ -180,19 +180,19 @@ export function BlogsManager() {
 									className='text-start'
 									name={`title.${languageId}`}
 									intl='common.title.default'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<SortableTableHeader
 									className='text-center'
 									name='datePublished'
 									intl='common.public_date'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<SortableTableHeader
 									className='text-center'
 									name='isDisplay'
 									intl='form.display'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<th className='text-center'>
 									<FormattedMessage id='table.actions' />
@@ -233,8 +233,8 @@ export function BlogsManager() {
 						pagesize={queryParams.pagesize || 25}
 						totalPages={totalPages}
 						currentPage={+queryParams.page - 1}
-						handleOnPageChange={handleOnPageChange}
-						handleOnSelect={handleOnSelect}
+						handlePageChange={handlePageChange}
+						handleSelect={handleSelect}
 					/>
 				</div>
 			</Container>
@@ -256,7 +256,7 @@ export function BlogsManager() {
 				isOpen={isOpenEditorModal}
 				onClose={toggleEditorModal}
 				onSubmitUpdate={handleUpdateBlog}
-				onSubmitCreate={handleCreateBlog}
+				onSubmitCreate={handleCreate}
 			/>
 		</>
 	);

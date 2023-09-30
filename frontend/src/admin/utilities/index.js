@@ -244,3 +244,20 @@ export const isDateInRange = (date, startDate, endDate = null) => {
 export const mapData = (data = [], languageId = 'en') => {
 	return data.map(({ _id, name }) => ({ value: _id, label: name[languageId] }));
 };
+
+export const buildFormData = (formData, data, parentKey) => {
+	if (
+		data &&
+		typeof data === 'object' &&
+		!(data instanceof Date) &&
+		!(data instanceof File) &&
+		!(data instanceof Blob)
+	) {
+		Object.keys(data).forEach((key) => {
+			buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+		});
+	} else {
+		const value = data == null ? '' : data;
+		formData.append(parentKey, value);
+	}
+};

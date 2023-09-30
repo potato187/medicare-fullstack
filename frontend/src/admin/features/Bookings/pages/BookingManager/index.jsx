@@ -40,13 +40,13 @@ export function BookingManager() {
 		Genders,
 		queryParams,
 		totalPages,
-		handleOnChangeSort,
+		handleChangeSort,
 		handleSelectRangeDates,
 		setBookings,
 		setBookingIndex,
-		handleOnSelect,
-		handleOnPageChange,
-		handleOnChangeSearch,
+		handleSelect,
+		handlePageChange,
+		handleChangeSearch,
 	} = useBookings({ languageId });
 
 	const [statusConfirmModal, toggleConfirmDeletion] = useToggle();
@@ -109,7 +109,7 @@ export function BookingManager() {
 									name='specialtyId'
 									value={queryParams.specialtyId}
 									options={Specialties}
-									onSelect={handleOnSelect}
+									onSelect={handleSelect}
 								/>
 								<div className='d-flex'>
 									<UnFieldDebounce
@@ -118,7 +118,7 @@ export function BookingManager() {
 										placeholderIntl='form.search_placeholder'
 										ariallabel='search field'
 										id='form-search'
-										onChange={handleOnChangeSearch}
+										onChange={handleChangeSearch}
 									/>
 								</div>
 							</div>
@@ -136,9 +136,9 @@ export function BookingManager() {
 									name='workingHourId'
 									value={queryParams.workingHourId}
 									options={WorkingHours}
-									onSelect={handleOnSelect}
+									onSelect={handleSelect}
 								/>
-								<Dropdown name='status' options={Statuses} value={queryParams.status} onSelect={handleOnSelect} />
+								<Dropdown name='status' options={Statuses} value={queryParams.status} onSelect={handleSelect} />
 							</div>
 						</div>
 					</div>
@@ -152,7 +152,7 @@ export function BookingManager() {
 									className='text-start'
 									name='fullName'
 									intl='form.fullName'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<th className='text-start'>
 									<FormattedMessage id='form.phone' />
@@ -164,7 +164,7 @@ export function BookingManager() {
 									className='text-center'
 									name='appointmentDate'
 									intl='common.appointmentDate'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<th className='text-center'>
 									<FormattedMessage id='table.status' />
@@ -204,8 +204,8 @@ export function BookingManager() {
 						pagesize={queryParams.pagesize || 25}
 						totalPages={totalPages}
 						currentPage={+queryParams.page - 1}
-						handleOnPageChange={handleOnPageChange}
-						handleOnSelect={handleOnSelect}
+						handlePageChange={handlePageChange}
+						handleSelect={handleSelect}
 					/>
 				</div>
 			</Container>

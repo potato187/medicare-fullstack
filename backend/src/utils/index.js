@@ -2,6 +2,7 @@ const { Types } = require('mongoose');
 const crypto = require('node:crypto');
 const _ = require('lodash');
 const slugify = require('slugify');
+const fs = require('fs');
 
 const typeOf = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
 
@@ -60,8 +61,8 @@ const isEmpty = (value) => {
 	return type !== 'null' && type !== 'undefined';
 };
 
-const removeFalsyProperties = (falsyMap = ['undefined', 'null']) =>
-	function fn(object) {
+const removeFalsyProperties = (falsyMap = ['undefined', 'null']) => {
+	return function fn(object) {
 		return Object.entries(object).reduce((obj, [key, value]) => {
 			const type = typeOf(value);
 			if (type !== 'object' && !falsyMap.includes(type)) {
@@ -77,6 +78,7 @@ const removeFalsyProperties = (falsyMap = ['undefined', 'null']) =>
 			return obj;
 		}, {});
 	};
+};
 
 module.exports = {
 	convertToObjectIdMongodb,

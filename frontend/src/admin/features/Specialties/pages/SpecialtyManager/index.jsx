@@ -41,10 +41,10 @@ export function SpecialtyManager() {
 		Doctors,
 		queryParams,
 		setDoctors,
-		handleOnSelect,
-		handleOnChangeSort,
-		handleOnChangeSearch,
-		handleOnPageChange,
+		handleSelect,
+		handleChangeSort,
+		handleChangeSearch,
+		handlePageChange,
 		handleSelectSpecialty,
 	} = useSpecialties(languageId);
 
@@ -170,7 +170,7 @@ export function SpecialtyManager() {
 									placeholderIntl='form.search_placeholder'
 									ariallabel='search field'
 									id='search-field'
-									onChange={handleOnChangeSearch}
+									onChange={handleChangeSearch}
 								/>
 							</div>
 						</div>
@@ -208,13 +208,13 @@ export function SpecialtyManager() {
 									className='text-start'
 									name='firstName'
 									intl='form.firstName'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<SortableTableHeader
 									className='text-start'
 									name='lastName'
 									intl='form.lastName'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<th className='text-start'>
 									<FormattedMessage id='form.phone' />
@@ -223,13 +223,13 @@ export function SpecialtyManager() {
 									className='text-start'
 									name='email'
 									intl='form.email'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<SortableTableHeader
 									className='text-start'
 									name='position'
 									intl='common.position'
-									onChange={handleOnChangeSort}
+									onChange={handleChangeSort}
 								/>
 								<th className='text-center'>
 									<FormattedMessage id='table.actions' />
@@ -271,8 +271,8 @@ export function SpecialtyManager() {
 					<FooterContainer
 						pagesize={queryParams.pagesize}
 						totalPages={queryParams.totalPages}
-						handleOnSelect={handleOnSelect}
-						handleOnPageChange={handleOnPageChange}
+						handleSelect={handleSelect}
+						handlePageChange={handlePageChange}
 					/>
 				</div>
 			</Container>

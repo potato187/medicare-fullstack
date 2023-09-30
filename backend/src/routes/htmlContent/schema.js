@@ -16,7 +16,7 @@ const SELECT_FIELDS = ['title', 'index', 'isDisplay', 'createdAt', 'positionType
 const pageTypesValidator = enumWithDefaultValidator(PAGES);
 const pagePotionsValidator = enumWithDefaultValidator(PAGE_POSITIONS);
 
-const createSchema = Joi.object({
+const createSchema = Joi.object().keys({
 	pageType: fieldsValidator(PAGES).default(PAGES),
 	positionType: pagePotionsValidator.default(PAGE_POSITIONS[0]),
 	index: Joi.number().integer().min(0).default(0),

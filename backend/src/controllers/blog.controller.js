@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { OkResponse, CreatedResponse } = require('@/core');
 const { tryCatch } = require('@/middleware');
 const { BlogService } = require('@/services');
@@ -5,7 +6,7 @@ const { BlogService } = require('@/services');
 class BlogController {
 	createOne = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
-			metadata: await BlogService.createOne(req.body),
+			metadata: await BlogService.createOne(req),
 		}).send(res);
 	});
 

@@ -67,7 +67,7 @@ export const useSpecialties = (languageId = 'en') => {
 		[queryParams, locationPathName, navigate],
 	);
 
-	const handleOnChangeSort = (key, direction) => {
+	const handleChangeSort = (key, direction) => {
 		const sortItem = `${key},${direction}`;
 		const sortList = typeOf(queryParams.sort) === 'string' ? [queryParams.sort] : queryParams.sort;
 		const sortItemIndex = sortList.findIndex((item) => {
@@ -83,15 +83,15 @@ export const useSpecialties = (languageId = 'en') => {
 		setQueryParams({ sort: sortList });
 	};
 
-	const handleOnPageChange = ({ selected }) => {
+	const handlePageChange = ({ selected }) => {
 		setQueryParams({ page: selected + 1 });
 	};
 
-	const handleOnSelect = ({ key, value }) => {
+	const handleSelect = ({ key, value }) => {
 		setQueryParams({ [key]: value });
 	};
 
-	const handleOnChangeSearch = (str) => {
+	const handleChangeSearch = (str) => {
 		setQueryParams({ search: str });
 	};
 
@@ -152,10 +152,10 @@ export const useSpecialties = (languageId = 'en') => {
 		totalPages,
 		queryParams,
 		setDoctors,
-		handleOnSelect,
-		handleOnPageChange,
-		handleOnChangeSort,
-		handleOnChangeSearch,
+		handleSelect,
+		handlePageChange,
+		handleChangeSort,
+		handleChangeSearch,
 		handleSelectSpecialty,
 	};
 };
