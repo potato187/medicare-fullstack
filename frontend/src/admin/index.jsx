@@ -16,6 +16,7 @@ import {
 	HtmlContentManager,
 	LanguageManager,
 	LoginPage,
+	NewsManager,
 	SettingConfigManager,
 	SpecialtyManager,
 } from './features';
@@ -51,6 +52,7 @@ export default function Admin() {
 
 									<Route path='blogs/*'>
 										<Route path='categories' element={<BlogCategoryManager />} />
+										<Route path='news' element={<NewsManager />} />
 										<Route path='manage' element={<BlogsManager />} />
 										<Route path='*' element={<Navigate to='manage' replace />} />
 									</Route>

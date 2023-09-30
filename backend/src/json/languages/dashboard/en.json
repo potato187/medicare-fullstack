@@ -13,6 +13,9 @@
 		"information": "Information",
 		"note": "Note",
 		"blog": "Blog",
+		"order": "Order",
+		"display": "Display",
+		"quantity": "Quantity",
 		"created_at": "Created At",
 		"updated_at": "Updated At",
 		"public_date": "Public Date",
@@ -202,6 +205,21 @@
 			"title": "Blogs Manager",
 			"manage": { "title": "Blog Manager" },
 			"categories": { "title": "Category Manager" },
+			"news": {
+				"title": "News",
+				"modals": {
+					"create": {
+						"title": "Create News"
+					},
+					"update": {
+						"title": "Update News"
+					},
+					"delete": {
+						"title": "Confirm Deletion",
+						"description": "Are you sure you want to delete the news with <b>{title}</b>? This action cannot be undone."
+					}
+				}
+			},
 			"create": { "title": "Create blog" },
 			"modal": {
 				"titleEn": "Title (English)",

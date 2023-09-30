@@ -11,3 +11,4 @@ export const HTML_CONTENT_ENDPOINT = 'html-content';
 export const RESOURCE_ENDPOINT = 'resource';
 export const LINK_ENDPOINT = 'link';
 export const SETTING_CONFIGS_ENDPOINT = 'setting-config';
+export const NEWS_ENDPOINT = 'news';

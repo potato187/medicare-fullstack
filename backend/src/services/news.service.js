@@ -17,7 +17,7 @@ class NewsService {
 		});
 
 		return getInfoData({
-			fields: SELECT_FIELDS,
+			fields: ['_id', 'name', 'positionType', 'index', 'quantity', 'isDisplay'],
 			object: news,
 		});
 	}
@@ -31,15 +31,15 @@ class NewsService {
 	}
 
 	static async getByQueryParams(queryParams) {
-		const { page_type: pageType, page_position: pagePosition, search = '', ...params } = queryParams;
+		const { page_type: pageType, page_position: positionType, search = '', ...params } = queryParams;
 		const match = { isDeleted: false };
 
 		if (pageType && pageType !== 'all') {
 			match.pageType = pageType;
 		}
 
-		if (pagePosition && pagePosition !== 'all') {
-			match.pageType = pagePosition;
+		if (positionType && positionType !== 'all') {
+			match.positionType = positionType;
 		}
 
 		return UtilsRepo.getByQueryParams({
@@ -49,7 +49,8 @@ class NewsService {
 	}
 
 	static async updateOneById({ id, updateBody }) {
-		if (Object.keys(updateBody)) return {};
+		const select = Object.keys(updateBody);
+		if (!select.length) return {};
 
 		const filter = { _id: convertToObjectIdMongodb(id) };
 		const { model } = NewsService;
@@ -60,11 +61,12 @@ class NewsService {
 			model,
 			filter,
 			updateBody,
+			select,
 		});
 	}
 
 	static async deleteOneById(id) {
-		return NewsService.findOneAndUpdate({ id, updateBody: { isDeleted: true } });
+		return NewsService.updateOneById({ id, updateBody: { isDeleted: true } });
 	}
 
 	static async getConfig() {

@@ -1,9 +1,9 @@
 const express = require('express');
 const { authMiddleware } = require('@/auth');
 const newsController = require('@/controllers/news.controller');
-const { validateRequest } = require('@/middleware');
+const { validateRequest, processQueryParams } = require('@/middleware');
 const { idSchema } = require('@/validations');
-const { querySchema, getOneSchema, createSchema } = require('./schema');
+const { querySchema, getOneSchema, createSchema, updateSchema } = require('./schema');
 
 const router = express.Router();
 
@@ -19,11 +19,16 @@ router.get(
 
 router.get('/config', newsController.getConfig);
 
-router.get('/query', validateRequest(querySchema, 'query'), newsController.getByQueryParams);
+router.get(
+	'/query',
+	processQueryParams(['sort']),
+	validateRequest(querySchema, 'query'),
+	newsController.getByQueryParams,
+);
 
 router.post('/', validateRequest(createSchema), newsController.createOne);
 
-router.patch('/:id', validateRequest(idSchema, 'params'), validateRequest(createSchema), newsController.updateOneById);
+router.patch('/:id', validateRequest(idSchema, 'params'), validateRequest(updateSchema), newsController.updateOneById);
 
 router.delete('/:id', validateRequest(idSchema, 'params'), newsController.deleteOneById);
 

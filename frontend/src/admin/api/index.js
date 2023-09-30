@@ -10,3 +10,4 @@ export * from './link.api';
 export * from './resource.api';
 export * from './settingConfig.api';
 export * from './specialties.api';
+export * from './news.api';

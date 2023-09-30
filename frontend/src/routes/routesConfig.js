@@ -74,6 +74,10 @@ export const routesConfig = [
 				intl: 'dashboard.blogs.manage.title',
 				to: '/admin/dashboard/blogs/manage',
 			},
+			{
+				intl: 'dashboard.blogs.news.title',
+				to: '/admin/dashboard/blogs/news',
+			},
 		],
 	},
 ];
