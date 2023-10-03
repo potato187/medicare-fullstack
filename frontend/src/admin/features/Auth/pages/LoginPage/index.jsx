@@ -10,7 +10,7 @@ import { Layout } from '../../components';
 
 const REDIRECT_TO_DASHBOARD = '../dashboard';
 
-export function LoginPage() {
+export default function LoginPage() {
 	const { status } = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
 	const methods = useForm({

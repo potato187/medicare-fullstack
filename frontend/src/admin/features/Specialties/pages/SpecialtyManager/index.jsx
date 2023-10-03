@@ -26,7 +26,7 @@ import { DoctorModal, ExportModal, ImportExcelModal } from '../../components';
 import { useSpecialties } from '../../hooks';
 import { getHandleExport } from '../../utils/export.strategy';
 
-export function SpecialtyManager() {
+export default function SpecialtyManager() {
 	const {
 		info: { languageId },
 	} = useAuth();

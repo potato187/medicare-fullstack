@@ -21,7 +21,7 @@ import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { AdminModal } from '../../components';
 
-export function AdminManager() {
+export default function AdminManager() {
 	const {
 		info: { languageId },
 	} = useAuth();

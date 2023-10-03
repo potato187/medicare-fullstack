@@ -1,1 +1,1 @@
-export * from './BookingManager';
+export { default as BookingManager } from './BookingManager';

@@ -23,7 +23,7 @@ import { FormattedMessage } from 'react-intl';
 import { firstCapitalize } from 'utils';
 import { NewsModal } from '../../components';
 
-export function NewsManager() {
+export default function NewsManager() {
 	const {
 		info: { languageId },
 	} = useAuth();

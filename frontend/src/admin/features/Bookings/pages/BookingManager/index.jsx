@@ -25,7 +25,7 @@ import { formatDateToDDMMYYYY, formatPhone } from 'utils';
 import { BookingModal } from '../../components';
 import { useBookings } from '../../hooks/useBookings';
 
-export function BookingManager() {
+export default function BookingManager() {
 	const {
 		info: { languageId },
 	} = useAuth();

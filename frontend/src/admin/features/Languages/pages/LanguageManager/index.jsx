@@ -18,7 +18,7 @@ import { useLanguages } from 'stores';
 import * as yup from 'yup';
 import { convertData, convertName } from '../../utilities';
 
-export function LanguageManager() {
+export default function LanguageManager() {
 	const { languageId = '' } = useParams();
 	const { languages, validationForm, updateLanguage } = useLanguages();
 	const language = useMemo(() => convertData(languages[languageId]), [languages, languageId]);

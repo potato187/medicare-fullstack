@@ -1,1 +1,1 @@
-export * from './LanguageManager';
+export { default as LanguageManager } from './LanguageManager';

@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { LinkModal } from '../../components';
 
-export function HeaderManager() {
+export default function HeaderManager() {
 	const {
 		info: { languageId },
 	} = useAuth();

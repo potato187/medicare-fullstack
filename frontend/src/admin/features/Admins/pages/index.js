@@ -1,1 +1,1 @@
-export * from './AdminManager';
+export { default as AdminManager } from './AdminManager';

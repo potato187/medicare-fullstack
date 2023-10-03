@@ -22,7 +22,7 @@ import { FormattedMessage } from 'react-intl';
 import { firstCapitalize, formatDate } from 'utils';
 import { HtmlContentModal } from '../../components';
 
-export function HtmlContentManager() {
+export default function HtmlContentManager() {
 	const {
 		info: { languageId },
 	} = useAuth();

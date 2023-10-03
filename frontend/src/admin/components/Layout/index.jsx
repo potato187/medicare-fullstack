@@ -1,7 +1,9 @@
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { routesConfig } from 'routes/routesConfig';
-import { SidebarNavigator } from './SidebarNavigator';
+import { Preloader } from '../Loader';
 import { HeaderPage } from './HeaderPage';
+import { SidebarNavigator } from './SidebarNavigator';
 import module from './style.module.scss';
 
 export function Layout() {
@@ -15,7 +17,9 @@ export function Layout() {
 			<div className={mainCln}>
 				<HeaderPage />
 				<div className={wrapperCln}>
-					<Outlet />
+					<Suspense fallback={<Preloader />}>
+						<Outlet />
+					</Suspense>
 				</div>
 			</div>
 		</div>

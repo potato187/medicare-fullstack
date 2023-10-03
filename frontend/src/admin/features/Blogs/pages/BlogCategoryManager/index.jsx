@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { BlogCategoryModal } from '../../components';
 
-export function BlogCategoryManager() {
+export default function BlogCategoryManager() {
 	const {
 		info: { languageId },
 	} = useAuth();

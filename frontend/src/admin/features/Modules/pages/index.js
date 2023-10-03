@@ -1,4 +1,4 @@
-export * from './FooterManager';
-export * from './HeaderManager';
-export * from './HtmlContentManager';
-export * from './SettingConfigManager';
+export { default as FooterManager } from './FooterManager';
+export { default as HeaderManager } from './HeaderManager';
+export { default as HtmlContentManager } from './HtmlContentManager';
+export { default as SettingConfigManager } from './SettingConfigManager';

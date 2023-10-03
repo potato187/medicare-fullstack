@@ -35,7 +35,7 @@ const DEFAULT_OPTION = {
 	name: 'blog-categories',
 };
 
-export function BlogsManager() {
+export default function BlogsManager() {
 	const {
 		info: { languageId },
 	} = useAuth();

@@ -18,7 +18,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { settingConfigSchema } from './validation';
 
-export function SettingConfigManager() {
+export default function SettingConfigManager() {
 	const {
 		info: { languageId },
 	} = useAuth();
