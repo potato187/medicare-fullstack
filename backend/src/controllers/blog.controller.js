@@ -24,7 +24,7 @@ class BlogController {
 
 	updateOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
-			metadata: await BlogService.updateOneById({ id: req.params.id, updateBody: req.body }),
+			metadata: await BlogService.updateOneById({ id: req.params.id, updateBody: req.body, file: req.file || '' }),
 		}).send(res);
 	});
 

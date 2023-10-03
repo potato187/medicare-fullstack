@@ -39,7 +39,7 @@ export function BlogsManager() {
 	const {
 		info: { languageId },
 	} = useAuth();
-	const { index: blogIndex, setCurrentIndex: setBlogIndex } = useIndex();
+	const { index: blogIndex, setIndex: setBlogIndex } = useIndex();
 
 	const [blogCategories] = useFetchBlogCategories();
 
@@ -71,17 +71,17 @@ export function BlogsManager() {
 		},
 	});
 
-	const [isOpenConfirmModal, toggleConfirmModal] = useToggle();
-	const [isOpenEditorModal, toggleEditorModal] = useToggle();
+	const [statusConfirmModal, toggleConfirmModal] = useToggle();
+	const [statusModal, toggleEditorModal] = useToggle();
 
-	const openConfirmModal = compose(setBlogIndex, toggleConfirmModal);
-	const openEditorModal = compose(setBlogIndex, toggleEditorModal);
+	const handleToggleConfirmModal = compose(setBlogIndex, toggleConfirmModal);
+	const handleToggleModal = compose(setBlogIndex, toggleEditorModal);
 
 	const handleSelectCategory = (categoryId) => {
 		setQueryParams({ categoryId });
 	};
 
-	const handleToggleDisplayBlog = tryCatchAndToast(async (data) => {
+	const handleToggleDisplay = tryCatchAndToast(async (data) => {
 		const { id, isDisplay, index } = data;
 		const { message } = await blogApi.updateOneById(id, { isDisplay });
 		updateBlogs(
@@ -92,7 +92,7 @@ export function BlogsManager() {
 		showToastMessage(message, languageId);
 	}, languageId);
 
-	const handleDeleteBlog = tryCatchAndToast(async () => {
+	const handleDelete = tryCatchAndToast(async () => {
 		const index = blogIndex;
 		const { message } = await blogApi.deleteOneById(Blogs[index]._id);
 		updateBlogs(
@@ -105,7 +105,7 @@ export function BlogsManager() {
 		toggleConfirmModal();
 	}, languageId);
 
-	const handleUpdateBlog = tryCatchAndToast(async (data) => {
+	const handleUpdate = tryCatchAndToast(async (data) => {
 		const { blogId, ...updateBody } = data;
 		const { message, metadata } = await blogApi.updateOneById(blogId, updateBody);
 
@@ -162,7 +162,7 @@ export function BlogsManager() {
 							/>
 						</div>
 						<div className='px-5 d-flex gap-2 ms-auto'>
-							<Button size='sm' onClick={() => openEditorModal(-1)}>
+							<Button size='sm' onClick={() => handleToggleModal(-1)}>
 								<span>
 									<FormattedMessage id='dashboard.blogs.modal.button_create_blog' />
 								</span>
@@ -209,16 +209,16 @@ export function BlogsManager() {
 												name={id}
 												checked={+isDisplay === 1}
 												onChange={(event) => {
-													handleToggleDisplayBlog({ id, isDisplay: event.target.checked, index });
+													handleToggleDisplay({ id, isDisplay: event.target.checked, index });
 												}}
 											/>
 										</td>
 										<td>
 											<div className='d-flex justify-content-center gap-2'>
-												<Button success size='xs' info onClick={() => openEditorModal(index)}>
+												<Button success size='xs' info onClick={() => handleToggleModal(index)}>
 													<FormattedMessage id='button.update' />
 												</Button>
-												<Button size='xs' danger onClick={() => openConfirmModal(index)}>
+												<Button size='xs' danger onClick={() => handleToggleConfirmModal(index)}>
 													<FormattedMessage id='button.delete' />
 												</Button>
 											</div>
@@ -240,9 +240,9 @@ export function BlogsManager() {
 			</Container>
 			<ConfirmModal
 				idTitleIntl='dashboard.blogs.modal.blog_deletion_confirmation_modal.title'
-				isOpen={isOpenConfirmModal}
+				isOpen={statusConfirmModal}
 				onClose={toggleConfirmModal}
-				onSubmit={handleDeleteBlog}
+				onSubmit={handleDelete}
 			>
 				<FormattedDescription
 					id='dashboard.blogs.modal.blog_deletion_confirmation_modal.description'
@@ -253,9 +253,9 @@ export function BlogsManager() {
 			<BlogModal
 				languageId={languageId}
 				blogId={Blogs?.[blogIndex]?._id}
-				isOpen={isOpenEditorModal}
+				isOpen={statusModal}
 				onClose={toggleEditorModal}
-				onSubmitUpdate={handleUpdateBlog}
+				onSubmitUpdate={handleUpdate}
 				onSubmitCreate={handleCreate}
 			/>
 		</>

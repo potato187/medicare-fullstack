@@ -68,6 +68,17 @@ class UtilsRepo {
 		return true;
 	}
 
+	static async findDocOrThrow({ filter, model, code = 100404 }) {
+		const _model = UtilsRepo.getModel(model);
+		const doc = await _model.find(filter);
+
+		if (!doc) {
+			throw new NotFoundRequestError({ code });
+		}
+
+		return doc;
+	}
+
 	static async checkConflicted({ model, filter, code = 100400 }) {
 		const result = await UtilsRepo.findOne({ model, filter });
 

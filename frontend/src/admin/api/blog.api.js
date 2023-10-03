@@ -4,7 +4,7 @@ import { axiosClient } from './axiosClient';
 import { BLOG_ENDPOINT } from './constant';
 
 export const blogApi = {
-	getById(id) {
+	getOneById(id) {
 		return axiosClient.get(`${BLOG_ENDPOINT}/${id}`);
 	},
 
@@ -19,7 +19,9 @@ export const blogApi = {
 	},
 
 	updateOneById(id, body) {
-		return axiosClient.patch(`${BLOG_ENDPOINT}/${id}`, body);
+		const formData = new FormData();
+		buildFormData(formData, body);
+		return axiosClient.patch(`${BLOG_ENDPOINT}/${id}`, formData, { headers: HEADERS_CONTENT.formData });
 	},
 
 	deleteOneById(id) {

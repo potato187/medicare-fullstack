@@ -7,7 +7,7 @@ import { FormattedDescription } from 'admin/components/BaseUI';
 import module from '../style.module.scss';
 
 export function FloatingLabelFile({ name, labelIntl }) {
-	const id = useId();
+	const domId = useId();
 	const { watch, errors, register } = useFormContext();
 	const { 'form-group': formGroupCln, 'form-label': labelCln, 'form-control': inputCln } = module;
 
@@ -16,10 +16,10 @@ export function FloatingLabelFile({ name, labelIntl }) {
 
 	return (
 		<div className={formGroupCln}>
-			<label htmlFor={id} className={inputCln}>
-				<input id={id} type='file' hidden placeholder=' ' autoComplete='nope' {...register(name)} />
+			<label htmlFor={domId} className={inputCln}>
+				<input id={domId} type='file' hidden placeholder=' ' autoComplete='nope' {...register(name)} />
 				<span className={labelCln}>
-					<FormattedMessage id={labelIntl} />
+					<FormattedMessage defaultMessage={labelIntl} id={labelIntl} />
 				</span>
 				<span className='d-block w-100 no-wrap-ellipsis'>
 					{fileName || <FormattedMessage id='form.choose_file_text' />}

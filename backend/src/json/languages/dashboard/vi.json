@@ -32,7 +32,16 @@
 		"slug": { "default": "Slug", "vi": "Slug (English)", "en": "Slug (Vietnamese)" },
 		"content": { "default": "Content", "vi": "Content  (Vietnamese)", "en": "Content (English)" },
 		"summary": { "default": "Summary", "vi": "Summary  (Vietnamese)", "en": "Summary (English)" },
-		"description": { "default": "Description", "en": "Description (English)", "vi": "Description (Vietnamese)" }
+		"description": { "default": "Description", "en": "Description (English)", "vi": "Description (Vietnamese)" },
+		"logo_footer": "Logo Footer",
+		"logo_header": "Logo Header",
+		"og_image": "Og Image",
+		"favicon": "Favicon",
+		"facebook": "Facebook",
+		"messenger": "Messenger",
+		"youtube": "Youtube",
+		"google": "Google",
+		"instagram": "Instagram"
 	},
 	"table": {
 		"no": "No.",

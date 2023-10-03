@@ -6,7 +6,8 @@ import {
 	Container,
 	ContainerMain,
 	ContainerTitle,
-	FloatingInput,
+	FloatingLabelFile,
+	FloatingLabelInput,
 	WrapScrollBar,
 } from 'admin/components';
 import { convertName } from 'admin/features/Languages/utilities';
@@ -30,14 +31,15 @@ export function SettingConfigManager() {
 
 	const handleOnSubmit = tryCatchAndToast(async (data) => {
 		const cloneObj = JSON.parse(JSON.stringify(configs));
-		Object.entries(data).forEach(([key, fields]) => {
-			Object.entries(fields).forEach(([name, value]) => {
-				cloneObj[key][name].value = value;
+		Object.keys(cloneObj).forEach((key) => {
+			Object.keys(cloneObj[key]).forEach((name) => {
+				cloneObj[key][name].value = methods.getValues(`${key}.${name}`);
 			});
 		});
 
 		const { message, metadata } = await settingConfigApi.updateConfig(cloneObj);
 		setConfigs(metadata);
+		methods.reset();
 		showToastMessage(message, languageId);
 	}, languageId);
 
@@ -81,7 +83,11 @@ export function SettingConfigManager() {
 									<div className='row'>
 										{Object.entries(fields).map(([name, { type, label }]) => (
 											<div className='col-4 mb-6' key={name}>
-												<FloatingInput type={type} name={`${key}.${name}`} label={label} />
+												{type !== 'file' ? (
+													<FloatingLabelInput name={`${key}.${name}`} labelIntl={label} />
+												) : (
+													<FloatingLabelFile name={`${key}.${name}`} labelIntl={label} />
+												)}
 											</div>
 										))}
 									</div>

@@ -89,7 +89,7 @@ export function BlogModal({
 		tryCatch(async () => {
 			const blogCategoryIds = [];
 			if (isOpen && blogId) {
-				const { metadata } = await blogApi.getById(blogId);
+				const { metadata } = await blogApi.getOneById(blogId);
 				const { blogCategoryIds: Ids, tags, ...blog } = metadata;
 				blogCategoryIds.push(...Ids);
 				setDefaultValues(methods, blog);

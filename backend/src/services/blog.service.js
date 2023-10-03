@@ -5,10 +5,13 @@ const fs = require('fs');
 const path = require('path');
 
 const SEARCHABLE_FIELDS = ['title.vi', 'title.en'];
-const BLOG_IMAGE_PATH = 'public/uploads/blogs';
 
 class BlogService {
 	static model = BLOG_MODEL;
+
+	static generateImagePath(blogId, file) {
+		return path.join('public/uploads/blogs', `${blogId}${path.extname(file.originalname)}`);
+	}
 
 	static getOneById(id) {
 		return UtilsRepo.findOne({
@@ -43,7 +46,7 @@ class BlogService {
 
 		if (file) {
 			const oldPath = file.path;
-			const newPath = path.join(BLOG_IMAGE_PATH, `${newCategory._id}${path.extname(file.originalname)}`);
+			const newPath = BlogService.generateImagePath(newCategory._id, file);
 			fs.rename(oldPath, newPath, async (error) => {
 				if (!error) {
 					newCategory.image = newPath;
@@ -58,32 +61,41 @@ class BlogService {
 		});
 	}
 
-	static async updateOneById({ id, updateBody }) {
+	static async updateOneById({ id, updateBody, file }) {
 		const select = Object.keys(updateBody);
 		const { blogCategoryIds, ...body } = updateBody;
 		const { model } = BlogService;
-		const filter = { _id: convertToObjectIdMongodb(id), isDeleted: false };
 
 		if (!select.length) return {};
+		const filter = { _id: convertToObjectIdMongodb(id), isDeleted: false };
 
-		await UtilsRepo.checkIsExist({
+		const [blog] = await UtilsRepo.findDocOrThrow({
 			model,
 			filter,
 		});
 
 		if (blogCategoryIds) {
-			blogCategoryIds.forEach((blogCategoryId, index) => {
-				blogCategoryIds[index] = convertToObjectIdMongodb(blogCategoryId);
-			});
-
-			body.blogCategoryIds = blogCategoryIds;
+			blog.blogCategoryIds = blogCategoryIds.map((blogCategoryId) => convertToObjectIdMongodb(blogCategoryId));
 		}
 
-		return UtilsRepo.findOneAndUpdate({
-			model,
-			filter,
-			updateBody: body,
-			select,
+		Object.assign(blog, body);
+
+		if (file) {
+			const imagePath = BlogService.generateImagePath(blog._id, file);
+			if (blog.image && fs.existsSync(blog.image)) {
+				fs.unlinkSync(blog.image);
+				fs.renameSync(file.path, imagePath);
+				blog.image = imagePath;
+			} else {
+				fs.renameSync(file.path, imagePath);
+				blog.image = imagePath;
+			}
+			select.push('image');
+		}
+
+		return getInfoData({
+			fields: select,
+			object: await blog.save(),
 		});
 	}
 

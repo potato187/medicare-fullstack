@@ -17,7 +17,13 @@ router.get('/:id', validateRequest(idSchema, 'params'), BlogController.getOneByI
 
 router.post('', upload.single('image[0]'), validateRequest(createSchema), BlogController.createOne);
 
-router.patch('/:id', validateRequest(idSchema, 'params'), validateRequest(updateSchema), BlogController.updateOneById);
+router.patch(
+	'/:id',
+	validateRequest(idSchema, 'params'),
+	upload.single('image[0]'),
+	validateRequest(updateSchema),
+	BlogController.updateOneById,
+);
 
 router.delete('/:id', validateRequest(idSchema, 'params'), BlogController.deleteOneById);
 

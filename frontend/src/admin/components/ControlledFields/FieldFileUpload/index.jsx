@@ -8,7 +8,6 @@ import { FiledUploadMedia } from './FiledUploadMedia';
 
 export function FieldFileUpload({ name, intlLabel }) {
 	const domId = useId();
-
 	const { register, errors } = useFormContext();
 	const {
 		'file-upload': fileUploadCln,

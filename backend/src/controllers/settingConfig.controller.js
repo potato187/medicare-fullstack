@@ -12,7 +12,10 @@ class SettingConfigController {
 
 	updateConfig = (req, res, next) => {
 		new OkResponse({
-			metadata: SettingConfigService.updateConfig(req.body),
+			metadata: SettingConfigService.updateConfig({
+				files: req.files,
+				body: req.body,
+			}),
 		}).send(res);
 	};
 }

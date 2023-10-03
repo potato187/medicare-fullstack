@@ -25,7 +25,9 @@ function Container({ progress = 0, url = '', intlLabel, error = null }) {
 	}
 
 	if (!progress && url) {
-		return <div className='ratio ratio-16x9'>{url && !error ? <img src={url} alt='' /> : null}</div>;
+		return (
+			<div className='ratio ratio-16x9'>{url && !error ? <img crossOrigin='anonymous' src={url} alt='' /> : null}</div>
+		);
 	}
 
 	return (

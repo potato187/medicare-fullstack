@@ -33,7 +33,7 @@ export function FloatingLabelInput({ name, labelIntl, ...props }) {
 				)}
 			/>
 			<label htmlFor={id} className={labelCln}>
-				<FormattedMessage id={labelIntl} />
+				<FormattedMessage defaultMessage={labelIntl} defaultValue={labelIntl} id={labelIntl} />
 			</label>
 		</div>
 	);
