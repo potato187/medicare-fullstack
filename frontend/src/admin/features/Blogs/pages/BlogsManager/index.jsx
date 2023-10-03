@@ -58,6 +58,7 @@ export function BlogsManager() {
 		data: Blogs,
 		queryParams,
 		totalPages,
+		isLoading,
 		setData: updateBlogs,
 		setQueryParams,
 		handlePageChange,
@@ -198,8 +199,8 @@ export function BlogsManager() {
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>
-							<TableBody>
-								{Blogs.map(({ _id: id, title, datePublished, isDisplay }, index) => (
+							<TableBody isLoading={isLoading} list={Blogs} columns={5}>
+								{({ _id: id, title, datePublished, isDisplay }, index) => (
 									<tr key={id}>
 										<td className='text-center'>{index + 1}</td>
 										<td className='text-truncate'>{title[languageId]}</td>
@@ -224,7 +225,7 @@ export function BlogsManager() {
 											</div>
 										</td>
 									</tr>
-								))}
+								)}
 							</TableBody>
 						</Table>
 					</TableGrid>

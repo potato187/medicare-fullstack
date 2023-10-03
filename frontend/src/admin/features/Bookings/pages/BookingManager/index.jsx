@@ -40,6 +40,7 @@ export function BookingManager() {
 		Genders,
 		queryParams,
 		totalPages,
+		isLoading,
 		handleChangeSort,
 		handleSelectRangeDates,
 		setBookings,
@@ -173,8 +174,8 @@ export function BookingManager() {
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>
-							<TableBody>
-								{Bookings.map(({ _id, fullName, phone, address, status, appointmentDate }, index) => (
+							<TableBody list={Bookings} isLoading={isLoading} columns={7}>
+								{({ _id, fullName, phone, address, status, appointmentDate }, index) => (
 									<tr key={_id}>
 										<td className='text-center'>{index + 1}</td>
 										<td>{fullName}</td>
@@ -195,7 +196,7 @@ export function BookingManager() {
 											</div>
 										</td>
 									</tr>
-								))}
+								)}
 							</TableBody>
 						</Table>
 					</TableGrid>

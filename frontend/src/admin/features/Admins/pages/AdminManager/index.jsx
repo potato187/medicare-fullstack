@@ -32,6 +32,7 @@ export function AdminManager() {
 		setData: setAdmins,
 		queryParams,
 		totalPages,
+		isLoading,
 		handleChangeSort,
 		handleChangeSearch,
 		handlePageChange,
@@ -165,8 +166,8 @@ export function AdminManager() {
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>
-							<TableBody>
-								{Admins.map(({ _id, firstName, lastName, email, phone }, index) => (
+							<TableBody isLoading={isLoading} list={Admins}>
+								{({ _id, firstName, lastName, email, phone }, index) => (
 									<tr key={_id}>
 										<td className='text-center'>{index + 1}</td>
 										<td className='text-start'>{firstName}</td>
@@ -184,7 +185,7 @@ export function AdminManager() {
 											</div>
 										</td>
 									</tr>
-								))}
+								)}
 							</TableBody>
 						</Table>
 					</TableGrid>

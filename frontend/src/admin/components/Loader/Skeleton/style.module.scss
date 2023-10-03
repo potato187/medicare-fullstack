@@ -1,0 +1,70 @@
+@keyframes animation-wave {
+	0% {
+		transform: translateX(-100%);
+	}
+	50% {
+		transform: translateX(50%);
+	}
+	100% {
+		transform: translateX(100%);
+	}
+}
+
+@keyframes animation-pulse {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.4;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.skeleton {
+	--ske-border-radius: 4px;
+	--ske-bg: rgba(0, 0, 0, 0.11);
+	display: block;
+	background-color: var(--ske-bg);
+	height: auto;
+	margin-top: 0;
+	margin-bottom: 0;
+	transform-origin: 0 55%;
+	transform: scale(1, 0.6);
+	border-radius: var(--ske-border-radius);
+	position: relative;
+	overflow: hidden;
+	-webkit-mask-image: -webkit-radial-gradient(white, black);
+
+	&.rounded {
+		--ske-border-radius: 6px;
+	}
+	&.rectangular {
+		--ske-border-radius: 0;
+	}
+	&.circular {
+		--ske-border-radius: 50%;
+	}
+
+	&.pulse {
+		--ske-bg: rgba(255, 255, 255, 0.13);
+		min-height: 20px;
+		animation: animation-pulse 2s ease-in-out 0.5s infinite;
+	}
+
+	&.wave {
+		&::before {
+			content: '\00a0';
+		}
+
+		&::after {
+			content: '';
+			animation: animation-wave 1.6s linear 0.5s infinite none;
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+			position: absolute;
+			transform: translateX(-100%);
+			inset: 0;
+		}
+	}
+}

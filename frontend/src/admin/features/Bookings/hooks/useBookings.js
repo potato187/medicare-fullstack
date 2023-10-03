@@ -5,11 +5,12 @@ import { createURL, mapData, tryCatch } from 'admin/utilities';
 import produce from 'immer';
 import moment from 'moment';
 import queryString from 'query-string';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { typeOf } from 'utils';
 
 export const useBookings = ({ languageId = 'en' }) => {
+	const isLoading = useRef(true);
 	const [bookings, setBookings] = useState([]);
 	const [totalPages, setTotalPages] = useState(1);
 	const { index: bookingIndex, setIndex: setBookingIndex } = useIndex();
@@ -126,13 +127,24 @@ export const useBookings = ({ languageId = 'en' }) => {
 	}, [queryParams, setQueryParams]);
 
 	useEffect(() => {
+		let idTimer = null;
+		isLoading.current = true;
 		tryCatch(async () => {
 			if (Specialties.length) {
 				const { metadata } = await bookingApi.queryByParameters({ ...queryParams });
-				setBookings(metadata.data.map((data) => ({ ...data })));
 				setTotalPages(metadata.meta.totalPages);
+				idTimer = setTimeout(() => {
+					isLoading.current = false;
+					setBookings(metadata.data.map((data) => ({ ...data })));
+				}, 500);
 			}
 		})();
+
+		return () => {
+			if (idTimer) {
+				clearTimeout(idTimer);
+			}
+		};
 	}, [queryParams, Specialties]);
 
 	useEffect(() => {
@@ -172,6 +184,7 @@ export const useBookings = ({ languageId = 'en' }) => {
 		StatusLabels,
 		queryParams,
 		totalPages,
+		isLoading: isLoading.current,
 		setBookingIndex,
 		handleSelectRangeDates,
 		setBookings,

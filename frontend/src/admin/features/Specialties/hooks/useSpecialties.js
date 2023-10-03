@@ -2,7 +2,7 @@ import { doctorApi, resourceApi } from 'admin/api';
 import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
 import { createURL, tryCatch } from 'admin/utilities';
 import queryString from 'query-string';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { typeOf } from 'utils';
 
@@ -12,6 +12,7 @@ const mapData = (data, languageId) => {
 
 export const useSpecialties = (languageId = 'en') => {
 	const [totalPages, setTotalPages] = useState(1);
+	const isLoading = useRef(true);
 	const [doctors, setDoctors] = useState([]);
 	const [specialtyIndex, setSpecialtyIndex] = useState(0);
 	const [specialtyData, setSpecialtyData] = useState([]);
@@ -105,11 +106,22 @@ export const useSpecialties = (languageId = 'en') => {
 	}, [queryParams, setQueryParams]);
 
 	useEffect(() => {
+		let idTimer = null;
 		tryCatch(async () => {
+			isLoading.current = true;
 			const { metadata } = await doctorApi.queryByParameters(queryParams);
-			setDoctors(metadata.data.map((data) => ({ ...data, isSelected: false })));
 			setTotalPages(metadata.meta.totalPages);
+			idTimer = setTimeout(() => {
+				setDoctors(metadata.data.map((data) => ({ ...data, isSelected: false })));
+				isLoading.current = false;
+			}, 500);
 		})();
+
+		return () => {
+			if (idTimer) {
+				clearTimeout(idTimer);
+			}
+		};
 	}, [queryParams]);
 
 	useEffect(() => {
@@ -151,6 +163,7 @@ export const useSpecialties = (languageId = 'en') => {
 		Genders,
 		totalPages,
 		queryParams,
+		isLoading: isLoading.current,
 		setDoctors,
 		handleSelect,
 		handlePageChange,

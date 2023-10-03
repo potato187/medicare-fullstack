@@ -40,6 +40,7 @@ export function SpecialtyManager() {
 		Genders,
 		Doctors,
 		queryParams,
+		isLoading,
 		setDoctors,
 		handleSelect,
 		handleChangeSort,
@@ -235,17 +236,17 @@ export function SpecialtyManager() {
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>
-							<TableBody>
-								{Doctors.map(({ isSelected, _id: id, firstName, lastName, phone, email, position }, index) => (
+							<TableBody list={Doctors} isLoading={isLoading} columns={8}>
+								{({ isSelected, _id: id, firstName, lastName, phone, email, position }, index) => (
 									<tr key={id}>
-										<th>
+										<td>
 											<UnFieldCheckBox
 												id={`checkbox-${id}`}
 												className='none-label'
 												checked={isSelected}
 												onChange={() => toggleSelect(index)}
 											/>
-										</th>
+										</td>
 										<td className='text-center'>{index + 1}</td>
 										<td className='text-start'>{firstName}</td>
 										<td className='text-start'>{lastName}</td>
@@ -263,7 +264,7 @@ export function SpecialtyManager() {
 											</div>
 										</td>
 									</tr>
-								))}
+								)}
 							</TableBody>
 						</Table>
 					</TableGrid>

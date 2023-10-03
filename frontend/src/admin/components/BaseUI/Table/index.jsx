@@ -1,4 +1,6 @@
+import { TableRowsLoader } from 'admin/components/Loader';
 import cn from 'classnames';
+import { FormattedMessage } from 'react-intl';
 import module from './style.module.scss';
 
 export function Table({
@@ -37,8 +39,22 @@ export function TableHeader({ children, ...props }) {
 	);
 }
 
-export function TableBody({ children, ...props }) {
-	return <tbody {...props}>{children}</tbody>;
+export function TableBody({ list = [], isLoading, rows = 10, columns = 6, children }) {
+	return (
+		<tbody>
+			{isLoading ? (
+				<TableRowsLoader rows={rows} columns={columns} />
+			) : list.length ? (
+				list.map(children)
+			) : (
+				<tr className='text-center text-muted text-italic'>
+					<td colSpan={columns}>
+						<FormattedMessage id='common.no_results_found' />
+					</td>
+				</tr>
+			)}
+		</tbody>
+	);
 }
 
 export function TableResponsive({ className, children }) {

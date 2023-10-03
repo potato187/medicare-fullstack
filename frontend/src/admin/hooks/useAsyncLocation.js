@@ -1,6 +1,6 @@
 /* eslint-disable */
 import queryString from 'query-string';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
 import { tryCatch } from 'admin/utilities';
@@ -8,10 +8,11 @@ import { typeOf } from 'utils';
 import { createURL } from '../utilities';
 
 export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
-	const { pathname: locationPathName, search: locationSearch } = useLocation();
-	const navigate = useNavigate();
+	const isLoading = useRef(true);
 	const [data, setData] = useState([]);
 	const [totalPages, setTotalPages] = useState(1);
+	const navigate = useNavigate();
+	const { pathname: locationPathName, search: locationSearch } = useLocation();
 
 	const queryParams = useMemo(() => {
 		let { sort, page = 1, pagesize = PAGINATION_NUMBER_DEFAULT, ...params } = queryString.parse(locationSearch);
@@ -77,15 +78,28 @@ export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 	}, []);
 
 	useEffect(() => {
+		let idTimer = null;
+
 		tryCatch(async () => {
+			isLoading.current = true;
 			const { metadata } = await fetch(queryParams);
-			setData(metadata.data);
 			setTotalPages(metadata.meta.totalPages);
+			idTimer = setTimeout(() => {
+				setData(metadata.data);
+				isLoading.current = false;
+			}, 500);
 		})();
+
+		return () => {
+			if (idTimer) {
+				clearTimeout(idTimer);
+			}
+		};
 	}, [queryParams]);
 
 	return {
 		data,
+		isLoading: isLoading.current,
 		queryParams,
 		totalPages,
 		setData,

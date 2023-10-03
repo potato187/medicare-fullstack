@@ -29,6 +29,7 @@ export function HtmlContentManager() {
 
 	const {
 		data: HtmlContents,
+		isLoading,
 		queryParams,
 		totalPages,
 		setData: updateHtmlContents,
@@ -51,12 +52,13 @@ export function HtmlContentManager() {
 	const pagePositionOptions = configs?.PAGE_POSITIONS?.filter((option) => option.value !== 'all') || [];
 
 	const { index: htmlContentIndex, setIndex: setHtmlContentIndex } = useIndex();
+	const htmlContentCurrent = HtmlContents.length ? HtmlContents[htmlContentIndex] : {};
+
 	const [isOpenContentModal, toggleHtmlContentModal] = useToggle();
 	const [isOpenConfirmModal, toggleConfirmModal] = useToggle();
+
 	const handleOpenHtmlContentModal = compose(setHtmlContentIndex, toggleHtmlContentModal);
 	const handleOpenConfirmModal = compose(setHtmlContentIndex, toggleConfirmModal);
-
-	const htmlContentCurrent = HtmlContents.length ? HtmlContents[htmlContentIndex] : {};
 
 	const handleUpdateHtmlContent = tryCatchAndToast(async (data) => {
 		const { metadata, message } = await htmlContentApi.updateOneById(htmlContentCurrent._id, data);
@@ -179,8 +181,8 @@ export function HtmlContentManager() {
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>
-							<TableBody>
-								{HtmlContents.map(({ _id, title, positionType, index: htmlContentIndex, createdAt }, index) => (
+							<TableBody list={HtmlContents} isLoading={isLoading} rows={10} columns={6}>
+								{({ _id, title, positionType, index: htmlContentIndex, createdAt }, index) => (
 									<tr key={_id}>
 										<td className='text-center'>{index + 1}</td>
 										<td>{title[languageId]}</td>
@@ -198,7 +200,7 @@ export function HtmlContentManager() {
 											</div>
 										</td>
 									</tr>
-								))}
+								)}
 							</TableBody>
 						</Table>
 					</TableGrid>
