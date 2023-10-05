@@ -2,7 +2,7 @@ const { authMiddleware } = require('@/auth');
 const { AccessController } = require('@/controllers');
 const { validateRequest } = require('@/middleware');
 const express = require('express');
-const { signUpSchema, loginSchema } = require('./schema');
+const { signUpSchema, loginSchema, changePasswordSchema } = require('./schema');
 
 const router = express.Router();
 
@@ -13,5 +13,6 @@ router.use(authMiddleware.authorization);
 
 router.get('/logout', AccessController.logout);
 router.post('/sign-up', validateRequest(signUpSchema), AccessController.signUp);
+router.post('/change-password', validateRequest(changePasswordSchema), AccessController.changePassword);
 
 module.exports = router;

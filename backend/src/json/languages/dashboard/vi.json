@@ -82,17 +82,21 @@
 		"files": "Upload Files",
 		"image": "Avatar",
 		"profile": "Profile",
+		"change_password": "Change Password",
 		"search_placeholder": "Enter your search...",
 		"username": "Username",
 		"email": "Email",
 		"email_placeholder": "Enter your email",
 		"password": "Password",
 		"password_placeholder": "Enter your password",
+		"confirm_password": "Confirm Password",
+		"new_password": "New Password",
 		"display": "Display",
 		"choose_file_text": "Choose file",
 		"message": {
 			"error": {
 				"required": "<span>{label}</span> is required",
+				"matched": "Your passwords do not match.",
 				"email_format": "Your email is in an invalid format",
 				"phone_format": "Your phone number is in an invalid format",
 				"password": "Your password is weak",
@@ -256,6 +260,12 @@
 					"title": "Confirm blog Deletion",
 					"description": "Are you sure you want to delete the blog with the title <b> {title} </b>? This action cannot be undone."
 				}
+			}
+		},
+		"personal": {
+			"title": "Personal",
+			"profile_setting": {
+				"title": "Profile Setting"
 			}
 		}
 	}

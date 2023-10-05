@@ -5,6 +5,7 @@ const {
 	nameValidator,
 	passwordValidator,
 	phoneValidator,
+	ObjectIdMongodbValidator,
 } = require('@/validations');
 const Joi = require('joi');
 
@@ -27,8 +28,15 @@ const refreshTokenSchema = Joi.object({
 	refreshToken: Joi.string().required(),
 });
 
+const changePasswordSchema = Joi.object().keys({
+	id: ObjectIdMongodbValidator,
+	password: passwordValidator,
+	newPassword: passwordValidator,
+});
+
 module.exports = {
 	loginSchema,
 	refreshTokenSchema,
 	signUpSchema,
+	changePasswordSchema,
 };

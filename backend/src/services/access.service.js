@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const { generateToken, getInfoData, convertToObjectIdMongodb } = require('@/utils');
 const { KeyTokenRepo, UtilsRepo } = require('@/models/repository');
-const { UnauthorizedRequestError } = require('@/core');
+const { UnauthorizedRequestError, BadRequestError } = require('@/core');
 const { ADMIN_MODEL, KEY_TOKEN_MODEL } = require('@/models/repository/constant');
 const { authUtils } = require('@/auth');
 const TokenBuilder = require('./builder/_tokens.builder');
@@ -102,6 +102,30 @@ class AccessService {
 			accessToken: await accessTokenBuilder.buildAccessToken(),
 			refreshToken: await refreshTokenBuilder.buildRefreshToken(),
 		};
+	}
+
+	static async changePassword(body) {
+		const { id, password, newPassword } = body;
+
+		const [foundAdmin] = await UtilsRepo.findDocOrThrow({
+			model: AccessService.model,
+			filter: { _id: convertToObjectIdMongodb(id) },
+		});
+
+		const compared = bcrypt.compareSync(password, foundAdmin.password);
+		if (!compared) {
+			throw new BadRequestError({ code: 103400 });
+		}
+
+		foundAdmin.password = newPassword;
+		await foundAdmin.save();
+
+		await UtilsRepo.removeById({
+			model: KEY_TOKEN_MODEL,
+			id,
+		});
+
+		return {};
 	}
 }
 

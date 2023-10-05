@@ -1,6 +1,6 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { showToastMessage } from 'admin/utilities';
-import { authLogin, authLogout, authRefreshTokens } from './authAction';
+import { authLogin, authLogout, authRefreshTokens, changePassword } from './authAction';
 
 const initialState = {
 	info: {
@@ -35,6 +35,13 @@ const authSlice = createSlice({
 			state.tokens.accessToken = payload.accessToken;
 			state.tokens.refreshToken = payload.refreshToken;
 		},
+		updateProfile: (state, { payload }) => {
+			Object.entries(payload).forEach(([key, value]) => {
+				if (Object.hasOwn(state.info, key)) {
+					state.info[key] = value;
+				}
+			});
+		},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -59,22 +66,21 @@ const authSlice = createSlice({
 			.addMatcher(isAnyOf(authRefreshTokens.fulfilled), (state, meta) => {
 				const tokens = meta?.payload?.metadata || {};
 
-				state.tokens.accessToken = tokens.accessToken;
-				state.tokens.refreshToken = tokens.refreshToken;
+				state.tokens.accessToken = tokens.accessToken || '';
+				state.tokens.refreshToken = tokens.refreshToken || '';
 			})
-			.addMatcher(isAnyOf(authLogin.rejected, authLogout.fulfilled, authLogout.rejected), (state) => {
+			.addMatcher(isAnyOf(authLogout.fulfilled, authLogout.fulfilled, changePassword.fulfilled), (state) => {
 				state.info = initialState.info;
 				state.tokens = initialState.tokens;
 				state.status = initialState.status;
 			})
-			.addMatcher(isAnyOf(authLogin.rejected), (state, meta) => {
-				const {
-					payload: { message },
-				} = meta;
-				showToastMessage(message, state.info.languageId, 'warning');
+			.addMatcher(isAnyOf(authLogin.rejected, changePassword.rejected, authLogout.rejected), (state, meta) => {
+				if (meta?.payload?.message) {
+					showToastMessage(meta?.payload?.message, state.info.languageId, 'warning');
+				}
 			});
 	},
 });
 
-export const { changeLanguage, updateTokens } = authSlice.actions;
+export const { changeLanguage, updateTokens, updateProfile } = authSlice.actions;
 export default authSlice.reducer;

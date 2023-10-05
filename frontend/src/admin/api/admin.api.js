@@ -21,4 +21,8 @@ export const adminApi = {
 	async createOne(body) {
 		return axiosClient.post(`${AUTH_ENDPOINT}/sign-up`, body);
 	},
+
+	async changePassword(id, body) {
+		return axiosClient.patch(`${AUTH_ENDPOINT}/change-password/${id}`, body);
+	},
 };

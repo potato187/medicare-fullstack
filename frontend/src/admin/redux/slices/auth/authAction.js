@@ -11,18 +11,22 @@ export const authLogin = createAsyncThunk('auth/login', async ({ email, password
 	}
 });
 
-export const authLogout = createAsyncThunk('auth/logout', async ({ id, tokens }) => {
-	const { accessToken, refreshToken } = tokens;
-	return axiosClient.get(`auth/logout`, {
-		headers: {
-			[HEADERS.CLIENT_ID]: id,
-			[HEADERS.AUTHORIZATION]: accessToken,
-			[HEADERS.REFRESH_TOKEN]: refreshToken,
-		},
-	});
+export const authLogout = createAsyncThunk('auth/logout', async ({ id, tokens }, { rejectWithValue }) => {
+	try {
+		const { accessToken, refreshToken } = tokens;
+		return axiosClient.get(`auth/logout`, {
+			headers: {
+				[HEADERS.CLIENT_ID]: id,
+				[HEADERS.AUTHORIZATION]: accessToken,
+				[HEADERS.REFRESH_TOKEN]: refreshToken,
+			},
+		});
+	} catch (error) {
+		return rejectWithValue(error);
+	}
 });
 
-export const authRefreshTokens = createAsyncThunk(`auth/refreshTokens`, async ({ id, tokens }) => {
+export const authRefreshTokens = createAsyncThunk('auth/refreshTokens', async ({ id, tokens }) => {
 	const { accessToken, refreshToken } = tokens;
 	return axiosClient.get(`auth/refresh-tokens/${id}`, {
 		headers: {
@@ -32,3 +36,22 @@ export const authRefreshTokens = createAsyncThunk(`auth/refreshTokens`, async ({
 		},
 	});
 });
+
+export const changePassword = createAsyncThunk(
+	'auth/change-password',
+	async ({ id, password, newPassword, tokens }, { rejectWithValue }) => {
+		try {
+			const { accessToken, refreshToken } = tokens;
+			const body = { id, password, newPassword };
+			return await axiosClient.post(`auth/change-password`, body, {
+				headers: {
+					[HEADERS.CLIENT_ID]: id,
+					[HEADERS.AUTHORIZATION]: `Bear ${accessToken}`,
+					[HEADERS.REFRESH_TOKEN]: refreshToken,
+				},
+			});
+		} catch (error) {
+			return rejectWithValue(error);
+		}
+	},
+);

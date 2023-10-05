@@ -27,6 +27,11 @@ export const passwordValidation = yup
 		return PASSWORD_VALIDATION_REGEX.test(password);
 	});
 
+export const passwordConfirmVallation = yup
+	.string()
+	.required('form.message.error.required')
+	.oneOf([yup.ref('password')], 'form.message.error.matched');
+
 export const imageValidation = yup.mixed().test('imageExtension', 'form.message.error.media_extension', (file) => {
 	if (!file || typeOf(file) === 'string') return true;
 	return isValidImageExtension(file[0]?.name);

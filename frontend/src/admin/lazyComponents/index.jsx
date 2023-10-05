@@ -73,3 +73,9 @@ export const LazyLoginPage = React.lazy(() => {
 		setTimeout(() => resolve(import('../features/Auth/pages/LoginPage')), delay);
 	});
 });
+
+export const LazyProfileSetting = React.lazy(() => {
+	return new Promise((resolve) => {
+		setTimeout(() => resolve(import('../features/Personal/pages/ProfileSetting')), delay);
+	});
+});

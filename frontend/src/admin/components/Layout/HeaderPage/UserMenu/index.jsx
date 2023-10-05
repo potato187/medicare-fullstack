@@ -1,13 +1,15 @@
+import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
+import { PATH_IMAGES } from 'admin/constant';
+import { authLogout } from 'admin/redux/slices/auth';
+import { useAuth } from 'hooks';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { MdLogout } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
-import { authLogout } from 'admin/redux/slices/auth';
-import { PATH_IMAGES } from 'admin/constant';
 import module from './style.module.scss';
 
 export function UserMenu({ username, email }) {
+	const { info, tokens } = useAuth();
 	const dispatch = useDispatch();
 	const {
 		'user-dropdown': userDropdownCln,
@@ -21,8 +23,13 @@ export function UserMenu({ username, email }) {
 		divider: dividerCln,
 	} = module;
 
-	const handleLogOut = () => {
-		dispatch(authLogout());
+	const handleLogout = () => {
+		dispatch(
+			authLogout({
+				id: info.id,
+				tokens: { accessToken: `Bear ${tokens.accessToken}`, refreshToken: tokens.refreshToken },
+			}),
+		);
 	};
 
 	return (
@@ -53,7 +60,7 @@ export function UserMenu({ username, email }) {
 						</NavLink>
 					</DropdownItem>
 					<li className={dividerCln} />
-					<DropdownItem type='li' customOnClick={handleLogOut}>
+					<DropdownItem type='li' customOnClick={handleLogout}>
 						<span>
 							<MdLogout size='1.25em' />
 							<span>Logout</span>

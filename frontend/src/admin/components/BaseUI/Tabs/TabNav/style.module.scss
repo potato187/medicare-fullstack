@@ -6,17 +6,25 @@
 	margin-bottom: var(--spacing-sm);
 
 	.nav-item {
+		--nav-item-bg: var(--bs-white);
+		--nav-item-bg-active: var(--bs-gray-300);
+		--nav-item-bg-hover: var(--bs-gray-200);
+		--nav-item-color: var(--bs-gray-700);
+		--nav-item-color-active: var(--bs-gray-700);
+		--nav-item-border-color: var(--bs-gray-300);
+		--nav-item-border-radius: var(--spacing-xs) var(--spacing-xs) 0 0;
+
 		display: block;
 		font-weight: 500;
 		font-size: var(--theme-text-xs);
-		color: var(--bs-gray-700);
+		color: var(--nav-item-color);
 		line-height: 1.5;
+		margin-bottom: -1px;
 		padding: var(--spacing-sm) var(--spacing-md);
 		border: 1px solid transparent;
-		border-color: transparent transparent var(--bs-gray-300) transparent;
-		margin-bottom: -1px;
-		border-radius: var(--spacing-xs) var(--spacing-xs) 0 0;
-		background-color: var(--bs-white);
+		border-color: transparent transparent var(--nav-item-border-color) transparent;
+		border-radius: var(--nav-item-border-radius);
+		background-color: var(--nav-item-bg);
 		transition: var(--transition-color);
 
 		& + & {
@@ -24,12 +32,47 @@
 		}
 
 		&:hover {
-			border-color: var(--bs-gray-300);
+			border-color: var(--nav-item-bg-hover);
 		}
 
 		&.active {
-			background-color: #f3f3f9;
-			border-color: var(--bs-gray-300) var(--bs-gray-300) transparent var(--bs-gray-300);
+			color: var(--nav-item-color-active);
+			background-color: var(--nav-item-bg-active);
+			border-color: var(--nav-item-border-color) var(--nav-item-border-color) transparent var(--nav-item-border-color);
+		}
+	}
+
+	&__bordered > .nav-item {
+		--nav-item-bg: var(--bs-white);
+		--nav-item-bg-active: var(--bs-white);
+		--nav-item-bg-hover: var(--bs-gray-300);
+		--nav-item-color: var(--bs-gray-900);
+		--nav-item-color-active: var(--bs-primary);
+		--nav-item-border-radius: 0;
+		position: relative;
+
+		&:hover,
+		&.active {
+			color: var(--nav-item-color-active);
+			border-color: transparent transparent var(--nav-item-border-color) transparent;
+		}
+
+		&::after {
+			content: '';
+			display: block;
+			width: 0;
+			height: 2px;
+			background-color: var(--bs-primary);
+			position: absolute;
+			bottom: -1px;
+			left: 50%;
+			transform-origin: 50% 50%;
+			transform: translateX(-50%);
+			transition: 0.25s ease-in-out;
+		}
+
+		&.active::after {
+			width: 100%;
 		}
 	}
 }

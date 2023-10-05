@@ -1,12 +1,13 @@
 import { languageApi } from 'admin/api';
+import { Preloader } from 'admin/components/Loader';
+import { changeLanguage } from 'admin/redux/slices/auth';
+import { tryCatch } from 'admin/utilities';
 import { buildValidationForm } from 'admin/validation';
 import { useAuth } from 'hooks';
 import produce from 'immer';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { tryCatch } from 'admin/utilities';
 import { flattenMessages } from 'utils';
-import { changeLanguage } from 'admin/redux/slices/auth';
 import LanguageContext, { LANGUAGE_DEFAULT } from './context';
 
 export default function AuthLanguagesProvider({ children }) {
@@ -57,7 +58,7 @@ export default function AuthLanguagesProvider({ children }) {
 	}, []);
 
 	if (!languages) {
-		return <div>loading 123</div>;
+		return <Preloader />;
 	}
 
 	return <LanguageContext.Provider value={values}>{children}</LanguageContext.Provider>;

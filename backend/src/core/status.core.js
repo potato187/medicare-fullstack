@@ -4,10 +4,6 @@ const codeReason = {
 		vi: 'Yêu cầu không hợp lệ.',
 		en: 'Invalid request.',
 	},
-	102400: {
-		vi: 'Yêu cầu không hợp lệ.',
-		en: 'Invalid query params.',
-	},
 	100200: {
 		vi: 'Ok!',
 		en: 'Ok!',
@@ -19,6 +15,14 @@ const codeReason = {
 	101400: {
 		vi: '',
 		en: 'Invalid Email',
+	},
+	102400: {
+		vi: 'Yêu cầu không hợp lệ.',
+		en: 'Invalid query params.',
+	},
+	103400: {
+		vi: 'Mật khẩu yêu cầu và mật khẩu tài khoản không khớp. Vui lòng thử lại.',
+		en: 'The requested password and the account password do not match. Please try again.',
 	},
 	107400: {
 		vi: '',

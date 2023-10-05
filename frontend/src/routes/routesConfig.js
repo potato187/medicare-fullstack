@@ -19,6 +19,12 @@ export const routesConfig = [
 		],
 	},
 	{
+		to: '/admin/dashboard/personal',
+		intl: 'dashboard.personal.profile_setting.title',
+		Icon: MdOutlineAdminPanelSettings,
+		allowedRoles: [ADMIN_ROLE],
+	},
+	{
 		to: '/admin/dashboard/modules',
 		intl: 'dashboard.modules.title',
 		Icon: MdOutlineAdminPanelSettings,

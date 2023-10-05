@@ -2,7 +2,7 @@ const { POSITIONS } = require('@/constant');
 const Joi = require('joi');
 const { Types } = require('mongoose');
 
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 const phoneRegex = /^(84|0)[3|5|7|8|9]+([0-9]{8})\b/;
 const adminRoleRegex = /(admin|mod)/;
 const genderRegex = /(GF|GM|GO)/;

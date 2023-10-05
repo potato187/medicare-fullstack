@@ -31,6 +31,12 @@ class AccessController {
 			}),
 		}).send(res);
 	});
+
+	changePassword = tryCatch(async (req, res, next) => {
+		new OkResponse({
+			metadata: await AccessService.changePassword(req.body),
+		}).send(res);
+	});
 }
 
 module.exports = new AccessController();
