@@ -31,9 +31,15 @@
 	transition: var(--transition-color);
 	position: relative;
 
+	&:hover {
+		background-color: var(--btn-background-hover);
+		border-color: var(--btn-border-hover);
+		color: var(--btn-text-hover);
+	}
+
 	&-info {
 		--btn-background: #3577f1;
-		--btn-background-fade: rgba(var(--bs-info-rgb, 0.1));
+		--btn-background-fade: rgba(var(--bs-info-rgb), 0.1);
 		--btn-background-hover: #2d65cd;
 	}
 
@@ -69,11 +75,12 @@
 
 	&-fade {
 		--btn-background-hover: var(--btn-background-fade);
-		--btn-text-color: var(--theme-gray-700);
+		--btn-text-color: var(--bs-gray-700);
 		--btn-text-hover: var(--btn-background);
 		background: transparent;
 
 		&:hover {
+			background: var(--btn-background-fade);
 			color: var(--btn-text-hover);
 		}
 	}
@@ -155,12 +162,6 @@
 				}
 			}
 		}
-	}
-
-	&:hover {
-		background-color: var(--btn-background-hover);
-		border-color: var(--btn-border-hover);
-		color: var(--btn-text-hover);
 	}
 
 	&.loading,
