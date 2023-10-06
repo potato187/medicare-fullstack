@@ -13,7 +13,7 @@ import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { linkApi } from 'admin/api';
-import { linkDefault, linkValidation } from '../../schema';
+import { defaultValues, schema } from './schema';
 
 export function LinkModal({
 	isOpen = false,
@@ -26,8 +26,8 @@ export function LinkModal({
 	const clone = useRef(null);
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: linkDefault,
-		resolver: yupResolver(linkValidation),
+		defaultValues,
+		resolver: yupResolver(schema),
 	});
 
 	const handleOnSubmit = (data) => {
@@ -56,7 +56,7 @@ export function LinkModal({
 		} else {
 			methods.reset();
 		}
-	}, [isOpen, linkId, methods]);
+	}, [isOpen, linkId]);
 
 	return (
 		<FormProvider {...methods}>

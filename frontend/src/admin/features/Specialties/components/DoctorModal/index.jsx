@@ -18,8 +18,7 @@ import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
 import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { doctorValidation } from '../../validation';
-import { doctorDefaultValue } from '../ImportExcelModal/constant';
+import { defaultValues, schema } from './schema';
 
 export function DoctorModal({
 	isOpen = false,
@@ -33,8 +32,8 @@ export function DoctorModal({
 }) {
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: doctorDefaultValue,
-		resolver: yupResolver(doctorValidation),
+		defaultValues,
+		resolver: yupResolver(schema),
 	});
 
 	const clone = useRef(null);
@@ -63,11 +62,12 @@ export function DoctorModal({
 			}
 
 			if (!isOpen || !doctorId) {
-				setDefaultValues(methods, doctorDefaultValue);
+				setDefaultValues(methods, defaultValues);
 				clone.current = null;
 			}
 		})();
-	}, [isOpen, doctorId, methods]);
+	
+	}, [isOpen, doctorId]);
 
 	return (
 		<FormProvider {...methods}>

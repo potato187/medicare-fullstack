@@ -4,6 +4,7 @@ import { authLogout } from 'admin/redux/slices/auth';
 import { useAuth } from 'hooks';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { MdLogout } from 'react-icons/md';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import module from './style.module.scss';
@@ -14,11 +15,11 @@ export function UserMenu({ username, email }) {
 	const {
 		'user-dropdown': userDropdownCln,
 		'user-dropdown__toggle': toggleCln,
+		'user-dropdown__menu': menuCln,
 		avatar: avatarCln,
 		profile: profileCln,
 		name: nameCln,
 		email: emailCln,
-		'user-dropdown__menu': menuCln,
 		list: listCln,
 		divider: dividerCln,
 	} = module;
@@ -41,7 +42,6 @@ export function UserMenu({ username, email }) {
 						width={32}
 						height={32}
 						loading='lazy'
-						/* src={SERVER_URL + '/' + image} */
 						src={PATH_IMAGES.AVATAR_PLACEHOLDER}
 						alt={username}
 					/>
@@ -54,16 +54,18 @@ export function UserMenu({ username, email }) {
 			<DropdownBody className={menuCln}>
 				<ul className={listCln}>
 					<DropdownItem type='li'>
-						<NavLink to=''>
+						<NavLink to='./personal/profile_setting'>
 							<AiOutlineSetting size='1.25em' />
-							<span>Profile</span>
+							<span>
+								<FormattedMessage id='common.profile' />
+							</span>
 						</NavLink>
 					</DropdownItem>
 					<li className={dividerCln} />
 					<DropdownItem type='li' customOnClick={handleLogout}>
 						<span>
 							<MdLogout size='1.25em' />
-							<span>Logout</span>
+							<FormattedMessage id='common.logout' />
 						</span>
 					</DropdownItem>
 				</ul>

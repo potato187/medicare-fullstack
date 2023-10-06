@@ -1,10 +1,9 @@
 import cn from 'classnames';
-import { useId } from 'react';
+import { useId, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { CSSTransition } from 'react-transition-group';
-import { useClickOutside } from 'hooks';
-import { useToggle } from 'admin/hooks';
+import { useClickOutside, useToggle } from 'admin/hooks';
 import { ErrorMessage } from '@hookform/error-message';
 import { FormattedDescription } from 'admin/components/BaseUI';
 import module from '../style.module.scss';
@@ -16,9 +15,7 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 	const { control, errors, watch, setValue } = useFormContext();
 	const [isOpen, toggleDropdown] = useToggle();
 
-	const nodeRef = useClickOutside(() => {
-		toggleDropdown(false);
-	});
+	const nodeRef = useRef(null);
 
 	const {
 		'form-group': formGroupCln,
@@ -36,6 +33,12 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 		setValue(name, option.value, { shouldDirty: true, shouldTouch: true });
 		toggleDropdown(false);
 	};
+
+	const handleClickOutside = () => {
+		toggleDropdown(false);
+	};
+
+	useClickOutside(nodeRef, handleClickOutside);
 
 	return (
 		<div className={cn(dropdownCln, className)}>

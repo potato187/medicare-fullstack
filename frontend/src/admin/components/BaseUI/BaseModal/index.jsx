@@ -1,12 +1,12 @@
 import cn from 'classnames';
-import { useCallback, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import { CSSTransition } from 'react-transition-group';
 import { FormattedMessage } from 'react-intl';
-import { useClickOutside } from 'hooks';
+import { CSSTransition } from 'react-transition-group';
 import { BasePortal } from '../BasePortal';
-import './transition.scss';
 import module from './style.module.scss';
+import './transition.scss';
+import { useClickOutside } from 'admin/hooks';
 
 export function BaseModal({
 	selectorId = 'modal',
@@ -15,10 +15,12 @@ export function BaseModal({
 	isOpen = false,
 	backdrop = true,
 	keyboard = false,
-	onClose = () => false,
 	children,
+	onClose = () => false,
 }) {
+	const dialogRef = useRef(null);
 	const nodeRef = useRef(null);
+
 	const {
 		modal: modalCln,
 		'modal--sm': modalSmCln,
@@ -29,7 +31,7 @@ export function BaseModal({
 		'modal-static': modalStaticCln,
 	} = module;
 
-	const styles = cn(
+	const classNames = cn(
 		modalCln,
 		{
 			[modalSmCln]: size === 'sm',
@@ -40,13 +42,7 @@ export function BaseModal({
 		className,
 	);
 
-	const handleOnClose = useCallback(() => {
-		if (onClose) {
-			onClose();
-		}
-	}, [onClose]);
-
-	const dialogRef = useClickOutside(() => {
+	const handleClickOutSide = () => {
 		if (keyboard && !backdrop) {
 			onClose();
 		}
@@ -58,27 +54,14 @@ export function BaseModal({
 				}
 			}, 300);
 		}
-	});
+	};
 
-	useEffect(() => {
-		const closeOnEscapeKey = (e) => {
-			if (e.key === 'Escape' || e.keyCode === 27) {
-				handleOnClose();
-			}
-		};
-
-		if (keyboard) {
-			document.addEventListener('keydown', closeOnEscapeKey);
-		}
-		return () => {
-			document.removeEventListener('keydown', closeOnEscapeKey);
-		};
-	}, [keyboard, handleOnClose]);
+	useClickOutside(dialogRef, handleClickOutSide);
 
 	return (
 		<BasePortal wrapperId={selectorId}>
 			<CSSTransition in={isOpen} nodeRef={nodeRef} timeout={300} classNames='modal' unmountOnExit>
-				<div className={styles} ref={nodeRef}>
+				<div className={classNames} ref={nodeRef}>
 					<div className={dialogCln} ref={dialogRef}>
 						{children}
 					</div>
@@ -94,8 +77,10 @@ export function BaseModalHeader({ idIntl = '', className, onClose = null }) {
 		'modal-header__title': titleClass,
 		'modal-btn--close': btnCloseClass,
 	} = module;
+	const classNames = cn(modalHeaderClass, className);
+
 	return (
-		<div className={cn(modalHeaderClass, className)}>
+		<div className={classNames}>
 			<h2 className={titleClass}>{idIntl ? <FormattedMessage id={idIntl} /> : null}</h2>
 			<button type='button' onClick={onClose} className={btnCloseClass}>
 				<AiOutlineClose size='1.5em' />

@@ -1,2 +1,2 @@
 export * from './Layout';
-export * from './LoginForm';
+export * from './LoginForm/schema';

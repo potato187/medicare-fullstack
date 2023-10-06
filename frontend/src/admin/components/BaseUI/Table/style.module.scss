@@ -146,3 +146,9 @@
 		height: 100%;
 	}
 }
+
+.tbody-empty {
+	> tr > td {
+		padding: 0.5rem;
+	}
+}

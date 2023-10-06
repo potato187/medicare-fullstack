@@ -22,10 +22,10 @@ function NavItemGroup({
 
 	const {
 		'nav-item__group': groupCln,
-		show: showCln,
 		'nav-item__list': listCln,
-		item: itemCln,
 		'item-title': titleCln,
+		show: showCln,
+		item: itemCln,
 		icon: iconCln,
 	} = module;
 

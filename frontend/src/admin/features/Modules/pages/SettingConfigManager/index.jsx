@@ -10,7 +10,7 @@ import {
 	FloatingLabelInput,
 	WrapScrollBar,
 } from 'admin/components';
-import { convertName } from 'admin/features/Languages/utilities';
+import { convertName } from 'admin/features/Languages/utils';
 import { showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import React, { useEffect, useState } from 'react';
@@ -29,7 +29,7 @@ export default function SettingConfigManager() {
 		resolver: yupResolver(settingConfigSchema),
 	});
 
-	const handleOnSubmit = tryCatchAndToast(async (data) => {
+	const handleOnSubmit = tryCatchAndToast(async () => {
 		const cloneObj = JSON.parse(JSON.stringify(configs));
 		Object.keys(cloneObj).forEach((key) => {
 			Object.keys(cloneObj[key]).forEach((name) => {

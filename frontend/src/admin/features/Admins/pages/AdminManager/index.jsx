@@ -19,7 +19,7 @@ import produce from 'immer';
 import { useEffect, useMemo, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
-import { AdminModal } from '../../components';
+import { AdminModal } from '../../components/AdminModal';
 
 export default function AdminManager() {
 	const {
@@ -60,7 +60,7 @@ export default function AdminManager() {
 	const openAdminModal = compose(updateAdminIndex, toggleModal);
 	const openConfirmModal = compose(updateAdminIndex, toggleConfirmDeletionModal);
 
-	const handleOnCreate = tryCatchAndToast(async (newAdmin) => {
+	const handleCreate = tryCatchAndToast(async (newAdmin) => {
 		const { message, metadata } = await adminApi.createOne(newAdmin);
 		if (totalPages === +page && +pagesize > Admins.length) {
 			setAdmins(
@@ -204,7 +204,7 @@ export default function AdminManager() {
 				genders={Genders}
 				positions={AdminRoles}
 				onClose={toggleModal}
-				onCreate={handleOnCreate}
+				onCreate={handleCreate}
 				onUpdate={handleOnUpdate}
 			/>
 

@@ -5,7 +5,7 @@ import { showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ChangePassForm, ProfileForm } from './components';
+import { ChangePassForm, ProfileForm } from '../../components';
 
 export default function ProfileSetting() {
 	const {

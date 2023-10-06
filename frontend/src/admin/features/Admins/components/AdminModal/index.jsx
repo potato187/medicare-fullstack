@@ -13,7 +13,7 @@ import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
 import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { adminDefaultValues, adminValidation } from '../../validation';
+import { adminDefaultValues, adminValidation } from './schema';
 
 export function AdminModal({
 	isOpen = false,
@@ -55,7 +55,7 @@ export function AdminModal({
 		} else {
 			clone.current = null;
 		}
-	}, [isOpen, adminId, methods]);
+	}, [isOpen, adminId]);
 
 	return (
 		<FormProvider {...methods}>

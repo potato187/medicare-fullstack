@@ -40,8 +40,13 @@ export function TableHeader({ children, ...props }) {
 }
 
 export function TableBody({ list = [], isLoading, rows = 10, columns = 6, children }) {
+	const { 'tbody-empty': emptyCln } = module;
+	const classNames = cn({
+		[emptyCln]: !list.length,
+	});
+
 	return (
-		<tbody>
+		<tbody className={classNames}>
 			{isLoading ? (
 				<TableRowsLoader rows={rows} columns={columns} />
 			) : list.length ? (

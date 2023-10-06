@@ -16,7 +16,7 @@ import {
 	FloatingLabelSelect,
 	TextArea,
 } from 'admin/components';
-import { bookingDefaultValues, bookingValidation } from '../../validation';
+import { defaultValues, schema } from './schema';
 
 export function BookingModal({
 	isOpen = false,
@@ -32,8 +32,8 @@ export function BookingModal({
 	const clone = useRef(null);
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: bookingDefaultValues,
-		resolver: yupResolver(bookingValidation),
+		defaultValues,
+		resolver: yupResolver(schema),
 	});
 
 	const watchSpecialtyId = methods.watch('specialtyId', '');
@@ -54,7 +54,8 @@ export function BookingModal({
 		if (!isOpen || !bookingId) {
 			clone.current = null;
 		}
-	}, [isOpen, bookingId, methods]);
+		
+	}, [isOpen, bookingId]);
 
 	useEffect(() => {
 		tryCatch(async () => {

@@ -1,8 +1,7 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { useToggle } from 'admin/hooks';
+import { useClickOutside, useToggle } from 'admin/hooks';
 import cn from 'classnames';
-import { useClickOutside } from 'hooks';
-import { useId, useMemo } from 'react';
+import { useId, useMemo, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { CSSTransition } from 'react-transition-group';
@@ -29,12 +28,17 @@ function Tag({ value, label, onClick }) {
 export function FloatingLabelMultiSelect({ name, options, labelIntl }) {
 	const domId = useId();
 	const intl = useIntl();
+	const nodeRef = useRef(null);
+
 	const labelText = intl.formatMessage({ id: labelIntl });
 	const { control, errors, watch, setValue } = useFormContext();
 	const [isOpen, toggleDropdown] = useToggle();
-	const nodeRef = useClickOutside(() => {
+
+	const handleClickOutside = () => {
 		toggleDropdown(false);
-	});
+	};
+
+	useClickOutside(nodeRef, handleClickOutside);
 
 	const {
 		'select-dropdown': dropdownCln,

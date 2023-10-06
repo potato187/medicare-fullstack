@@ -13,7 +13,7 @@ import { setDefaultValues } from 'admin/utilities';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { blogCategoryDefaultValues, blogCategorySchema } from '../../schema';
+import { defaultValues, schema } from './schema';
 
 export function BlogCategoryModal({
 	isOpen = false,
@@ -23,8 +23,8 @@ export function BlogCategoryModal({
 	onUpdate = (f) => f,
 }) {
 	const methods = useForm({
-		defaultValues: blogCategoryDefaultValues,
-		resolver: yupResolver(blogCategorySchema),
+		defaultValues,
+		resolver: yupResolver(schema),
 	});
 
 	const handleOnSubmit = (data) => {
@@ -48,9 +48,9 @@ export function BlogCategoryModal({
 		}
 
 		if (!isOpen || !blogCategory) {
-			setDefaultValues(methods, blogCategoryDefaultValues);
-		}
-	}, [isOpen, blogCategory, methods]);
+			setDefaultValues(methods, defaultValues);
+
+	}, [isOpen, blogCategory]);
 
 	return (
 		<FormProvider {...methods}>

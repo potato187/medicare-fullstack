@@ -14,15 +14,15 @@ import {
 	TdSelect,
 	TrStatus,
 } from 'admin/components';
-import { extractFirstNameLastName, tryCatch, tryCatchAndToast } from 'admin/utilities';
-import { emailValidation, fileExcelValidation, phoneValidation, requiredValidation } from 'admin/validation';
+import { extractFirstNameLastName, tryCatchAndToast } from 'admin/utilities';
+import { fileExcelValidation } from 'admin/validation';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
 import { readFileExcel } from 'utils';
 import * as yup from 'yup';
-import { IMPORT_STATUS, doctorDefaultValue } from './constant';
+import { IMPORT_STATUS, defaultValues, schema } from './schema';
 
 export function ImportExcelModal({
 	isOpen = false,
@@ -48,21 +48,9 @@ export function ImportExcelModal({
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {
-			doctors: [doctorDefaultValue],
+			doctors: [defaultValues],
 		},
-		resolver: yupResolver(
-			yup.object().shape({
-				doctors: yup.array().of(
-					yup.object().shape({
-						firstName: requiredValidation,
-						lastName: requiredValidation,
-						email: emailValidation,
-						address: requiredValidation,
-						phone: phoneValidation,
-					}),
-				),
-			}),
-		),
+		resolver: yupResolver(schema),
 	});
 
 	const { fields, remove, insert } = useFieldArray({
@@ -75,7 +63,7 @@ export function ImportExcelModal({
 	};
 
 	const handleInsertItem = () => {
-		insert(fields.length + 1, { ...doctorDefaultValue });
+		insert(fields.length + 1, { ...defaultValues });
 	};
 
 	const handleUploadExcelFile = tryCatchAndToast(async ({ fileExcel }) => {
@@ -173,8 +161,8 @@ export function ImportExcelModal({
 										<FormattedMessage id='table.actions' />
 									</th>
 								</TableHeader>
-								<TableBody>
-									{fields.map((field, index) => (
+								<TableBody list={fields} columns={9}>
+									{(field, index) => (
 										<TrStatus
 											status={methods.getValues(`doctors.${index}.importStatus`).toLocaleLowerCase()}
 											key={field.id}
@@ -197,7 +185,7 @@ export function ImportExcelModal({
 												</Button>
 											</td>
 										</TrStatus>
-									))}
+									)}
 								</TableBody>
 							</Table>
 						</TableGrid>

@@ -16,7 +16,7 @@ import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { useLanguages } from 'stores';
 import * as yup from 'yup';
-import { convertData, convertName } from '../../utilities';
+import { convertData, convertName } from '../../utils';
 
 export default function LanguageManager() {
 	const { languageId = '' } = useParams();

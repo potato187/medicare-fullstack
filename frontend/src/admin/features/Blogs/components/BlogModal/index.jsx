@@ -20,7 +20,7 @@ import produce from 'immer';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { blogSchema, blogDefaultValues } from '../../schema';
+import { defaultValues, schema } from './schema';
 
 const BLOG_SITE_MAP = {
 	INFORMATION: ['common.blog', 'common.information'],
@@ -40,9 +40,9 @@ export function BlogModal({
 	onSubmitCreate = () => null,
 }) {
 	const methods = useForm({
-		defaultValues: blogDefaultValues,
+		defaultValues,
 		mode: 'onChange',
-		resolver: yupResolver(blogSchema),
+		resolver: yupResolver(schema),
 	});
 
 	const [blogCategories, setBlogCategories] = useState([]);
@@ -117,7 +117,8 @@ export function BlogModal({
 				methods.reset();
 			}
 		})();
-	}, [isOpen, blogId, methods]);
+
+	}, [isOpen, blogId]);
 
 	return (
 		<FormProvider {...methods}>

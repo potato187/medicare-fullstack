@@ -1,7 +1,7 @@
+import { useClickOutside, useEventListener } from 'admin/hooks';
 import cn from 'classnames';
 import React, { createContext, useCallback, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { useClickOutside } from 'hooks';
 import { BasePortal } from '../BasePortal';
 
 const DropdownContext = createContext({
@@ -69,11 +69,11 @@ export function DropdownBody({ className = '', selectorId = 'portal-dropdown', c
 		minWidth: 0,
 	});
 
-	const nodeRef = useClickOutside((event) => {
-		if (!headerRef.current?.contains(event.target)) {
-			setToggle(false);
-		}
-	});
+	const nodeRef = useRef(null);
+
+	const handleClickOutside = () => {
+		setToggle(false);
+	};
 
 	const updateCoords = useCallback(() => {
 		if (headerRef.current && nodeRef.current) {
@@ -104,18 +104,12 @@ export function DropdownBody({ className = '', selectorId = 'portal-dropdown', c
 	}, [headerRef, nodeRef]);
 
 	useLayoutEffect(() => {
-		window.addEventListener('scroll', updateCoords);
-		window.addEventListener('resize', updateCoords);
-
-		return () => {
-			window.removeEventListener('scroll', updateCoords);
-			window.removeEventListener('resize', updateCoords);
-		};
-	}, [updateCoords]);
-
-	useLayoutEffect(() => {
 		updateCoords();
 	}, [isOpen, updateCoords]);
+
+	useClickOutside(nodeRef, handleClickOutside);
+	useEventListener('scroll', updateCoords);
+	useEventListener('resize', updateCoords);
 
 	return (
 		<BasePortal selectorId={selectorId}>

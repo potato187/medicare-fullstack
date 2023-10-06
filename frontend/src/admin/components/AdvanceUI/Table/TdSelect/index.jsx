@@ -1,9 +1,9 @@
+import { useClickOutside, useToggle } from 'admin/hooks';
 import cn from 'classnames';
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { RxCaretDown } from 'react-icons/rx';
 import { CSSTransition } from 'react-transition-group';
-import { useClickOutside, useSwitchState } from 'hooks';
 import module from './style.module.scss';
 
 export function TdSelect({ name, options = [], ...props }) {
@@ -13,13 +13,16 @@ export function TdSelect({ name, options = [], ...props }) {
 		right: 0,
 		zIndex: 10,
 	});
-	const { control, getValues, setValue } = useFormContext();
 	const id = useId();
-	const { isOpen, turnOn: openSelect, turnOff: closeSelect } = useSwitchState();
 	const tdRef = useRef(null);
-	const nodeRef = useClickOutside(() => {
-		closeSelect();
-	});
+	const nodeRef = useRef(null);
+
+	const { control, getValues, setValue } = useFormContext();
+	const [isOpen, toggle] = useToggle();
+
+	const handleClickOutside = () => {
+		toggle();
+	};
 
 	const {
 		'td-select': tdSelectCln,
@@ -36,8 +39,10 @@ export function TdSelect({ name, options = [], ...props }) {
 
 	const handleSelectOption = (value) => {
 		setValue(name, value);
-		closeSelect();
+		toggle();
 	};
+
+	useClickOutside(nodeRef, handleClickOutside);
 
 	useEffect(() => {
 		if (option.value !== value) {
@@ -70,7 +75,7 @@ export function TdSelect({ name, options = [], ...props }) {
 	return (
 		<td ref={tdRef} {...props}>
 			<div className={style}>
-				<div aria-hidden className={selectHeaderCln} onClick={openSelect}>
+				<div aria-hidden className={selectHeaderCln} onClick={toggle}>
 					<span className='text-capitalize'>{option.label}</span>
 					<Controller
 						id={id}

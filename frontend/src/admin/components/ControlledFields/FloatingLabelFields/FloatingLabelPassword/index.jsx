@@ -1,18 +1,18 @@
 import { ErrorMessage } from '@hookform/error-message';
+import { FormattedDescription } from 'admin/components/BaseUI';
+import { useToggle } from 'admin/hooks';
 import cn from 'classnames';
 import { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useSwitchState } from 'hooks';
-import { FormattedDescription } from 'admin/components/BaseUI';
 import module from '../style.module.scss';
 
 export function FloatingLabelPassword({ name, labelIntl, ...props }) {
 	const id = useId();
 	const intl = useIntl();
 	const labelText = intl.formatMessage({ id: labelIntl });
-	const { isOpen, toggle } = useSwitchState(false);
+	const [isOpen, toggle] = useToggle();
 	const { control, errors } = useFormContext();
 	const type = isOpen ? 'text' : 'password';
 

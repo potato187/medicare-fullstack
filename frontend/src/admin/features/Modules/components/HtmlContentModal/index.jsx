@@ -16,7 +16,7 @@ import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
 import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { htmlContentDefaults, htmlContentValidation } from '../../schema';
+import { defaultValues, schema } from './schema';
 
 export function HtmlContentModal({
 	isOpen = false,
@@ -30,8 +30,8 @@ export function HtmlContentModal({
 	const clone = useRef(null);
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: htmlContentDefaults,
-		resolver: yupResolver(htmlContentValidation),
+		defaultValues,
+		resolver: yupResolver(schema),
 	});
 
 	const handleOnSubmit = (data) => {
@@ -56,10 +56,11 @@ export function HtmlContentModal({
 				clone.current = metadata;
 			} else {
 				clone.current = null;
-				setDefaultValues(methods, htmlContentDefaults);
+				setDefaultValues(methods, defaultValues);
 			}
 		})();
-	}, [isOpen, htmlContentId, methods]);
+
+	}, [isOpen, htmlContentId]);
 
 	return (
 		<FormProvider {...methods}>

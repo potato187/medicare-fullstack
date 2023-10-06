@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { newsApi } from 'admin/api';
 import {
 	BaseModal,
@@ -14,19 +15,7 @@ import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
 import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-
-const newsDefaultValues = {
-	name: {
-		vi: '',
-		en: '',
-	},
-	pageType: ['home'],
-	positionType: 'main',
-	index: 0,
-	quantity: 1,
-	order: 'createdAt_desc',
-	isDisplay: false,
-};
+import { defaultValues, schema } from './schema';
 
 export function NewsModal({
 	isOpen = false,
@@ -41,8 +30,9 @@ export function NewsModal({
 	const clone = useRef(null);
 	const typeModal = newsId ? 'update' : 'create';
 	const methods = useForm({
-		defaultValues: newsDefaultValues,
+		defaultValues,
 		mode: 'onChange',
+		resolver: yupResolver(schema),
 	});
 
 	const handleOnSubmit = (data) => {
@@ -69,9 +59,10 @@ export function NewsModal({
 			})();
 		}
 		if (!isOpen || !newsId) {
-			setDefaultValues(methods, newsDefaultValues);
+			setDefaultValues(methods, defaultValues);
 		}
-	}, [isOpen, newsId, methods]);
+
+	}, [isOpen, newsId]);
 
 	return (
 		<FormProvider {...methods}>

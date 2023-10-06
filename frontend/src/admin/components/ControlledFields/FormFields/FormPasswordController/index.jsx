@@ -1,10 +1,10 @@
 import { ErrorMessage } from '@hookform/error-message';
-import React, { useId } from 'react';
+import { FormattedDescription } from 'admin/components/BaseUI';
+import { useToggle } from 'admin/hooks';
+import { useId } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 import { useIntl } from 'react-intl';
-import { useSwitchState } from 'hooks';
-import { FormattedDescription } from 'admin/components/BaseUI';
 import module from '../style/style.module.scss';
 
 export function FormPasswordController({ name, labelInt, placeholderInt, ...props }) {
@@ -13,7 +13,7 @@ export function FormPasswordController({ name, labelInt, placeholderInt, ...prop
 	const label = intl.formatMessage({ id: labelInt });
 	const placeholder = intl.formatMessage({ id: placeholderInt });
 	const { control, errors } = useFormContext();
-	const { isOpen: hidden, toggle: setHidden } = useSwitchState();
+	const [isOpen, toggle] = useToggle();
 	const { 'form-group': formCln, 'form-group__password': passwordCln, 'form-helper': helperCln } = module;
 
 	return (
@@ -26,9 +26,9 @@ export function FormPasswordController({ name, labelInt, placeholderInt, ...prop
 						<>
 							<label htmlFor={id}>{label}</label>
 							<div className={passwordCln}>
-								<input id={id} {...field} {...props} type={hidden ? 'text' : 'password'} placeholder={placeholder} />
-								<button type='button' onClick={setHidden}>
-									{hidden ? <VscEye size='1.125em' /> : <VscEyeClosed size='1.125em' />}
+								<input id={id} {...field} {...props} type={isOpen ? 'text' : 'password'} placeholder={placeholder} />
+								<button type='button' onClick={toggle}>
+									{isOpen ? <VscEye size='1.125em' /> : <VscEyeClosed size='1.125em' />}
 								</button>
 							</div>
 							<ErrorMessage
