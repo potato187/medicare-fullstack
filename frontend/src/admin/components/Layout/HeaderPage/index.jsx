@@ -1,4 +1,5 @@
 import { LANGUAGES } from 'admin/constant';
+import { THEME, useConfigs } from 'admin/contexts';
 import { generateBreadcrumb } from 'admin/utilities';
 import { useAuth } from 'hooks';
 import { useEffect, useState } from 'react';
@@ -15,10 +16,10 @@ export function HeaderPage() {
 	const location = useLocation();
 	const { info } = useAuth();
 	const [breadcrumb, setBreadcrumb] = useState([]);
-
-	useEffect(() => {
-		setBreadcrumb(generateBreadcrumb(location.pathname));
-	}, [location.pathname]);
+	const [fullScreen, setFullScreen] = useState('off');
+	const { configs, setConfigs, enterFullscreen, exitFullscreen } = useConfigs();
+	const { theme } = configs;
+	const isDarkTheme = theme === THEME.DARK ? 'on' : 'off';
 
 	const {
 		header: headerCln,
@@ -26,6 +27,25 @@ export function HeaderPage() {
 		toggle_sidebar: toggleCln,
 		toggle_sidebar__wrapper: toggleWrapperCln,
 	} = module;
+
+	const handleToggleTheme = () => {
+		const { theme } = configs;
+		setConfigs({ ...configs, theme: THEME.DARK === theme ? THEME.LIGHT : THEME.DARK });
+	};
+
+	const handleToggleFullScreen = () => {
+		if (fullScreen === 'off') {
+			enterFullscreen();
+			setFullScreen('on');
+		} else {
+			exitFullscreen();
+			setFullScreen('off');
+		}
+	};
+
+	useEffect(() => {
+		setBreadcrumb(generateBreadcrumb(location.pathname));
+	}, [location.pathname]);
 
 	return (
 		<div className={headerCln}>
@@ -41,11 +61,11 @@ export function HeaderPage() {
 
 					<div className='ms-auto d-flex align-items-center gap-2'>
 						<LanguagesDropdown list={LANGUAGES} />
-						<Button info switched square rounded fade>
+						<Button info switched square rounded fade data-switch={fullScreen} onClick={handleToggleFullScreen}>
 							<BiFullscreen size='1.25em' />
 							<BiExitFullscreen size='1.25em' />
 						</Button>
-						<Button info switched square rounded fade>
+						<Button info switched square rounded fade data-switch={isDarkTheme} onClick={handleToggleTheme}>
 							<MdOutlineLightMode size='1.25em' />
 							<MdOutlineDarkMode size='1.25em' />
 						</Button>

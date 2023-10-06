@@ -47,7 +47,6 @@ export const useLocalStorage = (key, initialValue) => {
 
 	useEffect(() => {
 		setStoredValue(readValue());
-
 	}, []);
 
 	useEventListener('storage', handleStorageChange);

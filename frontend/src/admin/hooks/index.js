@@ -7,3 +7,4 @@ export * from './useIsomorphicLayoutEffect';
 export * from './useToggle';
 export * from './useIsFirstRender';
 export * from './useDocumentTitle';
+export * from './useLocalStorage';
