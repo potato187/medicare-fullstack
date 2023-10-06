@@ -1,15 +1,19 @@
+import { useDocumentTitle } from 'admin/hooks';
 import cn from 'classnames';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import module from './style.module.scss';
 
 export function HeaderBreadcrumb({ breadcrumb = [] }) {
+	const intl = useIntl();
+	const title = intl.formatMessage({ id: breadcrumb.at(-1).intl });
 	const { breadcrumb: breadcrumbCln, breadcrumb__title: titleCln, breadcrumb__list: listCln } = module;
+
+	useDocumentTitle(title, [title]);
+
 	return (
 		<nav className={breadcrumbCln}>
-			<h1 className={cn(titleCln, 'mb-0 text-uppercase')}>
-				<FormattedMessage id={breadcrumb.at(-1).intl} />
-			</h1>
+			<h1 className={cn(titleCln, 'mb-0 text-uppercase')}>{title}</h1>
 			<ul className={listCln}>
 				{breadcrumb.map(({ url = '', intl = '' }) => (
 					<li key={url}>

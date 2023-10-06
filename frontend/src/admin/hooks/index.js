@@ -5,3 +5,5 @@ export * from './useEventListener';
 export * from './useIndex';
 export * from './useIsomorphicLayoutEffect';
 export * from './useToggle';
+export * from './useIsFirstRender';
+export * from './useDocumentTitle';

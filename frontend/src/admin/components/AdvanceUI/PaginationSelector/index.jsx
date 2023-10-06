@@ -9,7 +9,7 @@ export function PaginationSelector({
 	size = '',
 	paginationNumbers = [],
 	perPage = 1,
-	onSelect = () => {},
+	onSelect = (f) => f,
 	...props
 }) {
 	const styles = cn(
