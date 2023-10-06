@@ -1,3 +1,4 @@
+import { PATH_IMAGES } from 'admin/constant';
 import cn from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
@@ -5,7 +6,6 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { PATH_IMAGES } from 'admin/constant';
 import module from './style.module.scss';
 
 function NavItemGroup({
@@ -14,7 +14,7 @@ function NavItemGroup({
 	to = '',
 	intl = '',
 	Icon = () => null,
-	onClick = () => null,
+	onClick = (f) => f,
 	...props
 }) {
 	const nodeRef = useRef(null);
@@ -29,9 +29,7 @@ function NavItemGroup({
 		icon: iconCln,
 	} = module;
 
-	const handleOnclick = () => {
-		onClick(to);
-	};
+	const classNames = cn(groupCln, { [showCln]: isOpen });
 
 	useEffect(() => {
 		if (nodeRef.current) {
@@ -40,8 +38,8 @@ function NavItemGroup({
 	}, []);
 
 	return (
-		<div className={cn(groupCln, { [showCln]: isOpen })} {...props}>
-			<div aria-hidden className={titleCln} onClick={handleOnclick}>
+		<div className={classNames} {...props}>
+			<div aria-hidden className={titleCln} onClick={() => onClick(to)}>
 				<i>
 					<Icon />
 				</i>
@@ -86,7 +84,6 @@ function NavItem({ to = '', intl = '', Icon = () => null, ...props }) {
 
 export function SidebarNavigator({ routesConfig = [] }) {
 	const { info } = useSelector((state) => state.auth);
-
 	const location = useLocation();
 	const [activePath, setActivePath] = useState(location.pathname);
 
@@ -99,6 +96,10 @@ export function SidebarNavigator({ routesConfig = [] }) {
 		'sidebar-navigator__header': headerClass,
 		'sidebar-navigator__main': mainClass,
 	} = module;
+
+	useEffect(() => {
+		setActivePath(location.pathname);
+	}, [location]);
 
 	return (
 		<nav className={navigatorClass}>
