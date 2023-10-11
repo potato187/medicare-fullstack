@@ -11,10 +11,10 @@ export function SortableTreeItem({ id, depth, ...props }) {
 		isDragging,
 		isSorting,
 		listeners,
-		setDraggableNodeRef,
-		setDroppableNodeRef,
 		transform,
 		transition,
+		setDraggableNodeRef,
+		setDroppableNodeRef,
 	} = useSortable({
 		id,
 		animateLayoutChanges,

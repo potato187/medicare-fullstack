@@ -1,9 +1,8 @@
 import { LANGUAGES } from 'admin/constant';
-import { THEME, useConfigs } from 'admin/contexts';
+import { THEME, useTheme } from 'admin/contexts';
 import { generateBreadcrumb } from 'admin/utilities';
-import { useAuth } from 'hooks';
+import produce from 'immer';
 import { useEffect, useState } from 'react';
-import { BiExitFullscreen, BiFullscreen } from 'react-icons/bi';
 import { MdOutlineDarkMode, MdOutlineLightMode } from 'react-icons/md';
 import { useLocation } from 'react-router-dom';
 import { Button } from '../../BaseUI';
@@ -14,33 +13,24 @@ import module from './style.module.scss';
 
 export function HeaderPage() {
 	const location = useLocation();
-	const { info } = useAuth();
 	const [breadcrumb, setBreadcrumb] = useState([]);
-	const [fullScreen, setFullScreen] = useState('off');
-	const { configs, setConfigs, enterFullscreen, exitFullscreen } = useConfigs();
-	const { theme } = configs;
-	const isDarkTheme = theme === THEME.DARK ? 'on' : 'off';
+	const { theme, setTheme } = useTheme();
+	const { themeMode } = theme;
+	const isDarkTheme = themeMode === THEME.DARK ? 'on' : 'off';
 
 	const {
 		header: headerCln,
 		header__wrapper: wrapperClass,
-		toggle_sidebar: toggleCln,
-		toggle_sidebar__wrapper: toggleWrapperCln,
+		'btn-toggle': btnToggleCln,
+		'btn-toggle__wrapper': btnToggleWrapperCln,
 	} = module;
 
 	const handleToggleTheme = () => {
-		const { theme } = configs;
-		setConfigs({ ...configs, theme: THEME.DARK === theme ? THEME.LIGHT : THEME.DARK });
-	};
-
-	const handleToggleFullScreen = () => {
-		if (fullScreen === 'off') {
-			enterFullscreen();
-			setFullScreen('on');
-		} else {
-			exitFullscreen();
-			setFullScreen('off');
-		}
+		setTheme(
+			produce((draft) => {
+				draft.themeMode = draft.themeMode === THEME.LIGHT ? THEME.DARK : THEME.LIGHT;
+			}),
+		);
 	};
 
 	useEffect(() => {
@@ -51,8 +41,8 @@ export function HeaderPage() {
 		<div className={headerCln}>
 			<div className={wrapperClass}>
 				<div className='d-flex justify-content-between align-items-center w-100'>
-					<button type='button' className={toggleCln}>
-						<div className={toggleWrapperCln}>
+					<button type='button' className={btnToggleCln}>
+						<div className={btnToggleWrapperCln}>
 							<span />
 							<span />
 							<span />
@@ -61,19 +51,15 @@ export function HeaderPage() {
 
 					<div className='ms-auto d-flex align-items-center gap-2'>
 						<LanguagesDropdown list={LANGUAGES} />
-						<Button info switched square rounded fade data-switch={fullScreen} onClick={handleToggleFullScreen}>
-							<BiFullscreen size='1.25em' />
-							<BiExitFullscreen size='1.25em' />
-						</Button>
 						<Button info switched square rounded fade data-switch={isDarkTheme} onClick={handleToggleTheme}>
 							<MdOutlineLightMode size='1.25em' />
 							<MdOutlineDarkMode size='1.25em' />
 						</Button>
-						<UserMenu {...info} />
+						<UserMenu />
 					</div>
 				</div>
 			</div>
-			{!!breadcrumb.length && <HeaderBreadcrumb breadcrumb={breadcrumb} />}
+			{breadcrumb.length ? <HeaderBreadcrumb breadcrumb={breadcrumb} /> : null}
 		</div>
 	);
 }

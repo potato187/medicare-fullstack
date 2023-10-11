@@ -14,7 +14,7 @@ import {
 	TdSelect,
 	TrStatus,
 } from 'admin/components';
-import { extractFirstNameLastName, tryCatchAndToast } from 'admin/utilities';
+import { extractFirstNameLastName, findItemByLabel, tryCatchAndToast } from 'admin/utilities';
 import { fileExcelValidation } from 'admin/validation';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
@@ -47,9 +47,6 @@ export function ImportExcelModal({
 
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {
-			doctors: [defaultValues],
-		},
 		resolver: yupResolver(schema),
 	});
 
@@ -63,7 +60,7 @@ export function ImportExcelModal({
 	};
 
 	const handleInsertItem = () => {
-		insert(fields.length + 1, { ...defaultValues });
+		insert(fields.length + 1, { ...defaultValues, specialtyId });
 	};
 
 	const handleUploadExcelFile = tryCatchAndToast(async ({ fileExcel }) => {
@@ -71,8 +68,8 @@ export function ImportExcelModal({
 		const doctors = jsonData.map((doctor) => {
 			const { fullName, email, phone, address, position, gender } = doctor;
 			const { firstName, lastName } = extractFirstNameLastName(fullName);
-			const _gender = genders.find((genderItem) => genderItem.label.toLowerCase() === gender.toLowerCase());
-			const _position = positions.find((positionItem) => positionItem.label.toLowerCase() === position.toLowerCase());
+			const _gender = findItemByLabel(genders, gender, 'GF');
+			const _position = findItemByLabel(positions, position, 'P01');
 
 			return {
 				firstName,

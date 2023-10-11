@@ -1,3 +1,25 @@
+[data-theme='theme_light'] .react-datepicker {
+	--date-picker-border-color: var(--bs-gray-400);
+	--date-picker-text-color: var(--bs-gray-900);
+	--date-picker-header-bg: var(--bs-primary);
+	--date-picker-header-color: var(--bs-white);
+	--date-picker-bg-hover: var(--bs-gray-300);
+	--date-picker-bg-active: var(--bs-primary);
+	--date-picker-text-active: var(--bs-white);
+	--date-picker-text-disabled: var(--bs-gray-500);
+}
+
+[data-theme='theme_dark'] .react-datepicker {
+	--date-picker-border-color: var(--bs-gray-400);
+	--date-picker-text-color: var(--bs-gray-900);
+	--date-picker-header-bg: var(--bs-primary);
+	--date-picker-header-color: var(--bs-white);
+	--date-picker-bg-hover: var(--bs-gray-300);
+	--date-picker-bg-active: var(--bs-primary);
+	--date-picker-text-active: var(--bs-white);
+	--date-picker-text-disabled: var(--bs-gray-500);
+}
+
 .date-picker-input {
 	&.react-datepicker-wrapper {
 		width: 100%;
@@ -7,15 +29,8 @@
 
 .react-datepicker.date-picker {
 	--date-picker-family: var(--bs-body-font-family);
-	--date-picker-border-color: var(--bs-gray-400);
-	--date-picker-text-color: var(--bs-gray-900);
+
 	--date-picker-radius: var(--spacing-xs);
-	--date-picker-header-bg: var(--bs-primary);
-	--date-picker-header-color: var(--bs-white);
-	--date-picker-bg-hover: var(--bs-gray-300);
-	--date-picker-bg-active: var(--bs-primary);
-	--date-picker-text-active: var(--bs-white);
-	--date-picker-text-disabled: var(--bs-gray-500);
 
 	font-family: var(--date-picker-family);
 	border-color: var(--date-picker-border-color);

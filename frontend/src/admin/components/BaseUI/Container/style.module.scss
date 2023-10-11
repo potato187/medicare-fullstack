@@ -1,6 +1,16 @@
+[data-theme='theme_light'] .container {
+	--container-bg: var(--bs-white);
+	--container-border-color: var(--bs-gray-300);
+}
+
+[data-theme='theme_dark'] .container {
+	--container-bg: var(--bs-gray-900);
+	--container-border-color: #32383e;
+}
+
 .container {
 	border-radius: var(--spacing-xxs);
-	background-color: var(--bs-white);
+	background-color: var(--container-bg);
 	box-shadow: var(--bs-box-shadow);
 
 	&.transparent {
@@ -16,7 +26,7 @@
 	&-main,
 	&-title {
 		padding: var(--spacing-md);
-		border-bottom: 1px solid var(--bs-gray-300);
+		border-bottom: 1px solid var(--container-border-color);
 	}
 
 	&-title {

@@ -13,7 +13,8 @@ export function UnFieldDebounce({
 }) {
 	const { 'field-debounce': fieldCln, 'field-debounce__icon': iconCln } = module;
 	const intl = useIntl();
-	const handleOnChange = (event) => {
+
+	const handleChange = (event) => {
 		onChange(event.target.value);
 	};
 
@@ -21,7 +22,7 @@ export function UnFieldDebounce({
 		<div className={cn(fieldCln, className)}>
 			<input
 				defaultValue={initialValue}
-				onChange={debounce((event) => handleOnChange(event))}
+				onChange={debounce((event) => handleChange(event))}
 				placeholder={intl.formatMessage({ id: placeholderIntl })}
 				{...props}
 			/>

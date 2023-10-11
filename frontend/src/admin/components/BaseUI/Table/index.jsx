@@ -39,7 +39,14 @@ export function TableHeader({ children, ...props }) {
 	);
 }
 
-export function TableBody({ list = [], isLoading, rows = 10, columns = 6, children }) {
+export function TableBody({
+	list = [],
+	isLoading,
+	rows = 10,
+	columns = 6,
+	idIntl = 'common.no_results_found',
+	children = null,
+}) {
 	const { 'tbody-empty': emptyCln } = module;
 	const classNames = cn({
 		[emptyCln]: !list.length,
@@ -54,7 +61,7 @@ export function TableBody({ list = [], isLoading, rows = 10, columns = 6, childr
 			) : (
 				<tr className='text-center text-muted text-italic'>
 					<td colSpan={columns}>
-						<FormattedMessage id='common.no_results_found' />
+						<FormattedMessage id={idIntl} />
 					</td>
 				</tr>
 			)}

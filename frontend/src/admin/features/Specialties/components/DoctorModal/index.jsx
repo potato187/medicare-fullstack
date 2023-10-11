@@ -66,7 +66,6 @@ export function DoctorModal({
 				clone.current = null;
 			}
 		})();
-	
 	}, [isOpen, doctorId]);
 
 	return (
@@ -79,7 +78,7 @@ export function DoctorModal({
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<Tabs tabIndexActive={0}>
-							<TabNav>
+							<TabNav variant='bordered'>
 								<TabNavItem labelIntl='common.profile' index={0} />
 								<TabNavItem labelIntl='common.description.en' index={1} />
 								<TabNavItem labelIntl='common.description.vi' index={2} />

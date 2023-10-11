@@ -1,13 +1,33 @@
-.form-group {
+[data-theme='theme_light'] .form-group {
+	--input-bg: var(--bs-gray-100);
+	--input-text-color: var(--bs-gray-900);
+	--input-text-invalid: #f06548;
 	--input-border: var(--bs-gray-300);
 	--input-border-invalid: #f06548;
-	--input-color-invalid: #f06548;
-	--label-color-active: var(--bs-primary);
 	--input-border-focus: #a0a8c4;
-	--input-bg: var(--bs-gray-100);
 	--input-disabled-bg: #eff2f7;
-	--input-transition: cubic-bezier(0.4, 0, 0.2, 1);
+	--label-color: var(--bs-gray-700);
+	--label-color-active: var(--bs-primary);
+	--password-icon-color: var(--bs-gray-600);
+	--password-icon-color-active: var(--bs-gray-900);
+}
 
+[data-theme='theme_dark'] .form-group {
+	--input-bg: #262a2f;
+	--input-border: #2a2f34;
+	--input-text-color: var(--bs-gray-400);
+	--input-border-invalid: #f06548;
+	--input-text-invalid: #f06548;
+	--input-border-focus: var(--bs-primary);
+	--input-disabled-bg: #2a2d31;
+	--label-color: #878a99;
+	--label-color-active: var(--bs-gray-400);
+	--password-icon-color: var(--bs-gray-600);
+	--password-icon-color-active: var(--bs-gray-600);
+}
+
+.form-group {
+	--input-transition: cubic-bezier(0.4, 0, 0.2, 1);
 	width: 100%;
 	position: relative;
 
@@ -19,11 +39,11 @@
 		position: relative;
 		appearance: none;
 		border: 1px solid var(--input-border);
-		color: var(--bs-gray-900);
+		color: var(--input-text-color);
 		border-radius: 0.25rem;
 		background-clip: padding-box;
 		background-color: var(--input-bg);
-		transition: var(--transition-default);
+		transition: color 0.25s var(--input-transition);
 
 		&::-webkit-file-upload-button {
 			display: none;
@@ -103,7 +123,7 @@
 		bottom: -1.25rem;
 		font-size: 0.75rem;
 		font-weight: 400;
-		color: var(--input-color-invalid);
+		color: var(--input-text-invalid);
 	}
 
 	&.form-password {
@@ -112,7 +132,7 @@
 		}
 
 		.form-control[type='text'] ~ button {
-			color: var(--bs-gray-900);
+			color: var(--password-icon-color-active);
 		}
 
 		button {
@@ -123,7 +143,7 @@
 			top: 50%;
 			z-index: 2;
 			padding-top: var(--spacing-sm);
-			color: var(--bs-gray-600);
+			color: var(--password-icon-color);
 			transform: translateY(-50%);
 			transition: var(--transition-default);
 		}
@@ -177,40 +197,57 @@
 	}
 }
 
-.select-dropdown {
+[data-theme='theme_light'] .dropdown {
+	--dropdown-bg: var(--bs-white);
+	--dropdown-item-bg: var(--bs-white);
+	--dropdown-item-bg-active: var(--bs-primary);
+	--dropdown-item-color: var(--bs-gray-900);
+	--dropdown-item-color-active: var(--bs-white);
+	--dropdown-border-color: transparent;
+}
+
+[data-theme='theme_dark'] .dropdown {
+	--dropdown-bg: #292e33;
+	--dropdown-item-bg: transparent;
+	--dropdown-item-bg-active: #2f343a;
+	--dropdown-item-color: #adb5bd;
+	--dropdown-item-color-active: #b9bfc4;
+	--dropdown-border-color: #32383e;
+}
+
+.dropdown {
 	position: relative;
 
-	&.select-dropdown-multi &__list {
+	&.dropdown-multi &__list {
 		min-height: unset;
 	}
 
 	&__list {
-		background-color: var(--bs-white);
-		padding: var(--spacing-xs) 0;
-		box-shadow: var(--bs-box-shadow);
-		border-radius: 0 0 var(--spacing-xs) var(--spacing-xs);
 		position: absolute;
 		top: 100%;
 		left: 0;
 		right: 0;
 		height: auto;
+		padding: var(--spacing-xs) 0;
 		min-height: 60px;
 		max-height: 106px;
+		background-color: var(--dropdown-bg);
+		box-shadow: var(--bs-box-shadow);
+		border-radius: 0 0 var(--spacing-xs) var(--spacing-xs);
+		border: 1px solid var(--dropdown-border-color);
 
 		> * {
 			font-size: var(--theme-text-xs);
 			padding: var(--spacing-xs) var(--spacing-md);
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			transition: var(--transition-default);
-			cursor: pointer;
 			text-transform: capitalize;
+			color: var(--dropdown-item-color);
+			background-color: var(--dropdown-item-bg);
+			transition: var(--transition-color);
 
 			&:hover,
 			&.item-active {
-				background-color: var(--bs-primary);
-				color: var(--bs-white);
+				background-color: var(--dropdown-item-bg-active);
+				color: var(--dropdown-item-color-active);
 			}
 
 			&[disabled],
@@ -218,6 +255,7 @@
 				opacity: 0.75;
 				pointer-events: none;
 				user-select: none;
+				font-style: italic;
 			}
 		}
 	}

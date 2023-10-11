@@ -1,12 +1,22 @@
+[data-theme='theme_light'] .tr-status {
+	--tr-status-bg: var(--bs-white);
+}
+
+[data-theme='theme_light'] .tr-status {
+	--tr-status-bg: transparent;
+}
+
 tr.tr-status {
 	&.prepare {
-		background-color: var(--bs-white);
+		background-color: var(--tr-status-bg);
 	}
-	&.fail {
-		background-color: rgba(240, 101, 72, 0.1);
+
+	&.fail > td {
+		background-color: rgba(240, 101, 72, 0.1) !important;
 	}
-	&.success {
-		background-color: rgba(10, 178, 156, 0.1);
+
+	&.success > td {
+		background-color: rgba(10, 178, 156, 0.1) !important;
 		> *:not(:last-of-type) {
 			pointer-events: none;
 		}

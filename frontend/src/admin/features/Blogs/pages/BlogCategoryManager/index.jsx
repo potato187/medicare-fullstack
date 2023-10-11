@@ -1,5 +1,13 @@
 import { blogCategoryApi } from 'admin/api';
-import { Button, ConfirmModal, Container, FormattedDescription, SortableTree, WrapScrollBar } from 'admin/components';
+import {
+	Button,
+	ConfirmModal,
+	Container,
+	Divider,
+	FormattedDescription,
+	SortableTree,
+	WrapScrollBar,
+} from 'admin/components';
 import { flattenTree, removeItem } from 'admin/components/AdvanceUI/Tree/utilities';
 import { useToggle } from 'admin/hooks';
 import { compose, getObjectDiff, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
@@ -91,7 +99,8 @@ export default function BlogCategoryManager() {
 							handleModifyItem={handleToggleModal}
 						/>
 					</WrapScrollBar>
-					<div className='d-flex justify-content-center gap-2 pt-4 border-top border-gray-300'>
+					<Divider />
+					<div className='d-flex justify-content-center gap-2 pt-3 '>
 						<Button size='sm' info onClick={toggleSortableModal}>
 							<FormattedMessage id='dashboard.blogs.modal.button_sort' />
 						</Button>

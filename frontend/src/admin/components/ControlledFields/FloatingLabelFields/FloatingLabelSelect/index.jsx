@@ -1,29 +1,28 @@
+import { ErrorMessage } from '@hookform/error-message';
+import { FormattedDescription } from 'admin/components/BaseUI';
+import { useClickOutside, useToggle } from 'admin/hooks';
 import cn from 'classnames';
 import { useId, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { CSSTransition } from 'react-transition-group';
-import { useClickOutside, useToggle } from 'admin/hooks';
-import { ErrorMessage } from '@hookform/error-message';
-import { FormattedDescription } from 'admin/components/BaseUI';
 import module from '../style.module.scss';
 
 export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = false, className = '' }) {
 	const domId = useId();
 	const intl = useIntl();
-	const labelText = intl.formatMessage({ id: labelIntl });
-	const { control, errors, watch, setValue } = useFormContext();
-	const [isOpen, toggleDropdown] = useToggle();
-
 	const nodeRef = useRef(null);
+	const [isOpen, toggle] = useToggle();
+	const { control, errors, watch, setValue } = useFormContext();
+	const labelText = intl.formatMessage({ id: labelIntl });
 
 	const {
 		'form-group': formGroupCln,
-		'form-label': labelCln,
-		'form-control': inputCln,
-		'select-dropdown': dropdownCln,
-		'select-dropdown__list': dropdownListCln,
-		'item-active': activeCln,
+		'form-label': formLabelCln,
+		'form-control': formControlCln,
+		dropdown: dropdownCln,
+		dropdown__list: dropdownListCln,
+		'item-active': itemActiveCln,
 	} = module;
 
 	const value = watch(name);
@@ -31,11 +30,11 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 
 	const handleSelect = (option) => {
 		setValue(name, option.value, { shouldDirty: true, shouldTouch: true });
-		toggleDropdown(false);
+		toggle(false);
 	};
 
 	const handleClickOutside = () => {
-		toggleDropdown(false);
+		toggle(false);
 	};
 
 	useClickOutside(nodeRef, handleClickOutside);
@@ -43,10 +42,10 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 	return (
 		<div className={cn(dropdownCln, className)}>
 			<div className={formGroupCln}>
-				<div className={inputCln} onClick={toggleDropdown} aria-hidden>
+				<div className={formControlCln} onClick={toggle} aria-hidden>
 					{currentOption?.label || ''}
 				</div>
-				<label htmlFor={domId} className={labelCln}>
+				<label htmlFor={domId} className={formLabelCln}>
 					<FormattedMessage id={labelIntl} />
 				</label>
 				<Controller
@@ -73,7 +72,8 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 								aria-hidden
 								key={option.value}
 								className={cn({
-									[activeCln]: option.value === currentOption.value,
+									'no-wrap-ellipsis': true,
+									[itemActiveCln]: option.value === currentOption.value,
 								})}
 								onClick={() => handleSelect(option)}
 							>

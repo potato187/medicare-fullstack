@@ -1,3 +1,11 @@
+[data-theme='theme_light'] .admin {
+	--admin-bg: var(--bs-gray-100);
+}
+
+[data-theme='theme_dark'] .admin {
+	--admin-bg: #1a1d21;
+}
+
 .admin {
 	display: grid;
 	grid-template-columns: var(--sidebar-width) 1fr;
@@ -5,8 +13,7 @@
 	height: 100vh;
 	max-height: 100vh;
 	position: relative;
-	background-color: var(--bs-gray-100);
-	transition: var(--transition-default);
+	background-color: var(--admin-bg);
 
 	&-sidebar,
 	&-main {

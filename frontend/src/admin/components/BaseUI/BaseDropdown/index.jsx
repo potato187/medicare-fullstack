@@ -18,9 +18,10 @@ export const useDropdown = () => {
 	return context;
 };
 
-function DropdownProvider({ children, ...props }) {
+function DropdownProvider({ className, children, ...props }) {
 	const headerRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);
+	const classNames = cn('dropdown', className);
 
 	const setToggle = useCallback((newState) => {
 		setIsOpen(newState);
@@ -36,13 +37,17 @@ function DropdownProvider({ children, ...props }) {
 
 	return (
 		<DropdownContext.Provider value={values} {...props}>
-			<div className='dropdown'>{children}</div>
+			<div className={classNames}>{children}</div>
 		</DropdownContext.Provider>
 	);
 }
 
-export function BaseDropdown({ children, ...props }) {
-	return <DropdownProvider {...props}>{children}</DropdownProvider>;
+export function BaseDropdown({ className, children, ...props }) {
+	return (
+		<DropdownProvider className={className} {...props}>
+			{children}
+		</DropdownProvider>
+	);
 }
 
 export function DropdownHeader({ className = '', children, ...props }) {

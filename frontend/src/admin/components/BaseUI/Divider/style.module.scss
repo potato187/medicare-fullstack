@@ -1,0 +1,18 @@
+[data-theme='theme_light'] .divider {
+	--divider-bg: var(--bs-gray-300);
+}
+
+[data-theme='theme_dark'] .divider {
+	--divider-bg: #32383e;
+}
+
+.divider {
+	padding: 0;
+	width: 100%;
+	height: 1px;
+	margin-top: var(--spacing-sm);
+	margin-bottom: var(--spacing-sm);
+	background-color: var(--divider-bg) !important;
+	user-select: none;
+	pointer-events: none;
+}

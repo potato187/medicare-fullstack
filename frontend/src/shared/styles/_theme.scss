@@ -30,18 +30,15 @@
 	--select-color: var(--bs-gray-900);
 	--select-border: 1px solid var(--bs-gray-400);
 	--select-border-radius: 0.125rem;
+}
 
-	--table-text-color: var(--bs-gray-900);
-	--table-border-color: var(--bs-gray-300);
-	--table-padding: 0.5rem 0.5rem;
-	--table-header-padding: 0.75rem 0.5rem;
-	--table-bg: var(--bs-white);
-	--table-bg-hover: var(--bs-gray-100);
-	--table-striped-bg: #eef1f4;
+[data-theme='theme_dark'] {
+	--bs-secondary-color: #878a99;
 }
 
 body {
 	font: 400 0.875rem/1.5 var(--bs-body-font-family);
+	color: var(--body-color);
 	-webkit-text-size-adjust: 100%;
 	-webkit-tap-highlight-color: transparent;
 }
@@ -87,7 +84,7 @@ h4,
 h5,
 h6 {
 	line-height: 1.2;
-	color: var(--bs-gray-900);
+	color: var(--body-color);
 }
 
 p,

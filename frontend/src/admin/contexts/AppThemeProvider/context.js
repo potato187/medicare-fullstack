@@ -6,8 +6,6 @@ export const THEME = {
 };
 
 export const ConfigContext = createContext({
-	configs: { theme: THEME.LIGHT },
-	setConfigs: (f) => f,
-	enterFullscreen: (f) => f,
-	exitFullscreen: (f) => f,
+	theme: { theme: THEME.LIGHT },
+	setTheme: (f) => f,
 });

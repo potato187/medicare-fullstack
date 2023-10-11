@@ -1,17 +1,31 @@
+[data-theme='theme_light'] .tabs-nav {
+	--nav-item-bg: var(--bs-white);
+	--nav-item-bg-active: var(--bs-gray-300);
+	--nav-item-bg-hover: var(--bs-gray-200);
+	--nav-item-color: var(--bs-gray-700);
+	--nav-item-color-active: var(--bs-gray-700);
+	--nav-item-border-color: var(--bs-gray-300);
+	--nav-item-transition: var(--transition-color);
+}
+
+[data-theme='theme_dark'] .tabs-nav {
+	--nav-item-bg: transparent;
+	--nav-item-bg-active: var(--bs-gray-300);
+	--nav-item-bg-hover: var(--bs-gray-200);
+	--nav-item-color: var(--bs-gray-700);
+	--nav-item-color-active: var(--bs-gray-700);
+	--nav-item-border-color: #32383e;
+	--nav-item-transition: none;
+}
+
 .tabs-nav {
 	width: 100%;
-	border-bottom: 1px solid var(--bs-gray-300);
+	border-bottom: 1px solid var(--nav-item-border-color);
 	display: flex;
 	flex-wrap: wrap;
 	margin-bottom: var(--spacing-sm);
 
 	.nav-item {
-		--nav-item-bg: var(--bs-white);
-		--nav-item-bg-active: var(--bs-gray-300);
-		--nav-item-bg-hover: var(--bs-gray-200);
-		--nav-item-color: var(--bs-gray-700);
-		--nav-item-color-active: var(--bs-gray-700);
-		--nav-item-border-color: var(--bs-gray-300);
 		--nav-item-border-radius: var(--spacing-xs) var(--spacing-xs) 0 0;
 
 		display: block;
@@ -25,7 +39,7 @@
 		border-color: transparent transparent var(--nav-item-border-color) transparent;
 		border-radius: var(--nav-item-border-radius);
 		background-color: var(--nav-item-bg);
-		transition: var(--transition-color);
+		transition: var(--nav-item-transition);
 
 		& + & {
 			margin-left: 1px;
@@ -41,14 +55,27 @@
 			border-color: var(--nav-item-border-color) var(--nav-item-border-color) transparent var(--nav-item-border-color);
 		}
 	}
+}
 
-	&__bordered > .nav-item {
-		--nav-item-bg: var(--bs-white);
-		--nav-item-bg-active: var(--bs-white);
-		--nav-item-bg-hover: var(--bs-gray-300);
-		--nav-item-color: var(--bs-gray-900);
-		--nav-item-color-active: var(--bs-primary);
-		--nav-item-border-radius: 0;
+[data-theme='theme_light'] .tabs-nav__bordered {
+	--nav-item-bg: var(--bs-white);
+	--nav-item-bg-active: var(--bs-white);
+	--nav-item-bg-hover: var(--bs-gray-300);
+	--nav-item-color: var(--bs-gray-900);
+	--nav-item-color-active: var(--bs-primary);
+}
+
+[data-theme='theme_dark'] .tabs-nav__bordered {
+	--nav-item-bg: transparent;
+	--nav-item-bg-active: transparent;
+	--nav-item-bg-hover: var(--bs-gray-300);
+
+	--nav-item-color: var(--bs-success);
+	--nav-item-color-active: var(--bs-success);
+}
+
+.tabs-nav__bordered {
+	.nav-item {
 		position: relative;
 
 		&:hover,
@@ -62,7 +89,7 @@
 			display: block;
 			width: 0;
 			height: 2px;
-			background-color: var(--bs-primary);
+			background-color: currentColor;
 			position: absolute;
 			bottom: -1px;
 			left: 50%;

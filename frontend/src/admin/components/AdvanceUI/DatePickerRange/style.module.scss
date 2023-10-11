@@ -1,3 +1,13 @@
+[data-theme='theme_light'] .date-picker {
+	--text-muted: rgba(33, 37, 41, 0.75);
+	--date-picker-border-color: var(--bs-gray-400);
+}
+
+[data-theme='theme_dark'] .date-picker {
+	--text-muted: var(--bs-gray-400);
+	--date-picker-border-color: #32383e;
+}
+
 .date-picker {
 	height: 100%;
 	min-width: 190px;
@@ -8,16 +18,20 @@
 		justify-content: space-around;
 		min-width: 120px;
 		height: 100%;
-		border: 1px solid var(--bs-gray-400);
+		border: 1px solid var(--date-picker-border-color);
 		padding: var(--spacing-xs) var(--spacing-md);
 		font-size: var(--theme-text-xs);
-		color: var(--bs-gray-900);
+		color: var(--body-color);
 		border-radius: var(--spacing-xxs);
-		transition: var(--transition-color);
 		overflow: hidden;
+
 		&.focus {
 			border-color: var(--bs-primary);
 		}
+	}
+
+	.muted {
+		color: var(--text-muted);
 	}
 }
 

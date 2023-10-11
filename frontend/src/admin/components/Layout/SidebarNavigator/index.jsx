@@ -91,22 +91,18 @@ export function SidebarNavigator({ routesConfig = [] }) {
 		setActivePath(activePath === path ? '' : path);
 	};
 
-	const {
-		'sidebar-navigator': navigatorClass,
-		'sidebar-navigator__header': headerClass,
-		'sidebar-navigator__main': mainClass,
-	} = module;
+	const { sidebar: sidebarCln, sidebar__header: sidebarHeaderCln, sidebar__main: sidebarMainCln } = module;
 
 	useEffect(() => {
 		setActivePath(location.pathname);
 	}, [location]);
 
 	return (
-		<nav className={navigatorClass}>
-			<NavLink to='/' className={headerClass}>
+		<nav className={sidebarCln}>
+			<NavLink to='/' className={sidebarHeaderCln}>
 				<img src={PATH_IMAGES.LOGO} width='100' alt='' />
 			</NavLink>
-			<div className={mainClass}>
+			<div className={sidebarMainCln}>
 				{routesConfig.map(({ listChildren = [], allowedRoles = [], ...props }) =>
 					allowedRoles.includes(info.role) ? (
 						listChildren.length ? (

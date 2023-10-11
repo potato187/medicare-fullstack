@@ -1,6 +1,7 @@
-import { BaseDropdown, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
+import { BaseDropdown, Divider, DropdownBody, DropdownHeader, DropdownItem } from 'admin/components/BaseUI';
 import { PATH_IMAGES } from 'admin/constant';
 import { authLogout } from 'admin/redux/slices/auth';
+import cn from 'classnames';
 import { useAuth } from 'hooks';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { MdLogout } from 'react-icons/md';
@@ -9,19 +10,19 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import module from './style.module.scss';
 
-export function UserMenu({ username, email }) {
+export function UserMenu() {
 	const { info, tokens } = useAuth();
+	const { firstName, lastName, email } = info;
+	const fullName = `${lastName} ${firstName}`;
 	const dispatch = useDispatch();
 	const {
-		'user-dropdown': userDropdownCln,
-		'user-dropdown__toggle': toggleCln,
-		'user-dropdown__menu': menuCln,
+		dropdown: dropdownCln,
+		dropdown__header: dropdownHeaderCln,
+		dropdown__list: dropdownListCln,
 		avatar: avatarCln,
 		profile: profileCln,
 		name: nameCln,
 		email: emailCln,
-		list: listCln,
-		divider: dividerCln,
 	} = module;
 
 	const handleLogout = () => {
@@ -34,8 +35,8 @@ export function UserMenu({ username, email }) {
 	};
 
 	return (
-		<BaseDropdown className={userDropdownCln}>
-			<DropdownHeader className={toggleCln}>
+		<BaseDropdown className={dropdownCln}>
+			<DropdownHeader className={cn('dropdown__header', dropdownHeaderCln)}>
 				<div className={avatarCln}>
 					<img
 						crossOrigin='anonymous'
@@ -43,16 +44,16 @@ export function UserMenu({ username, email }) {
 						height={32}
 						loading='lazy'
 						src={PATH_IMAGES.AVATAR_PLACEHOLDER}
-						alt={username}
+						alt={info.username}
 					/>
 				</div>
 				<div className={profileCln}>
-					<h3 className={nameCln}>{username}</h3>
+					<h3 className={nameCln}>{fullName}</h3>
 					<div className={emailCln}>{email}</div>
 				</div>
 			</DropdownHeader>
-			<DropdownBody className={menuCln}>
-				<ul className={listCln}>
+			<DropdownBody className={cn('dropdown__list', dropdownListCln)}>
+				<ul>
 					<DropdownItem type='li'>
 						<NavLink to='./personal/profile_setting'>
 							<AiOutlineSetting size='1.25em' />
@@ -61,7 +62,7 @@ export function UserMenu({ username, email }) {
 							</span>
 						</NavLink>
 					</DropdownItem>
-					<li className={dividerCln} />
+					<Divider type='li' />
 					<DropdownItem type='li' customOnClick={handleLogout}>
 						<span>
 							<MdLogout size='1.25em' />

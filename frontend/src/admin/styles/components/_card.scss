@@ -1,9 +1,15 @@
+[data-theme='theme_light'] .block {
+	--card-background-color: var(--bs-white);
+	--card-border-color: var(--bs-gray-300);
+}
+[data-theme='theme_dark'] .block {
+	--card-background-color: var(--bs-gray-900);
+}
+
 .block {
 	--card-spacing-x: var(--spacing-md);
 	--card-spacing-y: var(--spacing-md);
 	--card-box-shadow: 0 1px 2px rgba(56, 65, 74, 0.15);
-	--card-background-color: #fff;
-	--card-border-color: var(--bs-gray-300);
 
 	display: flex;
 	flex-flow: column nowrap;

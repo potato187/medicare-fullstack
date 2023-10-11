@@ -1,8 +1,15 @@
+[data-theme='theme_light'] .switch-input {
+	--input-background: var(--bs-gray-100);
+	--input-border-color: var(--bs-gray-300);
+}
+
+[data-theme='theme_dark'] .switch-input {
+	--input-background: #262a2f;
+	--input-border-color: #2a2f34;
+}
+
 .switch-input {
-	--input-background: var(--bs-white);
 	--input-background-checked: var(--bs-primary);
-	--input-border-color: var(--bs-gray-400);
-	--input-border-color-checked: var(--bs-primary);
 
 	display: inline-block;
 	position: relative;

@@ -11,7 +11,7 @@ function RenderTree({ languageId, currentValue, options, onChange }) {
 		<ul>
 			{list.map(({ value, name, label }) => (
 				<li key={value}>
-					<label htmlFor={value} className='field-input-check'>
+					<label htmlFor={value} className='field-checkbox'>
 						<input
 							type='radio'
 							id={value}
@@ -38,7 +38,6 @@ export function DropdownTree({
 	...props
 }) {
 	const option = options.filter((option) => option.value === value)[0];
-
 
 	const styles = cn(
 		'dropdown',

@@ -5,7 +5,7 @@ function FieldRadio({ labelIntl, ...props }, ref) {
 	const domId = useId();
 
 	return (
-		<label className='field-input-check' htmlFor={domId}>
+		<label className='field-checkbox' htmlFor={domId}>
 			<input id={domId} type='radio' ref={ref} {...props} />
 			{labelIntl ? (
 				<span>

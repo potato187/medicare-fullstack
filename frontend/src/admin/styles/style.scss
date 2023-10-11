@@ -2,12 +2,12 @@
 @use './components/dropdown';
 @use './components/form';
 @use './components/scrollbar';
+@use './components/breadcrumb';
 
 @use './utilities/separation';
 @use './utilities/tree';
 @use './utilities/text';
 
-@use './vendors/quill';
 @use './vendors/react-date-picker';
 
 :root {
@@ -32,4 +32,27 @@ body {
 #portal-modal {
 	z-index: 1031;
 	position: relative;
+}
+
+a,
+button {
+	cursor: pointer;
+}
+
+[data-theme='theme_light'] {
+	--body-color: var(--bs-gray-900);
+	--heading-color: var(--bs-gray-700);
+
+	--breadcrumb-bg: var(--bs-white);
+	--breadcrumb-item-color: var(--bs-gray-700);
+	--breadcrumb-item-color-active: var(--bs-gray-600);
+}
+
+[data-theme='theme_dark'] {
+	--body-color: var(--bs-gray-400);
+	--heading-color: var(--bs-gray-400);
+
+	--breadcrumb-bg: var(--bs-gray-900);
+	--breadcrumb-item-color: var(--bs-gray-600);
+	--breadcrumb-item-color-active: var(--bs-gray-500);
 }

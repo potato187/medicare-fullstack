@@ -185,8 +185,8 @@ export default function NewsManager() {
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>
-							<TableBody>
-								{News.map(({ _id, name, positionType, index: newsIndex, isDisplay }, index) => (
+							<TableBody list={News}>
+								{({ _id, name, positionType, index: newsIndex, isDisplay }, index) => (
 									<tr key={_id}>
 										<td className='text-center'>{index + 1}</td>
 										<td>{name[languageId]}</td>
@@ -210,7 +210,7 @@ export default function NewsManager() {
 											</div>
 										</td>
 									</tr>
-								))}
+								)}
 							</TableBody>
 						</Table>
 					</TableGrid>

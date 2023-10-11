@@ -1,7 +1,20 @@
+[data-theme='theme_light'] .field-debounce {
+	--input-bg: rgba(243, 246, 249);
+	--input-border-color: var(--bs-gray-400);
+	--input-icon-color: var(--bs-gray-600);
+}
+
+[data-theme='theme_dark'] .field-debounce {
+	--input-bg: #262a2f;
+	--input-border-color: #2a2f34;
+	--input-icon-color: #878a99;
+}
+
 .field-debounce {
 	--icon-width: 2rem;
 	position: relative;
 	font-size: var(--theme-text-xs);
+
 	&__icon {
 		display: inline-flex;
 		justify-content: center;
@@ -12,17 +25,18 @@
 		top: 50%;
 		left: 0;
 		transform: translateY(-50%);
-		color: var(--bs-gray-600);
+		color: var(--input-icon-color);
 	}
 	input {
 		position: relative;
 		min-height: var(--select-min-height);
 		padding: var(--spacing-xs) var(--spacing-md) var(--spacing-xs) var(--icon-width);
 		line-height: var(--leading-heading);
-		color: var(--select-color);
-		border: 1px solid var(--bs-gray-400);
+		color: var(--body-color);
+		border: 1px solid var(--input-border-color);
 		border-radius: var(--spacing-xxs);
-		transition: var(--transition-color);
+		background-color: var(--input-bg);
+
 		&:focus {
 			border-color: var(--bs-primary);
 		}

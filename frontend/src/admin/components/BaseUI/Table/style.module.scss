@@ -1,3 +1,30 @@
+[data-theme='theme_light'] table {
+	--table-bg: var(--bs-white);
+	--table-bg-hover: var(--bs-gray-100);
+	--table-border-color: var(--bs-gray-300);
+	--table-header-padding: 0.75rem 0.5rem;
+	--table-padding: 0.5rem 0.5rem;
+	--table-striped-bg: #eef1f4;
+	--table-text-color: var(--bs-gray-900);
+
+	--table-td-bg: var(--bs-white);
+	--table-td-striped-bg: var(--bs-white);
+	--table-thead-box-shadow: 0 1px 0 0 #e5e7eb;
+}
+
+[data-theme='theme_dark'] table {
+	--table-bg: #282b2e;
+	--table-bg-hover: rgba(206, 212, 218, 0.04);
+	--table-border-color: #32383e;
+	--table-header-padding: 0.75rem 0.5rem;
+	--table-padding: 0.5rem 0.5rem;
+	--table-striped-bg: rgba(206, 212, 218, 0.02);
+	--table-text-color: var(--body-color);
+	--table-td-bg: #282b2e;
+	--table-td-striped-bg: rgba(206, 212, 218, 0.02);
+	--table-thead-box-shadow: 0 1px 0 0 #32383e;
+}
+
 .table-responsive {
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
@@ -9,6 +36,7 @@
 	-webkit-overflow-scrolling: touch;
 	border-top: 1px solid var(--table-border-color);
 }
+
 .table-grid {
 	overflow: auto;
 	position: relative;
@@ -20,8 +48,8 @@
 		position: sticky;
 		top: 0;
 		z-index: 1;
-		background-color: var(--bs-white);
-		box-shadow: 0 1px 0 0 #e5e7eb;
+		background-color: var(--table-bg);
+		box-shadow: var(--table-thead-box-shadow);
 		margin-top: -1px;
 	}
 }
@@ -78,7 +106,7 @@
 		vertical-align: middle;
 	}
 
-	&-hover > tbody > tr:hover > td {
+	&-hover > tbody > tbody > tr:hover > td {
 		background-color: var(--table-bg-hover);
 	}
 
@@ -102,12 +130,29 @@
 		> thead {
 			tr > th:nth-child(2n + 1) {
 				background-color: var(--table-striped-bg);
-				transition: none;
 			}
 
 			> tr > th:nth-child(2n) {
 				background-color: var(--table-bg);
-				transition: none;
+			}
+		}
+
+		> tbody {
+			> tr > td:nth-child(2n + 1) {
+				background-color: var(--table-td-striped-bg);
+			}
+
+			> tr > td:nth-child(2n) {
+				background-color: var(--table-td-bg);
+			}
+		}
+
+		&[class*='_table-hover'] {
+			> tbody {
+				> tr:hover > td:nth-child(2n),
+				> tr:hover > td:nth-child(2n + 1) {
+					background-color: var(--table-bg-hover);
+				}
 			}
 		}
 	}
@@ -134,6 +179,7 @@
 			outline: none;
 			border: 1px solid transparent;
 			background-color: transparent;
+			color: var(--body-color);
 			transition: var(--transition-color);
 
 			&:hover {

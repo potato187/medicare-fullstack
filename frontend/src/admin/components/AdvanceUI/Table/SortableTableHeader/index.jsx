@@ -24,9 +24,9 @@ export function SortableTableHeader({ name = '', intl, className = '', orders = 
 
 	const {
 		'sort-column': sortColumnCln,
-		active: activeCln,
 		'sort-column__title': titleCln,
 		'sort-column__icon': iconCln,
+		active: activeCln,
 	} = module;
 
 	const classNames = cn({

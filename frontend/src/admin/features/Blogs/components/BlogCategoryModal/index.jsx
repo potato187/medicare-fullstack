@@ -49,7 +49,7 @@ export function BlogCategoryModal({
 
 		if (!isOpen || !blogCategory) {
 			setDefaultValues(methods, defaultValues);
-
+		}
 	}, [isOpen, blogCategory]);
 
 	return (

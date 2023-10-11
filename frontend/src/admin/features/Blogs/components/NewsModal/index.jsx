@@ -61,7 +61,6 @@ export function NewsModal({
 		if (!isOpen || !newsId) {
 			setDefaultValues(methods, defaultValues);
 		}
-
 	}, [isOpen, newsId]);
 
 	return (

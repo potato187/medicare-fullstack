@@ -1,5 +1,13 @@
 import { linkApi } from 'admin/api';
-import { Button, ConfirmModal, Container, FormattedDescription, SortableTree, WrapScrollBar } from 'admin/components';
+import {
+	Button,
+	ConfirmModal,
+	Container,
+	Divider,
+	FormattedDescription,
+	SortableTree,
+	WrapScrollBar,
+} from 'admin/components';
 import { flattenTree } from 'admin/components/AdvanceUI/Tree/utilities';
 import { useToggle } from 'admin/hooks';
 import { showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
@@ -106,7 +114,8 @@ export default function HeaderManager() {
 							handleModifyItem={toggleLinkModal}
 						/>
 					</WrapScrollBar>
-					<div className='d-flex justify-content-center gap-2 pt-4 border-top border-gray-300'>
+					<Divider />
+					<div className='d-flex justify-content-center gap-2 pt-4'>
 						<Button size='sm' info onClick={toggleSortingModal}>
 							<FormattedMessage id='dashboard.modules.header.modal.button_sort' />
 						</Button>

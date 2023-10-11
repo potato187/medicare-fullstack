@@ -1,3 +1,4 @@
+import { useClickOutside } from 'admin/hooks';
 import cn from 'classnames';
 import { useRef } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -6,7 +7,6 @@ import { CSSTransition } from 'react-transition-group';
 import { BasePortal } from '../BasePortal';
 import module from './style.module.scss';
 import './transition.scss';
-import { useClickOutside } from 'admin/hooks';
 
 export function BaseModal({
 	selectorId = 'modal',

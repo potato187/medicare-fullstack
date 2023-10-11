@@ -179,7 +179,7 @@ export default function BlogsManager() {
 								</th>
 								<SortableTableHeader
 									className='text-start'
-									name={`title.${languageId}`}
+									name='title'
 									intl='common.title.default'
 									onChange={handleChangeSort}
 								/>

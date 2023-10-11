@@ -21,13 +21,40 @@
 	transition: 300ms;
 }
 
-.dropdown {
+[data-theme='theme_light'] {
 	--dropdown-bg: var(--bs-white);
-	--dropdown-mh-header: 32px;
-	--dropdown-w-header: 120px;
 	--dropdown-color: var(--bs-gray-900);
 	--dropdown-border: var(--bs-gray-400);
 	--dropdown-border-active: var(--bs-primary);
+
+	--dropdown-list-bg: var(--bs-white);
+	--dropdown-list-border: var(--bs-gray-400);
+	--dropdown-list-border-active: var(--bs-primary);
+	--dropdown-item-bg: var(--bs-white);
+	--dropdown-item-bg-active: var(--bs-primary);
+	--dropdown-item-color: var(--bs-gray-900);
+	--dropdown-item-color-active: var(--bs-white);
+}
+
+[data-theme='theme_dark'] {
+	--dropdown-bg: #292e33;
+	--dropdown-color: var(--body-color);
+	--dropdown-border: #32383e;
+	--dropdown-border-active: var(--bs-primary);
+
+	--dropdown-list-bg: var(--bs-gray-900);
+	--dropdown-list-border: #32383e;
+	--dropdown-list-border-active: var(--bs-primary);
+
+	--dropdown-item-bg: var(--bs-gray-900);
+	--dropdown-item-bg-active: #2f343a;
+	--dropdown-item-color: #adb5bd;
+	--dropdown-item-color-active: #b9bfc4;
+}
+
+.dropdown {
+	--dropdown-mh-header: 32px;
+	--dropdown-w-header: 120px;
 	--dropdown-border-radius: var(--spacing-xxs);
 
 	.dropdown-toggle::after {
@@ -65,7 +92,6 @@
 		color: var(--dropdown-color);
 		border: 1px solid var(--dropdown-border);
 		border-radius: var(--dropdown-border-radius);
-		transition: var(--transition-color);
 
 		> svg {
 			position: absolute;
@@ -80,7 +106,7 @@
 			border-color: var(--dropdown-border-active);
 
 			> svg {
-				color: var(--bs-gray-900);
+				color: var(--dropdown-color);
 				transform: translate(50%, -50%) rotate(0.5turn);
 			}
 		}
@@ -89,13 +115,6 @@
 
 .dropdown__list {
 	--dropdown-w-header: 120px;
-	--dropdown-list-bg: var(--bs-white);
-	--dropdown-item-bg: var(--bs-white);
-	--dropdown-item-bg-active: var(--bs-primary);
-	--dropdown-item-color: var(--bs-gray-900);
-	--dropdown-item-color-active: var(--bs-white);
-	--dropdown-list-border: var(--bs-gray-400);
-	--dropdown-list-border-active: var(--bs-primary);
 	--dropdown-list-border-radius: var(--spacing-xxs);
 
 	&--sm {

@@ -9,12 +9,14 @@ export function HeaderBreadcrumb({ breadcrumb = [] }) {
 	const title = intl.formatMessage({ id: breadcrumb.at(-1).intl });
 	const { breadcrumb: breadcrumbCln, breadcrumb__title: titleCln, breadcrumb__list: listCln } = module;
 
+	const classNames = cn('theme-breadcrumb', breadcrumbCln);
+
 	useDocumentTitle(title, [title]);
 
 	return (
-		<nav className={breadcrumbCln}>
+		<nav className={classNames}>
 			<h1 className={cn(titleCln, 'mb-0 text-uppercase')}>{title}</h1>
-			<ul className={listCln}>
+			<ul className={cn('theme-breadcrumb__list', listCln)}>
 				{breadcrumb.map(({ url = '', intl = '' }) => (
 					<li key={url}>
 						<Link className='text-capitalize' to={`/${url}`}>

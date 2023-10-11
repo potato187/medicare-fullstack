@@ -1,21 +1,11 @@
 [data-theme='theme_light'] .quill {
 	--ql-border: var(--bs-gray-300);
-	--ql-container-bg: #fefcfc;
-	--ql-toolbar-bg: #eaecec;
-	--ql-snow-border: #dee1e3;
-	--ql-snow-bg: var(--bs-white);
-	--ql-editor-border: var(--bs-gray-200);
-	--ql-editor-bg: var(--bs-gray-200);
+	--ql-bg: var(--bs-white);
 }
 
 [data-theme='theme_dark'] .quill {
 	--ql-border: #2a2f34;
-	--ql-container-bg: #212529;
-	--ql-toolbar-bg: #2a2f34;
-	--ql-snow-border: #2a2f34;
-	--ql-snow-bg: #212529;
-	--ql-editor-border: #2a2f34;
-	--ql-editor-bg: #212529;
+	--ql-bg: #212529;
 }
 
 .quill {
@@ -27,7 +17,7 @@
 .quill .ql-container {
 	border-bottom-left-radius: var(--spacing-xs);
 	border-bottom-right-radius: var(--spacing-xs);
-	background: var(--ql-container-bg);
+	background: var(--ql-bg);
 }
 
 .quill .ql-toolbar.ql-snow,
@@ -37,18 +27,18 @@
 
 .quill .ql-toolbar.ql-snow {
 	border-bottom: 1px solid;
-	border-bottom-color: var(--ql-snow-border);
-	background-color: var(--ql-snow-bg);
+	border-bottom-color: var(--ql-border);
+	background-color: var(--ql-bg);
 	z-index: 2;
 }
 
 .ql-snow.ql-toolbar {
 	display: block;
-	background: var(--ql-toolbar-bg);
+	background: var(--ql-bg);
 }
 
 .ql-bubble .ql-editor {
-	border: 1px solid vaR(--ql-editor-border);
+	border: 1px solid vaR(--ql-border);
 	border-radius: var(--spacing-xs);
 }
 
@@ -62,16 +52,15 @@
 	font-size: small;
 }
 
-.ql-snow .ql-fill,
-.ql-snow .ql-stroke.ql-fill {
-	fill: var(--body-color) !important;
-}
-
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options,
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label,
 .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
-	border-color: #ccc;
-	color: var(--body-color) !important;
+	border-color: var(--ql-border);
+	color: var(--body-color);
+	background-color: var(--ql-bg);
 }
 
+.ql-toolbar.ql-snow .ql-formats,
 .ql-snow .ql-picker {
 	color: var(--body-color);
 }

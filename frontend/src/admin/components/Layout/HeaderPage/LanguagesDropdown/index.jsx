@@ -4,7 +4,7 @@ import { BaseDropdown, Button, DropdownBody, DropdownHeader, DropdownItem } from
 import module from './style.module.scss';
 
 export function LanguagesDropdown({ list = [] }) {
-	const { 'dropdown-list': listCln, item: itemCln } = module;
+	const { dropdown__list: listCln, item: itemCln } = module;
 	const { languageId, changeLanguageById } = useLanguages();
 	const currentLanguage = list.find((language) => language.languageId === languageId);
 
@@ -20,7 +20,7 @@ export function LanguagesDropdown({ list = [] }) {
 					<DropdownItem
 						type='button'
 						key={id}
-						className={cn(itemCln, { active: id === languageId })}
+						className={cn(itemCln, 'no-wrap-ellipsis', { active: id === languageId })}
 						customOnClick={() => changeLanguageById(id)}
 					>
 						<img className='rounded-1' width={16} height={16} src={image} alt={name} />

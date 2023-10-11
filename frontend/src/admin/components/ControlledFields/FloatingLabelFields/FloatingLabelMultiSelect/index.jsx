@@ -41,9 +41,9 @@ export function FloatingLabelMultiSelect({ name, options, labelIntl }) {
 	useClickOutside(nodeRef, handleClickOutside);
 
 	const {
-		'select-dropdown': dropdownCln,
-		'select-dropdown-multi': dropdownMultiCln,
-		'select-dropdown__list': dropdownListCln,
+		dropdown: dropdownCln,
+		dropdown__list: dropdownListCln,
+		'dropdown-multi': dropdownMultiCln,
 		'form-group': formGroupCln,
 		'multi-select': multiSelectCln,
 		'form-label': labelCln,

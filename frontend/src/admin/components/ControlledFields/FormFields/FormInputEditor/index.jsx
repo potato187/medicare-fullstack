@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import './style.scss';
 import { Editor } from './constant';
 
 export function FormInputEditor({ name }) {

@@ -1,9 +1,10 @@
-.breadcrumb {
+.theme-breadcrumb {
+	--bs-breadcrumb-margin-bottom: 0;
 	display: block;
+
 	&__list {
 		display: flex;
 		align-items: baseline;
-		flex-shrink: 0;
 
 		> li > *,
 		> li > a {
@@ -12,9 +13,9 @@
 			font-size: var(--theme-text-xs);
 			font-weight: 500;
 			text-transform: capitalize;
-			color: var(--bs-gray-700);
+			color: var(--breadcrumb-item-color);
 			&[class*='active'] {
-				color: var(--bs-gray-600);
+				color: var(--breadcrumb-item-color-active);
 			}
 		}
 		> li + li > *,

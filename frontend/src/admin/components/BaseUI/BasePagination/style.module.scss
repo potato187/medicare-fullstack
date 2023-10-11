@@ -1,12 +1,29 @@
-.pagination {
-	--pagination-spacing: var(--spacing-sm);
-	--pagination-color: var(--bs-gray-900);
-	--pagination-color-active: #ffffff;
-	--pagination-bg: #ffffff;
+[data-theme='theme_light'] .pagination {
+	--pagination-bg: var(--bs-white);
 	--pagination-bg-active: var(--bs-primary);
 	--pagination-bg-hover: var(--bs-gray-200);
+
+	--pagination-color: var(--bs-gray-900);
+	--pagination-color-active: var(--bs-white);
+
 	--pagination-border-color: var(--bs-gray-400);
 	--pagination-border-color-active: var(--bs-primary);
+}
+
+[data-theme='theme_dark'] .pagination {
+	--pagination-bg: var(--bs-gray-900);
+	--pagination-bg-active: var(--bs-primary);
+	--pagination-bg-hover: #2a2d31;
+
+	--pagination-color: #878a99;
+	--pagination-color-active: var(--bs-white);
+
+	--pagination-border-color: #32383e;
+	--pagination-border-color-active: var(--bs-primary);
+}
+
+.pagination {
+	--pagination-spacing: var(--spacing-sm);
 	--pagination-radius: var(--spacing-xxs);
 	--pagination-font-size: var(--theme-text-sm);
 
@@ -20,6 +37,11 @@
 	}
 
 	.page-item {
+		border: 1px solid var(--pagination-border-color);
+		border-radius: var(--pagination-radius);
+		background-color: var(--pagination-bg);
+		overflow: hidden;
+
 		display: inline-block;
 		&[class*='disabled'] {
 			pointer-events: none;
@@ -29,7 +51,7 @@
 		&[class*='active'] .page-link {
 			background-color: var(--pagination-bg-active);
 			color: var(--pagination-color-active);
-			border-collapse: var(--pagination-border-color-active);
+			border-color: var(--pagination-border-color-active);
 		}
 	}
 
@@ -37,16 +59,12 @@
 		display: inline-flex;
 		justify-content: center;
 		align-items: center;
-		border: 1px solid var(--pagination-border-color);
-		font-size: var(--pagination-font-size);
-		line-height: 1.1;
 		min-width: 2rem;
 		height: 2rem;
+		font-size: var(--pagination-font-size);
+		line-height: 1.1;
 		color: var(--pagination-color);
-		border-radius: var(--pagination-radius);
-		background-color: var(--pagination-bg);
-		transition: 0.15s ease-in-out;
-		cursor: pointer;
+		transition: var(--transition-default);
 
 		&:hover {
 			background-color: var(--pagination-bg-hover);

@@ -117,7 +117,6 @@ export function BlogModal({
 				methods.reset();
 			}
 		})();
-
 	}, [isOpen, blogId]);
 
 	return (

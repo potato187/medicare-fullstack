@@ -1,13 +1,24 @@
-.modal {
+[data-theme='theme_light'] .modal {
 	--modal-border-color: var(--bs-gray-300);
-	--modal-shadow: var(--bs-box-shadow);
 	--modal-bg: var(--bs-white);
+	--modal-header-color: var(--bs-gray-600);
+}
+
+[data-theme='theme_dark'] .modal {
+	--modal-border-color: #32383e;
+	--modal-bg: var(--bs-gray-900);
+	--modal-header-color: var(--body-color);
+}
+
+.modal {
+	--modal-shadow: var(--bs-box-shadow);
 	--modal-max-width: 768px;
 	--modal-min-width: 480px;
 
 	position: fixed;
 	inset: 0 0;
 	z-index: 1031;
+	color: var(--body-color);
 
 	&::after {
 		content: '';
@@ -104,7 +115,7 @@
 
 	&-header__title {
 		font-size: var(--theme-text-md);
-		color: var(--bs-gray-700);
+		color: var(--modal-header-color);
 		font-weight: 600;
 		margin-bottom: 0;
 	}

@@ -215,6 +215,7 @@ export const getObjectDiff = (object1, object2) => {
 };
 
 export const extractFirstNameLastName = (fullName) => {
+	if (!fullName) return '';
 	const names = fullName.split(' ');
 	const lastName = names.slice(-1).join('').trim();
 	const firstName = names.slice(0, -1).join(' ').trim();
@@ -269,4 +270,11 @@ export const parseJSON = (value) => {
 		console.log('parsing error on', { value });
 		return undefined;
 	}
+};
+
+export const findItemByLabel = (arr, valueCompare, defaultValue = '') => {
+	console.log(valueCompare);
+	if (!valueCompare) return defaultValue;
+	const foundItem = arr.find((item) => item.label.toLowerCase() === valueCompare.toLowerCase());
+	return foundItem !== undefined ? foundItem : defaultValue;
 };
