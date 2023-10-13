@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import { ADMIN_ROLE, GENDER_DEFAULT } from 'admin/constant';
-import { emailValidation, phoneValidation, requiredValidation } from 'admin/validation';
+import { ADMIN_ROLE, GENDER_DEFAULT } from 'constant';
+import { emailValidator, phoneValidator, requiredValidator } from 'admin/validators';
 
 export const adminDefaultValues = {
 	firstName: '',
@@ -13,8 +13,8 @@ export const adminDefaultValues = {
 };
 
 export const adminValidation = yup.object().shape({
-	firstName: requiredValidation,
-	lastName: requiredValidation,
-	email: emailValidation,
-	phone: phoneValidation,
+	firstName: requiredValidator,
+	lastName: requiredValidator,
+	email: emailValidator,
+	phone: phoneValidator,
 });

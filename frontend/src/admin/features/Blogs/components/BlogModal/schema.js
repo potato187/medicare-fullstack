@@ -1,4 +1,4 @@
-import { imageValidation, requiredValidation } from 'admin/validation';
+import { imageValidation, requiredValidator } from 'admin/validators';
 import * as yup from 'yup';
 
 export const defaultValues = {
@@ -25,8 +25,8 @@ export const defaultValues = {
 
 export const schema = yup.object().shape({
 	title: yup.object({
-		vi: requiredValidation,
-		en: requiredValidation,
+		vi: requiredValidator,
+		en: requiredValidator,
 	}),
 	image: imageValidation,
 });

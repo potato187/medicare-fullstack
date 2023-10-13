@@ -1,7 +1,7 @@
-import { adminApi, resourceApi } from 'admin/api';
-import { Container, ContainerMain, TabNav, TabNavItem, TabPanel, Tabs } from 'admin/components';
-import { changePassword, updateProfile } from 'admin/redux/slices/auth';
-import { showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
+import { adminApi, resourceApi } from 'api';
+import { Container, ContainerMain, TabNav, TabNavItem, TabPanel, Tabs } from 'components';
+import { changePassword, updateProfile } from 'reduxStores/slices/auth';
+import { showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { useAuth } from 'hooks';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';

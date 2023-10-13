@@ -1,5 +1,13 @@
-import { ADMIN_ROLE } from 'admin/constant';
-import { MdOutlineAdminPanelSettings, MdLanguage, MdOutlineMedicalServices } from 'react-icons/md';
+import { ADMIN_ROLE } from 'constant';
+import {
+	MdOutlineAdminPanelSettings,
+	MdLanguage,
+	MdOutlineMedicalServices,
+	MdOutlineViewTimeline,
+	MdOutlineAccountCircle,
+	MdOutlineNewspaper,
+	MdOutlineLocalHospital,
+} from 'react-icons/md';
 
 export const routesConfig = [
 	{
@@ -21,13 +29,13 @@ export const routesConfig = [
 	{
 		to: '/admin/dashboard/personal',
 		intl: 'dashboard.personal.profile_setting.title',
-		Icon: MdOutlineAdminPanelSettings,
+		Icon: MdOutlineAccountCircle,
 		allowedRoles: [ADMIN_ROLE],
 	},
 	{
 		to: '/admin/dashboard/modules',
 		intl: 'dashboard.modules.title',
-		Icon: MdOutlineAdminPanelSettings,
+		Icon: MdOutlineViewTimeline,
 		allowedRoles: [ADMIN_ROLE],
 		listChildren: [
 			{
@@ -57,19 +65,19 @@ export const routesConfig = [
 	{
 		to: '/admin/dashboard/specialty',
 		intl: 'dashboard.specialty.title',
-		Icon: MdOutlineMedicalServices,
+		Icon: MdOutlineLocalHospital,
 		allowedRoles: [ADMIN_ROLE],
 	},
 	{
 		to: '/admin/dashboard/booking',
 		intl: 'dashboard.booking.title',
-		Icon: MdOutlineAdminPanelSettings,
+		Icon: MdOutlineMedicalServices,
 		allowedRoles: [ADMIN_ROLE],
 	},
 	{
 		to: '/admin/dashboard/blogs',
 		intl: 'dashboard.blogs.title',
-		Icon: MdOutlineAdminPanelSettings,
+		Icon: MdOutlineNewspaper,
 		allowedRoles: [ADMIN_ROLE],
 		listChildren: [
 			{

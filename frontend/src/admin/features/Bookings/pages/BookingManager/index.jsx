@@ -1,4 +1,4 @@
-import { bookingApi } from 'admin/api';
+import { bookingApi } from 'api';
 import {
 	Badge,
 	Button,
@@ -14,14 +14,12 @@ import {
 	TableGrid,
 	TableHeader,
 	UnFieldDebounce,
-} from 'admin/components';
-import { useToggle } from 'admin/hooks';
-import { compose, isDateInRange, showToastMessage, tryCatchAndToast } from 'admin/utilities';
-import { useAuth } from 'hooks';
+} from 'components';
+import { useAuth, useToggle } from 'hooks';
 import produce from 'immer';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
-import { formatDateToDDMMYYYY, formatPhone } from 'utils';
+import { compose, formatDateToDDMMYYYY, formatPhone, isDateInRange, showToastMessage, tryCatchAndToast } from 'utils';
 import { BookingModal } from '../../components';
 import { useBookings } from '../../hooks/useBookings';
 

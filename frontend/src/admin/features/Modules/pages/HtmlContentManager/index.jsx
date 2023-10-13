@@ -1,4 +1,4 @@
-import { htmlContentApi } from 'admin/api';
+import { htmlContentApi } from 'api';
 import {
 	Button,
 	ConfirmModal,
@@ -11,15 +11,13 @@ import {
 	TableBody,
 	TableGrid,
 	TableHeader,
-} from 'admin/components';
-import { useAsyncLocation, useIndex, useToggle } from 'admin/hooks';
-import { compose, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
-import { useAuth } from 'hooks';
+} from 'components';
+import { useAsyncLocation, useAuth, useIndex, useToggle } from 'hooks';
 import produce from 'immer';
 import { useEffect, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
-import { firstCapitalize, formatDate } from 'utils';
+import { compose, firstCapitalize, formatDate, showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { HtmlContentModal } from '../../components';
 
 export default function HtmlContentManager() {

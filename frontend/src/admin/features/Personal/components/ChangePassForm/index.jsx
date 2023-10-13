@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FloatingLabelPassword } from 'admin/components';
+import { Button, FloatingLabelPassword } from 'components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { defaultValues, schema } from './schema';

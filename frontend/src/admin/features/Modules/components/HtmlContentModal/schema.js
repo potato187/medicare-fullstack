@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { requiredValidation } from 'admin/validation';
+import { requiredValidator } from 'admin/validators';
 
 export const defaultValues = {
 	_id: '',
@@ -20,8 +20,8 @@ export const defaultValues = {
 
 export const schema = yup.object().shape({
 	title: yup.object().shape({
-		vi: requiredValidation,
-		en: requiredValidation,
+		vi: requiredValidator,
+		en: requiredValidator,
 	}),
 	pageType: yup.array().min(1, 'form.message.error.select_required').required(),
 });

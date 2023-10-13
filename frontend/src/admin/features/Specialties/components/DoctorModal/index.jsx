@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { doctorApi } from 'admin/api';
+import { doctorApi } from 'api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -13,8 +13,8 @@ import {
 	TabNavItem,
 	TabPanel,
 	Tabs,
-} from 'admin/components';
-import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
+} from 'components';
+import { getObjectDiff, setDefaultValues, tryCatch } from 'utils';
 import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';

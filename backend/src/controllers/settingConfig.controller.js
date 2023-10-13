@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 const { OkResponse } = require('@/core');
-const { tryCatch } = require('@/middleware');
 const { SettingConfigService } = require('@/services');
 
 class SettingConfigController {

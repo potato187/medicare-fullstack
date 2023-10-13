@@ -1,4 +1,4 @@
-import { BaseModal, BaseModalBody, BaseModalFooter, BaseModalHeader, Button, FieldRadio } from 'admin/components';
+import { BaseModal, BaseModalBody, BaseModalFooter, BaseModalHeader, Button, FieldRadio } from 'components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 

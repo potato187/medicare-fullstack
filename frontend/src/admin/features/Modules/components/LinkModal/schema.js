@@ -1,4 +1,4 @@
-import { requiredValidation } from 'admin/validation';
+import { requiredValidator } from 'admin/validators';
 import * as yup from 'yup';
 
 export const defaultValues = {
@@ -15,8 +15,8 @@ export const defaultValues = {
 
 export const schema = yup.object({
 	name: yup.object().shape({
-		vi: requiredValidation,
-		en: requiredValidation,
+		vi: requiredValidator,
+		en: requiredValidator,
 	}),
-	url: requiredValidation,
+	url: requiredValidator,
 });

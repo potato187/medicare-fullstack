@@ -1,4 +1,4 @@
-import { blogApi } from 'admin/api';
+import { blogApi } from 'api';
 import {
 	Button,
 	ConfirmModal,
@@ -13,27 +13,16 @@ import {
 	TableHeader,
 	UnFieldDebounce,
 	UnFieldSwitch,
-} from 'admin/components';
-import { useAsyncLocation, useIndex, useToggle } from 'admin/hooks';
-import { compose, formatISODate, showToastMessage, tryCatchAndToast } from 'admin/utilities';
-import { useAuth } from 'hooks';
+} from 'components';
+import { useAsyncLocation, useAuth, useIndex, useToggle } from 'hooks';
 import produce from 'immer';
 import { useMemo } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
-import { formatDate } from 'utils';
+import { compose, formatDate, formatISODate, showToastMessage, tryCatchAndToast } from 'utils';
 import { BlogModal } from '../../components';
+import { DEFAULT_OPTION } from '../../constant';
 import { useFetchBlogCategories } from '../../hooks/useFetchBlogCategories';
-
-const DEFAULT_OPTION = {
-	value: 'all',
-	label: {
-		en: 'All Categories',
-		vi: 'Tất cả danh mục',
-	},
-	index: -1,
-	name: 'blog-categories',
-};
 
 export default function BlogsManager() {
 	const {

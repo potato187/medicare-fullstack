@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Card, CardBody, FormInputController, FormPasswordController } from 'admin/components';
+import { Button, Card, CardBody, FormInputController, FormPasswordController } from 'components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { defaultValues, schema } from './schema';

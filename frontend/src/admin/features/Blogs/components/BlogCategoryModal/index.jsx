@@ -7,9 +7,9 @@ import {
 	Button,
 	FieldCheckBox,
 	FloatingLabelInput,
-} from 'admin/components';
-import { APP_URL } from 'admin/constant';
-import { setDefaultValues } from 'admin/utilities';
+} from 'components';
+import { APP_URL } from 'constant';
+import { setDefaultValues } from 'utils';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';

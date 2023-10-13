@@ -1,4 +1,4 @@
-import { newsApi } from 'admin/api';
+import { newsApi } from 'api';
 import {
 	Button,
 	ConfirmModal,
@@ -12,15 +12,13 @@ import {
 	TableGrid,
 	TableHeader,
 	UnFieldSwitch,
-} from 'admin/components';
-import { useAsyncLocation, useIndex, useToggle } from 'admin/hooks';
-import { compose, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
-import { useAuth } from 'hooks';
+} from 'components';
+import { useAsyncLocation, useAuth, useIndex, useToggle } from 'hooks';
 import produce from 'immer';
 import { useEffect, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
-import { firstCapitalize } from 'utils';
+import { compose, firstCapitalize, showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { NewsModal } from '../../components';
 
 export default function NewsManager() {
@@ -223,6 +221,7 @@ export default function NewsManager() {
 					/>
 				</div>
 			</Container>
+
 			<NewsModal
 				isOpen={statusModel}
 				newsId={News[index]?._id}

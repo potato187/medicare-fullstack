@@ -1,4 +1,4 @@
-import { adminApi, resourceApi } from 'admin/api';
+import { adminApi, resourceApi } from 'api';
 import {
 	Button,
 	ConfirmModal,
@@ -11,15 +11,14 @@ import {
 	TableGrid,
 	TableHeader,
 	UnFieldDebounce,
-} from 'admin/components';
-import { useAsyncLocation, useIndex, useToggle } from 'admin/hooks';
-import { compose, mapData, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
-import { useAuth } from 'hooks';
+} from 'components';
+import { useAsyncLocation, useIndex, useToggle, useAuth } from 'hooks';
+import { compose, mapData, showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import produce from 'immer';
 import { useEffect, useMemo, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
-import { AdminModal } from '../../components/AdminModal';
+import { AdminModal } from '../../components';
 
 export default function AdminManager() {
 	const {

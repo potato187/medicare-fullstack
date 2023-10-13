@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { emailValidation, passwordValidation } from 'admin/validation';
+import { emailValidator, passwordValidator } from 'admin/validators';
 
 export const defaultValues = {
 	email: 'charlie.admin@example.com',
@@ -7,6 +7,6 @@ export const defaultValues = {
 };
 
 export const schema = yup.object().shape({
-	email: emailValidation,
-	password: passwordValidation,
+	email: emailValidator,
+	password: passwordValidator,
 });

@@ -7,10 +7,11 @@ const { createSchema, sortableSchema, deleteMultiSchema, querySchema } = require
 
 const router = express.Router();
 
+router.get('/', validateRequest(querySchema, 'query'), LinkController.getAll);
+
 router.use(authMiddleware.authorization);
 router.use(authMiddleware.checkRoles(['admin']));
 
-router.get('/', validateRequest(querySchema, 'query'), LinkController.getAll);
 router.get('/:id', validateRequest(idSchema, 'params'), LinkController.getOneById);
 
 router.post('/', validateRequest(createSchema, 'body'), LinkController.createOne);

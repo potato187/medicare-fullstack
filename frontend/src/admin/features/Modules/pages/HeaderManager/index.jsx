@@ -1,4 +1,4 @@
-import { linkApi } from 'admin/api';
+import { linkApi } from 'api';
 import {
 	Button,
 	ConfirmModal,
@@ -7,14 +7,13 @@ import {
 	FormattedDescription,
 	SortableTree,
 	WrapScrollBar,
-} from 'admin/components';
-import { flattenTree } from 'admin/components/AdvanceUI/Tree/utilities';
-import { useToggle } from 'admin/hooks';
-import { showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
-import { useAuth } from 'hooks';
+} from 'components';
+import { flattenTree } from 'components/AdvanceUI/Tree/utils';
+import { useAuth, useToggle } from 'hooks';
 import produce from 'immer';
 import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { LinkModal } from '../../components';
 
 export default function HeaderManager() {

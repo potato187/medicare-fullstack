@@ -1,11 +1,11 @@
-import { emailValidation, phoneValidation, requiredValidation } from 'admin/validation';
+import { emailValidator, phoneValidator, requiredValidator } from 'admin/validators';
 import * as yup from 'yup';
 
 export const defaultValues = {};
 
 export const schema = yup.object().shape({
-	firstName: requiredValidation,
-	lastName: requiredValidation,
-	email: emailValidation,
-	phone: phoneValidation,
+	firstName: requiredValidator,
+	lastName: requiredValidator,
+	email: emailValidator,
+	phone: phoneValidator,
 });

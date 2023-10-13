@@ -1,13 +1,13 @@
-import { bookingApi, resourceApi } from 'admin/api';
-import { BOOKING_STATUS, DATE_FORMAT, ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
-import { useIndex } from 'admin/hooks';
-import { createURL, mapData, tryCatch } from 'admin/utilities';
+import { bookingApi, resourceApi } from 'api';
+import { BOOKING_STATUS, DATE_FORMAT, ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'constant';
+import { useIndex } from 'hooks';
 import produce from 'immer';
 import moment from 'moment';
 import queryString from 'query-string';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { typeOf } from 'utils';
+import { createURL, mapData, tryCatch } from 'utils';
+import { typeOf } from 'utils/repos';
 
 export const useBookings = ({ languageId = 'en' }) => {
 	const isLoading = useRef(true);

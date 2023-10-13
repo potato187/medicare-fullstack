@@ -13,14 +13,13 @@ import {
 	TdInput,
 	TdSelect,
 	TrStatus,
-} from 'admin/components';
-import { extractFirstNameLastName, findItemByLabel, tryCatchAndToast } from 'admin/utilities';
-import { fileExcelValidation } from 'admin/validation';
+} from 'components';
+import { fileExcelValidator } from 'admin/validators';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
-import { readFileExcel } from 'utils';
+import { extractFirstNameLastName, findItemByLabel, readFileExcel, tryCatchAndToast } from 'utils';
 import * as yup from 'yup';
 import { IMPORT_STATUS, defaultValues, schema } from './schema';
 
@@ -40,7 +39,7 @@ export function ImportExcelModal({
 		},
 		resolver: yupResolver(
 			yup.object().shape({
-				fileExcel: fileExcelValidation,
+				fileExcel: fileExcelValidator,
 			}),
 		),
 	});

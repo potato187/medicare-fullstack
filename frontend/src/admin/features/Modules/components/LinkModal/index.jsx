@@ -7,12 +7,12 @@ import {
 	Button,
 	FieldCheckBox,
 	FloatingLabelInput,
-} from 'admin/components';
-import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
+} from 'components';
+import { getObjectDiff, setDefaultValues, tryCatch } from 'utils';
 import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { linkApi } from 'admin/api';
+import { linkApi } from 'api';
 import { defaultValues, schema } from './schema';
 
 export function LinkModal({

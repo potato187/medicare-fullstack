@@ -1,5 +1,4 @@
-import { NavLink } from 'react-router-dom';
-import { PATH_IMAGES } from 'admin/constant';
+import { PATH_IMAGES } from 'constant';
 import module from './style.module.scss';
 
 export function Layout({ children }) {
@@ -26,19 +25,7 @@ export function Layout({ children }) {
 					</svg>
 				</div>
 			</div>
-			<div className={mainCln}>
-				<div className='container'>
-					<div className='text-center'>
-						<NavLink to='' className='d-block mb-3'>
-							<img height='20' width='20' src={PATH_IMAGES.LOGO_SM} alt='' />
-						</NavLink>
-						<p className='fw-700 text-white-50 mb-3'>Premium Admin & Dashboard Template</p>
-					</div>
-					<div className='row'>
-						<div className='col-4 offset-4'>{children}</div>
-					</div>
-				</div>
-			</div>
+			<div className={mainCln}>{children}</div>
 		</div>
 	);
 }

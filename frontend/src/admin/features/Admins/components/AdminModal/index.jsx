@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { adminApi } from 'admin/api';
+import { adminApi } from 'api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -8,11 +8,11 @@ import {
 	Button,
 	FloatingLabelInput,
 	FloatingLabelSelect,
-} from 'admin/components';
-import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
+} from 'components';
 import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
+import { getObjectDiff, setDefaultValues, tryCatch } from 'utils';
 import { adminDefaultValues, adminValidation } from './schema';
 
 export function AdminModal({

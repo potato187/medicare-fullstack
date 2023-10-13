@@ -4,6 +4,7 @@ const {
 	ObjectIdMongodbValidator,
 	selectValidator,
 	booleanValidator,
+	sortValidator,
 } = require('@/validations');
 const Joi = require('joi');
 

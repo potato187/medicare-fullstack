@@ -1,15 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { languageApi } from 'admin/api';
-import {
-	Breadcrumb,
-	Button,
-	Container,
-	ContainerMain,
-	ContainerTitle,
-	FloatingInput,
-	WrapScrollBar,
-} from 'admin/components';
-import { showToastMessage, tryCatchAndToast } from 'admin/utilities';
+import { languageApi } from 'api';
+import { Breadcrumb, Button, Container, ContainerMain, ContainerTitle, FloatingInput, WrapScrollBar } from 'components';
+import { showToastMessage, tryCatchAndToast } from 'utils';
 import React, { useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';

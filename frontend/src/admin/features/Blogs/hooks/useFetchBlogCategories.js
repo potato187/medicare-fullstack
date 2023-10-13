@@ -1,5 +1,5 @@
-import { blogCategoryApi } from 'admin/api';
-import { tryCatch } from 'admin/utilities';
+import { blogCategoryApi } from 'api';
+import { tryCatch } from 'utils';
 import { useEffect, useState } from 'react';
 
 export const useFetchBlogCategories = (props) => {

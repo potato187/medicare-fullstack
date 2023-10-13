@@ -44,7 +44,11 @@
 		"instagram": "Instagram",
 		"no_results_found": "No results found",
 		"logout": "Logout",
-		"login": "Login"
+		"login": "Login",
+		"maintenance": {
+			"title": "SITE IS UNDER MAINTENANCE",
+			"message": "Please check back in sometime"
+		}
 	},
 	"table": {
 		"no": "No.",

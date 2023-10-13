@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { phoneValidation, requiredValidation } from 'admin/validation';
+import { phoneValidator, requiredValidator } from 'admin/validators';
 
 export const defaultValues = {
 	fullName: '',
@@ -15,7 +15,7 @@ export const defaultValues = {
 };
 
 export const schema = yup.object().shape({
-	fullName: requiredValidation,
-	phone: phoneValidation,
-	doctorId: requiredValidation,
+	fullName: requiredValidator,
+	phone: phoneValidator,
+	doctorId: requiredValidator,
 });

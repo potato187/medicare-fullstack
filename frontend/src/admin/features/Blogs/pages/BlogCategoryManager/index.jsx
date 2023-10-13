@@ -1,4 +1,4 @@
-import { blogCategoryApi } from 'admin/api';
+import { blogCategoryApi } from 'api';
 import {
 	Button,
 	ConfirmModal,
@@ -7,13 +7,12 @@ import {
 	FormattedDescription,
 	SortableTree,
 	WrapScrollBar,
-} from 'admin/components';
-import { flattenTree, removeItem } from 'admin/components/AdvanceUI/Tree/utilities';
-import { useToggle } from 'admin/hooks';
-import { compose, getObjectDiff, showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
-import { useAuth } from 'hooks';
+} from 'components';
+import { flattenTree, removeItem } from 'components/AdvanceUI/Tree/utils';
+import { useAuth, useToggle } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { compose, getObjectDiff, showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { BlogCategoryModal } from '../../components';
 
 export default function BlogCategoryManager() {

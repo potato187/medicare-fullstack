@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { newsApi } from 'admin/api';
+import { newsApi } from 'api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -10,8 +10,8 @@ import {
 	FloatingLabelInput,
 	FloatingLabelMultiSelect,
 	FloatingLabelSelect,
-} from 'admin/components';
-import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
+} from 'components';
+import { getObjectDiff, setDefaultValues, tryCatch } from 'utils';
 import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';

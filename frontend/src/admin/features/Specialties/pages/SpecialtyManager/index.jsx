@@ -1,4 +1,4 @@
-import { doctorApi } from 'admin/api';
+import { doctorApi } from 'api';
 import {
 	Button,
 	ConfirmModal,
@@ -13,15 +13,13 @@ import {
 	TableHeader,
 	UnFieldCheckBox,
 	UnFieldDebounce,
-} from 'admin/components';
-import { useIndex, useToggle } from 'admin/hooks';
-import { compose, showToastMessage, tryCatchAndToast } from 'admin/utilities';
-import { useAuth } from 'hooks';
+} from 'components';
+import { useAuth, useIndex, useToggle } from 'hooks';
 import produce from 'immer';
 import { MdAdd, MdImportExport } from 'react-icons/md';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-import { downloadExcelFile, formatPhone } from 'utils';
+import { compose, downloadExcelFile, formatPhone, showToastMessage, tryCatchAndToast } from 'utils';
 import { DoctorModal, ExportModal, ImportExcelModal } from '../../components';
 import { useSpecialties } from '../../hooks';
 import { getHandleExport } from '../../utils/export.strategy';

@@ -1,10 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { getObjectDiff, setDefaultValues, tryCatch } from 'admin/utilities';
+import { getObjectDiff, setDefaultValues, tryCatch } from 'utils';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { bookingApi, resourceApi } from 'admin/api';
+import { bookingApi, resourceApi } from 'api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -15,7 +15,7 @@ import {
 	FloatingLabelInput,
 	FloatingLabelSelect,
 	TextArea,
-} from 'admin/components';
+} from 'components';
 import { defaultValues, schema } from './schema';
 
 export function BookingModal({
@@ -54,7 +54,6 @@ export function BookingModal({
 		if (!isOpen || !bookingId) {
 			clone.current = null;
 		}
-		
 	}, [isOpen, bookingId]);
 
 	useEffect(() => {

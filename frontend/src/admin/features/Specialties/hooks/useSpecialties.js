@@ -1,10 +1,10 @@
-import { doctorApi, resourceApi } from 'admin/api';
-import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'admin/constant';
-import { createURL, tryCatch } from 'admin/utilities';
+import { doctorApi, resourceApi } from 'api';
+import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'constant';
 import queryString from 'query-string';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { typeOf } from 'utils';
+import { createURL, tryCatch } from 'utils';
+import { typeOf } from 'utils/repos';
 
 const mapData = (data, languageId) => {
 	return data.map(({ _id, name }) => ({ label: name[languageId], value: _id }));

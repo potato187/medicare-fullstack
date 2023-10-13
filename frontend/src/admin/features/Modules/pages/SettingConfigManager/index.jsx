@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { settingConfigApi } from 'admin/api';
+import { settingConfigApi } from 'api';
 import {
 	Breadcrumb,
 	Button,
@@ -9,9 +9,9 @@ import {
 	FloatingLabelFile,
 	FloatingLabelInput,
 	WrapScrollBar,
-} from 'admin/components';
+} from 'components';
 import { convertName } from 'admin/features/Languages/utils';
-import { showToastMessage, tryCatch, tryCatchAndToast } from 'admin/utilities';
+import { showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { useAuth } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';

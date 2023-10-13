@@ -1,4 +1,4 @@
-import { passwordConfirmVallation, passwordValidation } from 'admin/validation';
+import { passwordConfirmValidator, passwordValidator } from 'admin/validators';
 import * as yup from 'yup';
 
 export const defaultValues = {
@@ -8,7 +8,7 @@ export const defaultValues = {
 };
 
 export const schema = yup.object().shape({
-	password: passwordValidation,
-	confirm_password: passwordConfirmVallation,
-	newPassword: passwordValidation,
+	password: passwordValidator,
+	confirm_password: passwordConfirmValidator,
+	newPassword: passwordValidator,
 });

@@ -1,8 +1,9 @@
-import { authLogin } from 'admin/redux/slices/auth';
+import { PATH_IMAGES } from 'constant';
+import { authLogin } from 'reduxStores/slices/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import { Layout } from '../../components';
-import { LoginForm } from '../../components/LoginForm';
+import { NavLink, Navigate } from 'react-router-dom';
+import { Layout } from '../.components';
+import { LoginForm } from '../.components/LoginForm';
 
 const REDIRECT_TO_DASHBOARD = '../dashboard';
 
@@ -20,7 +21,19 @@ export default function LoginPage() {
 
 	return (
 		<Layout>
-			<LoginForm onSubmit={handleSubmit} />
+			<div className='container'>
+				<div className='text-center'>
+					<NavLink to='' className='d-block mb-3'>
+						<img height='20' width='20' src={PATH_IMAGES.LOGO_SM} alt='' />
+					</NavLink>
+					<p className='fw-700 text-white-50 mb-3'>Premium Admin & Dashboard Template</p>
+				</div>
+				<div className='row'>
+					<div className='col-4 offset-4'>
+						<LoginForm onSubmit={handleSubmit} />
+					</div>
+				</div>
+			</div>
 		</Layout>
 	);
 }

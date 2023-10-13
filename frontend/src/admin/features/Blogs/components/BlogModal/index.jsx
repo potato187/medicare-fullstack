@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { blogApi, blogCategoryApi } from 'admin/api';
+import { blogApi, blogCategoryApi } from 'api';
 import {
 	BaseModal,
 	BaseModalBody,
@@ -13,13 +13,13 @@ import {
 	FormInputEditor,
 	SelectorTree,
 	TextArea,
-} from 'admin/components';
-import { findIndexById, findIndexByParentId } from 'admin/components/AdvanceUI/Tree/utilities';
-import { createUpdateBody, setDefaultValues, tryCatch } from 'admin/utilities';
+} from 'components';
+import { findIndexById, findIndexByParentId } from 'components/AdvanceUI/Tree/utils';
 import produce from 'immer';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
+import { getDifferentValues, setDefaultValues, tryCatch } from 'utils';
 import { defaultValues, schema } from './schema';
 
 const BLOG_SITE_MAP = {
@@ -75,10 +75,10 @@ export function BlogModal({
 		);
 	};
 
-	const handleOnSubmit = (data) => {
+	const handleSubmit = (data) => {
 		const blogCategoryIds = blogCategories.filter((category) => category.isSelected).map(({ id }) => id);
 		if (blogId) {
-			const updateBody = createUpdateBody(methods, data);
+			const updateBody = getDifferentValues(methods, data);
 			onSubmitUpdate({ blogId, ...updateBody, blogCategoryIds });
 		} else {
 			onSubmitCreate({ ...data, blogCategoryIds });
@@ -126,7 +126,7 @@ export function BlogModal({
 				<BaseModalBody className='scrollbar'>
 					<div className='row'>
 						<div className='col-9'>
-							<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
+							<form onSubmit={methods.handleSubmit(handleSubmit)}>
 								<div className='block mb-5'>
 									<div className='block-header'>
 										<Breadcrumb breadcrumb={BLOG_SITE_MAP.INFORMATION}>
@@ -260,7 +260,7 @@ export function BlogModal({
 						<Button type='button' size='xs' secondary onClick={onClose}>
 							<FormattedMessage id='button.cancel' />
 						</Button>
-						<Button type='submit' size='xs' onClick={methods.handleSubmit(handleOnSubmit)}>
+						<Button type='submit' size='xs' onClick={methods.handleSubmit(handleSubmit)}>
 							<FormattedMessage id={blogId ? 'button.update' : 'button.create'} />
 						</Button>
 					</div>
