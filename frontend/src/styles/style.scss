@@ -18,6 +18,10 @@
 	--select-min-height: 32px;
 }
 
+body[data-sidebar='inactive'] {
+	--sidebar-width: 0;
+}
+
 html {
 	line-height: 1.5;
 }

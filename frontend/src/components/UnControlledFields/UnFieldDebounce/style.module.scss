@@ -1,5 +1,5 @@
 [data-theme='theme_light'] .field-debounce {
-	--input-bg: rgba(243, 246, 249);
+	--input-bg: var(--bs-white);
 	--input-border-color: var(--bs-gray-400);
 	--input-icon-color: var(--bs-gray-600);
 }

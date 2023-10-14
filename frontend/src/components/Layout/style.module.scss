@@ -6,6 +6,10 @@
 	--admin-bg: #1a1d21;
 }
 
+body[data-sidebar='inactive'] .admin .admin0-sidebar {
+	transform: translateX(-250px);
+}
+
 .admin {
 	display: grid;
 	grid-template-columns: var(--sidebar-width) 1fr;
@@ -14,6 +18,7 @@
 	max-height: 100vh;
 	position: relative;
 	background-color: var(--admin-bg);
+	transition: grid 0.25s ease;
 
 	&-sidebar,
 	&-main {

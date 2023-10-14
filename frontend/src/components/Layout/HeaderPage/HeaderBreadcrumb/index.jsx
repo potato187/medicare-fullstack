@@ -1,15 +1,27 @@
-import { useDocumentTitle } from 'hooks';
 import cn from 'classnames';
+import { useDocumentTitle } from 'hooks';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { generateBreadcrumb } from '../utils';
 import module from './style.module.scss';
 
-export function HeaderBreadcrumb({ breadcrumb = [] }) {
+export function HeaderBreadcrumb() {
+	const location = useLocation();
 	const intl = useIntl();
-	const title = intl.formatMessage({ id: breadcrumb.at(-1).intl });
-	const { breadcrumb: breadcrumbCln, breadcrumb__title: titleCln, breadcrumb__list: listCln } = module;
+	const [breadcrumb, setBreadcrumb] = useState([]);
+	const [title, setTitle] = useState('Medicare');
 
+	const { breadcrumb: breadcrumbCln, breadcrumb__title: titleCln, breadcrumb__list: listCln } = module;
 	const classNames = cn('theme-breadcrumb', breadcrumbCln);
+
+	useEffect(() => {
+		const breadcrumb = generateBreadcrumb(location.pathname);
+		if (breadcrumb.length) {
+			setBreadcrumb(breadcrumb);
+			setTitle(intl.formatMessage({ id: breadcrumb.at(-1).intl }));
+		}
+	}, [location.pathname]);
 
 	useDocumentTitle(title, [title]);
 
