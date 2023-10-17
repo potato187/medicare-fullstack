@@ -3,6 +3,7 @@ import {
 	Button,
 	ConfirmModal,
 	Container,
+	ContainerGrid,
 	Dropdown,
 	FooterContainer,
 	FormattedDescription,
@@ -122,31 +123,30 @@ export default function HtmlContentManager() {
 
 	return (
 		<>
-			<Container id='page-main'>
-				<div className='d-flex flex-column h-100 py-5'>
-					<div className='d-flex pb-4'>
-						<div className='d-flex gap-2'>
-							<Dropdown
-								value={queryParams?.page_type}
-								size='md'
-								name='page_type'
-								options={pageTypes}
-								onSelect={handleSelect}
-							/>
-							<Dropdown
-								value={queryParams?.page_position}
-								size='md'
-								name='page_position'
-								options={pagePositions}
-								onSelect={handleSelect}
-							/>
+			<Container id='page-main' className='py-5'>
+				<ContainerGrid>
+					<div className='row pb-4'>
+						<div className='col-6'>
+							<div className='d-flex gap-2'>
+								<Dropdown
+									value={queryParams?.page_type}
+									size='lg-md'
+									name='page_type'
+									options={pageTypes}
+									onSelect={handleSelect}
+								/>
+								<Dropdown
+									value={queryParams?.page_position}
+									size='lg-md'
+									name='page_position'
+									options={pagePositions}
+									onSelect={handleSelect}
+								/>
+							</div>
 						</div>
-						<div className='px-5 d-flex gap-2 ms-auto'>
-							<Button size='sm' onClick={() => handleOpenHtmlContentModal(-1)}>
-								<span>
-									<FormattedMessage id='button.add' />
-								</span>
-								<MdAdd size='1.25em' className='ms-2' />
+						<div className='col-6 d-flex'>
+							<Button square size='sm' className='ms-auto' onClick={() => handleOpenHtmlContentModal(-1)}>
+								<MdAdd size='1.25em' />
 							</Button>
 						</div>
 					</div>
@@ -209,7 +209,7 @@ export default function HtmlContentManager() {
 						handlePageChange={handlePageChange}
 						handleSelect={handleSelect}
 					/>
-				</div>
+				</ContainerGrid>
 			</Container>
 			<HtmlContentModal
 				isOpen={isOpenContentModal}

@@ -12,21 +12,27 @@
 
 .modal {
 	--modal-shadow: var(--bs-box-shadow);
-	--modal-max-width: 768px;
-	--modal-min-width: 480px;
+	--modal-max-width: 100%;
+	--modal-min-width: 100%;
 
 	position: fixed;
-	inset: 0 0;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	padding: 0 0.5rem;
 	z-index: 1031;
 	color: var(--body-color);
 
 	&::after {
 		content: '';
 		position: absolute;
-		inset: 0 0;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
 		background-color: rgba(#000000, 0.5);
 		z-index: -1;
-		transition: 0.2s ease-in-out;
 	}
 
 	&[class*='modal-enter-done'].modal-static &-dialog {
@@ -59,25 +65,6 @@
 	&[class*='modal-enter-done'] &-dialog {
 		opacity: 1;
 		transform: translate3d(0, 0, 0);
-	}
-
-	&.modal--sm {
-		--modal-max-width: 576px;
-	}
-
-	&.modal--md {
-		--modal-max-width: 768px;
-		--modal-min-width: 768px;
-	}
-
-	&.modal--lg {
-		--modal-max-width: 992px;
-		--modal-min-width: 992px;
-	}
-
-	&.modal--xl {
-		--modal-max-width: 1200px;
-		--modal-min-width: 1200px;
 	}
 
 	&-header,
@@ -143,6 +130,31 @@
 
 		&:hover {
 			color: var(--bs-gray-700);
+		}
+	}
+}
+
+@media (min-width: 64em) {
+	.modal {
+		padding: 0 1.5rem;
+	}
+}
+
+@media (min-width: 64em) {
+	.modal {
+		&.modal--sm {
+			--modal-max-width: 500px;
+			--modal-min-width: 500px;
+		}
+
+		&.modal--md {
+			--modal-max-width: 800px;
+			--modal-min-width: 800px;
+		}
+
+		&.modal--lg {
+			--modal-max-width: 1140px;
+			--modal-min-width: 1140px;
 		}
 	}
 }

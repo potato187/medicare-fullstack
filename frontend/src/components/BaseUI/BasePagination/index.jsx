@@ -28,8 +28,8 @@ export function BasePagination({ className = '', variant = 'center', pageCount =
 			breakLinkClassName={pageLinkClass}
 			containerClassName={styles}
 			activeClassName='active'
-			marginPagesDisplayed={2}
-			pageRangeDisplayed={3}
+			marginPagesDisplayed={1}
+			pageRangeDisplayed={1}
 			pageCount={+pageCount}
 			{...props}
 		/>

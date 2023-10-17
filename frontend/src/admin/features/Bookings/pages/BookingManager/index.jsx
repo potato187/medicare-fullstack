@@ -4,6 +4,7 @@ import {
 	Button,
 	ConfirmModal,
 	Container,
+	ContainerGrid,
 	DatePickerRange,
 	Dropdown,
 	FooterContainer,
@@ -98,11 +99,11 @@ export default function BookingManager() {
 
 	return (
 		<>
-			<Container id='page-main'>
-				<div className='d-flex flex-column h-100 py-5'>
+			<Container id='page-main' className='py-5'>
+				<ContainerGrid>
 					<div className='row position-relative pb-4 z-index-2'>
-						<div className='col-6'>
-							<div className='d-flex items-end gap-2'>
+						<div className='col-12 col-lg-6 mb-4'>
+							<div className='d-flex gap-2'>
 								<Dropdown
 									size='md'
 									name='specialtyId'
@@ -122,8 +123,8 @@ export default function BookingManager() {
 								</div>
 							</div>
 						</div>
-						<div className='col-6'>
-							<div className='d-flex justify-content-end gap-2'>
+						<div className='col-12 col-lg-6'>
+							<div className='d-flex flex-wrap justify-content-lg-end gap-2'>
 								<DatePickerRange
 									languageId={languageId}
 									startDate={queryParams.startDate}
@@ -206,7 +207,7 @@ export default function BookingManager() {
 						handlePageChange={handlePageChange}
 						handleSelect={handleSelect}
 					/>
-				</div>
+				</ContainerGrid>
 			</Container>
 
 			<BookingModal

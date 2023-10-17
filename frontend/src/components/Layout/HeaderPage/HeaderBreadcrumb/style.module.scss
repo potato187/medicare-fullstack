@@ -4,14 +4,23 @@
 	background-color: var(--breadcrumb-bg);
 	border-top: 1px solid var(--breadcrumb-border-color);
 	box-shadow: var(--bs-box-shadow);
-
 	display: flex;
 	align-items: center;
 
 	&__title {
+		display: none;
+
 		flex-grow: 1;
 		font-size: var(--theme-text-md);
 		color: var(--heading-color);
 		font-weight: 600;
+	}
+}
+
+@media (min-width: 64em) {
+	.breadcrumb {
+		&__title {
+			display: block;
+		}
 	}
 }

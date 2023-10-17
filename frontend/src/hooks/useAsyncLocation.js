@@ -7,7 +7,7 @@ import { tryCatch, createURL } from 'utils';
 import { typeOf } from 'utils/repos';
 
 export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
-	const isLoading = useRef(true);
+	const [isLoading, setIsLoading] = useState(true);
 	const [data, setData] = useState([]);
 	const [totalPages, setTotalPages] = useState(1);
 	const navigate = useNavigate();
@@ -80,12 +80,13 @@ export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 		let idTimer = null;
 
 		tryCatch(async () => {
-			isLoading.current = true;
+			setIsLoading(true);
 			const { metadata } = await fetch(queryParams);
 			setTotalPages(metadata.meta.totalPages);
+			setData(metadata.data);
+
 			idTimer = setTimeout(() => {
-				setData(metadata.data);
-				isLoading.current = false;
+				setIsLoading(false);
 			}, 500);
 		})();
 
@@ -98,7 +99,7 @@ export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 
 	return {
 		data,
-		isLoading: isLoading.current,
+		isLoading,
 		queryParams,
 		totalPages,
 		setData,

@@ -1,17 +1,22 @@
-import { BaseDropdown, Divider, DropdownBody, DropdownHeader, DropdownItem } from 'components/BaseUI';
-import { PATH_IMAGES } from 'constant';
-import { authLogout } from 'reduxStores/slices/auth';
 import cn from 'classnames';
-import { useAuth } from 'hooks';
+import { Divider, DropdownItem } from 'components/BaseUI';
+import { PATH_IMAGES } from 'constant';
+import { useAuth, useClickOutside, useToggle } from 'hooks';
+import { useRef } from 'react';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { MdLogout } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
+import { authLogout } from 'reduxStores/slices/auth';
 import module from './style.module.scss';
 
 export function UserMenu() {
+	const navigate = useNavigate();
 	const { info, tokens } = useAuth();
+	const nodeRef = useRef(null);
+	const [isOpen, toggle] = useToggle();
 	const { firstName, lastName, email } = info;
 	const fullName = `${lastName} ${firstName}`;
 	const dispatch = useDispatch();
@@ -34,9 +39,18 @@ export function UserMenu() {
 		);
 	};
 
+	const handleRedirect = () => {
+		navigate('./personal/profile_setting');
+		toggle();
+	};
+
+	useClickOutside(nodeRef, () => {
+		toggle();
+	});
+
 	return (
-		<BaseDropdown className={dropdownCln}>
-			<DropdownHeader className={cn('dropdown__header', dropdownHeaderCln)}>
+		<div className={dropdownCln}>
+			<div aria-hidden className={cn('dropdown__header', dropdownHeaderCln)} onClick={toggle}>
 				<div className={avatarCln}>
 					<img
 						crossOrigin='anonymous'
@@ -51,26 +65,28 @@ export function UserMenu() {
 					<h3 className={nameCln}>{fullName}</h3>
 					<div className={emailCln}>{email}</div>
 				</div>
-			</DropdownHeader>
-			<DropdownBody className={cn('dropdown__list', dropdownListCln)}>
-				<ul>
-					<DropdownItem type='li'>
-						<NavLink to='./personal/profile_setting'>
-							<AiOutlineSetting size='1.25em' />
+			</div>
+			<CSSTransition in={isOpen} timeout={300} classNames='dropdown-menu' unmountOnExit nodeRef={nodeRef}>
+				<div className={cn('dropdown__list', dropdownListCln)} ref={nodeRef}>
+					<ul>
+						<DropdownItem type='li' customOnClick={handleRedirect}>
 							<span>
-								<FormattedMessage id='common.profile' />
+								<AiOutlineSetting size='1.25em' />
+								<span>
+									<FormattedMessage id='common.profile' />
+								</span>
 							</span>
-						</NavLink>
-					</DropdownItem>
-					<Divider type='li' />
-					<DropdownItem type='li' customOnClick={handleLogout}>
-						<span>
-							<MdLogout size='1.25em' />
-							<FormattedMessage id='common.logout' />
-						</span>
-					</DropdownItem>
-				</ul>
-			</DropdownBody>
-		</BaseDropdown>
+						</DropdownItem>
+						<Divider type='li' />
+						<DropdownItem type='li' customOnClick={handleLogout}>
+							<span>
+								<MdLogout size='1.25em' />
+								<FormattedMessage id='common.logout' />
+							</span>
+						</DropdownItem>
+					</ul>
+				</div>
+			</CSSTransition>
+		</div>
 	);
 }

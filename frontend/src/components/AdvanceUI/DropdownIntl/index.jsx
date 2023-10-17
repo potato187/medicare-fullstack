@@ -21,7 +21,7 @@ export function DropdownIntl({ name = '', options = [], value = '', className = 
 		<BaseDropdown>
 			<div className={styles}>
 				<DropdownHeader className='dropdown__header'>
-					<span className='no-wrap-ellipsis'>
+					<span className='text-nowrap'>
 						<FormattedMessage id={option.label} />
 					</span>
 					<RxCaretDown size='1.5em' />

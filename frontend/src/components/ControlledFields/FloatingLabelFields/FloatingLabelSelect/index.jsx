@@ -72,7 +72,7 @@ export function FloatingLabelSelect({ name, labelIntl, options = [], disabled = 
 								aria-hidden
 								key={option.value}
 								className={cn({
-									'no-wrap-ellipsis': true,
+									'text-nowrap': true,
 									[itemActiveCln]: option.value === currentOption.value,
 								})}
 								onClick={() => handleSelect(option)}

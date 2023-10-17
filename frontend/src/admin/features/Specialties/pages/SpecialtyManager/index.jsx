@@ -3,6 +3,7 @@ import {
 	Button,
 	ConfirmModal,
 	Container,
+	ContainerGrid,
 	Dropdown,
 	FooterContainer,
 	FormattedDescription,
@@ -16,7 +17,8 @@ import {
 } from 'components';
 import { useAuth, useIndex, useToggle } from 'hooks';
 import produce from 'immer';
-import { MdAdd, MdImportExport } from 'react-icons/md';
+import { BiExport, BiImport } from 'react-icons/bi';
+import { MdAdd } from 'react-icons/md';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 import { compose, downloadExcelFile, formatPhone, showToastMessage, tryCatchAndToast } from 'utils';
@@ -150,18 +152,11 @@ export default function SpecialtyManager() {
 
 	return (
 		<>
-			<Container id='page-main'>
-				<div className='d-flex flex-column h-100 py-5'>
-					<div className='d-flex pb-4'>
-						<div className='d-flex items-end gap-2'>
-							<Dropdown
-								size='md'
-								name='specialtyId'
-								value={queryParams.specialtyId}
-								options={Specialties}
-								onSelect={handleSelectSpecialty}
-							/>
-							<div className='d-flex'>
+			<Container id='page-main' className='py-5'>
+				<ContainerGrid>
+					<div className='row pb-4'>
+						<div className='col-12 col-sm-6 mb-4 mb-sm-0'>
+							<div className='d-flex gap-2'>
 								<UnFieldDebounce
 									delay={500}
 									initialValue=''
@@ -171,27 +166,27 @@ export default function SpecialtyManager() {
 									id='search-field'
 									onChange={handleChangeSearch}
 								/>
+								<Dropdown
+									size='md'
+									name='specialtyId'
+									value={queryParams.specialtyId}
+									options={Specialties}
+									onSelect={handleSelectSpecialty}
+								/>
 							</div>
 						</div>
-						<div className='px-5 d-flex gap-2 ms-auto'>
-							<Button size='sm' onClick={() => handleToggleModal(-1)}>
-								<span>
-									<FormattedMessage id='button.create_doctor' />
-								</span>
-								<MdAdd size='1.25em' className='ms-2' />
-							</Button>
-							<Button size='sm' onClick={toggleExportModal}>
-								<span>
-									<FormattedMessage id='button.export_doctors' />
-								</span>
-								<MdImportExport size='1.25em' className='ms-2' />
-							</Button>
-							<Button size='sm' onClick={toggleImportModal}>
-								<span>
-									<FormattedMessage id='button.import_doctors' />
-								</span>
-								<MdImportExport size='1.25em' className='ms-2' />
-							</Button>
+						<div className='col-12 col-sm-6'>
+							<div className='d-flex gap-2 justify-content-sm-end'>
+								<Button size='sm' square onClick={() => handleToggleModal(-1)}>
+									<MdAdd size='1.25em' />
+								</Button>
+								<Button success size='sm' square onClick={toggleExportModal}>
+									<BiExport size='1.25em' />
+								</Button>
+								<Button info size='sm' square onClick={toggleImportModal}>
+									<BiImport size='1.25em' />
+								</Button>
+							</div>
 						</div>
 					</div>
 					<TableGrid className='scrollbar'>
@@ -273,7 +268,7 @@ export default function SpecialtyManager() {
 						handleSelect={handleSelect}
 						handlePageChange={handlePageChange}
 					/>
-				</div>
+				</ContainerGrid>
 			</Container>
 
 			<DoctorModal

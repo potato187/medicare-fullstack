@@ -42,10 +42,10 @@ export default function LanguageManager() {
 						{Object.entries(language).map(([key, { breadcrumb, fields }]) => (
 							<React.Fragment key={key}>
 								<ContainerTitle>
-									<Breadcrumb breadcrumb={breadcrumb}>
+									<Breadcrumb wrap breadcrumb={breadcrumb}>
 										{(item, index) => (
 											<li key={index}>
-												<span>
+												<span className='text-nowrap'>
 													<span>{convertName(item)}</span>
 												</span>
 											</li>
@@ -55,7 +55,7 @@ export default function LanguageManager() {
 								<ContainerMain>
 									<div className='row'>
 										{Object.keys(fields).map((name) => (
-											<div className='col-3 mb-6' key={`${key}.${name}`}>
+											<div className='col-12 col-sm-6 col-lg-4 col-xl-3 mb-6' key={`${key}.${name}`}>
 												<FloatingInput name={`${key}.${name}`} label={convertName(name)} />
 											</div>
 										))}

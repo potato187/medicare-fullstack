@@ -125,7 +125,7 @@ export function BlogModal({
 				<BaseModalHeader idIntl='dashboard.blogs.modal.blog_editor_modal.title' onClose={onClose} />
 				<BaseModalBody className='scrollbar'>
 					<div className='row'>
-						<div className='col-9'>
+						<div className='col-12 col-lg-9 order-2 order-lg-1'>
 							<form onSubmit={methods.handleSubmit(handleSubmit)}>
 								<div className='block mb-5'>
 									<div className='block-header'>
@@ -141,7 +141,7 @@ export function BlogModal({
 									</div>
 									<div className='block-body'>
 										<div className='row'>
-											<div className='col-6'>
+											<div className='col-12 col-lg-6 order-2 order-lg-1'>
 												<div className='mb-6'>
 													<FloatingLabelInput name='title.vi' labelIntl='common.title.vi' />
 												</div>
@@ -153,7 +153,7 @@ export function BlogModal({
 													<FloatingDatePicker name='datePublished' labelIntl='common.public_date' />
 												</div>
 											</div>
-											<div className='col-6'>
+											<div className='col-12 col-sm-10 offset-sm-1 offset-lg-0 col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0'>
 												<FieldFileUpload name='image' intlLabel='common.thumbnail' />
 											</div>
 										</div>
@@ -229,7 +229,7 @@ export function BlogModal({
 								</div>
 							</form>
 						</div>
-						<div className='col-3'>
+						<div className='col-12 col-lg-3 order-1 order-lg-2 mb-4 mb-lg-0'>
 							<div className='block position-sticky top-0'>
 								<div className='block-header'>
 									<Breadcrumb breadcrumb={BLOG_SITE_MAP.CATEGORIES}>

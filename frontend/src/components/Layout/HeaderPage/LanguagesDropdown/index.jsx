@@ -20,7 +20,7 @@ export function LanguagesDropdown({ list = [] }) {
 					<DropdownItem
 						type='button'
 						key={id}
-						className={cn(itemCln, 'no-wrap-ellipsis', { active: id === languageId })}
+						className={cn(itemCln, 'text-nowrap', { active: id === languageId })}
 						customOnClick={() => changeLanguageById(id)}
 					>
 						<img className='rounded-1' width={16} height={16} src={image} alt={name} />

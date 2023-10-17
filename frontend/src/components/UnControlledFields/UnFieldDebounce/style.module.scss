@@ -28,6 +28,7 @@
 		color: var(--input-icon-color);
 	}
 	input {
+		width: 100%;
 		position: relative;
 		min-height: var(--select-min-height);
 		padding: var(--spacing-xs) var(--spacing-md) var(--spacing-xs) var(--icon-width);

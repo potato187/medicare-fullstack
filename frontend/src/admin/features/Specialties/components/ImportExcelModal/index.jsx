@@ -29,7 +29,7 @@ export function ImportExcelModal({
 	languageId = 'en',
 	genders = [],
 	positions = [],
-	onClose = (f) => f,
+	onClose = () => false,
 	onSubmit = (f) => f,
 }) {
 	const methodsFileExcel = useForm({
@@ -111,7 +111,7 @@ export function ImportExcelModal({
 	return (
 		<BaseModal size='lg' isOpen={isOpen}>
 			<BaseModalHeader idIntl='dashboard.specialty.modal.import_modal.title' onClose={onClose} />
-			<BaseModalBody>
+			<BaseModalBody className='scrollbar'>
 				<FormProvider {...methodsFileExcel}>
 					<form className='mb-6' onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
@@ -147,10 +147,10 @@ export function ImportExcelModal({
 									<th className='text-start'>
 										<FormattedMessage id='form.address' />
 									</th>
-									<th className='text-center'>
+									<th className='text-center' style={{ minWidth: '120px' }}>
 										<FormattedMessage id='common.gender' />
 									</th>
-									<th className='text-center'>
+									<th className='text-center' style={{ minWidth: '120px' }}>
 										<FormattedMessage id='common.position' />
 									</th>
 									<th className='text-center'>

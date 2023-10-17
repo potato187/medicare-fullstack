@@ -1,3 +1,4 @@
+[data-theme='theme_light'] [class*='table'],
 [data-theme='theme_light'] table {
 	--table-bg: var(--bs-white);
 	--table-bg-hover: var(--bs-gray-100);
@@ -12,6 +13,7 @@
 	--table-thead-box-shadow: 0 1px 0 0 #e5e7eb;
 }
 
+[data-theme='theme_dark'] [class*='table'],
 [data-theme='theme_dark'] table {
 	--table-bg: #282b2e;
 	--table-bg-hover: rgba(206, 212, 218, 0.04);

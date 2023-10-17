@@ -5,11 +5,11 @@
 	&__list {
 		display: flex;
 		align-items: baseline;
+		flex-wrap: nowrap;
 
 		> li > *,
 		> li > a {
-			display: inline-block;
-			height: 100%;
+			display: block;
 			font-size: var(--theme-text-xs);
 			font-weight: 500;
 			text-transform: capitalize;

@@ -34,19 +34,19 @@ export function ProfileForm({ profileId, genders = [], onSubmit = (f) => f }) {
 		<FormProvider {...methods}>
 			<form onSubmit={methods.handleSubmit(handleSubmit)}>
 				<div className='row'>
-					<div className='col-4 mb-6'>
+					<div className='col-12 col-sm-6 col-lg-4 mb-6'>
 						<FloatingLabelInput name='firstName' labelIntl='form.firstName' />
 					</div>
-					<div className='col-4 mb-6'>
+					<div className='col-12 col-sm-6 col-lg-4 mb-6'>
 						<FloatingLabelInput name='lastName' labelIntl='form.lastName' />
 					</div>
-					<div className='col-4 mb-6'>
+					<div className='col-12 col-sm-6 col-lg-4 mb-6'>
 						<FloatingLabelInput name='phone' labelIntl='form.phone' />
 					</div>
-					<div className='col-4 mb-6'>
+					<div className='col-12 col-sm-6 col-lg-4 mb-6'>
 						<FloatingLabelInput name='email' labelIntl='form.email' />
 					</div>
-					<div className='col-4 mb-6'>
+					<div className='col-12 col-sm-6 col-lg-4 mb-6'>
 						<FloatingLabelSelect name='gender' labelIntl='form.gender' options={genders} />
 					</div>
 

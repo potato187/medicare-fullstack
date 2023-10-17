@@ -23,7 +23,7 @@ export function NewsModal({
 	pages = [],
 	positions = [],
 	orders = [],
-	onClose = (f) => f,
+	onClose = () => false,
 	onCreate = (f) => f,
 	onUpdate = (f) => f,
 }) {
@@ -70,25 +70,25 @@ export function NewsModal({
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-sm-6 mb-6'>
 								<FloatingLabelInput name='name.vi' labelIntl='common.title.vi' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-sm-6 mb-6'>
 								<FloatingLabelInput name='name.en' labelIntl='common.title.en' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-sm-6 mb-6'>
 								<FloatingLabelInput name='index' labelIntl='common.index' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-sm-6 mb-6'>
 								<FloatingLabelInput name='quantity' labelIntl='common.quantity' />
 							</div>
-							<div className='col-6 mb-6 z-index-3'>
+							<div className='col-12 col-sm-6 mb-6 z-index-3'>
 								<FloatingLabelSelect name='order' labelIntl='common.order' options={orders} />
 							</div>
-							<div className='col-6 mb-6 z-index-2'>
+							<div className='col-12 col-sm-6 mb-6 z-index-2'>
 								<FloatingLabelSelect name='positionType' labelIntl='common.position' options={positions} />
 							</div>
-							<div className='col-6 mb-6 z-index-2'>
+							<div className='col-12 col-sm-6 mb-6 z-index-2'>
 								<FloatingLabelMultiSelect name='pageType' labelIntl='common.pages' options={pages} />
 							</div>
 							<div className='col-12'>

@@ -8,7 +8,8 @@
 
 @use './utilities/separation';
 @use './utilities/tree';
-@use './utilities/text';
+@use './utilities/typography';
+@use './utilities/zIndex';
 
 @use './vendors/react-date-picker';
 
@@ -16,10 +17,6 @@
 	--sidebar-width: 250px;
 	--select-min-width: 100px;
 	--select-min-height: 32px;
-}
-
-body[data-sidebar='inactive'] {
-	--sidebar-width: 0;
 }
 
 html {
@@ -38,11 +35,6 @@ body {
 #portal-modal {
 	z-index: 1031;
 	position: relative;
-}
-
-a,
-button {
-	cursor: pointer;
 }
 
 [data-theme='theme_light'] {

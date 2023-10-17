@@ -75,38 +75,38 @@ export function DoctorModal({
 					idIntl={`dashboard.specialty.modal.${doctorId ? 'update' : 'create'}_doctor.title`}
 					onClose={handleOnClose}
 				/>
-				<BaseModalBody>
+				<BaseModalBody className='scrollbar'>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<Tabs tabIndexActive={0}>
 							<TabNav variant='bordered'>
-								<TabNavItem labelIntl='common.profile' index={0} />
-								<TabNavItem labelIntl='common.description.en' index={1} />
-								<TabNavItem labelIntl='common.description.vi' index={2} />
+								<TabNavItem labelIntl='common.profile' index={0} className='flex-grow-1 flex-grow-sm-unset' />
+								<TabNavItem labelIntl='common.description.en' index={1} className='flex-grow-1 flex-grow-sm-unset' />
+								<TabNavItem labelIntl='common.description.vi' index={2} className='flex-grow-1 flex-grow-sm-unset' />
 							</TabNav>
 							<TabPanel tabPanelIndex={0}>
 								<div className='row'>
-									<div className='col-4 mb-6'>
+									<div className='col-12 col-md-6 col-lg-4 mb-6'>
 										<FloatingLabelInput name='firstName' labelIntl='form.firstName' />
 									</div>
-									<div className='col-4 mb-6'>
+									<div className='col-12 col-md-6 col-lg-4 mb-6'>
 										<FloatingLabelInput name='lastName' labelIntl='form.lastName' />
 									</div>
-									<div className='col-4 mb-6'>
+									<div className='col-12 col-md-6 col-lg-4 mb-6'>
 										<FloatingLabelInput name='email' labelIntl='form.email' />
 									</div>
-									<div className='col-4 mb-6'>
+									<div className='col-12 col-md-6 col-lg-4 mb-6'>
 										<FloatingLabelInput name='phone' labelIntl='form.phone' />
 									</div>
-									<div className='col-4 mb-6'>
+									<div className='col-12 col-md-6 col-lg-4 mb-6'>
 										<FloatingLabelInput name='address' labelIntl='form.address' />
 									</div>
-									<div className='col-4 mb-6 z-index-2'>
+									<div className='col-12 col-md-6 col-lg-4 mb-6 z-index-2'>
 										<FloatingLabelSelect name='gender' labelIntl='common.gender' options={genders} />
 									</div>
-									<div className='col-4 mb-6 z-index-2'>
+									<div className='col-12 col-md-6 col-lg-4 mb-6 z-index-2'>
 										<FloatingLabelSelect name='specialtyId' labelIntl='common.specialty' options={specialties} />
 									</div>
-									<div className='col-4 mb-6'>
+									<div className='col-12 col-md-6 col-lg-4 mb-6'>
 										<FloatingLabelSelect name='position' labelIntl='common.position' options={positions} />
 									</div>
 								</div>

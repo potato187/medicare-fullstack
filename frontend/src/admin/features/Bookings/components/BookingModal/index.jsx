@@ -25,7 +25,7 @@ export function BookingModal({
 	workingHours = [],
 	statuses = [],
 	genders = [],
-	onClose = (f) => f,
+	onClose = () => false,
 	onSubmit = (f) => f,
 }) {
 	const [doctors, setDoctors] = useState([]);
@@ -88,35 +88,35 @@ export function BookingModal({
 		<FormProvider {...methods}>
 			<BaseModal size='md' isOpen={isOpen}>
 				<BaseModalHeader idIntl='dashboard.booking.modal.update_booking.title' onClose={onClose} />
-				<BaseModalBody>
+				<BaseModalBody className='scrollbar'>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='fullName' labelIntl='form.fullName' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='phone' labelIntl='form.phone' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='address' labelIntl='form.address' />
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-5'>
+							<div className='col-12 col-md-6 mb-6 position-relative z-index-5'>
 								<FloatingDatePicker name='dateOfBirth' labelIntl='common.dateOfBirth' />
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-5'>
+							<div className='col-12 col-md-6 mb-6 position-relative z-index-5'>
 								<FloatingLabelSelect name='gender' labelIntl='common.gender' options={genders} />
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-4'>
+							<div className='col-12 col-md-6 mb-6 position-relative z-index-4'>
 								<FloatingLabelSelect name='status' labelIntl='common.status' options={statuses} />
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-3'>
+							<div className='col-12 col-md-6 mb-6 position-relative z-index-3'>
 								<FloatingDatePicker name='appointmentDate' labelIntl='common.appointmentDate' />
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-3'>
+							<div className='col-12 col-md-6 mb-6 position-relative z-index-3'>
 								<FloatingLabelSelect name='workingHourId' labelIntl='common.booking' options={workingHours} />
 							</div>
 
-							<div className='col-6 mb-6 z-index-2'>
+							<div className='col-12 col-md-6 mb-6 z-index-2'>
 								<FloatingLabelSelect
 									showCounter
 									name='specialtyId'
@@ -124,7 +124,7 @@ export function BookingModal({
 									options={specialties}
 								/>
 							</div>
-							<div className='col-6 mb-6 position-relative z-index-2'>
+							<div className='col-12 col-md-6 mb-6 position-relative z-index-2'>
 								<FloatingLabelSelect
 									name='doctorId'
 									labelIntl='common.doctor'

@@ -21,9 +21,7 @@ export function FloatingLabelFile({ name, labelIntl }) {
 				<span className={labelCln}>
 					<FormattedMessage defaultMessage={labelIntl} id={labelIntl} />
 				</span>
-				<span className='d-block w-100 no-wrap-ellipsis'>
-					{fileName || <FormattedMessage id='form.choose_file_text' />}
-				</span>
+				<span className='d-block w-100 text-nowrap'>{fileName || <FormattedMessage id='form.choose_file_text' />}</span>
 			</label>
 			<ErrorMessage
 				errors={errors}

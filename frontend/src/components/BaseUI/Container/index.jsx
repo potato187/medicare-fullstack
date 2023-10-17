@@ -38,3 +38,9 @@ export function ContainerMain({ className = '', children, ...props }) {
 		</div>
 	);
 }
+
+export function ContainerGrid({ className, children }) {
+	const classNames = cn(module.containerGrid, className);
+
+	return <div className={classNames}>{children}</div>;
+}

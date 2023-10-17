@@ -10,7 +10,7 @@ export function Dropdown({ name = '', options = [], value = '', className = '', 
 		'dropdown',
 		{
 			'dropdown--sm': size === 'sm',
-			'dropdown--md': size === 'md',
+			'dropdown-lg-md': size === 'lg-md',
 		},
 		className,
 	);
@@ -19,7 +19,7 @@ export function Dropdown({ name = '', options = [], value = '', className = '', 
 		<BaseDropdown>
 			<div className={styles}>
 				<DropdownHeader className='dropdown__header'>
-					<span className='no-wrap-ellipsis'>{option?.label || ''}</span>
+					<span className='text-nowrap'>{option?.label || ''}</span>
 					<RxCaretDown size='1.5em' />
 				</DropdownHeader>
 				<DropdownBody className='dropdown__list'>

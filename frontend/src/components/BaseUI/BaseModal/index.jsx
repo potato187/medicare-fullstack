@@ -26,7 +26,6 @@ export function BaseModal({
 		'modal--sm': modalSmCln,
 		'modal--md': modalMdCln,
 		'modal--lg': modalLgCln,
-		'modal--xl': modalXlCln,
 		'modal-dialog': dialogCln,
 		'modal-static': modalStaticCln,
 	} = module;
@@ -37,7 +36,6 @@ export function BaseModal({
 			[modalSmCln]: size === 'sm',
 			[modalMdCln]: size === 'md',
 			[modalLgCln]: size === 'lg',
-			[modalXlCln]: size === 'xl',
 		},
 		className,
 	);
@@ -52,7 +50,7 @@ export function BaseModal({
 				if (nodeRef.current) {
 					nodeRef.current.classList.remove(modalStaticCln);
 				}
-			}, 300);
+			}, 250);
 		}
 	};
 
@@ -60,7 +58,7 @@ export function BaseModal({
 
 	return (
 		<BasePortal wrapperId={selectorId}>
-			<CSSTransition in={isOpen} nodeRef={nodeRef} timeout={300} classNames='modal' unmountOnExit>
+			<CSSTransition in={isOpen} nodeRef={nodeRef} timeout={250} classNames='modal' unmountOnExit>
 				<div className={classNames} ref={nodeRef}>
 					<div className={dialogCln} ref={dialogRef}>
 						{children}

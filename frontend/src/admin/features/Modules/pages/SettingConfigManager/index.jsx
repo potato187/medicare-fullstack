@@ -82,7 +82,7 @@ export default function SettingConfigManager() {
 								<ContainerMain>
 									<div className='row'>
 										{Object.entries(fields).map(([name, { type, label }]) => (
-											<div className='col-4 mb-6' key={name}>
+											<div className='col-12 col-sm-6 col-lg-4 mb-6' key={name}>
 												{type !== 'file' ? (
 													<FloatingLabelInput name={`${key}.${name}`} labelIntl={label} />
 												) : (

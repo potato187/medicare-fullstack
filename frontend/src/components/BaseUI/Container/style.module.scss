@@ -12,6 +12,7 @@
 	border-radius: var(--spacing-xxs);
 	background-color: var(--container-bg);
 	box-shadow: var(--bs-box-shadow);
+	max-width: 100%;
 
 	&.transparent {
 		background-color: transparent;
@@ -33,4 +34,12 @@
 		color: var(--bs-gray-700);
 		font-size: var(--theme-text-sm);
 	}
+}
+
+.containerGrid {
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	gap: 0;
+	height: 100%;
+	overflow: hidden;
 }

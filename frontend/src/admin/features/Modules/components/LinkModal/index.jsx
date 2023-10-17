@@ -19,7 +19,7 @@ export function LinkModal({
 	isOpen = false,
 	linkId = null,
 	titleIntl = '',
-	onClose = (f) => f,
+	onClose = () => false,
 	onCreate = (f) => f,
 	onUpdate = (f) => f,
 }) {
@@ -65,13 +65,13 @@ export function LinkModal({
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='name.vi' labelIntl='common.title.vi' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='name.en' labelIntl='common.title.en' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='url' labelIntl='common.link' />
 							</div>
 							<div className='col-12'>

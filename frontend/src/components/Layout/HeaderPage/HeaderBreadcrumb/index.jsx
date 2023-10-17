@@ -32,7 +32,9 @@ export function HeaderBreadcrumb() {
 				{breadcrumb.map(({ url = '', intl = '' }) => (
 					<li key={url}>
 						<Link className='text-capitalize' to={`/${url}`}>
-							<FormattedMessage id={intl} />
+							<span className=' text-nowrap'>
+								<FormattedMessage id={intl} />
+							</span>
 						</Link>
 					</li>
 				))}

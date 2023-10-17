@@ -1,28 +1,18 @@
 import cn from 'classnames';
-import { useIntl } from 'react-intl';
 import { MdSearch } from 'react-icons/md';
+import { useIntl } from 'react-intl';
 import { debounce } from 'utils';
 import module from './style.module.scss';
 
-export function UnFieldDebounce({
-	className = '',
-	initialValue = '',
-	placeholderIntl,
-	onChange = () => null,
-	...props
-}) {
-	const { 'field-debounce': fieldCln, 'field-debounce__icon': iconCln } = module;
+export function UnFieldDebounce({ className, placeholderIntl, initialValue = '', onChange = (f) => f, ...props }) {
 	const intl = useIntl();
-
-	const handleChange = (event) => {
-		onChange(event.target.value);
-	};
+	const { 'field-debounce': fieldCln, 'field-debounce__icon': iconCln } = module;
 
 	return (
 		<div className={cn(fieldCln, className)}>
 			<input
 				defaultValue={initialValue}
-				onChange={debounce((event) => handleChange(event))}
+				onChange={debounce((event) => onChange(event.target.value))}
 				placeholder={intl.formatMessage({ id: placeholderIntl })}
 				{...props}
 			/>

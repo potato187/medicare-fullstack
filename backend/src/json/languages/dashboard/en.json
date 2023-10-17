@@ -173,6 +173,9 @@
 					"html_content_deletion_confirmation_modal": {
 						"title": "Confirm Html Content Deletion",
 						"description": "Are you sure you want to delete the html content with the <b>{title}</b>? This action cannot be undone."
+					},
+					"create_html_content": {
+						"title": "Confirm Html Content Deletion"
 					}
 				}
 			}

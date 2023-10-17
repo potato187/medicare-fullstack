@@ -52,7 +52,7 @@ export function DropdownTree({
 		<BaseDropdown>
 			<div className={styles}>
 				<DropdownHeader className='dropdown__header'>
-					<span className='no-wrap-ellipsis'>{option?.label?.[languageId] || ''}</span>
+					<span className='text-nowrap'>{option?.label?.[languageId] || ''}</span>
 					<RxCaretDown size='1.5em' />
 				</DropdownHeader>
 				{options.length > 0 && (

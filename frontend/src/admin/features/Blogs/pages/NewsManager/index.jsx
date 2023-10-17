@@ -3,6 +3,7 @@ import {
 	Button,
 	ConfirmModal,
 	Container,
+	ContainerGrid,
 	Dropdown,
 	FooterContainer,
 	FormattedDescription,
@@ -41,6 +42,7 @@ export default function NewsManager() {
 		data: News,
 		queryParams,
 		totalPages,
+		isLoading,
 		setData: updateNews,
 		handlePageChange,
 		handleSelect,
@@ -124,34 +126,36 @@ export default function NewsManager() {
 
 	return (
 		<>
-			<Container id='page-main'>
-				<div className='d-flex flex-column h-100 py-5'>
-					<div className='d-flex pb-4'>
-						<div className='d-flex items-end gap-2'>
-							<Dropdown
-								size='md'
-								name='page_type'
-								value={queryParams.page_type}
-								options={configs.pageTypes}
-								onSelect={handleSelect}
-							/>
-							<Dropdown
-								size='md'
-								name='page_position'
-								value={queryParams.page_position}
-								options={configs.positionTypes}
-								onSelect={handleSelect}
-							/>
+			<Container id='page-main' className='py-5'>
+				<ContainerGrid>
+					<div className='row pb-4 gx-2'>
+						<div className='col-10 col-sm-6'>
+							<div className='d-flex gap-2'>
+								<Dropdown
+									size='md'
+									name='page_type'
+									value={queryParams.page_type}
+									options={configs.pageTypes}
+									onSelect={handleSelect}
+								/>
+								<Dropdown
+									size='md'
+									name='page_position'
+									value={queryParams.page_position}
+									options={configs.positionTypes}
+									onSelect={handleSelect}
+								/>
+							</div>
 						</div>
-						<div className='px-5 d-flex gap-2 ms-auto'>
-							<Button size='sm' onClick={() => handleToggleModal(-1)}>
-								<span>
-									<FormattedMessage id='button.create' />
-								</span>
-								<MdAdd size='1.25em' className='ms-2' />
-							</Button>
+						<div className='col-2 col-sm-6'>
+							<div className='d-flex'>
+								<Button size='sm' square className='ms-auto' onClick={() => handleToggleModal(-1)}>
+									<MdAdd size='1.25em' />
+								</Button>
+							</div>
 						</div>
 					</div>
+
 					<TableGrid className='scrollbar'>
 						<Table hover striped auto>
 							<TableHeader>
@@ -183,7 +187,7 @@ export default function NewsManager() {
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>
-							<TableBody list={News}>
+							<TableBody isLoading={isLoading} list={News}>
 								{({ _id, name, positionType, index: newsIndex, isDisplay }, index) => (
 									<tr key={_id}>
 										<td className='text-center'>{index + 1}</td>
@@ -212,6 +216,7 @@ export default function NewsManager() {
 							</TableBody>
 						</Table>
 					</TableGrid>
+
 					<FooterContainer
 						pagesize={queryParams.pagesize || 25}
 						totalPages={totalPages}
@@ -219,7 +224,7 @@ export default function NewsManager() {
 						handlePageChange={handlePageChange}
 						handleSelect={handleSelect}
 					/>
-				</div>
+				</ContainerGrid>
 			</Container>
 
 			<NewsModal

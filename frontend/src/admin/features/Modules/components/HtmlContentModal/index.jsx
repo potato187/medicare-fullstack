@@ -23,7 +23,7 @@ export function HtmlContentModal({
 	htmlContentId = null,
 	pages = [],
 	typePositions = [],
-	onClose = (f) => f,
+	onClose = () => false,
 	onCreate = (f) => f,
 	onUpdate = (f) => f,
 }) {
@@ -71,25 +71,25 @@ export function HtmlContentModal({
 				<BaseModalBody className='scrollbar'>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='title.vi' labelIntl='common.title.vi' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='title.en' labelIntl='common.title.en' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='url' labelIntl='common.link' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='index' labelIntl='common.index' />
 							</div>
-							<div className='col-6 mb-6 z-index-2'>
+							<div className='col-12 col-md-6 mb-6 z-index-2'>
 								<FloatingLabelMultiSelect name='pageType' labelIntl='common.pages' options={pages} />
 							</div>
-							<div className='col-6 mb-6 z-index-2'>
+							<div className='col-12 col-md-6 mb-6 z-index-2'>
 								<FloatingLabelSelect name='positionType' labelIntl='common.position' options={typePositions} />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelFile name='image' labelIntl='common.image' />
 							</div>
 							<div className='col-12 mb-6'>

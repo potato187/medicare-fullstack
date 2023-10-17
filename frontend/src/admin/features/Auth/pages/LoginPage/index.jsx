@@ -2,8 +2,7 @@ import { PATH_IMAGES } from 'constant';
 import { authLogin } from 'reduxStores/slices/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Navigate } from 'react-router-dom';
-import { Layout } from '../.components';
-import { LoginForm } from '../.components/LoginForm';
+import { Layout, LoginForm } from '../../components';
 
 const REDIRECT_TO_DASHBOARD = '../dashboard';
 

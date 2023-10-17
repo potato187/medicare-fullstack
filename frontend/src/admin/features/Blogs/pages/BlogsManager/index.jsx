@@ -3,6 +3,7 @@ import {
 	Button,
 	ConfirmModal,
 	Container,
+	ContainerGrid,
 	DropdownTree,
 	FooterContainer,
 	FormattedDescription,
@@ -130,34 +131,35 @@ export default function BlogsManager() {
 
 	return (
 		<>
-			<Container id='page-main'>
-				<div className='d-flex flex-column h-100 py-5'>
-					<div className='d-flex pb-4'>
-						<div className='d-flex items-end gap-2'>
-							<DropdownTree
-								size='md'
-								languageId={languageId}
-								nameGroup='post-categories'
-								value={queryParams?.categoryId}
-								options={blogCategoryOptions}
-								onChange={handleSelectCategory}
-							/>
-							<UnFieldDebounce
-								delay={500}
-								type='text'
-								placeholderIntl='form.search_placeholder'
-								ariallabel='search field'
-								id='form-search'
-								onChange={handleChangeSearch}
-							/>
+			<Container id='page-main' className='py-4'>
+				<ContainerGrid>
+					<div className='row pb-4 gx-2'>
+						<div className='col-10 col-sm-6'>
+							<div className='d-flex items-end gap-2'>
+								<UnFieldDebounce
+									delay={500}
+									type='text'
+									placeholderIntl='form.search_placeholder'
+									ariallabel='search field'
+									id='form-search'
+									onChange={handleChangeSearch}
+								/>
+								<DropdownTree
+									size='md'
+									languageId={languageId}
+									nameGroup='post-categories'
+									value={queryParams?.categoryId}
+									options={blogCategoryOptions}
+									onChange={handleSelectCategory}
+								/>
+							</div>
 						</div>
-						<div className='px-5 d-flex gap-2 ms-auto'>
-							<Button size='sm' onClick={() => handleToggleModal(-1)}>
-								<span>
-									<FormattedMessage id='dashboard.blogs.modal.button_create_blog' />
-								</span>
-								<MdAdd size='1.25em' className='ms-2' />
-							</Button>
+						<div className='col-2 col-sm-6'>
+							<div className='d-flex justify-content-end'>
+								<Button size='sm' square onClick={() => handleToggleModal(-1)}>
+									<MdAdd size='1.25em' />
+								</Button>
+							</div>
 						</div>
 					</div>
 					<TableGrid className='scrollbar'>
@@ -226,7 +228,7 @@ export default function BlogsManager() {
 						handlePageChange={handlePageChange}
 						handleSelect={handleSelect}
 					/>
-				</div>
+				</ContainerGrid>
 			</Container>
 			<ConfirmModal
 				idTitleIntl='dashboard.blogs.modal.blog_deletion_confirmation_modal.title'

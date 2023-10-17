@@ -3,6 +3,7 @@ import {
 	Button,
 	ConfirmModal,
 	Container,
+	ContainerGrid,
 	FooterContainer,
 	FormattedDescription,
 	SortableTableHeader,
@@ -12,12 +13,12 @@ import {
 	TableHeader,
 	UnFieldDebounce,
 } from 'components';
-import { useAsyncLocation, useIndex, useToggle, useAuth } from 'hooks';
-import { compose, mapData, showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
+import { useAsyncLocation, useAuth, useIndex, useToggle } from 'hooks';
 import produce from 'immer';
 import { useEffect, useMemo, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
+import { compose, mapData, showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { AdminModal } from '../../components';
 
 export default function AdminManager() {
@@ -126,10 +127,10 @@ export default function AdminManager() {
 
 	return (
 		<>
-			<Container id='page-main'>
-				<div className='d-flex flex-column h-100 py-5'>
-					<div className='d-flex pb-4'>
-						<div className='d-flex'>
+			<Container id='page-main' className='py-5'>
+				<ContainerGrid>
+					<div className='row px-2 pb-4'>
+						<div className='col-8 col-sm-3'>
 							<UnFieldDebounce
 								delay={500}
 								onChange={handleChangeSearch}
@@ -140,13 +141,12 @@ export default function AdminManager() {
 								id='search-field'
 							/>
 						</div>
-						<div className='px-5 d-flex gap-2 ms-auto'>
-							<Button size='sm' onClick={openAdminModal}>
-								<span>
-									<FormattedMessage id='button.create_user' />
-								</span>
-								<MdAdd size='1.25em' className='ms-2' />
-							</Button>
+						<div className='col-4 col-sm-9'>
+							<div className='d-flex justify-content-end'>
+								<Button square size='sm' onClick={openAdminModal}>
+									<MdAdd size='1.25em' />
+								</Button>
+							</div>
 						</div>
 					</div>
 					<TableGrid className='scrollbar'>
@@ -194,7 +194,7 @@ export default function AdminManager() {
 						handleSelect={handleSelect}
 						handlePageChange={handlePageChange}
 					/>
-				</div>
+				</ContainerGrid>
 			</Container>
 
 			<AdminModal

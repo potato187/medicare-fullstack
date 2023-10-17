@@ -18,7 +18,7 @@ import { defaultValues, schema } from './schema';
 export function BlogCategoryModal({
 	isOpen = false,
 	blogCategory,
-	toggle = (f) => f,
+	toggle = () => false,
 	onCreate = (f) => f,
 	onUpdate = (f) => f,
 }) {
@@ -62,18 +62,18 @@ export function BlogCategoryModal({
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='name.vi' labelIntl='dashboard.blogs.modal.titleEn' />
 							</div>
-							<div className='col-6 mb-6'>
+							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='name.en' labelIntl='dashboard.blogs.modal.titleVi' />
 							</div>
 							{blogCategory && isOpen ? (
 								<>
-									<div className='col-6 mb-6'>
+									<div className='col-12 col-md-6 mb-6'>
 										<FloatingLabelInput name='url.vi' labelIntl='dashboard.blogs.modal.url' disabled />
 									</div>
-									<div className='col-6 mb-6'>
+									<div className='col-12 col-md-6 mb-6'>
 										<FloatingLabelInput name='url.en' labelIntl='dashboard.blogs.modal.url' disabled />
 									</div>
 								</>

@@ -15,13 +15,13 @@ export function ChangePassForm({ onSubmit = (f) => f }) {
 		<FormProvider {...methods}>
 			<form onSubmit={methods.handleSubmit(onSubmit)}>
 				<div className='row'>
-					<div className='col-4 mb-6'>
+					<div className='col-12 col-sm-6 col-lg-4 mb-6'>
 						<FloatingLabelPassword name='password' labelIntl='form.password' />
 					</div>
-					<div className='col-4 mb-6'>
+					<div className='col-12 col-sm-6 col-lg-4 mb-6'>
 						<FloatingLabelPassword name='confirm_password' labelIntl='form.confirm_password' />
 					</div>
-					<div className='col-4 mb-6'>
+					<div className='col-12 col-sm-6 col-lg-4 mb-6'>
 						<FloatingLabelPassword name='newPassword' labelIntl='form.new_password' />
 					</div>
 					<div className='col-12 text-start pt-1'>

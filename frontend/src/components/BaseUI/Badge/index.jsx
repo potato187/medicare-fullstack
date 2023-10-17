@@ -11,7 +11,7 @@ export function Badge({ type = 'span', children, color, ...props }) {
 	};
 
 	const { badge } = module;
-	const className = cn(badge, 'no-wrap-ellipsis');
+	const className = cn(badge, 'text-nowrap');
 	const style = { backgroundColor: `var(--bs-${colors[color] || 'primary'})` };
 	return React.createElement(type, { className, style, ...props }, children);
 }

@@ -1,2 +1,8 @@
 @import './vendors/bootstrap';
 @import 'bootstrap/scss/bootstrap';
+
+@media (min-width: 36em) {
+	.flex-grow-sm-unset {
+		flex-grow: unset !important;
+	}
+}

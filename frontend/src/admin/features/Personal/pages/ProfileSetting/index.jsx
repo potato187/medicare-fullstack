@@ -1,5 +1,5 @@
 import { adminApi, resourceApi } from 'api';
-import { Container, ContainerMain, TabNav, TabNavItem, TabPanel, Tabs } from 'components';
+import { Container, ContainerMain, TabNav, TabNavItem, TabPanel, Tabs, WrapScrollBar } from 'components';
 import { changePassword, updateProfile } from 'reduxStores/slices/auth';
 import { showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { useAuth } from 'hooks';
@@ -42,26 +42,28 @@ export default function ProfileSetting() {
 
 	return (
 		<Container id='page-main'>
-			<Tabs tabIndexActive={0}>
-				<TabNav variant='bordered'>
-					<TabNavItem labelIntl='form.profile' index={0} />
-				</TabNav>
-				<TabPanel tabPanelIndex={0}>
-					<ContainerMain>
-						<ProfileForm profileId={id} genders={Genders} onSubmit={handleUpdate} />
-					</ContainerMain>
-				</TabPanel>
-			</Tabs>
-			<Tabs tabIndexActive={0}>
-				<TabNav variant='bordered'>
-					<TabNavItem labelIntl='form.change_password' index={0} />
-				</TabNav>
-				<TabPanel tabPanelIndex={0}>
-					<ContainerMain className='border-0'>
-						<ChangePassForm onSubmit={handleChangePassword} />
-					</ContainerMain>
-				</TabPanel>
-			</Tabs>
+			<WrapScrollBar>
+				<Tabs tabIndexActive={0}>
+					<TabNav variant='bordered'>
+						<TabNavItem labelIntl='form.profile' index={0} />
+					</TabNav>
+					<TabPanel tabPanelIndex={0}>
+						<ContainerMain>
+							<ProfileForm profileId={id} genders={Genders} onSubmit={handleUpdate} />
+						</ContainerMain>
+					</TabPanel>
+				</Tabs>
+				<Tabs tabIndexActive={0}>
+					<TabNav variant='bordered'>
+						<TabNavItem labelIntl='form.change_password' index={0} />
+					</TabNav>
+					<TabPanel tabPanelIndex={0}>
+						<ContainerMain className='border-0'>
+							<ChangePassForm onSubmit={handleChangePassword} />
+						</ContainerMain>
+					</TabPanel>
+				</Tabs>
+			</WrapScrollBar>
 		</Container>
 	);
 }

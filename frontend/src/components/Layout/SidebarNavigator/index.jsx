@@ -98,7 +98,7 @@ export function SidebarNavigator({ routesConfig = [] }) {
 	}, [location]);
 
 	return (
-		<nav className={sidebarCln}>
+		<nav className={cn(sidebarCln, 'scrollbar')}>
 			<NavLink to='/' className={sidebarHeaderCln}>
 				<img src={PATH_IMAGES.LOGO} width='100' alt='' />
 			</NavLink>
