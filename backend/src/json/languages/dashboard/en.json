@@ -23,19 +23,39 @@
 		"image": "Image",
 		"link": "Link",
 		"pages": "Pages",
-		"index": "index",
+		"index": "Index",
 		"categories": "Categories",
 		"profile": "Profile",
-		"appointmentDate": "Appointment date",
+		"appointmentDate": "Appointment Date",
 		"dateOfBirth": "Birthday",
-		"title": { "default": "Title", "en": "Title (English)", "vi": "Title (Vietnamese)" },
-		"slug": { "default": "Slug", "vi": "Slug (English)", "en": "Slug (Vietnamese)" },
-		"content": { "default": "Content", "vi": "Content  (Vietnamese)", "en": "Content (English)" },
-		"summary": { "default": "Summary", "vi": "Summary  (Vietnamese)", "en": "Summary (English)" },
-		"description": { "default": "Description", "en": "Description (English)", "vi": "Description (Vietnamese)" },
-		"logo_footer": "Logo Footer",
-		"logo_header": "Logo Header",
-		"og_image": "Og Image",
+		"title": {
+			"default": "Title",
+			"en": "Title (English)",
+			"vi": "Title (Vietnamese)"
+		},
+		"slug": {
+			"default": "Slug",
+			"vi": "Slug (Vietnamese)",
+			"en": "Slug (English)"
+		},
+		"content": {
+			"default": "Content",
+			"vi": "Content (Vietnamese)",
+			"en": "Content (English)"
+		},
+		"summary": {
+			"default": "Summary",
+			"vi": "Summary (Vietnamese)",
+			"en": "Summary (English)"
+		},
+		"description": {
+			"default": "Description",
+			"en": "Description (English)",
+			"vi": "Description (Vietnamese)"
+		},
+		"logo_footer": "Footer Logo",
+		"logo_header": "Header Logo",
+		"og_image": "OG Image",
 		"favicon": "Favicon",
 		"facebook": "Facebook",
 		"messenger": "Messenger",
@@ -47,7 +67,7 @@
 		"login": "Login",
 		"maintenance": {
 			"title": "SITE IS UNDER MAINTENANCE",
-			"message": "Please check back in sometime"
+			"message": "Please check back sometime"
 		}
 	},
 	"table": {
@@ -56,7 +76,7 @@
 		"status": "Status",
 		"show": "Show",
 		"entries": "Entries",
-		"index": "index"
+		"index": "Index"
 	},
 	"button": {
 		"update": "Update",
@@ -114,7 +134,7 @@
 			"empty_options": "No choices to choose from"
 		}
 	},
-	"blog": { "thumbnail": "Add blog's Thumbnail" },
+	"blog": { "thumbnail": "Add Blog Thumbnail" },
 	"patient": { "fullName": "Patient Full Name" },
 	"doctor": { "fullName": "Doctor Full Name" },
 	"dashboard": {
@@ -123,7 +143,7 @@
 		"modules": {
 			"title": "Modules",
 			"setting": {
-				"title": "Setting Website Manager"
+				"title": "Website Manager Settings"
 			},
 			"header": {
 				"title": "Header Manager",
@@ -133,7 +153,7 @@
 						"description": "Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."
 					},
 					"create_modal": {
-						"title": "Create new Link"
+						"title": "Create New Link"
 					},
 					"update_modal": {
 						"title": "Edit Link"
@@ -154,7 +174,7 @@
 						"description": "Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."
 					},
 					"create_modal": {
-						"title": "Create new Link"
+						"title": "Create New Link"
 					},
 					"update_modal": {
 						"title": "Edit Link"
@@ -168,14 +188,14 @@
 				}
 			},
 			"html_content": {
-				"title": "Html Content Manager",
+				"title": "HTML Content Manager",
 				"modal": {
 					"html_content_deletion_confirmation_modal": {
-						"title": "Confirm Html Content Deletion",
-						"description": "Are you sure you want to delete the html content with the <b>{title}</b>? This action cannot be undone."
+						"title": "Confirm HTML Content Deletion",
+						"description": "Are you sure you want to delete the HTML content with the <b>{title}</b>? This action cannot be undone."
 					},
 					"create_html_content": {
-						"title": "Confirm Html Content Deletion"
+						"title": "Create HTML Content"
 					}
 				}
 			}
@@ -243,19 +263,19 @@
 					}
 				}
 			},
-			"create": { "title": "Create blog" },
+			"create": { "title": "Create Blog" },
 			"modal": {
 				"titleEn": "Title (English)",
 				"titleVi": "Title (Vietnamese)",
 				"slug": "Category Slug",
 				"url": "Page URL",
 				"display": "Display",
-				"button_create_blog": "Create New blog",
+				"button_create_blog": "Create New Blog",
 				"button_sort": "Sort Categories",
 				"button_add": "Add New Category",
 				"add_category_modal": { "title": "Add Category" },
 				"category_update_modal": { "title": "Update Category" },
-				"category_create_modal": { "title": "Update Category" },
+				"category_create_modal": { "title": "Create Category" },
 				"category_deletion_confirmation_modal": {
 					"title": "Confirm Category Deletion",
 					"description": "Are you sure you want to delete the category and its children with the title <b>{title}</b>? This action cannot be undone."
@@ -264,17 +284,17 @@
 					"title": "Confirm Category Sorting",
 					"description": "Are you sure you want to sort all categories and their children? This action cannot be undone."
 				},
-				"blog_editor_modal": { "title": "blog Editor" },
+				"blog_editor_modal": { "title": "Blog Editor" },
 				"blog_deletion_confirmation_modal": {
-					"title": "Confirm blog Deletion",
-					"description": "Are you sure you want to delete the blog with the title <b> {title} </b>? This action cannot be undone."
+					"title": "Confirm Blog Deletion",
+					"description": "Are you sure you want to delete the blog with the title <b>{title}</b>? This action cannot be undone."
 				}
 			}
 		},
 		"personal": {
 			"title": "Personal",
 			"profile_setting": {
-				"title": "Profile Setting"
+				"title": "Profile Settings"
 			}
 		}
 	}

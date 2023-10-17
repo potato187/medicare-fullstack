@@ -8,7 +8,7 @@
 	--breadcrumb-border-color: transparent;
 }
 
-body[data-sidebar='active'] .header {
+body[data-sidebar='open'] .header {
 	&::before {
 		width: 100%;
 		opacity: 1;

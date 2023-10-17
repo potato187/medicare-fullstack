@@ -4,13 +4,13 @@ import module from './style.module.scss';
 
 export function ButtonToggleSidebar() {
 	const buttonRef = useRef(null);
-	const [active, setActive] = useState('active');
+	const [active, setActive] = useState('open');
 
 	const { 'btn-toggle': btnToggleCln, 'btn-toggle__wrapper': btnToggleWrapperCln } = module;
 
 	const handleToggleSidebar = () => {
-		const state = active === 'active' ? 'inactive' : 'active';
-		buttonRef.current.classList.toggle('active', state === 'inactive');
+		const state = active === 'open' ? 'close' : 'open';
+		buttonRef.current.classList.toggle('active', state === 'close');
 		document.body.dataset.sidebar = state;
 		setActive(state);
 	};

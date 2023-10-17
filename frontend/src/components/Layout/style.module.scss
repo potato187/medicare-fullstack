@@ -45,7 +45,7 @@
 		grid-template-columns: var(--sidebar-width) 1fr;
 	}
 
-	body[data-sidebar='inactive'] {
+	body[data-sidebar='close'] {
 		--sidebar-width: 0;
 	}
 }

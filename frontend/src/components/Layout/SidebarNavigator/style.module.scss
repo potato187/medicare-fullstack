@@ -10,7 +10,7 @@
 	--sidebar-item-color-active: var(--bs-white);
 }
 
-body[data-sidebar='active'] .sidebar {
+body[data-sidebar='open'] .sidebar {
 	transform: translateX(0);
 }
 
@@ -128,7 +128,7 @@ body[data-sidebar='active'] .sidebar {
 }
 
 @media (min-width: 64em) {
-	body[data-sidebar='inactive'] .sidebar {
+	body[data-sidebar='close'] .sidebar {
 		transform: translateX(-250px);
 	}
 

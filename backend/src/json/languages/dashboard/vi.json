@@ -1,1 +1,301 @@
-{"common":{"all":"All","add":"Add","home":"Home","doctor":"Doctor","specialty":"Specialty","position":"Position","booking":"Booking","status":"Status","role":"Role","gender":"Gender","information":"Information","note":"Note","blog":"Blog","order":"Order","display":"Display","quantity":"Quantity","created_at":"Created At","updated_at":"Updated At","public_date":"Public Date","thumbnail":"Thumbnail","image":"Image","link":"Link","pages":"Pages","index":"index","categories":"Categories","profile":"Profile","appointmentDate":"Appointment date","dateOfBirth":"Birthday","logo_footer":"Logo Footer","logo_header":"Logo Header","og_image":"Og Image","favicon":"Favicon","facebook":"Facebook","messenger":"Messenger","youtube":"Youtube","google":"Google","instagram":"Instagram","no_results_found":"No results found","logout":"Logout","login":"Login","title":{"default":"Title","en":"Title (English)","vi":"Title (Vietnamese)"},"slug":{"default":"Slug","vi":"Slug (English)","en":"Slug (Vietnamese)"},"content":{"default":"Content","vi":"Content  (Vietnamese)","en":"Content (English)"},"summary":{"default":"Summary","vi":"Summary  (Vietnamese)","en":"Summary (English)"},"description":{"default":"Description","en":"Description (English)","vi":"Description (Vietnamese)"},"maintenance":{"title":"SITE IS UNDER MAINTENANCE","message":"Please check back in sometime"}},"table":{"no":"No.","actions":"Actions","status":"Status","show":"Show","entries":"Entries","index":"index"},"button":{"update":"Update","create":"Create","register":"Register","close":"Close","delete":"Delete","view":"View","cancel":"Cancel","confirm":"Confirm","export":"Export","import":"Import","add":"Add","login":"Login Now","create_user":"Create User","export_users":"Export Users","import_users":"Import Users","create_doctor":"Create Doctor","export_doctors":"Export Doctors","import_doctors":"Import Doctors"},"form":{"fullName":"Full Name","firstName":"First Name","lastName":"Last Name","gender":"Gender","phone":"Phone Number","address":"Address","files":"Upload Files","image":"Avatar","profile":"Profile","change_password":"Change Password","search_placeholder":"Enter your search...","username":"Username","email":"Email","email_placeholder":"Enter your email","password":"Password","password_placeholder":"Enter your password","confirm_password":"Confirm Password","new_password":"New Password","display":"Display","choose_file_text":"Choose file","message":{"error":{"required":"<span>{label}</span> is required","matched":"Your passwords do not match.","email_format":"Your email is in an invalid format","phone_format":"Your phone number is in an invalid format","password":"Your password is weak","media_extension":"Invalid file media extension","select_required":"<span>{label}</span> should have at least 1 option selected."}},"multi_select":{"empty_options":"No choices to choose from"}},"blog":{"thumbnail":"Add blog's Thumbnail"},"patient":{"fullName":"Patient Full Name"},"doctor":{"fullName":"Doctor Full Name"},"dashboard":{"title":"Dashboard","languages":{"title":"Languages","en":{"title":"English"},"vi":{"title":"Vietnamese"}},"modules":{"title":"Modules","setting":{"title":"Setting Website Manager"},"header":{"title":"Header Manager","modal":{"deletion_modal":{"title":"Confirm Link Deletion","description":"Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."},"create_modal":{"title":"Create new Link"},"update_modal":{"title":"Edit Link"},"sort_modal":{"title":"Confirm Sorting","description":"Are you sure you want to sort all links and their children? This action cannot be undone."},"button_sort":"Sort Links","button_add":"Add New Link"}},"footer":{"title":"Footer Manager","modal":{"deletion_modal":{"title":"Confirm Link Deletion","description":"Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."},"create_modal":{"title":"Create new Link"},"update_modal":{"title":"Edit Link"},"sort_modal":{"title":"Confirm Sorting","description":"Are you sure you want to sort all links and their children? This action cannot be undone."},"button_sort":"Sort Links","button_add":"Add New Link"}},"html_content":{"title":"Html Content Manager","modal":{"html_content_deletion_confirmation_modal":{"title":"Confirm Html Content Deletion","description":"Are you sure you want to delete the html content with the <b>{title}</b>? This action cannot be undone."}}}},"admin":{"title":"Admin Manager","manage":{"title":"Manage Admins"},"modal":{"create_admin":{"title":"Create Admin"},"view_admin":{"title":"View Admin's Profile"},"update_admin":{"title":"Update Admin's Profile"},"confirm_deletion_admin":{"title":"Confirm Deletion","description":"Are you sure you want to delete the admin with email <b>{email}</b>? This action cannot be undone."}}},"booking":{"title":"Booking Service","manage":{"title":"Manage Bookings"},"modal":{"update_booking":{"title":"Update Booking"},"confirm_deletion_booking":{"title":"Confirm Deletion of the Booking","message":"Are you sure you want to delete the booking with phone <b>{phone}</b>? This action cannot be undone."}}},"specialty":{"title":"Specialty Manager","manage":{"title":"Manage Specialties"},"modal":{"export_modal":{"title":"Export Doctors","export_all":"Export All Doctors","export_selected":"Export Selected Doctors","export_per_page":"Export Doctors per Page","warning_message":{"export_selected":"Please select the doctors you want to export."}},"import_modal":{"title":"Import Modal"},"update_doctor":{"title":"Update Doctor"},"create_doctor":{"title":"Create Doctor"},"confirm_deletion":{"title":"Confirm Deletion","description":"Are you sure you want to delete the doctor with email <b>{email}</b>? This action cannot be undone."}}},"blogs":{"title":"Blogs Manager","manage":{"title":"Blog Manager"},"categories":{"title":"Category Manager"},"news":{"title":"News","modals":{"create":{"title":"Create News"},"update":{"title":"Update News"},"delete":{"title":"Confirm Deletion","description":"Are you sure you want to delete the news with <b>{title}</b>? This action cannot be undone."}}},"create":{"title":"Create blog"},"modal":{"titleEn":"Title (English)","titleVi":"Title (Vietnamese)","slug":"Category Slug","url":"Page URL","display":"Display","button_create_blog":"Create New blog","button_sort":"Sort Categories","button_add":"Add New Category","add_category_modal":{"title":"Add Category"},"category_update_modal":{"title":"Update Category"},"category_create_modal":{"title":"Update Category"},"category_deletion_confirmation_modal":{"title":"Confirm Category Deletion","description":"Are you sure you want to delete the category and its children with the title <b>{title}</b>? This action cannot be undone."},"sort_categories_confirmation_modal":{"title":"Confirm Category Sorting","description":"Are you sure you want to sort all categories and their children? This action cannot be undone."},"blog_editor_modal":{"title":"blog Editor"},"blog_deletion_confirmation_modal":{"title":"Confirm blog Deletion","description":"Are you sure you want to delete the blog with the title <b> {title} </b>? This action cannot be undone."}}},"personal":{"title":"Personal","profile_setting":{"title":"Profile Setting"}}}}
+{
+	"common": {
+		"all": "Tất cả",
+		"add": "Thêm",
+		"home": "Trang chủ",
+		"doctor": "Bác sĩ",
+		"specialty": "Chuyên môn",
+		"position": "Vị trí",
+		"booking": "Đặt lịch",
+		"status": "Trạng thái",
+		"role": "Vai trò",
+		"gender": "Giới tính",
+		"information": "Thông tin",
+		"note": "Ghi chú",
+		"blog": "Bài viết",
+		"order": "Đặt hàng",
+		"display": "Hiển thị",
+		"quantity": "Số lượng",
+		"created_at": "Ngày tạo",
+		"updated_at": "Ngày cập nhật",
+		"public_date": "Ngày công bố",
+		"thumbnail": "Ảnh đại diện",
+		"image": "Hình ảnh",
+		"link": "Liên kết",
+		"pages": "Trang",
+		"index": "Chỉ số",
+		"categories": "Danh mục",
+		"profile": "Hồ sơ",
+		"appointmentDate": "Ngày hẹn",
+		"dateOfBirth": "Ngày sinh",
+		"title": {
+			"default": "Tiêu đề",
+			"en": "Tiêu đề (Tiếng Anh)",
+			"vi": "Tiêu đề (Tiếng Việt)"
+		},
+		"slug": {
+			"default": "Đường dẫn",
+			"vi": "Đường dẫn (Tiếng Việt)",
+			"en": "Đường dẫn (Tiếng Anh)"
+		},
+		"content": {
+			"default": "Nội dung",
+			"vi": "Nội dung (Tiếng Việt)",
+			"en": "Nội dung (Tiếng Anh)"
+		},
+		"summary": {
+			"default": "Tóm tắt",
+			"vi": "Tóm tắt (Tiếng Việt)",
+			"en": "Tóm tắt (Tiếng Anh)"
+		},
+		"description": {
+			"default": "Mô tả",
+			"en": "Mô tả (Tiếng Anh)",
+			"vi": "Mô tả (Tiếng Việt)"
+		},
+		"logo_footer": "Logo chân trang",
+		"logo_header": "Logo tiêu đề",
+		"og_image": "Ảnh OG",
+		"favicon": "Biểu tượng trang",
+		"facebook": "Facebook",
+		"messenger": "Messenger",
+		"youtube": "Youtube",
+		"google": "Google",
+		"instagram": "Instagram",
+		"no_results_found": "Không tìm thấy kết quả",
+		"logout": "Đăng xuất",
+		"login": "Đăng nhập",
+		"maintenance": {
+			"title": "TRANG WEB ĐANG BẢO TRÌ",
+			"message": "Vui lòng quay lại sau một thời gian"
+		}
+	},
+	"table": {
+		"no": "STT",
+		"actions": "Hành động",
+		"status": "Trạng thái",
+		"show": "Hiển thị",
+		"entries": "Mục",
+		"index": "Chỉ số"
+	},
+	"button": {
+		"update": "Cập nhật",
+		"create": "Tạo mới",
+		"register": "Đăng ký",
+		"close": "Đóng",
+		"delete": "Xóa",
+		"view": "Xem",
+		"cancel": "Hủy",
+		"confirm": "Xác nhận",
+		"export": "Xuất",
+		"import": "Nhập",
+		"add": "Thêm",
+		"login": "Đăng nhập ngay",
+		"create_user": "Tạo người dùng",
+		"export_users": "Xuất người dùng",
+		"import_users": "Nhập người dùng",
+		"create_doctor": "Tạo bác sĩ",
+		"export_doctors": "Xuất bác sĩ",
+		"import_doctors": "Nhập bác sĩ"
+	},
+	"form": {
+		"fullName": "Họ và tên",
+		"firstName": "Họ",
+		"lastName": "Tên",
+		"gender": "Giới tính",
+		"phone": "Số điện thoại",
+		"address": "Địa chỉ",
+		"files": "Tải tệp lên",
+		"image": "Ảnh đại diện",
+		"profile": "Hồ sơ",
+		"change_password": "Thay đổi mật khẩu",
+		"search_placeholder": "Nhập từ khóa tìm kiếm...",
+		"username": "Tên người dùng",
+		"email": "Email",
+		"email_placeholder": "Nhập địa chỉ email",
+		"password": "Mật khẩu",
+		"password_placeholder": "Nhập mật khẩu",
+		"confirm_password": "Xác nhận mật khẩu",
+		"new_password": "Mật khẩu mới",
+		"display": "Hiển thị",
+		"choose_file_text": "Chọn tệp",
+		"message": {
+			"error": {
+				"required": "<span>{label}</span> là bắt buộc",
+				"matched": "Mật khẩu không trùng khớp.",
+				"email_format": "Địa chỉ email không hợp lệ",
+				"phone_format": "Số điện thoại không hợp lệ",
+				"password": "Mật khẩu yếu",
+				"media_extension": "Phần mở rộng tệp không hợp lệ",
+				"select_required": "<span>{label}</span> phải có ít nhất 1 lựa chọn."
+			}
+		},
+		"multi_select": {
+			"empty_options": "Không có lựa chọn nào để chọn"
+		}
+	},
+	"blog": { "thumbnail": "Thêm hình đại diện cho Blog" },
+	"patient": { "fullName": "Họ tên bệnh nhân" },
+	"doctor": { "fullName": "Họ tên bác sĩ" },
+	"dashboard": {
+		"title": "Bảng điều khiển",
+		"languages": { "title": "Ngôn ngữ", "en": { "title": "Tiếng Anh" }, "vi": { "title": "Tiếng Việt" } },
+		"modules": {
+			"title": "Các mô-đun",
+			"setting": {
+				"title": "Cài đặt quản lý trang web"
+			},
+			"header": {
+				"title": "Quản lý phần tiêu đề",
+				"modal": {
+					"deletion_modal": {
+						"title": "Xác nhận xóa liên kết",
+						"description": "Bạn có chắc muốn xóa liên kết với <b>{title}</b>? Hành động này không thể hoàn tác."
+					},
+					"create_modal": {
+						"title": "Tạo liên kết mới"
+					},
+					"update_modal": {
+						"title": "Chỉnh sửa liên kết"
+					},
+					"sort_modal": {
+						"title": "Xác nhận sắp xếp",
+						"description": "Bạn có chắc muốn sắp xếp tất cả các liên kết và con của chúng không? Hành động này không thể hoàn tác."
+					},
+					"button_sort": "Sắp xếp liên kết",
+					"button_add": "Thêm liên kết mới"
+				}
+			},
+			"footer": {
+				"title": "Quản lý phần chân trang",
+				"modal": {
+					"deletion_modal": {
+						"title": "Xác nhận xóa liên kết",
+						"description": "Bạn có chắc muốn xóa liên kết với <b>{title}</b>? Hành động này không thể hoàn tác."
+					},
+					"create_modal": {
+						"title": "Tạo liên kết mới"
+					},
+					"update_modal": {
+						"title": "Chỉnh sửa liên kết"
+					},
+					"sort_modal": {
+						"title": "Xác nhận sắp xếp",
+						"description": "Bạn có chắc muốn sắp xếp tất cả các liên kết và con của chúng không? Hành động này không thể hoàn tác."
+					},
+					"button_sort": "Sắp xếp liên kết",
+					"button_add": "Thêm liên kết mới"
+				}
+			},
+			"html_content": {
+				"title": "Quản lý nội dung HTML",
+				"modal": {
+					"html_content_deletion_confirmation_modal": {
+						"title": "Xác nhận xóa nội dung HTML",
+						"description": "Bạn có chắc muốn xóa nội dung HTML với <b>{title}</b>? Hành động này không thể hoàn tác."
+					},
+					"create_html_content": {
+						"title": "Tạo nội dung HTML"
+					}
+				}
+			}
+		},
+		"admin": {
+			"title": "Quản lý quản trị viên",
+			"manage": { "title": "Quản lý quản trị viên" },
+			"modal": {
+				"create_admin": { "title": "Tạo quản trị viên" },
+				"view_admin": { "title": "Xem hồ sơ quản trị viên" },
+				"update_admin": { "title": "Chỉnh sửa hồ sơ quản trị viên" },
+				"confirm_deletion_admin": {
+					"title": "Xác nhận xóa",
+					"description": "Bạn có chắc muốn xóa quản trị viên với email <b>{email}</b>? Hành động này không thể hoàn tác."
+				}
+			}
+		},
+		"booking": {
+			"title": "Dịch vụ đặt lịch",
+			"manage": { "title": "Quản lý đặt lịch" },
+			"modal": {
+				"update_booking": { "title": "Cập nhật đặt lịch" },
+				"confirm_deletion_booking": {
+					"title": "Xác nhận xóa đặt lịch",
+					"message": "Bạn có chắc muốn xóa đặt lịch với số điện thoại <b>{phone}</b>? Hành động này không thể hoàn tác."
+				}
+			}
+		},
+		"specialty": {
+			"title": "Quản lý chuyên môn",
+			"manage": { "title": "Quản lý chuyên môn" },
+			"modal": {
+				"export_modal": {
+					"title": "Xuất danh sách bác sĩ",
+					"export_all": "Xuất tất cả bác sĩ",
+					"export_selected": "Xuất bác sĩ đã chọn",
+					"export_per_page": "Xuất bác sĩ mỗi trang",
+					"warning_message": { "export_selected": "Vui lòng chọn các bác sĩ bạn muốn xuất." }
+				},
+				"import_modal": { "title": "Nhập danh sách bác sĩ" },
+				"update_doctor": { "title": "Chỉnh sửa thông tin bác sĩ" },
+				"create_doctor": { "title": "Tạo bác sĩ" },
+				"confirm_deletion": {
+					"title": "Xác nhận xóa",
+					"description": "Bạn có chắc muốn xóa bác sĩ với email <b>{email}</b>? Hành động này không thể hoàn tác."
+				}
+			}
+		},
+		"blogs": {
+			"title": "Quản lý bài viết",
+			"manage": { "title": "Quản lý bài viết" },
+			"categories": { "title": "Quản lý danh mục" },
+			"news": {
+				"title": "Tin tức",
+				"modals": {
+					"create": {
+						"title": "Tạo tin tức"
+					},
+					"update": {
+						"title": "Cập nhật tin tức"
+					},
+					"delete": {
+						"title": "Xác nhận xóa",
+						"description": "Bạn có chắc muốn xóa tin tức với <b>{title}</b>? Hành động này không thể hoàn tác."
+					}
+				}
+			},
+			"create": { "title": "Tạo bài viết" },
+			"modal": {
+				"titleEn": "Tiêu đề (Tiếng Anh)",
+				"titleVi": "Tiêu đề (Tiếng Việt)",
+				"slug": "Đường dẫn danh mục",
+				"url": "URL trang",
+				"display": "Hiển thị",
+				"button_create_blog": "Tạo bài viết mới",
+				"button_sort": "Sắp xếp danh mục",
+				"button_add": "Thêm danh mục mới",
+				"add_category_modal": { "title": "Thêm danh mục" },
+				"category_update_modal": { "title": "Cập nhật danh mục" },
+				"category_create_modal": { "title": "Tạo danh mục" },
+				"category_deletion_confirmation_modal": {
+					"title": "Xác nhận xóa danh mục",
+					"description": "Bạn có chắc muốn xóa danh mục và các danh mục con của nó với tiêu đề <b>{title}</b>? Hành động này không thể hoàn tác."
+				},
+				"sort_categories_confirmation_modal": {
+					"title": "Xác nhận sắp xếp danh mục",
+					"description": "Bạn có chắc muốn sắp xếp tất cả danh mục và danh mục con của chúng không? Hành động này không thể hoàn tác."
+				},
+				"blog_editor_modal": { "title": "Trình soạn thảo bài viết" },
+				"blog_deletion_confirmation_modal": {
+					"title": "Xác nhận xóa bài viết",
+					"description": "Bạn có chắc muốn xóa bài viết với tiêu đề <b>{title}</b>? Hành động này không thể hoàn tác."
+				}
+			}
+		},
+		"personal": {
+			"title": "Cá nhân",
+			"profile_setting": {
+				"title": "Cài đặt hồ sơ"
+			}
+		}
+	}
+}
