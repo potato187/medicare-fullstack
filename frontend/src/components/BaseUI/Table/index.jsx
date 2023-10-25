@@ -52,8 +52,6 @@ export function TableBody({
 		[emptyCln]: !list.length,
 	});
 
-	console.log(isLoading);
-
 	return (
 		<tbody className={classNames}>
 			{isLoading ? (

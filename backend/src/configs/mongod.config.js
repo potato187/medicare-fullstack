@@ -1,22 +1,22 @@
 const DEV = {
 	app: {
-		port: process.env.DEV_APP_PORT || 8080,
+		port: process.env.DEV_APP_PORT,
 	},
 	db: {
-		host: process.env.DEV_DB_HOST || '127.0.0.1',
-		port: process.env.DEV_DB_PORT || 27107,
-		name: process.env.DEV_DB_NAME || '',
+		host: process.env.DEV_DB_HOST,
+		port: process.env.DEV_DB_PORT,
+		name: process.env.DEV_DB_NAME,
 	},
 };
 
 const PRODUCT = {
 	app: {
-		port: process.env.PRODUCT_APP_PORT || 8080,
+		port: process.env.PRODUCT_APP_PORT,
 	},
 	db: {
-		host: process.env.PRODUCT_DB_HOST || '127.0.0.1',
-		port: process.env.PRODUCT_DB_PORT || 27107,
-		name: process.env.PRODUCT_DB_NAME || '',
+		host: process.env.PRODUCT_DB_HOST,
+		port: process.env.PRODUCT_DB_PORT,
+		name: process.env.PRODUCT_DB_NAME,
 	},
 };
 

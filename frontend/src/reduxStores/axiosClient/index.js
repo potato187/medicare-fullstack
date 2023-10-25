@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { APP_URL } from 'constant';
 
 const axiosClient = axios.create({
-	baseURL: import.meta.env.VITE_REACT_APP_API_URL,
+	baseURL: `${APP_URL}/v1/api`,
 	timeout: 1000,
 });
 

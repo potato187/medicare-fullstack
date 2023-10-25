@@ -1,6 +1,6 @@
-const PORT = process.env.DEV_APP_PORT || 8080;
+const PORT = process.env.PRODUCT_APP_PORT || 8080;
 
-const server = require('./src/app').listen(PORT, () => {
+const server = require('./app').listen(PORT, () => {
 	// eslint-disable-next-line no-console
 	console.log(`Server is running on port:: ${PORT}.`);
 });

@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  mongo_db:
+    image: mongo:6.0.11-jammy
+    restart: always
+    volumes:
+      - ./backup:/backup
+    ports:
+      - 27018:27017
+    expose:
+      - 27017
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - PRODUCT_APP_PORT=8080
+      - PRODUCT_DB_HOST=mongo_db
+      - PRODUCT_DB_PORT=27017
+      - PRODUCT_DB_NAME=medicare-v1
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    depends_on:
+      - mongo_db
+
+  nginx:
+    build:
+      context: .
+    volumes:
+      - ../frontend/dist:/usr/share/nginx/html
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 80:80
+# mongodump -d  medicare-v1 -o  ~/workspaces/medicare-fullstack/docker/backup/
+# mongorestore --uri mongodb://localhost:27017/medicare-v1  /backup/medicare-v1

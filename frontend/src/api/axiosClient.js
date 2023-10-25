@@ -1,10 +1,10 @@
-import { HEADERS } from 'constant';
+import { HEADERS, APP_URL } from 'constant';
 import { authLogout, authRefreshTokens } from 'reduxStores/slices/auth';
 import { store } from 'reduxStores/store/configureStore';
 import axios from 'axios';
 
 export const axiosClient = axios.create({
-	baseURL: import.meta.env.VITE_REACT_APP_API_URL,
+	baseURL: `${APP_URL}/v1/api`,
 	timeout: 1000,
 });
 

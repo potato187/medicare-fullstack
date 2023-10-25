@@ -5,8 +5,6 @@ const codeReason = require('@/core/status.core');
 const errorNames = ['MongoServerError', 'MulterError'];
 
 module.exports = (error, req, res, next) => {
-	console.log('errorHandler', error);
-
 	if (errorNames.includes(error.name)) {
 		return res.status(400).json({
 			status: 'error',

@@ -28,7 +28,7 @@ export default function LoginPage() {
 					<p className='fw-700 text-white-50 mb-3'>Premium Admin & Dashboard Template</p>
 				</div>
 				<div className='row'>
-					<div className='col-4 offset-4'>
+					<div className='col-12 col-md-6 offset-md-3 col-xl-4 offset-xl-4'>
 						<LoginForm onSubmit={handleSubmit} />
 					</div>
 				</div>
