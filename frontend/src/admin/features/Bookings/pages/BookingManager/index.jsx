@@ -143,9 +143,9 @@ export default function BookingManager() {
 						</div>
 					</div>
 					<TableGrid className='scrollbar'>
-						<Table hover striped auto>
+						<Table hover striped fixed>
 							<TableHeader>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '80px' }}>
 									<FormattedMessage id='table.no' />
 								</th>
 								<SortableTableHeader
@@ -153,11 +153,12 @@ export default function BookingManager() {
 									name='fullName'
 									intl='form.fullName'
 									onChange={handleChangeSort}
+									style={{ width: '220px' }}
 								/>
-								<th className='text-start'>
+								<th className='text-start' style={{ width: '180px' }}>
 									<FormattedMessage id='form.phone' />
 								</th>
-								<th className='text-start'>
+								<th className='text-start' style={{ width: '180px' }}>
 									<FormattedMessage id='form.address' />
 								</th>
 								<SortableTableHeader
@@ -165,11 +166,12 @@ export default function BookingManager() {
 									name='appointmentDate'
 									intl='common.appointmentDate'
 									onChange={handleChangeSort}
+									style={{ width: '180px' }}
 								/>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '120px' }}>
 									<FormattedMessage id='table.status' />
 								</th>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '220px' }}>
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>

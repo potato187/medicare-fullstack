@@ -1,14 +1,14 @@
 const express = require('express');
 const { authMiddleware } = require('@/auth');
 const { DoctorController } = require('@/controllers');
-const { validateRequest, tryCatch, processQueryParams } = require('@/middleware');
+const { validateRequest, processQueryParams } = require('@/middleware');
 const { idSchema } = require('@/validations');
 const { createSchema, updateSchema, importSchema, querySchema, getOneSchema, exportSchema } = require('./schema');
 
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
-router.use(authMiddleware.checkRoles(['admin']));
+router.use(authMiddleware.checkRoles(['admin', 'mod']));
 
 router.get(
 	'/query',

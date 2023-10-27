@@ -6,6 +6,7 @@ const { HtmlContentService } = require('@/services');
 class HtmlContentController {
 	createOne = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
+			code: 700201,
 			metadata: await HtmlContentService.createOne(req.body),
 		}).send(res);
 	});
@@ -30,6 +31,7 @@ class HtmlContentController {
 
 	UpdateOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 700200,
 			metadata: await HtmlContentService.updateOneById({
 				id: req.params.id,
 				updateBody: req.body,
@@ -39,6 +41,7 @@ class HtmlContentController {
 
 	deleteOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 704200,
 			metadata: await HtmlContentService.deleteOneById(req.params.id),
 		}).send(res);
 	});

@@ -6,6 +6,7 @@ const { NewsService } = require('@/services');
 class NewsController {
 	createOne = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
+			code: 503201,
 			metadata: await NewsService.createOne(req.body),
 		}).send(res);
 	});
@@ -33,12 +34,14 @@ class NewsController {
 
 	deleteOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 507200,
 			metadata: await NewsService.deleteOneById(req.params.id),
 		}).send(res);
 	});
 
 	updateOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 506200,
 			metadata: await NewsService.updateOneById({
 				id: req.params.id,
 				updateBody: req.body,

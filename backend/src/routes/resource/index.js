@@ -7,7 +7,7 @@ const { modelSchema, querySchema, blogSchema } = require('./schema');
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
-router.use(authMiddleware.checkRoles(['admin']));
+router.use(authMiddleware.checkRoles(['admin', 'mod']));
 
 router.get(
 	'/:model',

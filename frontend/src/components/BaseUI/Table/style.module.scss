@@ -97,6 +97,7 @@
 		font-size: var(--theme-text-xs);
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		overflow: hidden;
 	}
 
 	td,

@@ -30,9 +30,9 @@ export default function BlogCategoryManager() {
 	};
 
 	const handleToggleModal = compose(handleSelectCategory, toggleModal);
-	const openDeletionModal = compose(handleSelectCategory, toggleDeletionModal);
+	const handleToggleDeletionModal = compose(handleSelectCategory, toggleDeletionModal);
 
-	const handleOnCreate = tryCatchAndToast(async (data) => {
+	const handleCreate = tryCatchAndToast(async (data) => {
 		const { metadata, message } = await blogCategoryApi.createOne({ ...data, index: blogCategories.length });
 		setBlogCategories((blogCategories) => {
 			const { _id, ...rest } = metadata;
@@ -43,7 +43,7 @@ export default function BlogCategoryManager() {
 		handleToggleModal();
 	}, languageId);
 
-	const handleOnSort = tryCatchAndToast(async () => {
+	const handleSort = tryCatchAndToast(async () => {
 		const flattenedCategories = flattenTree(blogCategories).map(({ id, index, parentId }) => ({
 			id,
 			index,
@@ -57,15 +57,12 @@ export default function BlogCategoryManager() {
 	const handleConfirmDeletion = tryCatchAndToast(async () => {
 		const listId = flattenTree([focusedCategory.current]).map(({ id }) => ({ id }));
 		const { message } = await blogCategoryApi.deleteByIds(listId);
-		setBlogCategories((blogCategories) => {
-			return removeItem(blogCategories, listId[0].id);
-		});
-
+		setBlogCategories((blogCategories) => removeItem(blogCategories, listId[0].id));
 		showToastMessage(message, languageId);
-		toggleDeletionModal();
+		handleToggleDeletionModal(null);
 	}, languageId);
 
-	const handleOnUpdate = tryCatchAndToast(async (data) => {
+	const handleUpdate = tryCatchAndToast(async (data) => {
 		const body = getObjectDiff(focusedCategory.current, data);
 		const { metadata, message } = await blogCategoryApi.updateOneById(focusedCategory.current.id, body);
 		if (metadata) {
@@ -73,7 +70,7 @@ export default function BlogCategoryManager() {
 			focusedCategory.current = null;
 		}
 		showToastMessage(message, languageId);
-		toggleModal();
+		handleToggleModal();
 	}, languageId);
 
 	useEffect(() => {
@@ -94,7 +91,7 @@ export default function BlogCategoryManager() {
 							items={blogCategories}
 							languageId={languageId}
 							setItems={setBlogCategories}
-							handleConfirmDeletion={openDeletionModal}
+							handleConfirmDeletion={handleToggleDeletionModal}
 							handleModifyItem={handleToggleModal}
 						/>
 					</WrapScrollBar>
@@ -109,11 +106,12 @@ export default function BlogCategoryManager() {
 					</div>
 				</div>
 			</Container>
+
 			<ConfirmModal
 				idTitleIntl='dashboard.blogs.modal.sort_categories_confirmation_modal.title'
 				isOpen={isOpenSortModal}
 				onClose={toggleSortableModal}
-				onSubmit={handleOnSort}
+				onSubmit={handleSort}
 			>
 				<FormattedMessage id='dashboard.blogs.modal.sort_categories_confirmation_modal.description' />
 			</ConfirmModal>
@@ -134,8 +132,8 @@ export default function BlogCategoryManager() {
 				blogCategory={focusedCategory.current}
 				isOpen={statusModal}
 				toggle={toggleModal}
-				onCreate={handleOnCreate}
-				onUpdate={handleOnUpdate}
+				onCreate={handleCreate}
+				onUpdate={handleUpdate}
 			/>
 		</>
 	);

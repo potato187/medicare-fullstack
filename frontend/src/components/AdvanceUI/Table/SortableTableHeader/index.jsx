@@ -42,7 +42,7 @@ export function SortableTableHeader({ name = '', intl, className = '', orders = 
 	};
 
 	return (
-		<th onClick={handleOnClick} {...props}>
+		<th onClick={handleOnClick} style={props.style}>
 			<div className={classNames}>
 				<span className={titleCln}>
 					<FormattedMessage id={intl} />

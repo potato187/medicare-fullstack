@@ -6,6 +6,7 @@ const { BlogService } = require('@/services');
 class BlogController {
 	createOne = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
+			code: 500201,
 			metadata: await BlogService.createOne(req),
 		}).send(res);
 	});
@@ -24,12 +25,14 @@ class BlogController {
 
 	updateOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 501200,
 			metadata: await BlogService.updateOneById({ id: req.params.id, updateBody: req.body, file: req.file || '' }),
 		}).send(res);
 	});
 
 	deleteOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 505200,
 			metadata: await BlogService.deleteOneById(req.params.id),
 		}).send(res);
 	});

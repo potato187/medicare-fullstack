@@ -1,13 +1,15 @@
 import { bookingApi, resourceApi } from 'api';
-import { BOOKING_STATUS, DATE_FORMAT, ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'constant';
+import { BOOKING_STATUS, DATE_FORMAT, ORDER_NONE } from 'constant';
 import { useIndex } from 'hooks';
 import produce from 'immer';
 import moment from 'moment';
 import queryString from 'query-string';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { createURL, mapData, tryCatch } from 'utils';
+import { clampPage, clampPageSize, createURL, mapData, tryCatch } from 'utils';
 import { typeOf } from 'utils/repos';
+
+const START_DATE_DEFAULT = '09/01/2023';
 
 export const useBookings = ({ languageId = 'en' }) => {
 	const isLoading = useRef(true);
@@ -42,7 +44,7 @@ export const useBookings = ({ languageId = 'en' }) => {
 	}, {});
 
 	const queryParams = useMemo(() => {
-		const { sort, page = 1, pagesize = PAGINATION_NUMBER_DEFAULT, ...params } = queryString.parse(locationSearch);
+		const { sort, ...params } = queryString.parse(locationSearch);
 
 		if (!params.specialtyId && Specialties.length) {
 			params.specialtyId = Specialties[0].value;
@@ -53,18 +55,19 @@ export const useBookings = ({ languageId = 'en' }) => {
 		}
 
 		if (!params.startDate) {
-			params.startDate = moment().format(DATE_FORMAT);
+			params.startDate = moment(new Date(START_DATE_DEFAULT)).format(DATE_FORMAT);
 		}
 
 		if (params.endDate) {
 			params.endDate = moment(new Date(params.endDate)).format(DATE_FORMAT);
 		}
 
+		params.page = clampPage(params.page);
+		params.pagesize = clampPageSize(params.pagesize);
+
 		return {
 			...params,
 			sort: sort || [],
-			page,
-			pagesize,
 		};
 	}, [locationSearch, Specialties, WorkingHours]);
 
@@ -112,8 +115,8 @@ export const useBookings = ({ languageId = 'en' }) => {
 
 	const handleSelectRangeDates = (dates) => {
 		const [start, end] = dates;
-		const startDate = start ? moment(start, DATE_FORMAT) : moment();
-		const endDate = end ? moment(end, DATE_FORMAT) : null;
+		const startDate = start ? moment(new Date(start), DATE_FORMAT) : moment();
+		const endDate = end ? moment(new Date(end), DATE_FORMAT) : null;
 		const isSameDate = endDate && endDate.isSame(startDate);
 
 		setQueryParams({

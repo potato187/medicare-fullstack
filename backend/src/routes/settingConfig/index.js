@@ -7,7 +7,7 @@ const express = require('express');
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
-router.use(authMiddleware.checkRoles(['admin']));
+router.use(authMiddleware.checkRoles(['admin', 'mod']));
 
 router.get('/', SettingConfigController.getConfig);
 router.post('/', upload.fields(UPLOAD_FIELDS), SettingConfigController.updateConfig);

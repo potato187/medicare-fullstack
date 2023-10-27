@@ -1,4 +1,4 @@
-import { ADMIN_ROLE } from 'constant';
+import { ADMIN_ROLE, MOD_ROLE } from 'constant';
 import {
 	MdOutlineAdminPanelSettings,
 	MdLanguage,
@@ -30,13 +30,13 @@ export const routesConfig = [
 		to: '/admin/dashboard/personal',
 		intl: 'dashboard.personal.profile_setting.title',
 		Icon: MdOutlineAccountCircle,
-		allowedRoles: [ADMIN_ROLE],
+		allowedRoles: [ADMIN_ROLE, MOD_ROLE],
 	},
 	{
 		to: '/admin/dashboard/modules',
 		intl: 'dashboard.modules.title',
 		Icon: MdOutlineViewTimeline,
-		allowedRoles: [ADMIN_ROLE],
+		allowedRoles: [ADMIN_ROLE, MOD_ROLE],
 		listChildren: [
 			{
 				intl: 'dashboard.modules.setting.title',
@@ -66,19 +66,19 @@ export const routesConfig = [
 		to: '/admin/dashboard/specialty',
 		intl: 'dashboard.specialty.title',
 		Icon: MdOutlineLocalHospital,
-		allowedRoles: [ADMIN_ROLE],
+		allowedRoles: [ADMIN_ROLE, MOD_ROLE],
 	},
 	{
 		to: '/admin/dashboard/booking',
 		intl: 'dashboard.booking.title',
 		Icon: MdOutlineMedicalServices,
-		allowedRoles: [ADMIN_ROLE],
+		allowedRoles: [ADMIN_ROLE, MOD_ROLE],
 	},
 	{
 		to: '/admin/dashboard/blogs',
 		intl: 'dashboard.blogs.title',
 		Icon: MdOutlineNewspaper,
-		allowedRoles: [ADMIN_ROLE],
+		allowedRoles: [ADMIN_ROLE, MOD_ROLE],
 		listChildren: [
 			{
 				intl: 'dashboard.blogs.categories.title',

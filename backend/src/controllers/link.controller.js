@@ -6,6 +6,7 @@ const { LinkService } = require('@/services');
 class LinkController {
 	createOne = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
+			code: 701201,
 			metadata: await LinkService.createOne(req.body),
 		}).send(res);
 	});
@@ -24,6 +25,7 @@ class LinkController {
 
 	updateOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 701200,
 			metadata: await LinkService.updateOneById({
 				id: req.params.id,
 				updateBody: req.body,
@@ -39,6 +41,7 @@ class LinkController {
 
 	deleteByIds = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 705200,
 			metadata: await LinkService.deleteByIds(req.body),
 		}).send(res);
 	});

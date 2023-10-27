@@ -1,4 +1,4 @@
-const SortFields = ['fullName', 'dateOfBirth', 'gender', 'createdAt', 'updatedAt', 'isVerify'];
+const SortFields = ['fullName', 'appointmentDate', 'gender', 'createdAt', 'updatedAt', 'isVerify'];
 const SortDefaults = [['createdAt', 'desc']];
 
 const SelectFields = [

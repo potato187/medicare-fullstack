@@ -16,7 +16,7 @@ class DoctorService {
 		await UtilsRepo.checkConflicted({
 			model,
 			filter: { $or: [{ email }, { phone }] },
-			code: 500409,
+			code: 400409,
 		});
 
 		const newDoctor = await UtilsRepo.createOne({

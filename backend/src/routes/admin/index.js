@@ -8,7 +8,7 @@ const { querySchema, updateSchema, getOneSchema } = require('./schema');
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
-router.use(authMiddleware.checkRoles(['admin']));
+router.use(authMiddleware.checkRoles(['admin', 'mod']));
 
 router.get(
 	'/query',
@@ -19,13 +19,14 @@ router.get(
 
 router.get('/:id', validateRequest(getOneSchema, 'query'), AdminController.getOneById);
 
-router.delete('/delete/:id', validateRequest(idSchema, 'params'), AdminController.deleteOneById);
-
 router.patch(
 	'/update/:id',
 	validateRequest(idSchema, 'params'),
 	validateRequest(updateSchema),
 	AdminController.updateOneById,
 );
+
+router.use(authMiddleware.checkRoles(['admin']));
+router.delete('/delete/:id', validateRequest(idSchema, 'params'), AdminController.deleteOneById);
 
 module.exports = router;

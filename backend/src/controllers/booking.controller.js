@@ -18,12 +18,14 @@ class BookingController {
 
 	createOne = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
+			code: 600201,
 			metadata: await BookingService.createOne(req.body),
 		}).send(res);
 	});
 
 	updateOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 600200,
 			metadata: await BookingService.updateOneById({
 				id: req.params.id,
 				updateBody: req.body,
@@ -33,6 +35,7 @@ class BookingController {
 
 	deleteOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 601200,
 			metadata: await BookingService.deleteOneById(req.params.id),
 		}).send(res);
 	});

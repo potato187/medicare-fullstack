@@ -163,9 +163,9 @@ export default function BlogsManager() {
 						</div>
 					</div>
 					<TableGrid className='scrollbar'>
-						<Table hover striped auto>
+						<Table hover striped fixed>
 							<TableHeader>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '80px' }}>
 									<FormattedMessage id='table.no' />
 								</th>
 								<SortableTableHeader
@@ -173,20 +173,23 @@ export default function BlogsManager() {
 									name='title'
 									intl='common.title.default'
 									onChange={handleChangeSort}
+									style={{ width: '500px' }}
 								/>
 								<SortableTableHeader
 									className='text-center'
 									name='datePublished'
 									intl='common.public_date'
 									onChange={handleChangeSort}
+									style={{ width: '180px' }}
 								/>
 								<SortableTableHeader
 									className='text-center'
 									name='isDisplay'
 									intl='form.display'
 									onChange={handleChangeSort}
+									style={{ width: '180px' }}
 								/>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '240px' }}>
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>

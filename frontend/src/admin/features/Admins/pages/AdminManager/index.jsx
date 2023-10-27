@@ -29,10 +29,10 @@ export default function AdminManager() {
 
 	const {
 		data: Admins,
-		setData: setAdmins,
 		queryParams,
 		totalPages,
 		isLoading,
+		setData: setAdmins,
 		handleChangeSort,
 		handleChangeSearch,
 		handlePageChange,
@@ -50,7 +50,7 @@ export default function AdminManager() {
 	}, [data, languageId]);
 
 	const AdminRoles = useMemo(() => {
-		return mapData(data.AdminRoles, languageId);
+		return data?.AdminRoles.map(({ key, name }) => ({ value: key, label: name[languageId] }));
 	}, [data, languageId]);
 
 	const { page = 1, pagesize = 25 } = queryParams;
@@ -150,18 +150,33 @@ export default function AdminManager() {
 						</div>
 					</div>
 					<TableGrid className='scrollbar'>
-						<Table hover striped auto={1}>
+						<Table hover striped fixed>
 							<TableHeader>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '80px' }}>
 									<FormattedMessage id='table.no' />
 								</th>
-								<SortableTableHeader name='firstName' intl='form.firstName' onChange={handleChangeSort} />
-								<SortableTableHeader name='lastName' intl='form.lastName' onChange={handleChangeSort} />
-								<SortableTableHeader name='email' intl='form.email' onChange={handleChangeSort} />
-								<th className='text-start'>
+								<SortableTableHeader
+									name='firstName'
+									intl='form.firstName'
+									onChange={handleChangeSort}
+									style={{ width: '160px' }}
+								/>
+								<SortableTableHeader
+									name='lastName'
+									intl='form.lastName'
+									onChange={handleChangeSort}
+									style={{ width: '160px' }}
+								/>
+								<SortableTableHeader
+									name='email'
+									intl='form.email'
+									onChange={handleChangeSort}
+									style={{ width: '240px' }}
+								/>
+								<th className='text-start' style={{ width: '240px' }}>
 									<FormattedMessage id='form.phone' />
 								</th>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '240px' }}>
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>

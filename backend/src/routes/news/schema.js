@@ -15,7 +15,7 @@ const {
 } = require('@/validations');
 const Joi = require('joi');
 
-const pageTypeValidator = enumWithDefaultValidator(PAGES);
+const pageTypeValidator = fieldsValidator(PAGES);
 const positionTypeValidator = enumWithDefaultValidator(QUERY_PAGE_POSITIONS);
 const orderValidator = enumWithDefaultValidator(SORT_OPTIONS);
 const indexValidator = Joi.number().integer().min(0);

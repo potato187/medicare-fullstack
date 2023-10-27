@@ -157,12 +157,12 @@ export default function NewsManager() {
 					</div>
 
 					<TableGrid className='scrollbar'>
-						<Table hover striped auto>
+						<Table hover striped fixed>
 							<TableHeader>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '80px' }}>
 									<FormattedMessage id='table.no' />
 								</th>
-								<th>
+								<th style={{ width: '500px' }}>
 									<FormattedMessage id='common.title.default' />
 								</th>
 								<SortableTableHeader
@@ -170,20 +170,23 @@ export default function NewsManager() {
 									name='index'
 									intl='table.index'
 									onChange={handleChangeSort}
+									style={{ width: '120px' }}
 								/>
 								<SortableTableHeader
 									name='positionType'
 									intl='common.position'
 									className='text-center'
 									onChange={handleChangeSort}
+									style={{ width: '120px' }}
 								/>
 								<SortableTableHeader
 									name='isDisplay'
 									intl='common.display'
 									className='text-center'
 									onChange={handleChangeSort}
+									style={{ width: '120px' }}
 								/>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '240px' }}>
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>

@@ -8,7 +8,7 @@ const { createSchema, querySchema, updateSchema } = require('./schema');
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
-router.use(authMiddleware.checkRoles(['admin']));
+router.use(authMiddleware.checkRoles(['admin', 'mod']));
 
 router.get('/configs', HtmlContentController.getConfigs);
 
@@ -20,6 +20,8 @@ router.get(
 );
 
 router.get('/:id', validateRequest(idSchema, 'params'), HtmlContentController.getById);
+
+router.use(authMiddleware.checkRoles(['admin']));
 
 router.post('/', validateRequest(createSchema), HtmlContentController.createOne);
 

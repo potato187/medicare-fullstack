@@ -21,12 +21,14 @@ class AdminController {
 
 	updateOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 300200,
 			metadata: await AdminService.updateOneById({ id: req.params.id, updateBody: req.body }),
 		}).send(res);
 	});
 
 	deleteOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 301204,
 			metadata: await AdminService.deleteOneById(req.params.id),
 		}).send(res);
 	});

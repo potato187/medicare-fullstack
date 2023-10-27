@@ -9,7 +9,7 @@ const { updateSchema, querySchema, createSchema } = require('./schema');
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
-router.use(authMiddleware.checkRoles(['admin']));
+router.use(authMiddleware.checkRoles(['admin', 'mod']));
 
 router.get('/', processQueryParams(['sort']), validateRequest(querySchema, 'query'), BlogController.getByQueryParams);
 

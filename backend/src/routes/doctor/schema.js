@@ -54,7 +54,7 @@ const querySchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
 	positionId: ObjectIdMongodbValidator,
 	search: Joi.string().allow('').default(''),
-	page: pageSizeValidator,
+	page: pageValidator,
 	pagesize: pageSizeValidator,
 	sort: sortValidator(SORTABLE_FIELDS, [['position', 'asc']]),
 	select: selectValidate,

@@ -18,6 +18,7 @@ class LanguageController {
 
 	updateById = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 702200,
 			metadata: await LanguageService.updateById({ languageId: req.params.id, bodyUpdate: req.body }),
 		}).send(res);
 	});

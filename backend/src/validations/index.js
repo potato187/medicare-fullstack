@@ -56,7 +56,7 @@ const dateValidator = Joi.date().iso();
 
 const pageValidator = Joi.number().integer().positive().min(1).max(100).default(1);
 
-const pageSizeValidator = Joi.number().integer().positive().min(1).max(25).default(25);
+const pageSizeValidator = Joi.number().integer().positive().min(25).max(100).default(25);
 
 const keySearchValidator = Joi.string().allow('').default('');
 

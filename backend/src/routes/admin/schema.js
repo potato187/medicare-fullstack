@@ -7,6 +7,7 @@ const {
 	genderValidator,
 	pageValidator,
 	pageSizeValidator,
+	keySearchValidator,
 	sortValidator,
 	fieldsValidator,
 } = require('@/validations');
@@ -16,10 +17,10 @@ const SELECT_FIELDS = ['_id', 'firstName', 'lastName', 'email', 'phone', 'role',
 const SORTABLE_FIELDS = ['createdAt', 'updatedAt', 'firstName', 'lastName', 'email'];
 
 const querySchema = Joi.object({
-	search: Joi.string().default(''),
+	search: keySearchValidator,
 	page: pageValidator,
 	pagesize: pageSizeValidator,
-	sort: sortValidator(SORTABLE_FIELDS, [['createdAt', 'asc']]),
+	sort: sortValidator(SORTABLE_FIELDS),
 	select: fieldsValidator(SELECT_FIELDS, ['_id', 'firstName', 'lastName', 'phone', 'email']),
 });
 

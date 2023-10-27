@@ -34,6 +34,7 @@ class AccessController {
 
 	changePassword = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 202200,
 			metadata: await AccessService.changePassword(req.body),
 		}).send(res);
 	});

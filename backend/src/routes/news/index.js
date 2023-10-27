@@ -8,7 +8,7 @@ const { querySchema, getOneSchema, createSchema, updateSchema } = require('./sch
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
-router.use(authMiddleware.checkRoles(['admin']));
+router.use(authMiddleware.checkRoles(['admin', 'mod']));
 
 router.get(
 	'/get/:id',

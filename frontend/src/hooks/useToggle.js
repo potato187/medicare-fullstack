@@ -5,13 +5,7 @@ export const useToggle = (initialState = false) => {
 	const [isOpen, setIsOpen] = useState(initialState);
 
 	const toggle = useCallback((newState) => {
-		if (typeOf(newState) === 'boolean') {
-			setIsOpen(newState);
-		} else {
-			setIsOpen((prevState) => {
-				return !prevState;
-			});
-		}
+		typeOf(newState) === 'boolean' ? setIsOpen(newState) : setIsOpen((prevState) => !prevState);
 	}, []);
 
 	return [isOpen, toggle];

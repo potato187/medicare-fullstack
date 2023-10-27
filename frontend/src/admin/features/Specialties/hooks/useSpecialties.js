@@ -3,12 +3,8 @@ import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'constant';
 import queryString from 'query-string';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { createURL, tryCatch } from 'utils';
+import { clampPage, clampPageSize, createURL, mapData, tryCatch } from 'utils';
 import { typeOf } from 'utils/repos';
-
-const mapData = (data, languageId) => {
-	return data.map(({ _id, name }) => ({ label: name[languageId], value: _id }));
-};
 
 export const useSpecialties = (languageId = 'en') => {
 	const [totalPages, setTotalPages] = useState(1);
@@ -40,7 +36,9 @@ export const useSpecialties = (languageId = 'en') => {
 	const navigate = useNavigate();
 
 	const queryParams = useMemo(() => {
-		const { sort, page = 1, pagesize = PAGINATION_NUMBER_DEFAULT, ...params } = queryString.parse(locationSearch);
+		const { sort, ...params } = queryString.parse(locationSearch);
+		params.page = clampPage(params.page);
+		params.pagesize = clampPageSize(params.pagesize);
 
 		if (Specialties?.[specialtyIndex]?.value) {
 			params.specialtyId = Specialties[specialtyIndex].value;
@@ -49,8 +47,6 @@ export const useSpecialties = (languageId = 'en') => {
 		return {
 			...params,
 			sort: sort || [],
-			page,
-			pagesize,
 		};
 	}, [locationSearch, Specialties, specialtyIndex]);
 

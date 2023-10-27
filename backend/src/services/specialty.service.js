@@ -13,7 +13,7 @@ class SpecialtyService {
 		await UtilsRepo.checkConflicted({
 			model,
 			filter: { key },
-			code: 400409,
+			code: 401409,
 		});
 
 		const newSpecialty = await UtilsRepo.createOne({

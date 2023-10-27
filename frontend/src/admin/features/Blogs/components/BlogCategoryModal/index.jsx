@@ -35,6 +35,11 @@ export function BlogCategoryModal({
 		}
 	};
 
+	const handleClose = () => {
+		methods.reset();
+		toggle();
+	};
+
 	useEffect(() => {
 		if (isOpen && blogCategory) {
 			const { children, collapsed, depth, ...values } = blogCategory;
@@ -54,10 +59,10 @@ export function BlogCategoryModal({
 
 	return (
 		<FormProvider {...methods}>
-			<BaseModal isOpen={isOpen} onClose={toggle}>
+			<BaseModal isOpen={isOpen} onClose={handleClose}>
 				<BaseModalHeader
 					idIntl={`dashboard.blogs.modal.category_${blogCategory ? 'update' : 'create'}_modal.title`}
-					onClose={toggle}
+					onClose={handleClose}
 				/>
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
@@ -86,7 +91,7 @@ export function BlogCategoryModal({
 				</BaseModalBody>
 				<BaseModalFooter>
 					<div className='d-flex justify-content-end gap-2'>
-						<Button secondary size='xs' onClick={toggle}>
+						<Button secondary size='xs' onClick={handleClose}>
 							<FormattedMessage id='button.cancel' />
 						</Button>
 						<Button size='xs' onClick={methods.handleSubmit(handleOnSubmit)}>

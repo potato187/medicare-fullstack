@@ -11,6 +11,7 @@ class SettingConfigController {
 
 	updateConfig = (req, res, next) => {
 		new OkResponse({
+			code: 703200,
 			metadata: SettingConfigService.updateConfig({
 				files: req.files,
 				body: req.body,

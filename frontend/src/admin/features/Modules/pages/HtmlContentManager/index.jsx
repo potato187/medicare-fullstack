@@ -151,31 +151,39 @@ export default function HtmlContentManager() {
 						</div>
 					</div>
 					<TableGrid className='scrollbar'>
-						<Table hover striped auto>
+						<Table hover striped fixed>
 							<TableHeader>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '80px' }}>
 									<FormattedMessage id='table.no' />
 								</th>
-								<SortableTableHeader name='title' intl='common.title.default' onChange={handleChangeSort} />
 								<SortableTableHeader
-									className='text-center'
-									name='index'
-									intl='table.index'
+									name='title'
+									intl='common.title.default'
 									onChange={handleChangeSort}
+									style={{ width: '440px' }}
 								/>
 								<SortableTableHeader
 									name='positionType'
 									intl='common.position'
 									className='text-center'
 									onChange={handleChangeSort}
+									style={{ width: '120px' }}
+								/>
+								<SortableTableHeader
+									className='text-center'
+									name='index'
+									intl='table.index'
+									onChange={handleChangeSort}
+									style={{ width: '120px' }}
 								/>
 								<SortableTableHeader
 									name='createdAt'
 									intl='common.created_at'
 									className='text-center'
 									onChange={handleChangeSort}
+									style={{ width: '180px' }}
 								/>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '240px' }}>
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>
@@ -184,8 +192,8 @@ export default function HtmlContentManager() {
 									<tr key={_id}>
 										<td className='text-center'>{index + 1}</td>
 										<td>{title[languageId]}</td>
-										<td className='text-center'>{htmlContentIndex}</td>
 										<td className='text-center'>{firstCapitalize(positionType)}</td>
+										<td className='text-center'>{htmlContentIndex}</td>
 										<td className='text-center'>{formatDate(createdAt)}</td>
 										<td>
 											<div className='d-flex justify-content-center gap-2'>

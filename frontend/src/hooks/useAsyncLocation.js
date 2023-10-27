@@ -2,8 +2,8 @@
 import queryString from 'query-string';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ORDER_NONE, PAGINATION_NUMBER_DEFAULT } from 'constant';
-import { tryCatch, createURL } from 'utils';
+import { ORDER_NONE, PAGESIZE_DEFAULT, PAGESIZE_MAX, PAGINATION_NUMBER_DEFAULT } from 'constant';
+import { tryCatch, createURL, clampPageSize, clampPage } from 'utils';
 import { typeOf } from 'utils/repos';
 
 export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
@@ -14,22 +14,15 @@ export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 	const { pathname: locationPathName, search: locationSearch } = useLocation();
 
 	const queryParams = useMemo(() => {
-		let { sort, page = 1, pagesize = PAGINATION_NUMBER_DEFAULT, ...params } = queryString.parse(locationSearch);
+		const { sort, ...params } = queryString.parse(locationSearch);
 
-		if (+page < 1) {
-			page = 1;
-		}
-
-		if (+pagesize < 1 || +pagesize > 500) {
-			pagesize = 25;
-		}
+		params.page = clampPage(params.page);
+		params.pagesize = clampPageSize(params.pagesize);
 
 		return {
 			...parameters,
 			...params,
 			sort: sort || [],
-			page,
-			pagesize,
 		};
 	}, [locationSearch]);
 

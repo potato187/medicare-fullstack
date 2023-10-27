@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/', validateRequest(createSchema), BookingController.createOne);
 
 router.use(authMiddleware.authorization);
-router.use(authMiddleware.checkRoles(['admin']));
+router.use(authMiddleware.checkRoles(['admin', 'mod']));
 
 router.get(
 	'/query',

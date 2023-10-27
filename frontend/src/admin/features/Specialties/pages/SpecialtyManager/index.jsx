@@ -190,12 +190,12 @@ export default function SpecialtyManager() {
 						</div>
 					</div>
 					<TableGrid className='scrollbar'>
-						<Table hover striped auto>
+						<Table hover striped fixed>
 							<TableHeader>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '40px' }}>
 									<UnFieldCheckBox id='checkbox-all' className='none-label text-center' onChange={toggleSelectAll} />
 								</th>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '80px' }}>
 									<FormattedMessage id='table.no' />
 								</th>
 								<SortableTableHeader
@@ -203,14 +203,16 @@ export default function SpecialtyManager() {
 									name='firstName'
 									intl='form.firstName'
 									onChange={handleChangeSort}
+									style={{ width: '120px' }}
 								/>
 								<SortableTableHeader
 									className='text-start'
 									name='lastName'
 									intl='form.lastName'
 									onChange={handleChangeSort}
+									style={{ width: '120px' }}
 								/>
-								<th className='text-start'>
+								<th className='text-start' style={{ width: '180px' }}>
 									<FormattedMessage id='form.phone' />
 								</th>
 								<SortableTableHeader
@@ -218,14 +220,16 @@ export default function SpecialtyManager() {
 									name='email'
 									intl='form.email'
 									onChange={handleChangeSort}
+									style={{ width: '220px' }}
 								/>
 								<SortableTableHeader
 									className='text-start'
 									name='position'
 									intl='common.position'
 									onChange={handleChangeSort}
+									style={{ width: '100px' }}
 								/>
-								<th className='text-center'>
+								<th className='text-center' style={{ width: '240px' }}>
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>

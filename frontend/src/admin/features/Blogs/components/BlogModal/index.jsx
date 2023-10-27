@@ -16,10 +16,10 @@ import {
 } from 'components';
 import { findIndexById, findIndexByParentId } from 'components/AdvanceUI/Tree/utils';
 import produce from 'immer';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { getDifferentValues, setDefaultValues, tryCatch } from 'utils';
+import { getObjectDiff, setDefaultValues, tryCatch } from 'utils';
 import { defaultValues, schema } from './schema';
 
 const BLOG_SITE_MAP = {
@@ -39,12 +39,12 @@ export function BlogModal({
 	onSubmitUpdate = () => null,
 	onSubmitCreate = () => null,
 }) {
+	const clone = useRef(null);
 	const methods = useForm({
 		defaultValues,
 		mode: 'onChange',
 		resolver: yupResolver(schema),
 	});
-
 	const [blogCategories, setBlogCategories] = useState([]);
 
 	const updateBlogCategories = (value) => {
@@ -78,7 +78,7 @@ export function BlogModal({
 	const handleSubmit = (data) => {
 		const blogCategoryIds = blogCategories.filter((category) => category.isSelected).map(({ id }) => id);
 		if (blogId) {
-			const updateBody = getDifferentValues(methods, data);
+			const updateBody = getObjectDiff(clone.current, data);
 			onSubmitUpdate({ blogId, ...updateBody, blogCategoryIds });
 		} else {
 			onSubmitCreate({ ...data, blogCategoryIds });
@@ -93,6 +93,7 @@ export function BlogModal({
 				const { blogCategoryIds: Ids, tags, ...blog } = metadata;
 				blogCategoryIds.push(...Ids);
 				setDefaultValues(methods, blog);
+				clone.current = blog;
 			}
 
 			if (isOpen) {

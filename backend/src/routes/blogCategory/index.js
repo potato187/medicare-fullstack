@@ -8,7 +8,7 @@ const { createSchema, querySchema, deleteSchema, sortableSchema } = require('./s
 const router = express.Router();
 
 router.use(authMiddleware.authorization);
-router.use(authMiddleware.checkRoles(['admin']));
+router.use(authMiddleware.checkRoles(['admin', 'mod']));
 
 router.get('/', validateRequest(querySchema, 'query'), BlogCategoryController.getAll);
 router.get('/flatten-blog-categories', validateRequest(querySchema, 'query'), BlogCategoryController.getFlattenAll);

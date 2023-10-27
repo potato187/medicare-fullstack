@@ -22,18 +22,21 @@ class DoctorController {
 
 	createOne = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
+			code: 400201,
 			metadata: await DoctorService.createOne(req.body),
 		}).send(res);
 	});
 
 	insertMany = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
+			code: 401201,
 			metadata: await DoctorService.insertMany(req.body.doctors),
 		}).send(res);
 	});
 
 	updateOne = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 400200,
 			metadata: await DoctorService.updateOne({
 				id: req.params.id,
 				updateBody: req.body,
@@ -43,6 +46,7 @@ class DoctorController {
 
 	deleteOne = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 403200,
 			metadata: await DoctorService.deleteOne({
 				id: req.params.id,
 			}),
