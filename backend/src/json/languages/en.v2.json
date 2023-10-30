@@ -42,104 +42,77 @@
 		"login": "Login",
 		"title": {
 			"default": "Title",
-			"en": "Title - English",
-			"vi": "Title - Vietnamese"
-		},
-		"content": {
-			"en": "Content - English",
-			"vi": "Content - Vietnamese"
-		},
-		"description": {
-			"en": "Description - English",
-			"vi": "Description - Vietnamese"
-		},
-		"full_url": "Full url"
+			"en": "Title (English)",
+			"vi": "Title (Vietnamese)"
+		}
 	},
-
-	"form": {
-		"fullName": "Họ và tên",
-		"firstName": "Họ",
-		"lastName": "Tên",
-		"gender": "Giới tính",
-		"phone": "Số điện thoại",
-		"address": "Địa chỉ",
-		"files": "Tải lên tệp",
-		"image": "Ảnh đại diện",
-		"profile": "Hồ sơ",
-		"change_password": "Đổi mật khẩu",
-		"search_placeholder": "Nhập tìm kiếm của bạn...",
-		"username": "Tên người dùng",
+	"forms": {
+		"fullName": "Full Name",
+		"firstName": "First Name",
+		"lastName": "Last Name",
+		"gender": "Gender",
+		"phone": "Phone Number",
+		"address": "Address",
+		"files": "Upload Files",
+		"image": "Avatar",
+		"profile": "Profile",
+		"change_password": "Change Password",
+		"search_placeholder": "Enter your search...",
+		"username": "Username",
 		"email": "Email",
-		"email_placeholder": "Nhập email của bạn",
-		"password": "Mật khẩu",
-		"password_placeholder": "Nhập mật khẩu của bạn",
-		"confirm_password": "Xác nhận mật khẩu",
-		"new_password": "Mật khẩu mới",
-		"display": "Hiển thị",
-		"choose_file_text": "Chọn tệp",
+		"email_placeholder": "Enter your email",
+		"password": "Password",
+		"password_placeholder": "Enter your password",
+		"confirm_password": "Confirm Password",
+		"new_password": "New Password",
+		"display": "Display",
+		"choose_file_text": "Choose file",
 		"multi_select": {
-			"empty_options": "Không có lựa chọn nào để chọn"
+			"empty_options": "No choices to choose from"
 		},
-		"message": {
+		"messages": {
 			"error": {
-				"required": "<span>{label}</span> là bắt buộc",
-				"matched": "Mật khẩu không khớp.",
-				"email_format": "Email của bạn không hợp lệ",
-				"phone_format": "Số điện thoại của bạn không hợp lệ",
-				"password": "Mật khẩu của bạn yếu",
-				"media_extension": "Phần mở rộng tệp không hợp lệ",
-				"select_required": "<span>{label}</span> nên có ít nhất 1 tùy chọn được chọn."
+				"required": "<span>{label}</span> is required",
+				"matched": "Your passwords do not match.",
+				"email_format": "Your email is in an invalid format",
+				"phone_format": "Your phone number is in an invalid format",
+				"password": "Your password is weak",
+				"media_extension": "Invalid file media extension",
+				"select_required": "<span>{label}</span> should have at least 1 option selected."
 			}
 		}
 	},
-
 	"table": {
-		"no": "STT",
-		"actions": "Hành động",
-		"status": "Trạng thái",
-		"show": "Hiển thị",
-		"entries": "Bản ghi",
-		"index": "Chỉ mục"
+		"no": "No.",
+		"actions": "Actions",
+		"status": "Status",
+		"show": "Show",
+		"entries": "Entries",
+		"index": "Index"
 	},
-
-	"button": {
-		"update": "Cập nhật",
-		"create": "Tạo mới",
-		"register": "Đăng ký",
-		"close": "Đóng",
-		"delete": "Xóa",
-		"view": "Xem",
-		"cancel": "Hủy",
-		"confirm": "Xác nhận",
-		"export": "Xuất",
-		"import": "Nhập",
-		"add": "Thêm",
-		"login": "Đăng nhập ngay",
-		"create_user": "Tạo người dùng",
-		"export_users": "Xuất người dùng",
-		"import_users": "Nhập người dùng",
-		"create_doctor": "Tạo bác sĩ",
-		"export_doctors": "Xuất bác sĩ",
-		"import_doctors": "Nhập bác sĩ",
-		"sort": "Sắp xếp"
+	"buttons": {
+		"update": "Update",
+		"create": "Create",
+		"register": "Register",
+		"close": "Close",
+		"delete": "Delete",
+		"view": "View",
+		"cancel": "Cancel",
+		"confirm": "Confirm",
+		"export": "Export",
+		"import": "Import",
+		"add": "Add",
+		"login": "Login Now",
+		"create_user": "Create User",
+		"export_users": "Export Users",
+		"import_users": "Import Users",
+		"create_doctor": "Create Doctor",
+		"export_doctors": "Export Doctors",
+		"import_doctors": "Import Doctors"
 	},
 
 	"dashboard": {
 		"title": "Dashboard",
-
-		"admin": {
-			"title": "Admin Manager",
-			"manage": { "title": "Manage Admins" },
-			"modal": {
-				"create": { "title": "Create Admin" },
-				"view": { "title": "View Admin's Profile" },
-				"update": { "title": "Update Admin's Profile" },
-				"deletion": {
-					"title": "Confirm Deletion",
-					"description": "Are you sure you want to delete the admin with email <b>{email}</b>? This action cannot be undone."
-				}
-			}
-		},
 
 		"languages": {
 			"title": "Languages",
@@ -149,13 +122,13 @@
 
 		"personal": {
 			"title": "Personal",
-			"profile_setting": { "title": "Profile Settings" }
+			"profile_settings": { "title": "Profile Settings" }
 		},
 
 		"booking": {
 			"title": "Booking Service",
 			"manage": { "title": "Manage Bookings" },
-			"modal": {
+			"modals": {
 				"update": { "title": "Update Booking" },
 				"deletion": {
 					"title": "Confirm Deletion of the Booking",
@@ -167,7 +140,7 @@
 		"specialty": {
 			"title": "Specialty Manager",
 			"manage": { "title": "Manage Specialties" },
-			"modal": {
+			"modals": {
 				"export": {
 					"title": "Export Doctors",
 					"export_all": "Export All Doctors",
@@ -176,9 +149,9 @@
 					"warning_message": { "export_selected": "Please select the doctors you want to export." }
 				},
 				"import": { "title": "Import Modal" },
-				"update": { "title": "Update Doctor" },
-				"create": { "title": "Create Doctor" },
-				"deletion": {
+				"update_doctor": { "title": "Update Doctor" },
+				"create_doctor": { "title": "Create Doctor" },
+				"confirm_deletion": {
 					"title": "Confirm Deletion",
 					"description": "Are you sure you want to delete the doctor with email <b>{email}</b>? This action cannot be undone."
 				}
@@ -191,7 +164,7 @@
 			"categories": { "title": "Category Manager" },
 			"news": {
 				"title": "News",
-				"modal": {
+				"modals": {
 					"create": { "title": "Create News" },
 					"update": { "title": "Update News" },
 					"deletion": {
@@ -200,23 +173,31 @@
 					}
 				}
 			},
-
+			"create": { "title": "Create Blog" },
 			"modal": {
-				"category": {
-					"update": { "title": "Update Category" },
-					"create": { "title": "Create Category" },
-					"deletion": {
+				"titleEn": "Title (English)",
+				"titleVi": "Title (Vietnamese)",
+				"slug": "Category Slug",
+				"url": "Page URL",
+				"display": "Display",
+				"buttons": {
+					"create_blog": "Create New Blog",
+					"sort_categories": "Sort Categories",
+					"add_category": "Add New Category"
+				},
+				"modals": {
+					"add_category": { "title": "Add Category" },
+					"update_category": { "title": "Update Category" },
+					"create_category": { "title": "Create Category" },
+					"confirm_deletion": {
 						"title": "Confirm Category Deletion",
 						"description": "Are you sure you want to delete the category and its children with the title <b>{title}</b>? This action cannot be undone."
-					}
-				},
-				"sort": {
-					"title": "Confirm Category Sorting",
-					"description": "Are you sure you want to sort all categories and their children? This action cannot be undone."
-				},
-				"blog": {
-					"create": "Create New Blog",
-					"update": { "title": "Blog Editor" },
+					},
+					"sort_categories": {
+						"title": "Confirm Category Sorting",
+						"description": "Are you sure you want to sort all categories and their children? This action cannot be undone."
+					},
+					"update_blog": { "title": "Blog Editor" },
 					"deletion": {
 						"title": "Confirm Blog Deletion",
 						"description": "Are you sure you want to delete the blog with the title <b>{title}</b>? This action cannot be undone."
@@ -227,10 +208,10 @@
 
 		"modules": {
 			"title": "Modules",
-			"setting": { "title": "Website Manager Settings" },
+			"settings": { "title": "Website Manager Settings" },
 			"header": {
 				"title": "Header Manager",
-				"modal": {
+				"modals": {
 					"deletion": {
 						"title": "Confirm Link Deletion",
 						"description": "Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."
@@ -240,12 +221,14 @@
 					"sort": {
 						"title": "Confirm Sorting",
 						"description": "Are you sure you want to sort all links and their children? This action cannot be undone."
-					}
+					},
+					"button_sort": "Sort Links",
+					"button_add": "Add New Link"
 				}
 			},
 			"footer": {
 				"title": "Footer Manager",
-				"modal": {
+				"modals": {
 					"deletion": {
 						"title": "Confirm Link Deletion",
 						"description": "Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."
@@ -255,12 +238,14 @@
 					"sort": {
 						"title": "Confirm Sorting",
 						"description": "Are you sure you want to sort all links and their children? This action cannot be undone."
-					}
+					},
+					"button_sort": "Sort Links",
+					"button_add": "Add New Link"
 				}
 			},
 			"html_content": {
 				"title": "HTML Content Manager",
-				"modal": {
+				"modals": {
 					"deletion": {
 						"title": "Confirm HTML Content Deletion",
 						"description": "Are you sure you want to delete the HTML content with the <b>{title}</b>? This action cannot be undone."

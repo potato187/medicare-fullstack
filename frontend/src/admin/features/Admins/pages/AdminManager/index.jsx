@@ -223,13 +223,13 @@ export default function AdminManager() {
 			/>
 
 			<ConfirmModal
-				idTitleIntl='dashboard.admin.modal.confirm_deletion_admin.title'
+				idTitleIntl='dashboard.admin.modal.deletion.title'
 				isOpen={statusConfirmModal}
 				onClose={toggleConfirmDeletionModal}
 				onSubmit={handleConfirmDeletion}
 			>
 				<FormattedDescription
-					id='dashboard.admin.modal.confirm_deletion_admin.description'
+					id='dashboard.admin.modal.deletion.description'
 					values={{ email: Admins[adminIndex]?.email ?? '' }}
 				/>
 			</ConfirmModal>

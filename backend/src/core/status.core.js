@@ -234,6 +234,10 @@ const codeReason = {
 		en: 'Link deleted successfully.',
 		vi: 'Đã xóa Liên kết thành công',
 	},
+	706200: {
+		en: 'Links sorted successfully.',
+		vi: 'Liên kết đã được sắp xếp thành công.',
+	},
 	700201: {
 		en: 'HTML content created successfully.',
 		vi: 'Đã tạo Nội dung HTML thành công',
@@ -241,6 +245,10 @@ const codeReason = {
 	701201: {
 		en: 'Link created successfully.',
 		vi: 'Đã tạo Liên kết thành công',
+	},
+	702404: {
+		en: 'HTML content is deleted or does not exist.',
+		vi: 'Nội dung HTML đã bị xóa hoặc không tồn tại.',
 	},
 };
 

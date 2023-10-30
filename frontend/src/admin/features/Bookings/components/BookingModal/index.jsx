@@ -87,7 +87,7 @@ export function BookingModal({
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='md' isOpen={isOpen}>
-				<BaseModalHeader idIntl='dashboard.booking.modal.update_booking.title' onClose={onClose} />
+				<BaseModalHeader idIntl='dashboard.booking.modal.update.title' onClose={onClose} />
 				<BaseModalBody className='scrollbar'>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>

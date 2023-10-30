@@ -3,6 +3,7 @@ const { authMiddleware } = require('@/auth');
 const { processQueryParams, validateRequest } = require('@/middleware');
 const { HtmlContentController } = require('@/controllers');
 const { idSchema } = require('@/validations');
+const { upload } = require('@/storage');
 const { createSchema, querySchema, updateSchema } = require('./schema');
 
 const router = express.Router();
@@ -23,11 +24,12 @@ router.get('/:id', validateRequest(idSchema, 'params'), HtmlContentController.ge
 
 router.use(authMiddleware.checkRoles(['admin']));
 
-router.post('/', validateRequest(createSchema), HtmlContentController.createOne);
+router.post('/', upload.single('image[0]'), validateRequest(createSchema), HtmlContentController.createOne);
 
 router.patch(
 	'/:id',
 	validateRequest(idSchema, 'params'),
+	upload.single('image[0]'),
 	validateRequest(updateSchema),
 	HtmlContentController.UpdateOneById,
 );

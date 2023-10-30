@@ -243,12 +243,12 @@ export default function NewsManager() {
 
 			<ConfirmModal
 				isOpen={statusConfirmModal}
-				idTitleIntl='dashboard.blogs.news.modals.delete.title'
+				idTitleIntl='dashboard.blogs.news.modal.deletion.title'
 				onClose={toggleConfirmModal}
 				onSubmit={handleDeletionConfirmation}
 			>
 				<FormattedDescription
-					id='dashboard.blogs.news.modals.delete.description'
+					id='dashboard.blogs.news.modal.deletion.description'
 					values={{ title: News[index]?.name?.[languageId] || '' }}
 				/>
 			</ConfirmModal>

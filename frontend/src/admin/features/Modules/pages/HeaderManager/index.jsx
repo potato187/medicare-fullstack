@@ -22,7 +22,7 @@ export default function HeaderManager() {
 	} = useAuth();
 
 	const focusedLink = useRef({});
-	const titleIntl = `dashboard.modules.header.modal.${focusedLink.current?.id ? 'update' : 'create'}_modal.title`;
+	const titleIntl = `dashboard.modules.header.modal.${focusedLink.current?.id ? 'update' : 'create'}.title`;
 	const [links, setLinks] = useState([]);
 
 	const [isOpenModal, toggleModal] = useToggle();
@@ -116,33 +116,33 @@ export default function HeaderManager() {
 					<Divider />
 					<div className='d-flex justify-content-center gap-2 pt-4'>
 						<Button size='sm' info onClick={toggleSortingModal}>
-							<FormattedMessage id='dashboard.modules.header.modal.button_sort' />
+							<FormattedMessage id='button.sort' />
 						</Button>
 						<Button size='sm' onClick={toggleLinkModal}>
-							<FormattedMessage id='dashboard.modules.header.modal.button_add' />
+							<FormattedMessage id='button.add' />
 						</Button>
 					</div>
 				</div>
 			</Container>
 
 			<ConfirmModal
-				idTitleIntl='dashboard.modules.header.modal.sort_modal.title'
+				idTitleIntl='dashboard.modules.header.modal.sort.title'
 				isOpen={isOpenSortingModal}
 				onClose={toggleSortingModal}
 				onSubmit={handleOnSorting}
 			>
-				<FormattedMessage id='dashboard.modules.header.modal.sort_modal.description' />
+				<FormattedMessage id='dashboard.modules.header.modal.sort.description' />
 			</ConfirmModal>
 
 			<ConfirmModal
-				idTitleIntl='dashboard.modules.header.modal.deletion_modal.title'
+				idTitleIntl='dashboard.modules.header.modal.deletion.title'
 				isOpen={isOpenConfirm}
 				onClose={toggleConfirmModal}
 				onSubmit={handleOnSubmitDeletion}
 			>
 				<FormattedDescription
-					id='dashboard.modules.header.modal.deletion_modal.description'
-					values={{ title: focusedLink?.name?.[languageId] || '' }}
+					id='dashboard.modules.header.modal.deletion.description'
+					values={{ title: focusedLink.current?.name?.[languageId] || '' }}
 				/>
 			</ConfirmModal>
 

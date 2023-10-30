@@ -225,13 +225,13 @@ export default function BookingManager() {
 			/>
 
 			<ConfirmModal
-				idTitleIntl='dashboard.booking.modal.confirm_deletion_booking.title'
+				idTitleIntl='dashboard.booking.modal.deletion.title'
 				isOpen={statusConfirmModal}
 				onClose={toggleConfirmDeletion}
 				onSubmit={handleConfirmDeletionBooking}
 			>
 				<FormattedDescription
-					id='dashboard.booking.modal.confirm_deletion_booking.message'
+					id='dashboard.booking.modal.deletion.message'
 					values={{ phone: Bookings[bookingIndex]?.phone || '' }}
 				/>
 			</ConfirmModal>

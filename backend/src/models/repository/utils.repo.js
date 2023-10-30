@@ -79,6 +79,17 @@ class UtilsRepo {
 		return doc;
 	}
 
+	static async findDocAndThrowError({ filter, model, code = 100404, fields = ['_id'] }) {
+		const _model = UtilsRepo.getModel(model);
+		const doc = await _model.findOne(filter).select(fields).lean();
+
+		if (!doc) {
+			throw new NotFoundRequestError({ code });
+		}
+
+		return doc;
+	}
+
 	static async checkConflicted({ model, filter, code = 100400 }) {
 		const result = await UtilsRepo.findOne({ model, filter });
 

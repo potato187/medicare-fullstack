@@ -230,12 +230,12 @@ export default function HtmlContentManager() {
 			/>
 			<ConfirmModal
 				isOpen={isOpenConfirmModal}
-				idTitleIntl='html_content.modal.html_content_deletion_confirmation_modal.title'
+				idTitleIntl='dashboard.modules.html_content.modal.deletion.title'
 				onClose={toggleConfirmModal}
 				onSubmit={handleDeleteHtmlContent}
 			>
 				<FormattedDescription
-					id='html_content.modal.html_content_deletion_confirmation_modal.description'
+					id='dashboard.modules.html_content.modal.deletion.description'
 					values={{ title: htmlContentCurrent?.title?.[languageId] || '' }}
 				/>
 			</ConfirmModal>

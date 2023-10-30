@@ -22,6 +22,7 @@ export function BlogCategoryModal({
 	onCreate = (f) => f,
 	onUpdate = (f) => f,
 }) {
+	const typeModal = blogCategory ? 'update' : 'create';
 	const methods = useForm({
 		defaultValues,
 		resolver: yupResolver(schema),
@@ -60,31 +61,28 @@ export function BlogCategoryModal({
 	return (
 		<FormProvider {...methods}>
 			<BaseModal isOpen={isOpen} onClose={handleClose}>
-				<BaseModalHeader
-					idIntl={`dashboard.blogs.modal.category_${blogCategory ? 'update' : 'create'}_modal.title`}
-					onClose={handleClose}
-				/>
+				<BaseModalHeader idIntl={`dashboard.blogs.modal.category.${typeModal}.title`} onClose={handleClose} />
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
 							<div className='col-12 col-md-6 mb-6'>
-								<FloatingLabelInput name='name.vi' labelIntl='dashboard.blogs.modal.titleEn' />
+								<FloatingLabelInput name='name.vi' labelIntl='common.title.en' />
 							</div>
 							<div className='col-12 col-md-6 mb-6'>
-								<FloatingLabelInput name='name.en' labelIntl='dashboard.blogs.modal.titleVi' />
+								<FloatingLabelInput name='name.en' labelIntl='common.title.vi' />
 							</div>
 							{blogCategory && isOpen ? (
 								<>
 									<div className='col-12 col-md-6 mb-6'>
-										<FloatingLabelInput name='url.vi' labelIntl='dashboard.blogs.modal.url' disabled />
+										<FloatingLabelInput name='url.vi' labelIntl='common.full_url' disabled />
 									</div>
 									<div className='col-12 col-md-6 mb-6'>
-										<FloatingLabelInput name='url.en' labelIntl='dashboard.blogs.modal.url' disabled />
+										<FloatingLabelInput name='url.en' labelIntl='common.full_url' disabled />
 									</div>
 								</>
 							) : null}
 							<div className='col-12'>
-								<FieldCheckBox name='isDisplay' type='checkbox' labelIntl='dashboard.blogs.modal.display' />
+								<FieldCheckBox name='isDisplay' type='checkbox' labelIntl='form.display' />
 							</div>
 						</div>
 					</form>

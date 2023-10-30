@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 const codeReason = require('@/core/status.core');
+const { logEventHelper } = require('@/helpers');
 
 const errorNames = ['MongoServerError', 'MulterError'];
 
 module.exports = (error, req, res, next) => {
+	logEventHelper(req, error.message);
 	if (errorNames.includes(error.name)) {
 		return res.status(400).json({
 			status: 'error',

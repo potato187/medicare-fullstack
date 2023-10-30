@@ -7,7 +7,7 @@ class HtmlContentController {
 	createOne = tryCatch(async (req, res, next) => {
 		new CreatedResponse({
 			code: 700201,
-			metadata: await HtmlContentService.createOne(req.body),
+			metadata: await HtmlContentService.createOne(req),
 		}).send(res);
 	});
 
@@ -32,10 +32,7 @@ class HtmlContentController {
 	UpdateOneById = tryCatch(async (req, res, next) => {
 		new OkResponse({
 			code: 700200,
-			metadata: await HtmlContentService.updateOneById({
-				id: req.params.id,
-				updateBody: req.body,
-			}),
+			metadata: await HtmlContentService.updateOneById(req),
 		}).send(res);
 	});
 

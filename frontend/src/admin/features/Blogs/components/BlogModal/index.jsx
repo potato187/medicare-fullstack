@@ -123,7 +123,7 @@ export function BlogModal({
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='xl' isOpen={isOpen} onClose={onClose}>
-				<BaseModalHeader idIntl='dashboard.blogs.modal.blog_editor_modal.title' onClose={onClose} />
+				<BaseModalHeader idIntl='dashboard.blogs.modal.blog.update.title' onClose={onClose} />
 				<BaseModalBody className='scrollbar'>
 					<div className='row'>
 						<div className='col-12 col-lg-9 order-2 order-lg-1'>

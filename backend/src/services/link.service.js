@@ -41,7 +41,7 @@ class LinkService {
 				const { _id, ...rest } = link;
 				rest.id = _id;
 				rest.depth = depth;
-				rest.collapsed = true;
+				rest.collapsed = false;
 				rest.children = await LinkService.getAll(rest.id, depth + 1, params);
 				return rest;
 			}),

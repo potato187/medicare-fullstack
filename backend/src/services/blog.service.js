@@ -1,3 +1,4 @@
+const { logEventHelper } = require('@/helpers');
 const { UtilsRepo } = require('@/models/repository');
 const { BLOG_MODEL } = require('@/models/repository/constant');
 const { getInfoData, convertToObjectIdMongodb, createSearchData } = require('@/utils');
@@ -38,21 +39,23 @@ class BlogService {
 		});
 	}
 
-	static async createOne({ file, body }) {
+	static async createOne(req) {
+		const { file, body } = req;
 		const newCategory = await UtilsRepo.createOne({
 			model: BlogService.model,
 			body,
 		});
 
 		if (file) {
-			const oldPath = file.path;
-			const newPath = BlogService.generateImagePath(newCategory._id, file);
-			fs.rename(oldPath, newPath, async (error) => {
-				if (!error) {
-					newCategory.image = newPath;
-					await newCategory.save();
-				}
-			});
+			try {
+				const oldPath = file.path;
+				const newPath = BlogService.generateImagePath(newCategory._id, file);
+				fs.rename(oldPath, newPath);
+				newCategory.image = newPath;
+				await newCategory.save();
+			} catch (error) {
+				logEventHelper(req, error.message);
+			}
 		}
 
 		return getInfoData({

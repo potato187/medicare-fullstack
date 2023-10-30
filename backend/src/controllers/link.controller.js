@@ -35,6 +35,7 @@ class LinkController {
 
 	sortable = tryCatch(async (req, res, next) => {
 		new OkResponse({
+			code: 706200,
 			metadata: await LinkService.sortable(req.body),
 		}).send(res);
 	});

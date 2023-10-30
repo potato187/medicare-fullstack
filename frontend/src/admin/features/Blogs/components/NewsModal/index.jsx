@@ -66,7 +66,7 @@ export function NewsModal({
 	return (
 		<FormProvider {...methods}>
 			<BaseModal isOpen={isOpen} onClose={handleOnClose}>
-				<BaseModalHeader idIntl={`dashboard.blogs.news.modals.${typeModal}.title`} onClose={handleOnClose} />
+				<BaseModalHeader idIntl={`dashboard.blogs.news.modal.${typeModal}.title`} onClose={handleOnClose} />
 				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>

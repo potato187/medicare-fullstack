@@ -37,6 +37,7 @@ export function DoctorModal({
 	});
 
 	const clone = useRef(null);
+	const typeModal = doctorId ? 'update' : 'create';
 
 	const handleOnClose = () => {
 		methods.reset();
@@ -71,10 +72,7 @@ export function DoctorModal({
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='lg' isOpen={isOpen} onClose={handleOnClose}>
-				<BaseModalHeader
-					idIntl={`dashboard.specialty.modal.${doctorId ? 'update' : 'create'}_doctor.title`}
-					onClose={handleOnClose}
-				/>
+				<BaseModalHeader idIntl={`dashboard.specialty.modal.${typeModal}.title`} onClose={handleOnClose} />
 				<BaseModalBody className='scrollbar'>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<Tabs tabIndexActive={0}>

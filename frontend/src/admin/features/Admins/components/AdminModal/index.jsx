@@ -61,7 +61,7 @@ export function AdminModal({
 		<FormProvider {...methods}>
 			<BaseModal isOpen={isOpen} onClose={handleOnClose}>
 				<BaseModalHeader
-					idIntl={`dashboard.admin.modal.${adminId ? 'update_admin' : 'create_admin'}.title`}
+					idIntl={`dashboard.admin.modal.${adminId ? 'update' : 'create'}.title`}
 					onClose={handleOnClose}
 				/>
 				<BaseModalBody>

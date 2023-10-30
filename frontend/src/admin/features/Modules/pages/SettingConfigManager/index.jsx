@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { convertName } from 'admin/features/Languages/utils';
 import { settingConfigApi } from 'api';
 import {
 	Breadcrumb,
@@ -10,12 +11,11 @@ import {
 	FloatingLabelInput,
 	WrapScrollBar,
 } from 'components';
-import { convertName } from 'admin/features/Languages/utils';
-import { showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { useAuth } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
+import { showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { settingConfigSchema } from './validation';
 
 export default function SettingConfigManager() {
@@ -59,7 +59,7 @@ export default function SettingConfigManager() {
 				});
 			});
 		}
-	}, [configs, methods]);
+	}, [configs]);
 
 	return (
 		<Container id='page-main'>

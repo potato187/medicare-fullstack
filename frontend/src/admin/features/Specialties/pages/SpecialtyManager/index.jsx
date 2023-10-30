@@ -300,13 +300,13 @@ export default function SpecialtyManager() {
 			/>
 
 			<ConfirmModal
-				idTitleIntl='dashboard.specialty.modal.confirm_deletion.title'
+				idTitleIntl='dashboard.specialty.modal.deletion.title'
 				isOpen={statusConfirmModal}
 				onClose={toggleConfirmModal}
 				onSubmit={handleOnSubmitDeletion}
 			>
 				<FormattedDescription
-					id='dashboard.specialty.modal.confirm_deletion.description'
+					id='dashboard.specialty.modal.deletion.description'
 					values={{ email: Doctors[doctorIndex]?.email || '' }}
 				/>
 			</ConfirmModal>

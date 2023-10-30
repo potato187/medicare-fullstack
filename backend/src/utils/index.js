@@ -2,7 +2,7 @@ const { Types } = require('mongoose');
 const crypto = require('node:crypto');
 const _ = require('lodash');
 const slugify = require('slugify');
-const fs = require('fs');
+const path = require('path');
 
 const typeOf = (value) => Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
 
@@ -80,6 +80,10 @@ const removeFalsyProperties = (falsyMap = ['undefined', 'null']) => {
 	};
 };
 
+const generateImagePathByObjectId = (objectId, file, folderPath) => {
+	return path.join(folderPath, `${objectId}${path.extname(file.originalname)}`);
+};
+
 module.exports = {
 	convertToObjectIdMongodb,
 	createSearchData,
@@ -94,4 +98,5 @@ module.exports = {
 	removeFalsyProperties,
 	typeOf,
 	pickFields,
+	generateImagePathByObjectId,
 };

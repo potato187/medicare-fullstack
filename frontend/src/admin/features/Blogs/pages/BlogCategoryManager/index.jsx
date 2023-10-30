@@ -98,32 +98,32 @@ export default function BlogCategoryManager() {
 					<Divider />
 					<div className='d-flex justify-content-center gap-2 pt-3 '>
 						<Button size='sm' info onClick={toggleSortableModal}>
-							<FormattedMessage id='dashboard.blogs.modal.button_sort' />
+							<FormattedMessage id='button.sort' />
 						</Button>
 						<Button size='sm' onClick={() => handleToggleModal()}>
-							<FormattedMessage id='dashboard.blogs.modal.button_add' />
+							<FormattedMessage id='button.add' />
 						</Button>
 					</div>
 				</div>
 			</Container>
 
 			<ConfirmModal
-				idTitleIntl='dashboard.blogs.modal.sort_categories_confirmation_modal.title'
+				idTitleIntl='dashboard.blogs.modal.sort.title'
 				isOpen={isOpenSortModal}
 				onClose={toggleSortableModal}
 				onSubmit={handleSort}
 			>
-				<FormattedMessage id='dashboard.blogs.modal.sort_categories_confirmation_modal.description' />
+				<FormattedMessage id='dashboard.blogs.modal.sort.description' />
 			</ConfirmModal>
 
 			<ConfirmModal
-				idTitleIntl='dashboard.blogs.modal.category_deletion_confirmation_modal.title'
+				idTitleIntl='dashboard.blogs.modal.category.deletion.title'
 				isOpen={isOpenDeletionModal}
 				onClose={toggleDeletionModal}
 				onSubmit={handleConfirmDeletion}
 			>
 				<FormattedDescription
-					id='dashboard.blogs.modal.category_deletion_confirmation_modal.description'
+					id='dashboard.blogs.modal.category.deletion.description'
 					values={{ title: focusedCategory.current?.name?.[languageId] || '' }}
 				/>
 			</ConfirmModal>

@@ -20,14 +20,18 @@ const createSchema = Joi.object().keys({
 	pageType: fieldsValidator(PAGES).default(PAGES),
 	positionType: pagePotionsValidator.default(PAGE_POSITIONS[0]),
 	index: Joi.number().integer().min(0).default(0),
-	title: Joi.object({
-		vi: Joi.string().required(),
-		en: Joi.string().required(),
-	}).required(),
-	content: Joi.object({
-		vi: stringAllowEmpty.default(''),
-		en: stringAllowEmpty.default(''),
-	}).required(),
+	title: Joi.object()
+		.keys({
+			vi: Joi.string().required(),
+			en: Joi.string().required(),
+		})
+		.required(),
+	content: Joi.object()
+		.keys({
+			vi: stringAllowEmpty.default(''),
+			en: stringAllowEmpty.default(''),
+		})
+		.required(),
 	url: stringAllowEmpty.default(''),
 	image: stringAllowEmpty.default(''),
 	icon: stringAllowEmpty.default(''),
@@ -37,14 +41,14 @@ const updateSchema = Joi.object({
 	pageType: fieldsValidator(PAGES),
 	positionType: pagePotionsValidator,
 	index: Joi.number().integer().min(0),
-	title: {
+	title: Joi.object({
 		vi: Joi.string(),
 		en: Joi.string(),
-	},
-	content: {
+	}),
+	content: Joi.object({
 		vi: stringAllowEmpty,
 		en: stringAllowEmpty,
-	},
+	}),
 	url: stringAllowEmpty,
 	image: stringAllowEmpty,
 	icon: stringAllowEmpty,

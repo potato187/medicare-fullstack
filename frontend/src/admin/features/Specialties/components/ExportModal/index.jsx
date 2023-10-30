@@ -12,23 +12,23 @@ export function ExportModal({ isOpen = false, onClose = (f) => f, onSubmit = (f)
 
 	return (
 		<BaseModal size='sm' isOpen={isOpen}>
-			<BaseModalHeader idIntl='dashboard.specialty.modal.export_modal.title' onClose={onClose} />
+			<BaseModalHeader idIntl='dashboard.specialty.modal.export.title' onClose={onClose} />
 			<BaseModalBody>
 				<FormProvider {...methods}>
 					<form onSubmit={methods.handleSubmit(onSubmit)}>
 						<div className='d-flex flex-column gap-2'>
 							<FieldRadio
-								labelIntl='dashboard.specialty.modal.export_modal.export_all'
+								labelIntl='dashboard.specialty.modal.export.export_all'
 								{...methods.register('type')}
 								value='all'
 							/>
 							<FieldRadio
-								labelIntl='dashboard.specialty.modal.export_modal.export_selected'
+								labelIntl='dashboard.specialty.modal.export.export_selected'
 								{...methods.register('type')}
 								value='selected'
 							/>
 							<FieldRadio
-								labelIntl='dashboard.specialty.modal.export_modal.export_per_page'
+								labelIntl='dashboard.specialty.modal.export.export_per_page'
 								{...methods.register('type')}
 								value='page'
 							/>

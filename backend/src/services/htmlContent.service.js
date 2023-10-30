@@ -2,19 +2,34 @@ const fs = require('fs');
 const path = require('path');
 const { UtilsRepo } = require('@/models/repository');
 const { HTML_CONTENT_MODEL } = require('@/models/repository/constant');
-const { convertToObjectIdMongodb, createSearchData, getInfoData } = require('@/utils');
+const { convertToObjectIdMongodb, createSearchData, getInfoData, generateImagePathByObjectId } = require('@/utils');
+const { logEventHelper } = require('@/helpers');
 
 const FIELDS_ABLE_SEARCH = ['title'];
 const CONFIGS_PATH = '../json/modules/htmlContent.config.json';
+const FOLDER_PATH = 'public/uploads/htmlContent';
 
 class HtmlContentService {
 	static model = HTML_CONTENT_MODEL;
 
-	static async createOne(body) {
+	static async createOne(req) {
+		const { file, body } = req;
 		const newHtmlContent = await UtilsRepo.createOne({
 			model: HtmlContentService.model,
 			body,
 		});
+
+		if (file) {
+			try {
+				const oldPath = file.path;
+				const newPath = generateImagePathByObjectId(newHtmlContent._id, file, FOLDER_PATH);
+				fs.renameSync(oldPath, newPath);
+				newHtmlContent.image = newPath;
+				await newHtmlContent.save();
+			} catch (error) {
+				logEventHelper(req, error.message);
+			}
+		}
 
 		return getInfoData({
 			object: newHtmlContent,
@@ -22,20 +37,39 @@ class HtmlContentService {
 		});
 	}
 
-	static async updateOneById({ id, updateBody }) {
-		const select = Object.keys(updateBody);
+	static async updateOneById(req) {
+		const { file, params, body } = req;
+		const { id } = params;
+		const fields = Object.keys(body);
 
-		if (!select.length) return {};
+		if (!fields.length && !file) return {};
+
 		const { model } = HtmlContentService;
 		const filter = { _id: convertToObjectIdMongodb(id) };
 
-		await UtilsRepo.checkIsExist({ filter, model });
+		const { image: oldPath } = await UtilsRepo.findDocAndThrowError({ filter, model, code: 702404, fields: ['image'] });
+
+		if (file) {
+			try {
+				const newPath = generateImagePathByObjectId(id, file, FOLDER_PATH);
+				fields.push('image');
+				body.image = newPath;
+				if (oldPath && fs.existsSync(oldPath)) {
+					fs.unlinkSync(oldPath);
+					fs.renameSync(oldPath, newPath);
+				} else {
+					fs.renameSync(file.path, newPath);
+				}
+			} catch (error) {
+				logEventHelper(req, error.message);
+			}
+		}
 
 		return UtilsRepo.findOneAndUpdate({
 			model,
 			filter,
-			updateBody,
-			select: Object.keys(updateBody),
+			updateBody: body,
+			select: fields,
 		});
 	}
 

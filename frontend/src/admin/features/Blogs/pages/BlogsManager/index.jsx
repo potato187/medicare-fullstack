@@ -234,13 +234,13 @@ export default function BlogsManager() {
 				</ContainerGrid>
 			</Container>
 			<ConfirmModal
-				idTitleIntl='dashboard.blogs.modal.blog_deletion_confirmation_modal.title'
+				idTitleIntl='dashboard.blogs.modal.category.deletion.title'
 				isOpen={statusConfirmModal}
 				onClose={toggleConfirmModal}
 				onSubmit={handleDelete}
 			>
 				<FormattedDescription
-					id='dashboard.blogs.modal.blog_deletion_confirmation_modal.description'
+					id='dashboard.blogs.modal.blog.deletion.description'
 					values={{ title: Blogs?.[blogIndex]?.title?.[languageId] || '' }}
 				/>
 			</ConfirmModal>

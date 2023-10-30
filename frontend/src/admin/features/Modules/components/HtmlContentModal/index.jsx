@@ -64,10 +64,7 @@ export function HtmlContentModal({
 	return (
 		<FormProvider {...methods}>
 			<BaseModal isOpen={isOpen} onClose={handleOnClose}>
-				<BaseModalHeader
-					idIntl='dashboard.modules.html_content.modal.create_html_content.title'
-					onClose={handleOnClose}
-				/>
+				<BaseModalHeader idIntl='dashboard.modules.html_content.modal.create.title' onClose={handleOnClose} />
 				<BaseModalBody className='scrollbar'>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<div className='row'>
