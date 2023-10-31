@@ -1,17 +1,18 @@
 import { Button } from 'components/BaseUI';
 import produce from 'immer';
 import { MdOutlineDarkMode, MdOutlineLightMode } from 'react-icons/md';
-import { THEME, useTheme } from 'stores';
+import { themes, useTheme } from 'stores';
 
 export function ButtonToggleTheme() {
 	const { theme, setTheme } = useTheme();
 	const { themeMode } = theme;
-	const isDarkTheme = themeMode === THEME.DARK ? 'on' : 'off';
+	const { light, dark } = themes;
+	const isDarkTheme = themeMode === dark ? 'on' : 'off';
 
 	const handleToggleTheme = () => {
 		setTheme(
 			produce((draft) => {
-				draft.themeMode = draft.themeMode === THEME.LIGHT ? THEME.DARK : THEME.LIGHT;
+				draft.themeMode = draft.themeMode === light ? dark : light;
 			}),
 		);
 	};

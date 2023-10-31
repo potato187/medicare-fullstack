@@ -110,7 +110,7 @@ export function ImportExcelModal({
 
 	return (
 		<BaseModal size='lg' isOpen={isOpen}>
-			<BaseModalHeader idIntl='dashboard.specialty.modal.export.title' onClose={onClose} />
+			<BaseModalHeader idIntl='dashboard.specialty.modal.import.title' onClose={onClose} />
 			<BaseModalBody className='scrollbar'>
 				<FormProvider {...methodsFileExcel}>
 					<form className='mb-6' onSubmit={methods.handleSubmit(handleOnSubmit)}>

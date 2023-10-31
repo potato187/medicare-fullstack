@@ -44,13 +44,14 @@
 		}
 	}
 
-	&:hover &__wrapper {
-		> span {
-			width: 100%;
-		}
+	&:hover &__wrapper > span {
+		width: 100%;
 	}
+}
 
-	&[class*='active'] &__wrapper {
+body[data-device='mobile'][data-sidebar='open'] .btn-toggle,
+body[data-device='desktop'][data-sidebar='close'] .btn-toggle {
+	&__wrapper {
 		> span {
 			width: 100%;
 			color: var(--bs-primary);

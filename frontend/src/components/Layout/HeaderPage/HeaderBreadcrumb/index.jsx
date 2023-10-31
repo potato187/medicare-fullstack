@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { useDocumentTitle } from 'hooks';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { generateBreadcrumb } from '../utils';
 import module from './style.module.scss';
 
@@ -31,11 +31,11 @@ export function HeaderBreadcrumb() {
 			<ul className={cn('theme-breadcrumb__list', listCln)}>
 				{breadcrumb.map(({ url = '', intl = '' }) => (
 					<li key={url}>
-						<Link className='text-capitalize' to={`/${url}`}>
+						<span className='text-capitalize' to={`/${url}`} disabled>
 							<span className=' text-nowrap'>
 								<FormattedMessage id={intl} />
 							</span>
-						</Link>
+						</span>
 					</li>
 				))}
 			</ul>

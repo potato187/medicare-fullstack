@@ -1,17 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { languageApi } from 'api';
 import { Breadcrumb, Button, Container, ContainerMain, ContainerTitle, FloatingInput, WrapScrollBar } from 'components';
-import { showToastMessage, tryCatchAndToast } from 'utils';
+import { useAuth } from 'hooks';
 import React, { useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { useLanguages } from 'stores';
+import { showToastMessage, tryCatchAndToast } from 'utils';
 import * as yup from 'yup';
 import { convertData, convertName } from '../../utils';
 
 export default function LanguageManager() {
 	const { languageId = '' } = useParams();
+	const { info } = useAuth();
 	const { languages, validationForm, updateLanguage } = useLanguages();
 	const language = useMemo(() => convertData(languages[languageId]), [languages, languageId]);
 
@@ -23,7 +25,7 @@ export default function LanguageManager() {
 	const handleOnSubmit = tryCatchAndToast(async (data) => {
 		const { metadata, message } = await languageApi.updateLanguageById({ languageId, body: data });
 		updateLanguage(languageId, metadata);
-		showToastMessage(message, languageId);
+		showToastMessage(message, info.languageId);
 	}, languageId);
 
 	useEffect(() => {

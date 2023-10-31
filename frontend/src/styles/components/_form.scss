@@ -8,6 +8,15 @@
 	--checkbox-border-color: #32383e;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	-webkit-background-clip: text !important;
+	-webkit-text-fill-color: #ffffff !important;
+	transition: background-color 5000s ease-in-out 0s !important;
+}
+
 .field-checkbox {
 	--checkbox-bg-active: var(--bs-primary);
 	--checkbox-border-color-active: var(--bs-primary);
