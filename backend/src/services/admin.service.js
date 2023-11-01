@@ -45,7 +45,9 @@ class AdminService {
 			select,
 		});
 
-		await KeyTokenRepo.removeByUserId(id);
+		if (updatedAdmin.email) {
+			await KeyTokenRepo.removeByUserId(id);
+		}
 
 		return updatedAdmin;
 	}

@@ -3,8 +3,7 @@ import { Container, ContainerMain, TabNav, TabNavItem, TabPanel, Tabs, WrapScrol
 import { useAuth } from 'hooks';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { changePassword, updateProfile } from 'reduxStores/slices/auth';
-import { logoutUser } from 'reduxStores/utils';
+import { changePassword, unauthorized, updateProfile } from 'reduxStores/slices/auth';
 import { showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { ChangePassForm, ProfileForm } from '../../components';
 
@@ -21,7 +20,7 @@ export default function ProfileSetting() {
 		if (Object.keys(data).length) {
 			const { message, metadata } = await adminApi.updateById(id, data);
 			if (metadata.email && info.email !== metadata.email) {
-				logoutUser(dispatch, info, tokens);
+				dispatch(unauthorized());
 			} else {
 				dispatch(updateProfile(metadata));
 				showToastMessage(message, languageId);
