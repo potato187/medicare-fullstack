@@ -1,18 +1,17 @@
 import { adminApi, resourceApi } from 'api';
 import { Container, ContainerMain, TabNav, TabNavItem, TabPanel, Tabs, WrapScrollBar } from 'components';
-import { changePassword, updateProfile } from 'reduxStores/slices/auth';
-import { showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { useAuth } from 'hooks';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { changePassword, updateProfile } from 'reduxStores/slices/auth';
+import { logoutUser } from 'reduxStores/utils';
+import { showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { ChangePassForm, ProfileForm } from '../../components';
 
 export default function ProfileSetting() {
-	const {
-		info: { languageId, id },
-		tokens,
-	} = useAuth();
 	const dispatch = useDispatch();
+	const { info, tokens } = useAuth();
+	const { languageId, id } = info;
 	const [genders, setGenders] = useState([]);
 	const Genders = useMemo(() => {
 		return genders.map(({ key, name }) => ({ label: name[languageId], value: key }));
@@ -21,8 +20,12 @@ export default function ProfileSetting() {
 	const handleUpdate = tryCatchAndToast(async (data) => {
 		if (Object.keys(data).length) {
 			const { message, metadata } = await adminApi.updateById(id, data);
-			dispatch(updateProfile(metadata));
-			showToastMessage(message, languageId);
+			if (metadata.email && info.email !== metadata.email) {
+				logoutUser(dispatch, info, tokens);
+			} else {
+				dispatch(updateProfile(metadata));
+				showToastMessage(message, languageId);
+			}
 		}
 	}, languageId);
 

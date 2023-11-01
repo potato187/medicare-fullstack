@@ -37,4 +37,6 @@ services:
     ports:
       - 80:80
 # mongodump -d  medicare-v1 -o  ~/workspaces/medicare-fullstack/docker/backup/
-# mongorestore --uri mongodb://localhost:27017/medicare-v1  /backup/medicare-v1
+# docker compose -p medicare-app up
+# docker start $(docker ps -a -q)
+# mongorestore --uri mongodb://localhost:27017/db_medicare  /backup

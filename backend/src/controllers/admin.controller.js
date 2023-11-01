@@ -6,7 +6,7 @@ const { AdminService } = require('@/services');
 class AdminController {
 	getByQueryParams = tryCatch(async (req, res, next) => {
 		new OkResponse({
-			metadata: await AdminService.getByQueryParams(req.query),
+			metadata: await AdminService.getByQueryParams(req),
 		}).send(res);
 	});
 

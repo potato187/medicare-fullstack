@@ -55,6 +55,7 @@
 .dropdown {
 	--dropdown-mh-header: 32px;
 	--dropdown-border-radius: var(--spacing-xxs);
+	cursor: pointer;
 
 	.dropdown-toggle::after {
 		display: none;

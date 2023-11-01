@@ -11,7 +11,7 @@ export const authLogin = createAsyncThunk('auth/login', async ({ email, password
 	}
 });
 
-export const authLogout = createAsyncThunk('auth/logout', async ({ id, tokens }, { rejectWithValue }) => {
+export const authLogout = createAsyncThunk('auth/logout', ({ id, tokens }, { rejectWithValue }) => {
 	try {
 		const { accessToken, refreshToken } = tokens;
 		return axiosClient.get(`auth/logout`, {
@@ -26,7 +26,7 @@ export const authLogout = createAsyncThunk('auth/logout', async ({ id, tokens },
 	}
 });
 
-export const authRefreshTokens = createAsyncThunk('auth/refreshTokens', async ({ id, tokens }) => {
+export const authRefreshTokens = createAsyncThunk('auth/refreshTokens', ({ id, tokens }) => {
 	const { accessToken, refreshToken } = tokens;
 	return axiosClient.get(`auth/refresh-tokens/${id}`, {
 		headers: {

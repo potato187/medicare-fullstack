@@ -1,7 +1,7 @@
-import { HEADERS, APP_URL } from 'constant';
-import { authLogout, authRefreshTokens } from 'reduxStores/slices/auth';
-import { store } from 'reduxStores/store/configureStore';
 import axios from 'axios';
+import { APP_URL, HEADERS } from 'constant';
+import { authRefreshTokens, unauthorized } from 'reduxStores/slices/auth';
+import { store } from 'reduxStores/store/configureStore';
 
 export const axiosClient = axios.create({
 	baseURL: `${APP_URL}/v1/api`,
@@ -40,11 +40,11 @@ axiosClient.interceptors.response.use(
 		const responseErrorCode = error.response.data.code;
 
 		if (httpStatusCode === 401) {
-			const { config } = error;
 			const { info, tokens } = store.getState()?.auth || {};
+			const { config } = error;
 
 			if (responseErrorCode === 100401) {
-				store.dispatch(authLogout({ id: info.id, tokens }));
+				store.dispatch(unauthorized());
 			}
 
 			if (responseErrorCode === 101401 && !isRefreshToken) {

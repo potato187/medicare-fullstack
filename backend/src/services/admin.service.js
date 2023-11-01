@@ -7,9 +7,11 @@ const SEARCHABLE_FIELDS = ['firstName', 'lastName', 'email', 'phone'];
 class AdminService {
 	static model = ADMIN_MODEL;
 
-	static async getByQueryParams(queryParams) {
+	static async getByQueryParams(req) {
+		const { query: queryParams, user } = req;
+
 		const { search, ...params } = queryParams;
-		const match = { isActive: 'active', isDeleted: false };
+		const match = { isActive: 'active', isDeleted: false, _id: { $ne: convertToObjectIdMongodb(user.userId) } };
 
 		if (search) {
 			match.$or = createSearchData(SEARCHABLE_FIELDS, search);
@@ -42,6 +44,8 @@ class AdminService {
 			updateBody,
 			select,
 		});
+
+		await KeyTokenRepo.removeByUserId(id);
 
 		return updatedAdmin;
 	}

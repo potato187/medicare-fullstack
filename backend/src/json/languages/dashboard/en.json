@@ -1,1 +1,252 @@
-{"common":{"all":"All","add":"Add","home":"Home","doctor":"Doctor","specialty":"Specialty","position":"Position","booking":"Booking","status":"Status","role":"Role","gender":"Gender","information":"Information","note":"Note","blog":"Blog","order":"Order","display":"Display","quantity":"Quantity","created_at":"Created At","updated_at":"Updated At","public_date":"Public Date","thumbnail":"Thumbnail","image":"Image","link":"Link","pages":"Pages","index":"Index","categories":"Categories","profile":"Profile","appointmentDate":"Appointment Date","dateOfBirth":"Birthday","logo_footer":"Footer Logo","logo_header":"Header Logo","og_image":"OG Image","favicon":"Favicon","facebook":"Facebook","messenger":"Messenger","youtube":"Youtube","google":"Google","instagram":"Instagram","no_results_found":"No results found","logout":"Logout","login":"Login","full_url":"Full url","title":{"default":"Title","en":"Title - English","vi":"Title - Vietnamese"},"summary":{"en":"Tóm tắt - Tiếng Anh","vi":"Tóm tắt - Tiếng Việt"},"content":{"en":"Content - English","vi":"Content - Vietnamese"},"description":{"en":"Description - English","vi":"Description - Vietnamese"}},"form":{"fullName":"Họ và tên","firstName":"Họ","lastName":"Tên","gender":"Giới tính","phone":"Số điện thoại","address":"Địa chỉ","files":"Tải lên tệp","image":"Ảnh đại diện","profile":"Hồ sơ","change_password":"Đổi mật khẩu","search_placeholder":"Nhập tìm kiếm của bạn...","username":"Tên người dùng","email":"Email","email_placeholder":"Nhập email của bạn","password":"Mật khẩu","password_placeholder":"Nhập mật khẩu của bạn","confirm_password":"Xác nhận mật khẩu","new_password":"Mật khẩu mới","display":"Hiển thị","choose_file_text":"Chọn tệp","multi_select":{"empty_options":"Không có lựa chọn nào để chọn"},"message":{"error":{"required":"<span>{label}</span> là bắt buộc","matched":"Mật khẩu không khớp.","email_format":"Email của bạn không hợp lệ","phone_format":"Số điện thoại của bạn không hợp lệ","password":"Mật khẩu của bạn yếu","media_extension":"Phần mở rộng tệp không hợp lệ","select_required":"<span>{label}</span> nên có ít nhất 1 tùy chọn được chọn."}}},"table":{"no":"STT","actions":"Hành động","status":"Trạng thái","show":"Hiển thị","entries":"Bản ghi","index":"Chỉ mục"},"button":{"update":"Cập nhật","create":"Tạo mới","register":"Đăng ký","close":"Đóng","delete":"Xóa","view":"Xem","cancel":"Hủy","confirm":"Xác nhận","export":"Xuất","import":"Nhập","add":"Thêm","login":"Đăng nhập ngay","create_user":"Tạo người dùng","export_users":"Xuất người dùng","import_users":"Nhập người dùng","create_doctor":"Tạo bác sĩ","export_doctors":"Xuất bác sĩ","import_doctors":"Nhập bác sĩ","sort":"Sắp xếp"},"dashboard":{"title":"Dashboard","admin":{"title":"Admin Manager","manage":{"title":"Manage Admins"},"modal":{"create":{"title":"Create Admin"},"view":{"title":"View Admin's Profile"},"update":{"title":"Update Admin's Profile"},"deletion":{"title":"Confirm Deletion","description":"Are you sure you want to delete the admin with email <b>{email}</b>? This action cannot be undone."}}},"languages":{"title":"Languages","en":{"title":"English"},"vi":{"title":"Vietnamese"}},"personal":{"title":"Personal","profile_setting":{"title":"Profile Settings"}},"booking":{"title":"Booking Service","manage":{"title":"Manage Bookings"},"modal":{"update":{"title":"Update Booking"},"deletion":{"title":"Confirm Deletion of the Booking","message":"Are you sure you want to delete the booking with phone <b>{phone}</b>? This action cannot be undone."}}},"specialty":{"title":"Specialty Manager","manage":{"title":"Manage Specialties"},"modal":{"export":{"title":"Export Doctors","export_all":"Export All Doctors","export_selected":"Export Selected Doctors","export_per_page":"Export Doctors per Page","warning_message":{"export_selected":"Please select the doctors you want to export."}},"import":{"title":"Import Modal"},"update":{"title":"Update Doctor"},"create":{"title":"Create Doctor"},"deletion":{"title":"Confirm Deletion","description":"Are you sure you want to delete the doctor with email <b>{email}</b>? This action cannot be undone."}}},"blogs":{"title":"Blogs Manager","manage":{"title":"Blog Manager"},"categories":{"title":"Category Manager"},"news":{"title":"News","modal":{"create":{"title":"Create News"},"update":{"title":"Update News"},"deletion":{"title":"Confirm Deletion","description":"Are you sure you want to delete the news with <b>{title}</b>? This action cannot be undone."}}},"modal":{"category":{"update":{"title":"Update Category"},"create":{"title":"Create Category"},"deletion":{"title":"Confirm Category Deletion","description":"Are you sure you want to delete the category and its children with the title <b>{title}</b>? This action cannot be undone."}},"sort":{"title":"Confirm Category Sorting","description":"Are you sure you want to sort all categories and their children? This action cannot be undone."},"blog":{"create":"Create New Blog","update":{"title":"Blog Editor"},"deletion":{"title":"Confirm Blog Deletion","description":"Are you sure you want to delete the blog with the title <b>{title}</b>? This action cannot be undone."}}}},"modules":{"title":"Modules","setting":{"title":"Website Manager Settings"},"header":{"title":"Header Manager","modal":{"deletion":{"title":"Confirm Link Deletion","description":"Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."},"create":{"title":"Create New Link"},"update":{"title":"Edit Link"},"sort":{"title":"Confirm Sorting","description":"Are you sure you want to sort all links and their children? This action cannot be undone."}}},"footer":{"title":"Footer Manager","modal":{"deletion":{"title":"Confirm Link Deletion","description":"Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."},"create":{"title":"Create New Link"},"update":{"title":"Edit Link"},"sort":{"title":"Confirm Sorting","description":"Are you sure you want to sort all links and their children? This action cannot be undone."}}},"html_content":{"title":"HTML Content Manager","modal":{"deletion":{"title":"Confirm HTML Content Deletion","description":"Are you sure you want to delete the HTML content with the <b>{title}</b>? This action cannot be undone."},"create":{"title":"Create HTML Content"}}}}}}
+{
+	"common": {
+		"all": "All",
+		"add": "Add",
+		"home": "Home",
+		"doctor": "Doctor",
+		"specialty": "Specialty",
+		"position": "Position",
+		"booking": "Booking",
+		"status": "Status",
+		"role": "Role",
+		"gender": "Gender",
+		"information": "Information",
+		"note": "Note",
+		"blog": "Blog",
+		"order": "Order",
+		"display": "Display",
+		"quantity": "Quantity",
+		"created_at": "Created At",
+		"updated_at": "Updated At",
+		"public_date": "Public Date",
+		"thumbnail": "Thumbnail",
+		"image": "Image",
+		"link": "Link",
+		"pages": "Pages",
+		"index": "Index",
+		"categories": "Categories",
+		"profile": "Profile",
+		"appointmentDate": "Appointment Date",
+		"dateOfBirth": "Birthday",
+		"logo_footer": "Footer Logo",
+		"logo_header": "Header Logo",
+		"og_image": "OG Image",
+		"favicon": "Favicon",
+		"facebook": "Facebook",
+		"messenger": "Messenger",
+		"youtube": "Youtube",
+		"google": "Google",
+		"instagram": "Instagram",
+		"no_results_found": "No results found",
+		"logout": "Logout",
+		"login": "Login",
+		"full_url": "Full url",
+		"title": { "default": "Title", "en": "Title - English", "vi": "Title - Vietnamese" },
+		"summary": { "en": "Summary - English", "vi": "Summary - Vietnamese" },
+		"content": { "en": "Content - English", "vi": "Content - Vietnamese" },
+		"description": { "en": "Description - English", "vi": "Description - Vietnamese" },
+		"maintenance": {
+			"title": "SITE IS UNDER MAINTENANCE",
+			"message": "Please check back in sometime"
+		}
+	},
+	"form": {
+		"fullName": "Full Name",
+		"firstName": "First Name",
+		"lastName": "Last Name",
+		"gender": "Gender",
+		"phone": "Phone Number",
+		"address": "Address",
+		"files": "Upload Files",
+		"image": "Profile Image",
+		"profile": "Profile",
+		"change_password": "Change Password",
+		"search_placeholder": "Enter your search...",
+		"username": "Username",
+		"email": "Email",
+		"email_placeholder": "Enter your email",
+		"password": "Password",
+		"password_placeholder": "Enter your password",
+		"confirm_password": "Confirm Password",
+		"new_password": "New Password",
+		"display": "Display",
+		"choose_file_text": "Choose File",
+		"multi_select": { "empty_options": "No options to select" },
+		"message": {
+			"error": {
+				"required": "<span>{label}</span> is required",
+				"matched": "Passwords do not match.",
+				"email_format": "Your email is invalid",
+				"phone_format": "Your phone number is invalid",
+				"password": "Your password is weak",
+				"media_extension": "Invalid file extension",
+				"select_required": "<span>{label}</span> should have at least 1 option selected."
+			}
+		}
+	},
+
+	"table": {
+		"no": "No",
+		"actions": "Actions",
+		"status": "Status",
+		"show": "Show",
+		"entries": "Entries",
+		"index": "Index"
+	},
+	"button": {
+		"update": "Update",
+		"create": "Create New",
+		"register": "Register",
+		"close": "Close",
+		"delete": "Delete",
+		"view": "View",
+		"cancel": "Cancel",
+		"confirm": "Confirm",
+		"export": "Export",
+		"import": "Import",
+		"add": "Add",
+		"login": "Login Now",
+		"create_user": "Create User",
+		"export_users": "Export Users",
+		"import_users": "Import Users",
+		"create_doctor": "Create Doctor",
+		"export_doctors": "Export Doctors",
+		"import_doctors": "Import Doctors",
+		"sort": "Sort"
+	},
+	"dashboard": {
+		"title": "Dashboard",
+		"admin": {
+			"title": "Admin Manager",
+			"manage": { "title": "Manage Admins" },
+			"modal": {
+				"create": { "title": "Create Admin" },
+				"view": { "title": "View Admin's Profile" },
+				"update": { "title": "Update Admin's Profile" },
+				"deletion": {
+					"title": "Confirm Deletion",
+					"description": "Are you sure you want to delete the admin with email <b>{email}</b>? This action cannot be undone."
+				}
+			}
+		},
+		"languages": { "title": "Languages", "en": { "title": "English" }, "vi": { "title": "Vietnamese" } },
+		"personal": { "title": "Personal", "profile_setting": { "title": "Profile Settings" } },
+		"booking": {
+			"title": "Booking Service",
+			"manage": { "title": "Manage Bookings" },
+			"modal": {
+				"update": { "title": "Update Booking" },
+				"deletion": {
+					"title": "Confirm Deletion of the Booking",
+					"message": "Are you sure you want to delete the booking with phone <b>{phone}</b>? This action cannot be undone."
+				}
+			}
+		},
+		"specialty": {
+			"title": "Specialty Manager",
+			"manage": { "title": "Manage Specialties" },
+			"modal": {
+				"export": {
+					"title": "Export Doctors",
+					"export_all": "Export All Doctors",
+					"export_selected": "Export Selected Doctors",
+					"export_per_page": "Export Doctors per Page",
+					"warning_message": { "export_selected": "Please select the doctors you want to export." }
+				},
+				"import": { "title": "Import Modal" },
+				"update": { "title": "Update Doctor" },
+				"create": { "title": "Create Doctor" },
+				"deletion": {
+					"title": "Confirm Deletion",
+					"description": "Are you sure you want to delete the doctor with email <b>{email}</b>? This action cannot be undone."
+				}
+			}
+		},
+		"blogs": {
+			"title": "Blogs Manager",
+			"manage": { "title": "Blog Manager" },
+			"categories": { "title": "Category Manager" },
+			"news": {
+				"title": "News",
+				"modal": {
+					"create": { "title": "Create News" },
+					"update": { "title": "Update News" },
+					"deletion": {
+						"title": "Confirm Deletion",
+						"description": "Are you sure you want to delete the news with <b>{title}</b>? This action cannot be undone."
+					}
+				}
+			},
+			"modal": {
+				"category": {
+					"update": { "title": "Update Category" },
+					"create": { "title": "Create Category" },
+					"deletion": {
+						"title": "Confirm Category Deletion",
+						"description": "Are you sure you want to delete the category and its children with the title <b>{title}</b>? This action cannot be undone."
+					}
+				},
+				"sort": {
+					"title": "Confirm Category Sorting",
+					"description": "Are you sure you want to sort all categories and their children? This action cannot be undone."
+				},
+				"blog": {
+					"create": "Create New Blog",
+					"update": { "title": "Blog Editor" },
+					"deletion": {
+						"title": "Confirm Blog Deletion",
+						"description": "Are you sure you want to delete the blog with the title <b>{title}</b>? This action cannot be undone."
+					}
+				}
+			}
+		},
+		"modules": {
+			"title": "Modules",
+			"setting": { "title": "Website Manager Settings" },
+			"header": {
+				"title": "Header Manager",
+				"modal": {
+					"deletion": {
+						"title": "Confirm Link Deletion",
+						"description": "Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."
+					},
+					"create": { "title": "Create New Link" },
+					"update": { "title": "Edit Link" },
+					"sort": {
+						"title": "Confirm Sorting",
+						"description": "Are you sure you want to sort all links and their children? This action cannot be undone."
+					}
+				}
+			},
+			"footer": {
+				"title": "Footer Manager",
+				"modal": {
+					"deletion": {
+						"title": "Confirm Link Deletion",
+						"description": "Are you sure you want to delete the link with the <b>{title}</b>? This action cannot be undone."
+					},
+					"create": { "title": "Create New Link" },
+					"update": { "title": "Edit Link" },
+					"sort": {
+						"title": "Confirm Sorting",
+						"description": "Are you sure you want to sort all links and their children? This action cannot be undone."
+					}
+				}
+			},
+			"html_content": {
+				"title": "HTML Content Manager",
+				"modal": {
+					"deletion": {
+						"title": "Confirm HTML Content Deletion",
+						"description": "Are you sure you want to delete the HTML content with the <b>{title}</b>? This action cannot be undone."
+					},
+					"create": { "title": "Create HTML Content" }
+				}
+			}
+		}
+	},
+	"login": {
+		"title": "WELCOME BACK",
+		"content": "Sign in to continue to Medicare."
+	}
+}

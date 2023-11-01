@@ -24,6 +24,10 @@ class KeyTokenRepo {
 		return _KeyTokenModel.deleteOne({ _id: convertToObjectIdMongodb(id) });
 	}
 
+	static async removeByUserId(id) {
+		return _KeyTokenModel.deleteOne({ userId: convertToObjectIdMongodb(id) });
+	}
+
 	static markRefreshTokenUsed = async (id, markRefreshToken) => {
 		return _KeyTokenModel.updateOne(
 			{ _id: convertToObjectIdMongodb(id) },

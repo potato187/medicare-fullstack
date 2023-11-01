@@ -4,8 +4,7 @@ import { useTheme } from 'stores';
 import './style.scss';
 
 export function BaseNotification({ ...props }) {
-	const context = useTheme();
-	const theme = context?.theme?.themeMode === 'theme_light' ? 'light' : 'dark';
+	const { theme } = useTheme();
 
 	return <ToastContainer autoClose='2000' theme={theme} {...props} />;
 }

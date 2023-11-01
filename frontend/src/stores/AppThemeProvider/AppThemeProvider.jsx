@@ -1,15 +1,15 @@
-import { useEventListener, useIsomorphicLayoutEffect, useLocalStorage } from 'hooks';
+import { useAuth, useEventListener, useIsomorphicLayoutEffect } from 'hooks';
 import { useCallback, useMemo, useRef } from 'react';
-import { ConfigContext, sidebarBreakPoint, sidebarStates, themes, devices } from './context';
+import { useDispatch } from 'react-redux';
+import { toggleTheme } from 'reduxStores/slices/auth';
+import { ConfigContext, devices, sidebarBreakPoint, sidebarStates } from './context';
 
 export function AppThemeProvider({ children }) {
+	const { theme } = useAuth().info;
+	const sidebarRef = useRef();
+	const dispatch = useDispatch();
 	const { mobile, desktop } = devices;
 	const { open, close } = sidebarStates;
-	const sidebarRef = useRef();
-
-	const [theme, setTheme] = useLocalStorage('configs', {
-		themeMode: themes.light,
-	});
 
 	const toggleSidebar = useCallback(() => {
 		const { open, close } = sidebarStates;
@@ -21,10 +21,10 @@ export function AppThemeProvider({ children }) {
 	const contextValue = useMemo(
 		() => ({
 			theme,
-			setTheme,
+			toggleTheme: () => dispatch(toggleTheme()),
 			toggleSidebar,
 		}),
-		[theme, setTheme, toggleSidebar],
+		[dispatch, theme, toggleSidebar],
 	);
 
 	const handleWindowResize = () => {
@@ -48,8 +48,7 @@ export function AppThemeProvider({ children }) {
 	};
 
 	useIsomorphicLayoutEffect(() => {
-		const { themeMode } = theme;
-		document.body.dataset.theme = themeMode;
+		document.body.dataset.theme = `theme_${theme}`;
 	}, [theme]);
 
 	useIsomorphicLayoutEffect(() => {

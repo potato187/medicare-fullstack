@@ -11,14 +11,13 @@ const initialState = {
 		lastName: '',
 		image: '',
 		languageId: 'en',
+		theme: 'light',
 	},
 	tokens: {
 		accessToken: null,
 		refreshToken: null,
 	},
 	status: {
-		isLoading: false,
-		isSuccess: false,
 		isLogin: false,
 	},
 };
@@ -42,17 +41,18 @@ const authSlice = createSlice({
 				}
 			});
 		},
+		unauthorized: (state) => {
+			Object.assign(state, initialState);
+		},
+		toggleTheme: (state) => {
+			state.info.theme = state.info.theme === 'dark' ? 'light' : 'dark';
+		},
 	},
 	extraReducers: (builder) => {
 		builder
-			.addMatcher(isAnyOf(authLogin.pending, authLogout.pending, authRefreshTokens.pending), (state) => {
-				state.isLoading = true;
-			})
 			.addMatcher(isAnyOf(authLogin.fulfilled), (state, meta) => {
 				const { account, tokens } = meta.payload.metadata;
-				state.status.isLoading = false;
 				state.status.isLogin = true;
-				state.status.isSuccess = true;
 
 				state.info.id = account._id;
 				state.info.email = account.email;
@@ -82,5 +82,5 @@ const authSlice = createSlice({
 	},
 });
 
-export const { changeLanguage, updateTokens, updateProfile } = authSlice.actions;
+export const { changeLanguage, updateTokens, updateProfile, unauthorized, toggleTheme } = authSlice.actions;
 export default authSlice.reducer;

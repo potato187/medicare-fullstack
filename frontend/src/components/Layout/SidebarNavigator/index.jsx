@@ -86,11 +86,6 @@ export function SidebarNavigator({ routesConfig = [] }) {
 	const { info } = useSelector((state) => state.auth);
 	const location = useLocation();
 	const [activePath, setActivePath] = useState(location.pathname);
-
-	const onClick = (path) => {
-		setActivePath(activePath === path ? '' : path);
-	};
-
 	const { sidebar: sidebarCln, sidebar__header: sidebarHeaderCln, sidebar__main: sidebarMainCln } = module;
 
 	useEffect(() => {
@@ -110,7 +105,7 @@ export function SidebarNavigator({ routesConfig = [] }) {
 								key={props.intl}
 								listChildren={listChildren}
 								activePath={activePath}
-								onClick={onClick}
+								onClick={(path) => setActivePath(activePath === path ? '' : path)}
 								{...props}
 							/>
 						) : (

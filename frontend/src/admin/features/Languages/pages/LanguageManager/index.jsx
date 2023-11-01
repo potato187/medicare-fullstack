@@ -22,7 +22,7 @@ export default function LanguageManager() {
 		resolver: yupResolver(yup.object().shape({ ...validationForm })),
 	});
 
-	const handleOnSubmit = tryCatchAndToast(async (data) => {
+	const handleUpdate = tryCatchAndToast(async (data) => {
 		const { metadata, message } = await languageApi.updateLanguageById({ languageId, body: data });
 		updateLanguage(languageId, metadata);
 		showToastMessage(message, info.languageId);
@@ -40,7 +40,7 @@ export default function LanguageManager() {
 		<FormProvider {...methods}>
 			<Container noPadding>
 				<WrapScrollBar>
-					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
+					<form onSubmit={methods.handleSubmit(handleUpdate)}>
 						{Object.entries(language).map(([key, { breadcrumb, fields }]) => (
 							<React.Fragment key={key}>
 								<ContainerTitle>
@@ -66,7 +66,7 @@ export default function LanguageManager() {
 							</React.Fragment>
 						))}
 						<div className='p-5 text-center'>
-							<Button type='submit' size='xs' onClick={methods.handleSubmit(handleOnSubmit)}>
+							<Button type='submit' size='xs' onClick={methods.handleSubmit(handleUpdate)}>
 								<FormattedMessage id='button.update' />
 							</Button>
 						</div>

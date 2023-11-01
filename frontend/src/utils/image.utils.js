@@ -1,13 +1,13 @@
 import urlJoin from 'url-join';
-import { PATH_IMAGES, APP_URL } from 'constant';
+import { PATH_IMAGES, BACKEND_PUBLIC_URL } from 'constant';
 import { typeOf } from './repos';
 
 const getImageThumbnail = (url) => {
-	return url ? urlJoin(APP_URL, url) : PATH_IMAGES.BANNER_PLACEHOLDER;
+	return url ? urlJoin(BACKEND_PUBLIC_URL, url) : PATH_IMAGES.BANNER_PLACEHOLDER;
 };
 
 const getUrlHtmlContent = (url) => {
-	return url ? urlJoin(APP_URL, url) : PATH_IMAGES.BANNER_PLACEHOLDER;
+	return url ? urlJoin(BACKEND_PUBLIC_URL, url) : PATH_IMAGES.BANNER_PLACEHOLDER;
 };
 
 const getUrlStrategy = {
