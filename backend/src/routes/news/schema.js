@@ -54,7 +54,7 @@ const updateSchema = Joi.object({
 		en: Joi.string(),
 	}),
 	pageType: pageTypeValidator,
-	pagePosition: positionTypeValidator,
+	positionType: positionTypeValidator,
 	blogCategoryIds: Joi.array().items(ObjectIdMongodbValidator),
 	order: orderValidator,
 	index: indexValidator,

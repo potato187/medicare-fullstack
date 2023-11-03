@@ -112,7 +112,6 @@ export default function BlogsManager() {
 		);
 
 		showToastMessage(message, languageId);
-		toggleEditorModal();
 	}, languageId);
 
 	const handleCreate = tryCatchAndToast(async (data) => {

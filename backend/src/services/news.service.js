@@ -65,7 +65,7 @@ class NewsService {
 	}
 
 	static async deleteOneById(id) {
-		return NewsService.updateOneById({ id, updateBody: { isDeleted: true } });
+		return NewsService.updateOneById({ id, updateBody: { isDeleted: true, isDisplay: false } });
 	}
 
 	static async getConfig() {

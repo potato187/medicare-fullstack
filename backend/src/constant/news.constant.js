@@ -6,7 +6,7 @@ const SELECT_FIELDS = [
 	'_id',
 	'name',
 	'pageType',
-	'pagePosition',
+	'positionType',
 	'blogCategoryIds',
 	'index',
 	'order',

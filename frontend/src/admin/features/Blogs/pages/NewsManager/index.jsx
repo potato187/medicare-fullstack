@@ -61,7 +61,7 @@ export default function NewsManager() {
 			);
 		}
 		showToastMessage(message, languageId);
-		toggleConfirmModal(-1);
+		handleToggleModal();
 	}, languageId);
 
 	const handleUpdate = tryCatchAndToast(async (data) => {
@@ -78,7 +78,6 @@ export default function NewsManager() {
 			);
 			showToastMessage(message, languageId);
 		}
-		handleToggleModal(-1);
 	}, languageId);
 
 	const handleDeletionConfirmation = tryCatchAndToast(async () => {
@@ -92,7 +91,7 @@ export default function NewsManager() {
 			);
 			showToastMessage(message, languageId);
 		}
-		toggleConfirmModal(-1);
+		handleToggleConfirmModal(-1);
 	}, languageId);
 
 	const handleToggleDisplay = tryCatchAndToast(async (event, index) => {
