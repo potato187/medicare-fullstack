@@ -9,7 +9,6 @@ module.exports = (schema, type = 'body') => {
 
 		if (error) {
 			// eslint-disable-next-line no-console
-			console.log(error);
 			throw new BadRequestError({ code: 100400, message: error.details[0].message });
 		}
 

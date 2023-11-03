@@ -35,7 +35,11 @@ const createSchema = Joi.object().keys({
 
 const updateSchema = Joi.object({
 	specialtyId: ObjectIdMongodbValidator,
-	doctorId: ObjectIdMongodbValidator,
+	doctorId: ObjectIdMongodbValidator.when('specialtyId', {
+		is: Joi.exist(),
+		then: ObjectIdMongodbValidator,
+		otherwise: Joi.optional(),
+	}),
 	workingHourId: ObjectIdMongodbValidator,
 	appointmentDate: appointmentDateValidator,
 	fullName: nameValidator,

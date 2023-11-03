@@ -1,18 +1,14 @@
 const { logEventHelper } = require('@/helpers');
 const { UtilsRepo } = require('@/models/repository');
 const { BLOG_MODEL } = require('@/models/repository/constant');
-const { getInfoData, convertToObjectIdMongodb, createSearchData } = require('@/utils');
+const { getInfoData, convertToObjectIdMongodb, createSearchData, generateImagePathByObjectId } = require('@/utils');
 const fs = require('fs');
-const path = require('path');
 
 const SEARCHABLE_FIELDS = ['title.vi', 'title.en'];
+const FOLDER_PATH = 'public/uploads/blogs';
 
 class BlogService {
 	static model = BLOG_MODEL;
-
-	static generateImagePath(blogId, file) {
-		return path.join('public/uploads/blogs', `${blogId}${path.extname(file.originalname)}`);
-	}
 
 	static getOneById(id) {
 		return UtilsRepo.findOne({
@@ -49,7 +45,7 @@ class BlogService {
 		if (file) {
 			try {
 				const oldPath = file.path;
-				const newPath = BlogService.generateImagePath(newCategory._id, file);
+				const newPath = generateImagePathByObjectId(newCategory._id, file, FOLDER_PATH);
 				fs.rename(oldPath, newPath);
 				newCategory.image = newPath;
 				await newCategory.save();
@@ -64,46 +60,52 @@ class BlogService {
 		});
 	}
 
-	static async updateOneById({ id, updateBody, file }) {
-		const select = Object.keys(updateBody);
-		const { blogCategoryIds, ...body } = updateBody;
+	static async updateOneById(req) {
+		const { file, params, body: updateBody } = req;
+		const { id } = params;
+
+		const fields = Object.keys(updateBody);
+		if (!fields.length && !file) return {};
+
 		const { model } = BlogService;
-
-		if (!select.length) return {};
 		const filter = { _id: convertToObjectIdMongodb(id), isDeleted: false };
+		const { blogCategoryIds } = updateBody;
 
-		const [blog] = await UtilsRepo.findDocOrThrow({
-			model,
-			filter,
-		});
+		const { image: oldPath } = await UtilsRepo.findDocAndThrowError({ filter, model, code: 702404, fields: ['image'] });
 
 		if (blogCategoryIds) {
-			blog.blogCategoryIds = blogCategoryIds.map((blogCategoryId) => convertToObjectIdMongodb(blogCategoryId));
+			updateBody.blogCategoryIds = blogCategoryIds.map((blogCategoryId) => convertToObjectIdMongodb(blogCategoryId));
 		}
-
-		Object.assign(blog, body);
 
 		if (file) {
-			const imagePath = BlogService.generateImagePath(blog._id, file);
-			if (blog.image && fs.existsSync(blog.image)) {
-				fs.unlinkSync(blog.image);
-				fs.renameSync(file.path, imagePath);
-				blog.image = imagePath;
-			} else {
-				fs.renameSync(file.path, imagePath);
-				blog.image = imagePath;
+			try {
+				const newPath = generateImagePathByObjectId(id, file, FOLDER_PATH);
+				fields.push('image');
+				updateBody.image = newPath;
+				if (oldPath && fs.existsSync(oldPath)) {
+					fs.unlinkSync(oldPath);
+				}
+				fs.renameSync(file.path, newPath);
+			} catch (error) {
+				logEventHelper(req, error.message);
 			}
-			select.push('image');
 		}
 
-		return getInfoData({
-			fields: select,
-			object: await blog.save(),
+		return UtilsRepo.findOneAndUpdate({
+			model,
+			filter,
+			updateBody,
+			select: fields,
 		});
 	}
 
 	static async deleteOneById(id) {
-		return BlogService.updateOneById({ id, updateBody: { isDeleted: true, isDisplay: false } });
+		return UtilsRepo.findOneAndUpdate({
+			model: BlogService.model,
+			filter: { _id: convertToObjectIdMongodb(id) },
+			updateBody: { isDeleted: true, isDisplay: false },
+			select: ['_id'],
+		});
 	}
 }
 

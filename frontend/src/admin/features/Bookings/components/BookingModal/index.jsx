@@ -38,17 +38,20 @@ export function BookingModal({
 
 	const watchSpecialtyId = methods.watch('specialtyId', '');
 
-	const handleOnSubmit = (data) => {
-		onSubmit({ _id: bookingId, ...getObjectDiff(clone.current, data) });
+	const handleSubmit = (data) => {
+		const updateBody = getObjectDiff(clone.current, data);
+		onSubmit({ _id: bookingId, ...updateBody });
 	};
 
 	useEffect(() => {
+		const fetchBookingById = async () => {
+			const { metadata } = await bookingApi.getOneById(bookingId);
+			setDefaultValues(methods, metadata);
+			clone.current = { ...metadata };
+		};
+
 		if (isOpen && bookingId) {
-			tryCatch(async () => {
-				const { metadata } = await bookingApi.getOneById(bookingId);
-				setDefaultValues(methods, metadata);
-				clone.current = { ...metadata };
-			})();
+			tryCatch(fetchBookingById)();
 		}
 
 		if (!isOpen || !bookingId) {
@@ -57,39 +60,37 @@ export function BookingModal({
 	}, [isOpen, bookingId]);
 
 	useEffect(() => {
-		tryCatch(async () => {
-			if (watchSpecialtyId) {
-				const { metadata } = await resourceApi.getAll({
-					model: 'doctor',
-					params: {
-						specialtyId: watchSpecialtyId,
-						select: ['_id', 'firstName', 'lastName'],
-					},
-				});
+		const fetchDoctorsBySpecialtyId = async () => {
+			if (!watchSpecialtyId) return;
+			const { metadata } = await resourceApi.getAll({
+				model: 'doctor',
+				params: {
+					specialtyId: watchSpecialtyId,
+					select: ['_id', 'firstName', 'lastName'],
+				},
+			});
 
-				const doctors = metadata.map(({ _id, firstName, lastName }) => ({
-					label: `${lastName} ${firstName}`,
-					value: _id,
-				}));
+			const doctors = metadata.map(({ _id, firstName, lastName }) => ({
+				label: `${lastName} ${firstName}`,
+				value: _id,
+			}));
 
-				setDoctors(doctors);
-			}
-		})();
+			setDoctors(doctors);
+		};
+		tryCatch(fetchDoctorsBySpecialtyId)();
 	}, [watchSpecialtyId]);
 
 	useEffect(() => {
-		if (doctors.length) {
-			const doctorId = doctors.length ? doctors[0].value : '';
-			methods.setValue('doctorId', doctorId, { shouldValidate: !!doctorId });
-		}
-	}, [watchSpecialtyId, doctors, methods]);
+		const doctorId = doctors.length ? doctors[0].value : '';
+		methods.setValue('doctorId', doctorId, { shouldValidate: !!doctorId });
+	}, [watchSpecialtyId, doctors]);
 
 	return (
 		<FormProvider {...methods}>
 			<BaseModal size='md' isOpen={isOpen}>
 				<BaseModalHeader idIntl='dashboard.booking.modal.update.title' onClose={onClose} />
 				<BaseModalBody className='scrollbar'>
-					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
+					<form onSubmit={methods.handleSubmit(handleSubmit)}>
 						<div className='row'>
 							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='fullName' labelIntl='form.fullName' />
@@ -142,7 +143,7 @@ export function BookingModal({
 					<Button size='xs' type='button' secondary onClick={onClose}>
 						<FormattedMessage id='button.cancel' />
 					</Button>
-					<Button size='xs' type='submit' info onClick={methods.handleSubmit(handleOnSubmit)}>
+					<Button size='xs' type='submit' info onClick={methods.handleSubmit(handleSubmit)}>
 						<FormattedMessage id='button.update' />
 					</Button>
 				</BaseModalFooter>

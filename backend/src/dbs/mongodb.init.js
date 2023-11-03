@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 const { mongodConfig } = require('@/configs');
 
-const {
-	db: { host, port, name },
-} = mongodConfig;
+const { db } = mongodConfig;
+const { host = '', port = '', name = '' } = db;
 const connectURI = `mongodb://${host}:${port}/${name}`;
 
 class Database {

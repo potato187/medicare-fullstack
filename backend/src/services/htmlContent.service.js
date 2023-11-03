@@ -56,10 +56,8 @@ class HtmlContentService {
 				body.image = newPath;
 				if (oldPath && fs.existsSync(oldPath)) {
 					fs.unlinkSync(oldPath);
-					fs.renameSync(oldPath, newPath);
-				} else {
-					fs.renameSync(file.path, newPath);
 				}
+				fs.renameSync(file.path, newPath);
 			} catch (error) {
 				logEventHelper(req, error.message);
 			}
@@ -74,16 +72,11 @@ class HtmlContentService {
 	}
 
 	static async deleteOneById(id) {
-		const result = await HtmlContentService.updateOneById({
-			id,
-			updateBody: { isDeleted: true },
+		return UtilsRepo.findOneAndUpdate({
+			model: HtmlContentService.model,
+			filter: { _id: convertToObjectIdMongodb(id) },
+			updateBody: { isDisplay: false, isDeleted: true },
 		});
-
-		if (result.isDeleted) {
-			return { _id: id };
-		}
-
-		return result;
 	}
 
 	static async getByQueryParams(queryParams) {

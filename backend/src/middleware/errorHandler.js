@@ -7,6 +7,7 @@ const errorNames = ['MongoServerError', 'MulterError'];
 
 module.exports = (error, req, res, next) => {
 	logEventHelper(req, error.message);
+	console.log(error);
 	if (errorNames.includes(error.name)) {
 		return res.status(400).json({
 			status: 'error',

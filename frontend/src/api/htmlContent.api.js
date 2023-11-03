@@ -23,7 +23,9 @@ export const htmlContentApi = {
 	},
 
 	updateOneById(id, body) {
-		return axiosClient.patch(`${HTML_CONTENT_ENDPOINT}/${id}`, body);
+		const formData = new FormData();
+		buildFormData(formData, body);
+		return axiosClient.patch(`${HTML_CONTENT_ENDPOINT}/${id}`, formData, { headers: HEADERS_CONTENT.formData });
 	},
 
 	deleteOneById(id) {
