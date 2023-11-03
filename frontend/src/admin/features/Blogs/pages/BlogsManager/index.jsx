@@ -97,7 +97,10 @@ export default function BlogsManager() {
 	}, languageId);
 
 	const handleUpdate = tryCatchAndToast(async (data) => {
-		const { blogId, ...updateBody } = data;
+		const { blogId, datePublished, ...updateBody } = data;
+		if (datePublished) {
+			updateBody.datePublished = formatISODate(datePublished);
+		}
 		const { message, metadata } = await blogApi.updateOneById(blogId, updateBody);
 
 		updateBlogs(

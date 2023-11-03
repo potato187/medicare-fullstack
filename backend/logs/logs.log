@@ -10,3 +10,6 @@
 2023-11-03 07:20:17 -- /v1/api/html-content/653cbe8a33cf021810053c5c -- PATCH -- image must be a string.
 2023-11-03 08:05:44 -- /public/uploads/blogs/65449ea18f83fdeb7b24ae30.jpg -- GET -- Not Found.
 2023-11-03 08:48:00 -- /v1/api/news/6517c01912f6e5259154573c -- PATCH -- positionType is not allowed.
+2023-11-03 09:46:19 -- /v1/api/blog/65449ea18f83fdeb7b24ae30 -- PATCH -- datePublished must be in ISO 8601 date format.
+2023-11-03 09:46:32 -- /v1/api/blog/65449ea18f83fdeb7b24ae30 -- PATCH -- datePublished must be in ISO 8601 date format.
+2023-11-03 09:47:32 -- /v1/api/blog/65449ea18f83fdeb7b24ae30 -- PATCH -- datePublished must be in ISO 8601 date format.
