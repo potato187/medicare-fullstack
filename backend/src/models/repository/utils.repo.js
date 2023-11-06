@@ -100,6 +100,16 @@ class UtilsRepo {
 		return true;
 	}
 
+	static async checkConflictedWithObjectId({ model, filter, objectId, code = 100400 }) {
+		const _model = UtilsRepo.getModel(model);
+		const result = await _model.findOne(filter).lean();
+		if (result && !result._id.equals(objectId)) {
+			throw new ConflictRequestError({ code });
+		}
+
+		return false;
+	}
+
 	static async createOne({ model, body }) {
 		const _Model = UtilsRepo.getModel(model);
 		return _Model.create(body);

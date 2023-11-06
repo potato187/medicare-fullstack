@@ -11,15 +11,16 @@ class AccessService {
 
 	static async singUp(body) {
 		const { email, phone } = body;
+		const { model } = AccessService;
 
 		await UtilsRepo.checkConflicted({
-			model: AccessService.model,
+			model,
 			filter: { $or: [{ email }, { phone }] },
 			code: 200400,
 		});
 
 		const newUser = await UtilsRepo.createOne({
-			model: AccessService.model,
+			model,
 			body,
 		});
 

@@ -23,6 +23,7 @@ import { defaultValues, schema } from './schema';
 export function DoctorModal({
 	isOpen = false,
 	doctorId,
+	specialtyId,
 	genders = [],
 	positions = [],
 	specialties = [],
@@ -53,17 +54,20 @@ export function DoctorModal({
 	};
 
 	useEffect(() => {
+		const fetchDoctorById = async () => {
+			const { metadata } = await doctorApi.getOne({ id: doctorId });
+			if (Object.keys(metadata).length) {
+				setDefaultValues(methods, metadata);
+				clone.current = { ...metadata };
+			}
+		};
 		tryCatch(async () => {
 			if (isOpen && doctorId) {
-				const { metadata } = await doctorApi.getOne({ id: doctorId });
-				if (Object.keys(metadata).length) {
-					setDefaultValues(methods, metadata);
-					clone.current = { ...metadata };
-				}
+				fetchDoctorById();
 			}
 
 			if (!isOpen || !doctorId) {
-				setDefaultValues(methods, defaultValues);
+				setDefaultValues(methods, { ...defaultValues, specialtyId });
 				clone.current = null;
 			}
 		})();
@@ -73,7 +77,7 @@ export function DoctorModal({
 		<FormProvider {...methods}>
 			<BaseModal size='lg' isOpen={isOpen} onClose={handleOnClose}>
 				<BaseModalHeader idIntl={`dashboard.specialty.modal.${typeModal}.title`} onClose={handleOnClose} />
-				<BaseModalBody className='scrollbar'>
+				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
 						<Tabs tabIndexActive={0}>
 							<TabNav variant='bordered'>

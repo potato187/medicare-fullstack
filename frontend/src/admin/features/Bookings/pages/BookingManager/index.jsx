@@ -94,7 +94,6 @@ export default function BookingManager() {
 		);
 
 		showToastMessage(message, languageId);
-		toggleModalBooking();
 	}, languageId);
 
 	return (

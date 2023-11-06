@@ -1,3 +1,4 @@
+import { mapData } from 'admin/utils';
 import { adminApi, resourceApi } from 'api';
 import {
 	Button,
@@ -18,7 +19,7 @@ import produce from 'immer';
 import { useEffect, useMemo, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
-import { compose, mapData, showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
+import { compose, showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
 import { AdminModal } from '../../components';
 
 export default function AdminManager() {
@@ -50,7 +51,7 @@ export default function AdminManager() {
 	}, [data, languageId]);
 
 	const AdminRoles = useMemo(() => {
-		return data?.AdminRoles.map(({ key, name }) => ({ value: key, label: name[languageId] }));
+		return mapData(data.AdminRoles, languageId);
 	}, [data, languageId]);
 
 	const { page = 1, pagesize = 25 } = queryParams;
@@ -84,7 +85,7 @@ export default function AdminManager() {
 		toggleConfirmDeletionModal();
 	}, languageId);
 
-	const handleOnUpdate = tryCatchAndToast(async (data) => {
+	const handleUpdate = tryCatchAndToast(async (data) => {
 		if (Object.keys(data).length) {
 			const { message, metadata } = await adminApi.updateById(Admins[adminIndex]._id, data);
 
@@ -100,8 +101,6 @@ export default function AdminManager() {
 
 			showToastMessage(message, languageId);
 		}
-
-		toggleModal();
 	}, languageId);
 
 	useEffect(() => {
@@ -219,7 +218,7 @@ export default function AdminManager() {
 				positions={AdminRoles}
 				onClose={toggleModal}
 				onCreate={handleCreate}
-				onUpdate={handleOnUpdate}
+				onUpdate={handleUpdate}
 			/>
 
 			<ConfirmModal

@@ -45,10 +45,7 @@
 		"summary": { "en": "Summary - English", "vi": "Summary - Vietnamese" },
 		"content": { "en": "Content - English", "vi": "Content - Vietnamese" },
 		"description": { "en": "Description - English", "vi": "Description - Vietnamese" },
-		"maintenance": {
-			"title": "SITE IS UNDER MAINTENANCE",
-			"message": "Please check back in sometime"
-		}
+		"maintenance": { "title": "SITE IS UNDER MAINTENANCE", "message": "Please check back in sometime" }
 	},
 	"form": {
 		"fullName": "Full Name",
@@ -84,7 +81,6 @@
 			}
 		}
 	},
-
 	"table": {
 		"no": "No",
 		"actions": "Actions",
@@ -245,8 +241,5 @@
 			}
 		}
 	},
-	"login": {
-		"title": "WELCOME BACK",
-		"content": "Sign in to continue to Medicare."
-	}
+	"login": { "title": "WELCOME BACK", "content": "Sign in to continue to Medicare." }
 }

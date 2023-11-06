@@ -38,9 +38,35 @@ class AdminService {
 			return {};
 		}
 
+		const _id = convertToObjectIdMongodb(id);
+		const { model } = AdminService;
+
+		if (updateBody?.email || updateBody?.phone) {
+			const { email, phone } = updateBody;
+			const filter = {
+				$and: [
+					{
+						_id: { $ne: _id },
+					},
+					{
+						$or: [],
+					},
+				],
+			};
+			if (email) filter.$and[1].$or.push({ email });
+			if (phone) filter.$and[1].$or.push({ phone });
+
+			await UtilsRepo.checkConflictedWithObjectId({
+				model,
+				filter,
+				objectId: _id,
+				code: 201409,
+			});
+		}
+
 		const updatedAdmin = await UtilsRepo.findOneAndUpdate({
-			model: AdminService.model,
-			filter: { _id: convertToObjectIdMongodb(id) },
+			model,
+			filter: { _id },
 			updateBody,
 			select,
 		});

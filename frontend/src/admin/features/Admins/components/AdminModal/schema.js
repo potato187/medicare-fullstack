@@ -1,18 +1,26 @@
-import * as yup from 'yup';
+import { emailValidator, passwordValidator, phoneValidator, requiredValidator } from 'admin/validators';
 import { ADMIN_ROLE, GENDER_DEFAULT } from 'constant';
-import { emailValidator, phoneValidator, requiredValidator } from 'admin/validators';
+import * as yup from 'yup';
 
 export const adminDefaultValues = {
 	firstName: '',
 	lastName: '',
 	email: '',
 	phone: '',
-	password: 'S3cur3P@ssword',
+	password: '',
 	gender: GENDER_DEFAULT,
 	role: ADMIN_ROLE,
 };
 
-export const adminValidation = yup.object().shape({
+export const createAdminSchema = yup.object().shape({
+	firstName: requiredValidator,
+	lastName: requiredValidator,
+	email: emailValidator,
+	phone: phoneValidator,
+	password: passwordValidator,
+});
+
+export const updateAdminSchema = yup.object().shape({
 	firstName: requiredValidator,
 	lastName: requiredValidator,
 	email: emailValidator,

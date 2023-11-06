@@ -96,6 +96,10 @@ const codeReason = {
 		en: 'Admin not found with the provided email.',
 		vi: 'Không tìm thấy Admin với email đã cung cấp.',
 	},
+	201409: {
+		en: 'The provided email or phone number is already associated with another profile. Please use a unique email or phone number.',
+		vi: 'Email hoặc số điện thoại đã được sử dụng bởi một tài khoản khác. Vui lòng sử dụng một email hoặc số điện thoại duy nhất.',
+	},
 
 	/* Admin service codes 30xxxx */
 	300200: {

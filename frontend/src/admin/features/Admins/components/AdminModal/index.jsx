@@ -7,13 +7,14 @@ import {
 	BaseModalHeader,
 	Button,
 	FloatingLabelInput,
+	FloatingLabelPassword,
 	FloatingLabelSelect,
 } from 'components';
 import { useEffect, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { getObjectDiff, setDefaultValues, tryCatch } from 'utils';
-import { adminDefaultValues, adminValidation } from './schema';
+import { adminDefaultValues, createAdminSchema, updateAdminSchema } from './schema';
 
 export function AdminModal({
 	isOpen = false,
@@ -24,10 +25,11 @@ export function AdminModal({
 	onCreate = (f) => f,
 	onUpdate = (f) => f,
 }) {
+	const schema = adminId ? updateAdminSchema : createAdminSchema;
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: adminDefaultValues,
-		resolver: yupResolver(adminValidation),
+		resolver: yupResolver(schema),
 	});
 
 	const clone = useRef(null);
@@ -85,6 +87,11 @@ export function AdminModal({
 							<div className='col-6 mb-6'>
 								<FloatingLabelSelect name='role' labelIntl='common.position' options={positions} />
 							</div>
+							{!adminId ? (
+								<div className='col-6 mb-6'>
+									<FloatingLabelPassword name='password' labelIntl='form.password' />
+								</div>
+							) : null}
 						</div>
 					</form>
 				</BaseModalBody>

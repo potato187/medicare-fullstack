@@ -11,6 +11,7 @@ const {
 	sortValidator,
 	selectValidator,
 	enumWithDefaultValidator,
+	stringAllowEmpty,
 } = require('@/validations');
 const { LANGUAGES } = require('@/constant');
 const { SELECT_FIELDS, SORTABLE_FIELDS, EXPORT_TYPES } = require('./constant');
@@ -24,7 +25,7 @@ const descriptionValidator = Joi.object({
 const createSchema = Joi.object().keys({
 	firstName: nameValidator.required(),
 	lastName: nameValidator.required(),
-	address: Joi.string().default(''),
+	address: stringAllowEmpty,
 	gender: genderValidator,
 	email: emailValidator,
 	phone: phoneValidator,

@@ -39,7 +39,7 @@ export default function HtmlContentManager() {
 		fetch: htmlContentApi.getByQueryParams,
 		parameters: {
 			page_type: 'home',
-			page_position: 'main',
+			page_position: 'all',
 		},
 	});
 
@@ -82,7 +82,7 @@ export default function HtmlContentManager() {
 		const { page_type, pagesize, positionType } = queryParams;
 
 		if (
-			HtmlContents.length < pagesize &&
+			HtmlContents.length < +pagesize &&
 			metadata?.pageType.includes(page_type) &&
 			metadata.positionType === positionType
 		) {
@@ -99,9 +99,9 @@ export default function HtmlContentManager() {
 
 	const handleDeleteHtmlContent = tryCatchAndToast(async () => {
 		if (htmlContentCurrent._id) {
-			const { message, metadata } = await htmlContentApi.deleteOneById(htmlContentCurrent._id);
+			const { message } = await htmlContentApi.deleteOneById(htmlContentCurrent._id);
 
-			if (htmlContentCurrent?._id === metadata._id) {
+			if (htmlContentIndex > -1) {
 				updateHtmlContents(
 					produce((draft) => {
 						draft.splice(htmlContentIndex, 1);

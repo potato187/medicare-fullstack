@@ -57,7 +57,7 @@ export default function SpecialtyManager() {
 	const handleToggleModal = compose(setDoctorIndex, toggleModal);
 	const handleToggleConfirmModal = compose(setDoctorIndex, toggleConfirmModal);
 
-	const handleOnUpdate = tryCatchAndToast(async ({ id, data }) => {
+	const handleUpdate = tryCatchAndToast(async ({ id, data }) => {
 		if (Object.keys(data).length) {
 			const { message, metadata } = await doctorApi.updateOne({ id, updateBody: data });
 			if (Object.keys(metadata).length) {
@@ -81,7 +81,7 @@ export default function SpecialtyManager() {
 		handleToggleModal(-1);
 	}, languageId);
 
-	const handleOnCreate = tryCatchAndToast(async (newDoctor) => {
+	const handleCreate = tryCatchAndToast(async (newDoctor) => {
 		const { metadata, message } = await doctorApi.createOne(newDoctor);
 		if (Doctors.length < +queryParams.pagesize) {
 			setDoctors(
@@ -95,7 +95,7 @@ export default function SpecialtyManager() {
 		handleToggleModal(-1);
 	}, languageId);
 
-	const handleOnSubmitDeletion = tryCatchAndToast(async () => {
+	const handleDeletion = tryCatchAndToast(async () => {
 		const doctor = Doctors[doctorIndex] || {};
 		if (doctor?._id) {
 			const { message } = await doctorApi.deleteOne(doctor._id);
@@ -132,9 +132,7 @@ export default function SpecialtyManager() {
 		const { type } = data;
 		const body = getHandleExport(type, { Doctors, queryParams });
 		if (type === 'selected' && !body?.ids?.length) {
-			toast.warning(
-				intl.formatMessage({ id: 'dashboard.specialty.modal.export_modal.warning_message.export_selected' }),
-			);
+			toast.warning(intl.formatMessage({ id: 'dashboard.specialty.modal.export.warning_message.export_selected' }));
 			return false;
 		}
 
@@ -145,7 +143,7 @@ export default function SpecialtyManager() {
 		return true;
 	}, languageId);
 
-	const handleOnImport = async (doctors) => {
+	const handleImport = async (doctors) => {
 		const formattedData = doctors.map(({ importStatus, ...rest }) => rest);
 		return await doctorApi.import(formattedData);
 	};
@@ -277,13 +275,14 @@ export default function SpecialtyManager() {
 
 			<DoctorModal
 				isOpen={statusModal}
+				specialtyId={queryParams.specialtyId}
 				specialties={Specialties}
 				doctorId={Doctors[doctorIndex]?._id}
 				genders={Genders}
 				positions={Positions}
 				onClose={toggleModal}
-				onUpdate={handleOnUpdate}
-				onCreate={handleOnCreate}
+				onUpdate={handleUpdate}
+				onCreate={handleCreate}
 			/>
 
 			<ExportModal isOpen={statusExportModal} onClose={toggleExportModal} onSubmit={handleOnExport} />
@@ -296,14 +295,14 @@ export default function SpecialtyManager() {
 				specialties={Specialties}
 				positions={Positions}
 				onClose={toggleImportModal}
-				onSubmit={handleOnImport}
+				onSubmit={handleImport}
 			/>
 
 			<ConfirmModal
 				idTitleIntl='dashboard.specialty.modal.deletion.title'
 				isOpen={statusConfirmModal}
 				onClose={toggleConfirmModal}
-				onSubmit={handleOnSubmitDeletion}
+				onSubmit={handleDeletion}
 			>
 				<FormattedDescription
 					id='dashboard.specialty.modal.deletion.description'
