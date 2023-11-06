@@ -17,27 +17,28 @@ const { LANGUAGES } = require('@/constant');
 const { SELECT_FIELDS, SORTABLE_FIELDS, EXPORT_TYPES } = require('./constant');
 
 const selectValidate = selectValidator(SELECT_FIELDS);
+
 const descriptionValidator = Joi.object({
-	vi: Joi.string().allow(''),
-	en: Joi.string().allow(''),
+	vi: stringAllowEmpty,
+	en: stringAllowEmpty,
 });
 
 const createSchema = Joi.object().keys({
 	firstName: nameValidator.required(),
 	lastName: nameValidator.required(),
-	address: stringAllowEmpty,
-	gender: genderValidator,
-	email: emailValidator,
-	phone: phoneValidator,
+	gender: genderValidator.required(),
+	email: emailValidator.required(),
+	phone: phoneValidator.required(),
 	specialtyId: ObjectIdMongodbValidator.required(),
-	position: positionValidator,
+	position: positionValidator.required(),
+	address: stringAllowEmpty,
 	description: descriptionValidator,
 });
 
 const updateSchema = Joi.object({
 	firstName: nameValidator,
 	lastName: nameValidator,
-	address: Joi.string(),
+	address: stringAllowEmpty,
 	gender: genderValidator,
 	email: emailValidator,
 	phone: phoneValidator,

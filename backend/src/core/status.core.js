@@ -156,6 +156,10 @@ const codeReason = {
 		en: 'Specialty already exists.',
 		vi: 'Chuyên ngành đã tồn tại.',
 	},
+	402409: {
+		en: 'The provided email or phone number is already associated with another doctor. Please use a unique email or phone number.',
+		vi: 'Email hoặc số điện thoại đã được sử dụng bởi một bác sĩ khác. Vui lòng sử dụng một email hoặc số điện thoại duy nhất.',
+	},
 
 	/* Blog and Blog Categories codes 50xxxx */
 	501200: {

@@ -128,7 +128,7 @@ export default function SpecialtyManager() {
 		);
 	};
 
-	const handleOnExport = tryCatchAndToast(async (data) => {
+	const handleExport = tryCatchAndToast(async (data) => {
 		const { type } = data;
 		const body = getHandleExport(type, { Doctors, queryParams });
 		if (type === 'selected' && !body?.ids?.length) {
@@ -285,7 +285,7 @@ export default function SpecialtyManager() {
 				onCreate={handleCreate}
 			/>
 
-			<ExportModal isOpen={statusExportModal} onClose={toggleExportModal} onSubmit={handleOnExport} />
+			<ExportModal isOpen={statusExportModal} onClose={toggleExportModal} onSubmit={handleExport} />
 
 			<ImportExcelModal
 				isOpen={statusImportModal}

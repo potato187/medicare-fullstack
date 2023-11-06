@@ -51,16 +51,45 @@ class DoctorService {
 	}
 
 	static async updateOne({ id, updateBody }) {
-		const filter = { _id: convertToObjectIdMongodb(id) };
+		const fields = Object.keys(updateBody);
+		if (!fields.length) return {};
 
+		const { model } = DoctorService;
+		const _id = convertToObjectIdMongodb(id);
+		const filterById = { _id };
 		await UtilsRepo.checkIsExist({
-			model: DoctorService.model,
-			filter,
+			model,
+			filter: filterById,
+			code: 400404,
 		});
+
+		if (updateBody?.email || updateBody?.phone) {
+			const filter = {
+				$and: [
+					{
+						_id: { $ne: _id },
+					},
+					{
+						$or: [],
+					},
+				],
+			};
+
+			const { email, phone } = updateBody;
+			if (email) filter.$and[1].$or.push({ email });
+			if (phone) filter.$and[1].$or.push({ phone });
+
+			await UtilsRepo.checkConflictedWithObjectId({
+				model,
+				filter,
+				objectId: _id,
+				code: 402409,
+			});
+		}
 
 		const result = await UtilsRepo.findOneAndUpdate({
 			model: DoctorService.model,
-			filter,
+			filter: filterById,
 			updateBody,
 			select: Object.keys(updateBody),
 		});

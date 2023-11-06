@@ -49,7 +49,7 @@ const isVerify = Joi.boolean();
 const booleanValidator = Joi.boolean();
 
 const positionValidator = Joi.string().custom((value, helper) => {
-	return POSITIONS.includes(value) ? value : helper.message('108400');
+	return POSITIONS.includes(value) ? value : helper.message('100400');
 });
 
 const dateValidator = Joi.date().iso();

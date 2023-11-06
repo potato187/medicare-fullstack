@@ -1,13 +1,17 @@
-2023-11-06 10:10:39 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: medicare-v1.admins index: phone_1 dup key: { phone: "0799645845" }.
-2023-11-06 10:25:59 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- Cannot read properties of null (reading '_id').
-2023-11-06 10:26:19 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- Cannot read properties of null (reading '_id').
-2023-11-06 10:26:34 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: medicare-v1.admins index: phone_1 dup key: { phone: "0799645845" }.
-2023-11-06 10:27:31 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: medicare-v1.admins index: phone_1 dup key: { phone: "0799645845" }.
-2023-11-06 10:28:11 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- UtilsRepo.find is not a function.
-2023-11-06 10:29:31 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- Cannot read properties of undefined (reading 'equals').
-2023-11-06 10:29:43 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- Cannot read properties of undefined (reading 'equals').
-2023-11-06 10:30:57 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- unknown operator: $or.
-2023-11-06 10:32:00 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- Cannot read properties of undefined (reading 'equals').
-2023-11-06 10:34:12 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- filter.$and[1].push is not a function.
-2023-11-06 10:34:39 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- Forbidden.
-2023-11-06 10:46:13 -- /v1/api/admin/update/6548bb7632235d6433621aef -- PATCH -- Forbidden.
+2023-11-06 10:49:03 -- /v1/api/doctor/64ed6abdc219b87027786761 -- PATCH -- Not Found.
+2023-11-06 10:49:58 -- /v1/api/doctor/64ed6abdc219b87027786761 -- PATCH -- Not Found.
+2023-11-06 10:51:08 -- /v1/api/doctor/64ed6abdc219b87027786761 -- PATCH -- Not Found.
+2023-11-06 10:51:42 -- /v1/api/doctor/64edb8ff83b0604337c09fbe -- PATCH -- Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: medicare-v1.doctors index: phone_1 dup key: { phone: "0799555666" }.
+2023-11-06 12:17:01 -- /v1/api/doctor -- POST -- position is required.
+2023-11-06 12:17:53 -- /v1/api/doctor -- POST -- 108400.
+2023-11-06 12:19:09 -- /v1/api/doctor -- POST -- 100400.
+2023-11-06 12:19:24 -- /v1/api/doctor -- POST -- 100400.
+2023-11-06 12:19:44 -- /v1/api/doctor -- POST -- note is not allowed.
+2023-11-06 12:19:59 -- /v1/api/doctor -- POST -- Forbidden.
+2023-11-06 12:20:11 -- /v1/api/doctor -- POST -- gender is required.
+2023-11-06 12:21:01 -- /v1/api/doctor -- POST -- Phone is invalid..
+2023-11-06 12:23:54 -- /v1/api/doctor/6548da459df819b71b53ce67 -- PATCH -- Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: medicare-v1.doctors index: phone_1 dup key: { phone: "0788667722" }.
+2023-11-06 12:31:08 -- /v1/api/doctor/6548da459df819b71b53ce67 -- PATCH -- objectId is not defined.
+2023-11-06 12:31:33 -- /v1/api/doctor/6548da459df819b71b53ce67 -- PATCH -- Forbidden.
+2023-11-06 12:32:10 -- /v1/api/doctor/6548da459df819b71b53ce67 -- PATCH -- Conflict.
+2023-11-06 13:01:11 -- /v1/api/doctor/6548da459df819b71b53ce67 -- PATCH -- Conflict.

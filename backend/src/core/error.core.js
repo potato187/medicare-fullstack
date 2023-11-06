@@ -25,7 +25,7 @@ class ForbiddenRequestError extends ErrorResponse {
 
 class ConflictRequestError extends ErrorResponse {
 	constructor(error = {}) {
-		const { message = ReasonPhrases.FORBIDDEN, status = StatusCodes.FORBIDDEN, code = 100409 } = error;
+		const { message = ReasonPhrases.CONFLICT, status = StatusCodes.CONFLICT, code = 100409 } = error;
 		super(message, status, code);
 	}
 }
