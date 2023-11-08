@@ -39,7 +39,7 @@ export default function FooterManager() {
 		toggleConfirmModal();
 	};
 
-	const handleOnCreate = tryCatchAndToast(async (data) => {
+	const handleCreate = tryCatchAndToast(async (data) => {
 		const { message, metadata } = await linkApi.createOne({ ...data, index: links.length, type: 'footer' });
 		setLinks(
 			produce((draft) => {
@@ -50,31 +50,28 @@ export default function FooterManager() {
 		toggleModal();
 	}, languageId);
 
-	const handleOnUpdate = tryCatchAndToast(async (data) => {
+	const handleUpdate = tryCatchAndToast(async (data) => {
 		const { id, ...updateBody } = data;
-
-		if (Object.keys(updateBody).length) {
-			const { message, metadata } = await linkApi.updateOneById(id, {
-				...updateBody,
-				type: 'footer',
-			});
+		const { message, metadata } = await linkApi.updateOneById(id, {
+			...updateBody,
+			type: 'footer',
+		});
+		if (metadata.length) {
 			setLinks(metadata);
-			focusedLink.current = null;
-			showToastMessage(message, languageId);
 		}
+		showToastMessage(message, languageId);
 		toggleModal();
+		focusedLink.current = null;
 	}, languageId);
 
-	const handleOnSubmitDeletion = tryCatchAndToast(async () => {
+	const handleDeletion = tryCatchAndToast(async () => {
 		const listId = flattenTree([focusedLink.current]).map(({ id }) => id);
-		if (listId.length) {
-			const { message, metadata } = await linkApi.deleteByIds({
-				listId,
-				type: 'footer',
-			});
-			setLinks(metadata);
-			showToastMessage(message, languageId);
-		}
+		const { message, metadata } = await linkApi.deleteByIds({
+			listId,
+			type: 'footer',
+		});
+		setLinks(metadata);
+		showToastMessage(message, languageId);
 		toggleConfirmModal();
 	}, languageId);
 
@@ -138,7 +135,7 @@ export default function FooterManager() {
 				idTitleIntl='dashboard.modules.footer.modal.deletion.title'
 				isOpen={isOpenConfirm}
 				onClose={toggleConfirmModal}
-				onSubmit={handleOnSubmitDeletion}
+				onSubmit={handleDeletion}
 			>
 				<FormattedDescription
 					id='dashboard.modules.footer.modal.deletion.description'
@@ -151,8 +148,8 @@ export default function FooterManager() {
 				linkId={focusedLink.current?.id}
 				isOpen={isOpenModal}
 				onClose={toggleModal}
-				onUpdate={handleOnUpdate}
-				onCreate={handleOnCreate}
+				onUpdate={handleUpdate}
+				onCreate={handleCreate}
 			/>
 		</>
 	);

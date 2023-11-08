@@ -92,7 +92,7 @@ export default function BookingManager() {
 				}
 			}),
 		);
-
+		openModalBooking(-1);
 		showToastMessage(message, languageId);
 	}, languageId);
 
@@ -231,7 +231,7 @@ export default function BookingManager() {
 			>
 				<FormattedDescription
 					id='dashboard.booking.modal.deletion.message'
-					values={{ phone: Bookings[bookingIndex]?.phone || '' }}
+					values={{ phone: Bookings[bookingIndex]?.phone ? formatPhone(Bookings[bookingIndex]?.phone) : '' }}
 				/>
 			</ConfirmModal>
 		</>

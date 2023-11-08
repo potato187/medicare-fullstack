@@ -62,7 +62,7 @@ class LinkService {
 		const { model } = LinkService;
 		const { type, select, ...body } = updateBody;
 
-		if (!Object.keys(body).length) return {};
+		if (!Object.keys(body).length) return [];
 		const filter = { _id: convertToObjectIdMongodb(id) };
 		await UtilsRepo.checkIsExist({
 			model,

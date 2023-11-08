@@ -18,11 +18,6 @@ const { SELECT_FIELDS, SORTABLE_FIELDS, EXPORT_TYPES } = require('./constant');
 
 const selectValidate = selectValidator(SELECT_FIELDS);
 
-const descriptionValidator = Joi.object({
-	vi: stringAllowEmpty,
-	en: stringAllowEmpty,
-});
-
 const createSchema = Joi.object().keys({
 	firstName: nameValidator.required(),
 	lastName: nameValidator.required(),
@@ -32,7 +27,10 @@ const createSchema = Joi.object().keys({
 	specialtyId: ObjectIdMongodbValidator.required(),
 	position: positionValidator.required(),
 	address: stringAllowEmpty,
-	description: descriptionValidator,
+	description: Joi.object().keys({
+		vi: stringAllowEmpty,
+		en: stringAllowEmpty,
+	}),
 });
 
 const updateSchema = Joi.object({
@@ -44,8 +42,10 @@ const updateSchema = Joi.object({
 	phone: phoneValidator,
 	specialtyId: ObjectIdMongodbValidator,
 	position: positionValidator,
-	description: descriptionValidator,
-	isActive: Joi.string().valid('active', 'inactive'),
+	description: Joi.object({
+		vi: stringAllowEmpty,
+		en: stringAllowEmpty,
+	}),
 });
 
 const importSchema = Joi.object({

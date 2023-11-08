@@ -29,7 +29,7 @@ export default function SettingConfigManager() {
 		resolver: yupResolver(settingConfigSchema),
 	});
 
-	const handleOnSubmit = tryCatchAndToast(async () => {
+	const handleSubmit = tryCatchAndToast(async () => {
 		const cloneObj = JSON.parse(JSON.stringify(configs));
 		Object.keys(cloneObj).forEach((key) => {
 			Object.keys(cloneObj[key]).forEach((name) => {
@@ -39,7 +39,6 @@ export default function SettingConfigManager() {
 
 		const { message, metadata } = await settingConfigApi.updateConfig(cloneObj);
 		setConfigs(metadata);
-		methods.reset();
 		showToastMessage(message, languageId);
 	}, languageId);
 
@@ -95,7 +94,7 @@ export default function SettingConfigManager() {
 							</React.Fragment>
 						))}
 						<div className='p-5 text-center'>
-							<Button type='submit' size='xs' onClick={methods.handleSubmit(handleOnSubmit)}>
+							<Button type='submit' size='xs' onClick={methods.handleSubmit(handleSubmit)}>
 								<FormattedMessage id='button.update' />
 							</Button>
 						</div>

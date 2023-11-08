@@ -19,8 +19,11 @@ export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 		params.page = clampPage(params.page);
 		params.pagesize = clampPageSize(params.pagesize);
 
+		Object.entries(parameters).forEach(([key, value]) => {
+			params[key] ??= value;
+		});
+
 		return {
-			...parameters,
 			...params,
 			sort: sort || [],
 		};
@@ -67,7 +70,7 @@ export const useAsyncLocation = ({ fetch = () => [], parameters = {} }) => {
 
 	useEffect(() => {
 		setQueryParams(queryParams);
-	}, []);
+	}, [locationSearch]);
 
 	useEffect(() => {
 		let idTimer = null;

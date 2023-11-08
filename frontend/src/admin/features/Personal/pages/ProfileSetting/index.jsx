@@ -17,15 +17,16 @@ export default function ProfileSetting() {
 	}, [genders, languageId]);
 
 	const handleUpdate = tryCatchAndToast(async (data) => {
-		if (Object.keys(data).length) {
-			const { message, metadata } = await adminApi.updateById(id, data);
+		const { message, metadata } = await adminApi.updateById(id, data);
+		if (Object.keys(metadata).length) {
 			if (metadata.email && info.email !== metadata.email) {
 				dispatch(unauthorized());
 			} else {
 				dispatch(updateProfile(metadata));
-				showToastMessage(message, languageId);
 			}
 		}
+
+		showToastMessage(message, languageId);
 	}, languageId);
 
 	const handleChangePassword = (data) => {

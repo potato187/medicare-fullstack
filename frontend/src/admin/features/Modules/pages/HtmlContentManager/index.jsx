@@ -79,12 +79,12 @@ export default function HtmlContentManager() {
 	const handleCreateHtmlContent = tryCatchAndToast(async (data) => {
 		const { _id, ...body } = data;
 		const { metadata, message } = await htmlContentApi.createOne(body);
-		const { page_type, pagesize, positionType } = queryParams;
+		const { page_type, pagesize, page_position } = queryParams;
 
 		if (
 			HtmlContents.length < +pagesize &&
 			metadata?.pageType.includes(page_type) &&
-			metadata.positionType === positionType
+			(page_position === 'all' || page_position === metadata.positionType)
 		) {
 			updateHtmlContents(
 				produce((draft) => {
@@ -98,20 +98,19 @@ export default function HtmlContentManager() {
 	}, languageId);
 
 	const handleDeleteHtmlContent = tryCatchAndToast(async () => {
-		if (htmlContentCurrent._id) {
-			const { message } = await htmlContentApi.deleteOneById(htmlContentCurrent._id);
+		if (!htmlContentCurrent._id) return;
 
-			if (htmlContentIndex > -1) {
-				updateHtmlContents(
-					produce((draft) => {
-						draft.splice(htmlContentIndex, 1);
-					}),
-				);
-			}
+		const { message } = await htmlContentApi.deleteOneById(htmlContentCurrent._id);
 
-			showToastMessage(message, languageId);
-			toggleConfirmModal();
+		if (htmlContentIndex > -1) {
+			updateHtmlContents(
+				produce((draft) => {
+					draft.splice(htmlContentIndex, 1);
+				}),
+			);
 		}
+		showToastMessage(message, languageId);
+		toggleConfirmModal();
 	}, languageId);
 
 	useEffect(() => {

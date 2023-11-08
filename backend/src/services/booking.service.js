@@ -11,19 +11,17 @@ class BookingService {
 	static async createOne(body) {
 		const { specialtyId, doctorId, workingHourId } = body;
 
-		const foundDoctor = await UtilsRepo.findOne({
+		await UtilsRepo.checkIsExist({
 			model: BOOKING_MODEL,
-			filter: { _id: convertToObjectIdMongodb(doctorId), specialtyId: convertToObjectIdMongodb(specialtyId) },
+			filter: { doctorId: convertToObjectIdMongodb(doctorId), specialtyId: convertToObjectIdMongodb(specialtyId) },
+			code: 400404,
 		});
 
-		const foundWK = await UtilsRepo.findOne({
+		await UtilsRepo.checkIsExist({
 			model: WORKING_HOUR_MODEL,
 			filter: { _id: convertToObjectIdMongodb(workingHourId) },
+			code: 402404,
 		});
-
-		if (!foundDoctor || !foundWK) {
-			throw new BadRequestError();
-		}
 
 		const newBooking = await UtilsRepo.createOne({
 			model: BOOKING_MODEL,

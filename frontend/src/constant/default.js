@@ -4,7 +4,7 @@ export const APP_URL = import.meta.env.VITE_REACT_APP_DOMAIN;
 export const BACKEND_PUBLIC_URL = import.meta.env.VITE_REACT_BACKED_PUBLIC_URL;
 
 export const localeDatePicker = { vi, en: '' };
-export const DATE_FORMAT = 'MM/DD/YYYY';
+export const DATE_FORMAT = 'DD/MM/YYYY';
 export const DATE_FORMAT_ISO = 'dd/MM/yyyy';
 
 export const PAGINATION_NUMBER_DEFAULT = 25;

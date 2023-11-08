@@ -58,26 +58,22 @@ export default function SpecialtyManager() {
 	const handleToggleConfirmModal = compose(setDoctorIndex, toggleConfirmModal);
 
 	const handleUpdate = tryCatchAndToast(async ({ id, data }) => {
-		if (Object.keys(data).length) {
-			const { message, metadata } = await doctorApi.updateOne({ id, updateBody: data });
-			if (Object.keys(metadata).length) {
-				setDoctors(
-					produce((draft) => {
-						const { specialtyId, ...data } = metadata;
-						if (specialtyId && specialtyId !== queryParams.specialtyId) {
-							draft.splice(doctorIndex, 1);
-						} else {
-							Object.entries(data).forEach(([key, value]) => {
-								if (Object.hasOwn(draft[doctorIndex], key)) {
-									draft[doctorIndex][key] = value;
-								}
-							});
+		const { message, metadata } = await doctorApi.updateOne({ id, updateBody: data });
+		setDoctors(
+			produce((draft) => {
+				const { specialtyId, ...data } = metadata;
+				if (specialtyId && specialtyId !== queryParams.specialtyId) {
+					draft.splice(doctorIndex, 1);
+				} else {
+					Object.entries(data).forEach(([key, value]) => {
+						if (Object.hasOwn(draft[doctorIndex], key)) {
+							draft[doctorIndex][key] = value;
 						}
-					}),
-				);
-				showToastMessage(message, languageId);
-			}
-		}
+					});
+				}
+			}),
+		);
+		showToastMessage(message, languageId);
 		handleToggleModal(-1);
 	}, languageId);
 

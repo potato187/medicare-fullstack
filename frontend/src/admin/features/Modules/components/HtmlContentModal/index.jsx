@@ -34,7 +34,7 @@ export function HtmlContentModal({
 		resolver: yupResolver(schema),
 	});
 
-	const handleOnSubmit = (data) => {
+	const handleSubmit = (data) => {
 		if (clone.current) {
 			const updateBody = getObjectDiff(clone.current, data);
 			onUpdate(updateBody);
@@ -43,7 +43,7 @@ export function HtmlContentModal({
 		}
 	};
 
-	const handleOnClose = () => {
+	const handleClose = () => {
 		clone.current = null;
 		onClose();
 	};
@@ -63,10 +63,10 @@ export function HtmlContentModal({
 
 	return (
 		<FormProvider {...methods}>
-			<BaseModal isOpen={isOpen} onClose={handleOnClose}>
-				<BaseModalHeader idIntl='dashboard.modules.html_content.modal.create.title' onClose={handleOnClose} />
+			<BaseModal isOpen={isOpen} onClose={handleClose}>
+				<BaseModalHeader idIntl='dashboard.modules.html_content.modal.create.title' onClose={handleClose} />
 				<BaseModalBody className='scrollbar'>
-					<form onSubmit={methods.handleSubmit(handleOnSubmit)}>
+					<form onSubmit={methods.handleSubmit(handleSubmit)}>
 						<div className='row'>
 							<div className='col-12 col-md-6 mb-6'>
 								<FloatingLabelInput name='title.vi' labelIntl='common.title.vi' />
@@ -99,11 +99,11 @@ export function HtmlContentModal({
 					</form>
 				</BaseModalBody>
 				<BaseModalFooter className='d-flex justify-content-end gap-2'>
-					<Button type='button' size='xs' secondary onClick={handleOnClose}>
+					<Button type='button' size='xs' secondary onClick={handleClose}>
 						<FormattedMessage id='button.close' />
 					</Button>
-					<Button type='submit' size='xs' onClick={methods.handleSubmit(handleOnSubmit)}>
-						<FormattedMessage id={`button.${clone.current ? 'update' : 'create'}`} />
+					<Button type='submit' size='xs' onClick={methods.handleSubmit(handleSubmit)}>
+						<FormattedMessage id={`button.${clone.current ? 'update' : 'add'}`} />
 					</Button>
 				</BaseModalFooter>
 			</BaseModal>

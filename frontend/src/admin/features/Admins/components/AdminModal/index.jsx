@@ -100,7 +100,7 @@ export function AdminModal({
 						<FormattedMessage id='button.cancel' />
 					</Button>
 					<Button size='xs' info onClick={methods.handleSubmit(handleOnSubmit)}>
-						<FormattedMessage id={`button.${adminId ? 'update' : 'create'}`} />
+						<FormattedMessage id={`button.${adminId ? 'update' : 'add'}`} />
 					</Button>
 				</BaseModalFooter>
 			</BaseModal>

@@ -9,8 +9,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { clampPage, clampPageSize, createURL, mapData, tryCatch } from 'utils';
 import { typeOf } from 'utils/repos';
 
-const START_DATE_DEFAULT = '09/01/2023';
-
 export const useBookings = ({ languageId = 'en' }) => {
 	const isLoading = useRef(true);
 	const [bookings, setBookings] = useState([]);
@@ -55,7 +53,7 @@ export const useBookings = ({ languageId = 'en' }) => {
 		}
 
 		if (!params.startDate) {
-			params.startDate = moment(new Date(START_DATE_DEFAULT)).format(DATE_FORMAT);
+			params.startDate = moment(new Date()).format(DATE_FORMAT);
 		}
 
 		if (params.endDate) {

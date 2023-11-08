@@ -36,7 +36,7 @@ export function FloatingDatePicker({ name, labelIntl }) {
 					wrapperClassName='date-picker date-picker-input'
 					calendarClassName='date-picker'
 					selected={new Date(date)}
-					value={moment(date).format(DATE_FORMAT)}
+					value={moment(new Date(date)).format(DATE_FORMAT)}
 					{...restField}
 					customInput={<InputDatePicker labelIntl={labelIntl} />}
 				/>

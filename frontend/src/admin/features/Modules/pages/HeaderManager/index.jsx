@@ -39,7 +39,7 @@ export default function HeaderManager() {
 		toggleConfirmModal();
 	};
 
-	const handleOnCreate = tryCatchAndToast(async (data) => {
+	const handleCreate = tryCatchAndToast(async (data) => {
 		const { message, metadata } = await linkApi.createOne({ ...data, index: links.length, type: 'header' });
 		setLinks(
 			produce((draft) => {
@@ -50,35 +50,30 @@ export default function HeaderManager() {
 		toggleModal();
 	}, languageId);
 
-	const handleOnUpdate = tryCatchAndToast(async (data) => {
+	const handleUpdate = tryCatchAndToast(async (data) => {
 		const { id, ...updateBody } = data;
 
-		if (Object.keys(updateBody).length) {
-			const { message, metadata } = await linkApi.updateOneById(id, {
-				...updateBody,
-				type: 'header',
-			});
+		const { message, metadata } = await linkApi.updateOneById(id, { ...updateBody, type: 'header' });
+		focusedLink.current = null;
+		if (metadata.length) {
 			setLinks(metadata);
-			focusedLink.current = null;
-			showToastMessage(message, languageId);
 		}
+		showToastMessage(message, languageId);
 		toggleModal();
 	}, languageId);
 
-	const handleOnSubmitDeletion = tryCatchAndToast(async () => {
+	const handleDeletion = tryCatchAndToast(async () => {
 		const listId = flattenTree([focusedLink.current]).map(({ id }) => id);
-		if (listId.length) {
-			const { message, metadata } = await linkApi.deleteByIds({
-				listId,
-				type: 'header',
-			});
-			setLinks(metadata);
-			showToastMessage(message, languageId);
-		}
+		const { message, metadata } = await linkApi.deleteByIds({
+			listId,
+			type: 'header',
+		});
+		setLinks(metadata);
+		showToastMessage(message, languageId);
 		toggleConfirmModal();
 	}, languageId);
 
-	const handleOnSorting = tryCatchAndToast(async () => {
+	const handleSort = tryCatchAndToast(async () => {
 		const flattenedLinks = flattenTree(links).map(({ id, index, parentId }) => ({
 			id,
 			index,
@@ -129,7 +124,7 @@ export default function HeaderManager() {
 				idTitleIntl='dashboard.modules.header.modal.sort.title'
 				isOpen={isOpenSortingModal}
 				onClose={toggleSortingModal}
-				onSubmit={handleOnSorting}
+				onSubmit={handleSort}
 			>
 				<FormattedMessage id='dashboard.modules.header.modal.sort.description' />
 			</ConfirmModal>
@@ -138,7 +133,7 @@ export default function HeaderManager() {
 				idTitleIntl='dashboard.modules.header.modal.deletion.title'
 				isOpen={isOpenConfirm}
 				onClose={toggleConfirmModal}
-				onSubmit={handleOnSubmitDeletion}
+				onSubmit={handleDeletion}
 			>
 				<FormattedDescription
 					id='dashboard.modules.header.modal.deletion.description'
@@ -151,8 +146,8 @@ export default function HeaderManager() {
 				linkId={focusedLink.current?.id}
 				isOpen={isOpenModal}
 				onClose={toggleModal}
-				onUpdate={handleOnUpdate}
-				onCreate={handleOnCreate}
+				onUpdate={handleUpdate}
+				onCreate={handleCreate}
 			/>
 		</>
 	);

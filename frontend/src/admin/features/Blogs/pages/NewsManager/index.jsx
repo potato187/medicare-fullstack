@@ -65,7 +65,7 @@ export default function NewsManager() {
 	}, languageId);
 
 	const handleUpdate = tryCatchAndToast(async (data) => {
-		if (News[index]?._id && Object.keys(data).length) {
+		if (News[index]?._id) {
 			const { message, metadata } = await newsApi.updateOneById(News[index]?._id, data);
 			updateNews(
 				produce((draft) => {

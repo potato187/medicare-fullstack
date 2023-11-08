@@ -85,7 +85,7 @@ export function LinkModal({
 						<FormattedMessage id='button.close' />
 					</Button>
 					<Button type='submit' size='xs' onClick={methods.handleSubmit(handleOnSubmit)}>
-						<FormattedMessage id={`button.${linkId ? 'update' : 'create'}`} />
+						<FormattedMessage id={`button.${linkId ? 'update' : 'add'}`} />
 					</Button>
 				</BaseModalFooter>
 			</BaseModal>

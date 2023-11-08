@@ -28,13 +28,13 @@ const createSchema = Joi.object().keys({
 		.required(),
 	content: Joi.object()
 		.keys({
-			vi: stringAllowEmpty.default(''),
-			en: stringAllowEmpty.default(''),
+			vi: stringAllowEmpty,
+			en: stringAllowEmpty,
 		})
 		.required(),
-	url: stringAllowEmpty.default(''),
-	image: stringAllowEmpty.default(''),
-	icon: stringAllowEmpty.default(''),
+	url: stringAllowEmpty,
+	image: stringAllowEmpty,
+	icon: stringAllowEmpty,
 });
 
 const updateSchema = Joi.object({

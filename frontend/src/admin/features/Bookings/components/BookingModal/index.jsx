@@ -89,7 +89,7 @@ export function BookingModal({
 		<FormProvider {...methods}>
 			<BaseModal size='md' isOpen={isOpen}>
 				<BaseModalHeader idIntl='dashboard.booking.modal.update.title' onClose={onClose} />
-				<BaseModalBody className='scrollbar'>
+				<BaseModalBody>
 					<form onSubmit={methods.handleSubmit(handleSubmit)}>
 						<div className='row'>
 							<div className='col-12 col-md-6 mb-6'>
@@ -110,6 +110,7 @@ export function BookingModal({
 							<div className='col-12 col-md-6 mb-6 position-relative z-index-4'>
 								<FloatingLabelSelect name='status' labelIntl='common.status' options={statuses} />
 							</div>
+
 							<div className='col-12 col-md-6 mb-6 position-relative z-index-3'>
 								<FloatingDatePicker name='appointmentDate' labelIntl='common.appointmentDate' />
 							</div>
@@ -133,6 +134,7 @@ export function BookingModal({
 									disabled={!doctors.length}
 								/>
 							</div>
+
 							<div className='col-12 position-relative z-index-1'>
 								<TextArea labelIntl='common.note' name='description' rows={5} />
 							</div>

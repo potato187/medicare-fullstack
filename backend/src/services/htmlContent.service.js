@@ -33,7 +33,7 @@ class HtmlContentService {
 
 		return getInfoData({
 			object: newHtmlContent,
-			fields: ['_id', ...Object.keys(body)],
+			fields: ['_id', ...Object.keys(body), 'createdAt'],
 		});
 	}
 

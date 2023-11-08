@@ -37,8 +37,12 @@ const codeReason = {
 		vi: 'Truy cập bị từ chối.',
 	},
 	100404: {
-		en: 'Page not found.',
-		vi: 'Không tìm thấy trang.',
+		en: 'Not Found.',
+		vi: 'Không tìm thấy.',
+	},
+	101404: {
+		en: 'Page Not Found.',
+		vi: 'Trang không tìm thấy.',
 	},
 	100409: {
 		en: 'Invalid request.',
@@ -148,6 +152,10 @@ const codeReason = {
 		en: 'Specialty does not exist.',
 		vi: 'Chuyên ngành không tồn tại.',
 	},
+	402404: {
+		en: 'Working hour does not exist.',
+		vi: 'Giờ làm việc không tồn tại.',
+	},
 	400409: {
 		en: 'Doctor already exists.',
 		vi: 'Bác sĩ đã tồn tại.',
@@ -215,6 +223,14 @@ const codeReason = {
 	600201: {
 		en: 'Booking updated successfully.',
 		vi: 'Đã cập nhật Đặt lịch thành công',
+	},
+	601400: {
+		en: 'Appointment date must always be greater than the current date',
+		vi: 'Ngày hẹn phải luôn lớn hơn ngày hiện tại',
+	},
+	602400: {
+		en: 'Birthday must be less than the current date',
+		vi: 'Ngày sinh phải luôn nhỏ hơn ngày hiện tại',
 	},
 
 	/* Others code 70xxxx */

@@ -1,4 +1,4 @@
-import { mapData } from 'admin/utils';
+import { dataToLabelValueMap, keyToLabelReducer } from 'admin/utils';
 import { adminApi, resourceApi } from 'api';
 import {
 	Button,
@@ -16,7 +16,7 @@ import {
 } from 'components';
 import { useAsyncLocation, useAuth, useIndex, useToggle } from 'hooks';
 import produce from 'immer';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { FormattedMessage } from 'react-intl';
 import { compose, showToastMessage, tryCatch, tryCatchAndToast } from 'utils';
@@ -46,20 +46,16 @@ export default function AdminManager() {
 		Genders: [],
 	});
 
-	const Genders = useMemo(() => {
-		return mapData(data.Genders, languageId);
-	}, [data, languageId]);
-
-	const AdminRoles = useMemo(() => {
-		return mapData(data.AdminRoles, languageId);
-	}, [data, languageId]);
+	const Genders = dataToLabelValueMap(data.Genders, languageId);
+	const RoleOptions = dataToLabelValueMap(data.AdminRoles, languageId);
+	const Roles = keyToLabelReducer(data.AdminRoles, languageId);
 
 	const { page = 1, pagesize = 25 } = queryParams;
 	const [statusModal, toggleModal] = useToggle();
 	const [statusConfirmModal, toggleConfirmDeletionModal] = useToggle();
 
-	const openAdminModal = compose(updateAdminIndex, toggleModal);
-	const openConfirmModal = compose(updateAdminIndex, toggleConfirmDeletionModal);
+	const toggleModalAdmin = compose(updateAdminIndex, toggleModal);
+	const toggleConfirmModal = compose(updateAdminIndex, toggleConfirmDeletionModal);
 
 	const handleCreate = tryCatchAndToast(async (newAdmin) => {
 		const { message, metadata } = await adminApi.createOne(newAdmin);
@@ -71,7 +67,7 @@ export default function AdminManager() {
 			);
 		}
 		showToastMessage(message, languageId);
-		toggleModal();
+		toggleModalAdmin();
 	}, languageId);
 
 	const handleConfirmDeletion = tryCatchAndToast(async () => {
@@ -82,7 +78,7 @@ export default function AdminManager() {
 			}),
 		);
 		showToastMessage(message, languageId);
-		toggleConfirmDeletionModal();
+		toggleConfirmModal();
 	}, languageId);
 
 	const handleUpdate = tryCatchAndToast(async (data) => {
@@ -105,14 +101,7 @@ export default function AdminManager() {
 
 	useEffect(() => {
 		tryCatch(async () => {
-			const promises = [
-				resourceApi.getAll({
-					model: 'gender',
-				}),
-				resourceApi.getAll({
-					model: 'role',
-				}),
-			];
+			const promises = [resourceApi.getAll({ model: 'gender' }), resourceApi.getAll({ model: 'role' })];
 			const response = await Promise.allSettled(promises);
 			const [genders, roles] = response.map((res) => (res.status === 'fulfilled' ? res.value.metadata : []));
 			setData(
@@ -142,7 +131,7 @@ export default function AdminManager() {
 						</div>
 						<div className='col-4 col-sm-9'>
 							<div className='d-flex justify-content-end'>
-								<Button square size='sm' onClick={openAdminModal}>
+								<Button square size='sm' onClick={toggleModalAdmin}>
 									<MdAdd size='1.25em' />
 								</Button>
 							</div>
@@ -172,27 +161,31 @@ export default function AdminManager() {
 									onChange={handleChangeSort}
 									style={{ width: '240px' }}
 								/>
-								<th className='text-start' style={{ width: '240px' }}>
+								<th className='text-start' style={{ width: '120px' }}>
 									<FormattedMessage id='form.phone' />
+								</th>
+								<th className='text-start' style={{ width: '120px' }}>
+									<FormattedMessage id='common.role' />
 								</th>
 								<th className='text-center' style={{ width: '240px' }}>
 									<FormattedMessage id='table.actions' />
 								</th>
 							</TableHeader>
-							<TableBody isLoading={isLoading} list={Admins}>
-								{({ _id, firstName, lastName, email, phone }, index) => (
+							<TableBody isLoading={isLoading} list={Admins} columns={7}>
+								{({ _id, firstName, lastName, email, phone, role }, index) => (
 									<tr key={_id}>
 										<td className='text-center'>{index + 1}</td>
 										<td className='text-start'>{firstName}</td>
 										<td className='text-start'>{lastName}</td>
 										<td className='text-start'>{email}</td>
 										<td className='text-start'>{phone}</td>
+										<td className='text-start'>{Roles[role]}</td>
 										<td>
 											<div className='d-flex justify-content-center gap-2'>
-												<Button size='xs' success onClick={() => openAdminModal(index)}>
+												<Button size='xs' success onClick={() => toggleModalAdmin(index)}>
 													<FormattedMessage id='button.update' />
 												</Button>
-												<Button size='xs' danger onClick={() => openConfirmModal(index)}>
+												<Button size='xs' danger onClick={() => toggleConfirmModal(index)}>
 													<FormattedMessage id='button.delete' />
 												</Button>
 											</div>
@@ -215,7 +208,7 @@ export default function AdminManager() {
 				isOpen={statusModal}
 				adminId={Admins[adminIndex]?._id}
 				genders={Genders}
-				positions={AdminRoles}
+				positions={RoleOptions}
 				onClose={toggleModal}
 				onCreate={handleCreate}
 				onUpdate={handleUpdate}

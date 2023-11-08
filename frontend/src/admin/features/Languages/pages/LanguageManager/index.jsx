@@ -12,7 +12,7 @@ import * as yup from 'yup';
 import { convertData, convertName } from '../../utils';
 
 export default function LanguageManager() {
-	const { languageId = '' } = useParams();
+	const { languageId = 'en' } = useParams();
 	const { info } = useAuth();
 	const { languages, validationForm, updateLanguage } = useLanguages();
 	const language = useMemo(() => convertData(languages[languageId]), [languages, languageId]);
@@ -34,7 +34,7 @@ export default function LanguageManager() {
 				methods.setValue(`${prefix}.${key}`, fields[key]);
 			});
 		});
-	}, [languageId, methods, language]);
+	}, [languageId, language]);
 
 	return (
 		<FormProvider {...methods}>

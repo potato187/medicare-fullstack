@@ -21,7 +21,7 @@ const querySchema = Joi.object({
 	page: pageValidator,
 	pagesize: pageSizeValidator,
 	sort: sortValidator(SORTABLE_FIELDS),
-	select: fieldsValidator(SELECT_FIELDS, ['_id', 'firstName', 'lastName', 'phone', 'email']),
+	select: fieldsValidator(SELECT_FIELDS, ['_id', 'firstName', 'lastName', 'phone', 'email', 'role']),
 });
 
 const getOneSchema = Joi.object({

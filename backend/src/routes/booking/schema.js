@@ -21,16 +21,16 @@ const appointmentDateValidator = dateValidator.min(new Date().setDate(new Date()
 const dateOfBirthValidator = dateValidator.max(new Date().setDate(new Date().getDate() - 1));
 
 const createSchema = Joi.object().keys({
-	specialtyId: ObjectIdMongodbValidator,
-	doctorId: ObjectIdMongodbValidator,
-	workingHourId: ObjectIdMongodbValidator,
+	specialtyId: ObjectIdMongodbValidator.required(),
+	doctorId: ObjectIdMongodbValidator.required(),
+	workingHourId: ObjectIdMongodbValidator.required(),
 	appointmentDate: appointmentDateValidator.required(),
-	fullName: nameValidator,
-	phone: phoneValidator,
 	dateOfBirth: dateOfBirthValidator.required(),
-	gender: genderValidator,
-	address: addressValidator,
-	note: emptyStringValidator,
+	fullName: nameValidator.required(),
+	phone: phoneValidator.required(),
+	gender: genderValidator.required(),
+	address: emptyStringValidator,
+	description: emptyStringValidator,
 });
 
 const updateSchema = Joi.object({
@@ -41,16 +41,15 @@ const updateSchema = Joi.object({
 		otherwise: Joi.optional(),
 	}),
 	workingHourId: ObjectIdMongodbValidator,
-	appointmentDate: appointmentDateValidator,
+	appointmentDate: appointmentDateValidator.message('601400'),
+	dateOfBirth: dateOfBirthValidator.message('602400'),
 	fullName: nameValidator,
 	phone: phoneValidator,
-	dateOfBirth: dateOfBirthValidator,
 	gender: genderValidator,
 	address: addressValidator,
-	note: emptyStringValidator,
 	isDeleted: isDeletedValidator,
 	status: enumWithDefaultValidator(BookingStatusOptions),
-	description: Joi.string().allow(''),
+	description: emptyStringValidator,
 });
 
 const querySchema = Joi.object({
@@ -61,6 +60,7 @@ const querySchema = Joi.object({
 	endDate: Joi.when('startDate', {
 		is: Joi.exist(),
 		then: dateValidator.greater(Joi.ref('startDate')).allow(''),
+		otherwise: Joi.optional(),
 	}),
 	select: selectValidator(SelectFields),
 	status: enumWithDefaultValidator(BookingStatusOptions, BookingStatusDefault),

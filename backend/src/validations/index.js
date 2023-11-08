@@ -10,24 +10,16 @@ const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 const emailValidator = Joi.string().email({ minDomainSegments: 1, tlds: { allow: ['com'] } });
 
-const passwordValidator = Joi.string().pattern(passwordRegex).message({
-	'string.pattern.base': 'Password must be a strong password.',
-});
+const passwordValidator = Joi.string().pattern(passwordRegex).message('100400');
 
-const phoneValidator = Joi.string().pattern(phoneRegex).message({
-	'string.pattern.base': 'Phone is invalid.',
-});
+const phoneValidator = Joi.string().pattern(phoneRegex).message('100400');
 
-const adminRoleValidator = Joi.string().pattern(adminRoleRegex).message({
-	'string.pattern.base': 'Role is invalid',
-});
+const adminRoleValidator = Joi.string().pattern(adminRoleRegex).message('100400');
 
-const genderValidator = Joi.string().pattern(genderRegex).message({
-	'string.pattern.base': 'Gender is invalid',
-});
+const genderValidator = Joi.string().pattern(genderRegex).message('100400');
 
 const ObjectIdMongodbValidator = Joi.string().custom((value, helper) =>
-	Types.ObjectId.isValid(value) ? value : helper.message('107400'),
+	Types.ObjectId.isValid(value) ? value : helper.message('100400'),
 );
 
 const summaryValidator = Joi.string().trim().max(100);
@@ -49,7 +41,7 @@ const isVerify = Joi.boolean();
 const booleanValidator = Joi.boolean();
 
 const positionValidator = Joi.string().custom((value, helper) => {
-	return POSITIONS.includes(value) ? value : helper.message('100400');
+	return POSITIONS.includes(value) ? value : helper;
 });
 
 const dateValidator = Joi.date().iso();

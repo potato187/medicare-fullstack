@@ -35,7 +35,7 @@ const getOneSchema = Joi.object({
 });
 
 const createSchema = Joi.object().keys({
-	name: Joi.object({
+	name: Joi.object().keys({
 		vi: Joi.string().required(),
 		en: Joi.string().required(),
 	}),
