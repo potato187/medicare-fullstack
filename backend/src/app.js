@@ -7,6 +7,8 @@ const path = require('path');
 require('dotenv').config();
 
 const { errorHandler, notFoundHandler } = require('@/middleware');
+const logActionHandler = require('./helpers/logAction.helper');
+const { limitRequestHandler } = require('./helpers');
 
 const app = express();
 
@@ -28,8 +30,11 @@ app.use('/public', express.static(path.join(__dirname, '../public')));
 // config database
 require('@/dbs/mongodb.init').getInstance();
 
+app.use(logActionHandler);
 // config routes
 app.use('/v1/api', require('@/routes'));
+
+app.use(limitRequestHandler);
 
 // handling errors
 app.use('*', notFoundHandler);

@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const { mongodConfig } = require('@/configs');
 
 const { db } = mongodConfig;
-const { host = '', port = '', name = '' } = db;
-const connectURI = `mongodb://${host}:${port}/${name}`;
+const { host = '', port = '', name_db = '', user = '', password = '' } = db;
+const connectURI = `mongodb://${user}:${password}@${host}:${port}/${name_db}?authSource=admin`;
 
 class Database {
 	constructor() {
@@ -18,7 +18,10 @@ class Database {
 		}
 
 		mongoose
-			.connect(connectURI)
+			.connect(connectURI, {
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+			})
 			.then(() => {
 				// eslint-disable-next-line no-console
 				console.log('Database Connected MongoDB Success.');
